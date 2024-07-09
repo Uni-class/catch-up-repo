@@ -1,0 +1,21 @@
+{
+  "name": "catch-up-repo",
+  "version": "1.0.0",
+  "description": "monorepo for catch-up",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "common": "yarn workspace @cu/common",
+    "component": "yarn workspace @cu/component",
+    "front-end": "yarn workspace front-end",
+    "api-server": "yarn workspace api-server"
+  },
+  "workspaces": [
+    "packages/*",
+    "packages/libs/*"
+  ],
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "packageManager": "yarn@4.3.1"
+}
