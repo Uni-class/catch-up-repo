@@ -1,3 +1,4 @@
+import StyledComponentsContainer from "@/util/styled-components-container";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -15,9 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <>
-        <body className={inter.className}>{children}</body>
-      </>
+      <body className={inter.className}>
+        <StyledComponentsContainer>
+          {children}
+          </StyledComponentsContainer>
+      </body>
     </html>
   );
 }

@@ -4,7 +4,7 @@ const nextConfig = {
     externalDir: true,
   },
   compiler: {
-    emotion: true,
+    styledComponents: true,
   },
   // output: "export",
   // trailingSlash: true,
