@@ -1,8 +1,9 @@
-"use client"
+"use client";
+import Image from "next/image";
 export default function Page() {
-    return (
-      <main>
-
-      </main>
-    );
-  }
+  return (
+    <main>
+      <Image src="/icon/naver-icon.png" alt="naver" />
+    </main>
+  );
+}

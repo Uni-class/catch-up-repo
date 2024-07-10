@@ -1,4 +1,10 @@
-import { css, Global } from "@emotion/react";
+"use client";
+
+import { Global, css } from "@/lib/emotion/react";
+
+export default function ResetStyle() {
+  return <Global styles={style} />;
+}
 
 const style = css`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -131,7 +137,3 @@ License: none (public domain)
     border-spacing: 0;
   }
 `;
-
-export default function ResetStyle() {
-  return <Global styles={style} />;
-}
