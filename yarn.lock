@@ -1653,16 +1653,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/passport-naver@npm:^1":
-  version: 1.0.4
-  resolution: "@types/passport-naver@npm:1.0.4"
-  dependencies:
-    "@types/express": "npm:*"
-    "@types/passport": "npm:*"
-  checksum: 10c0/f054db8d0471ff6452da8eef462c5b280219830e557439146e209046ffcc7aab0d004bf1fa52e4edae7cc38914318ddfaf86e1e949af43a6452f641bde81d46b
-  languageName: node
-  linkType: hard
-
 "@types/passport-oauth2@npm:*":
   version: 1.4.17
   resolution: "@types/passport-oauth2@npm:1.4.17"
@@ -2430,7 +2420,6 @@ __metadata:
     "@types/passport-google-oauth20": "npm:^2"
     "@types/passport-jwt": "npm:^4"
     "@types/passport-kakao": "npm:^1"
-    "@types/passport-naver": "npm:^1"
     "@types/pg": "npm:^8"
     "@types/supertest": "npm:^6.0.0"
     "@types/webpack-node-externals": "npm:^3"
@@ -2447,7 +2436,7 @@ __metadata:
     passport-google-oauth20: "npm:^2.0.0"
     passport-jwt: "npm:^4.0.1"
     passport-kakao: "npm:^1.0.1"
-    passport-naver: "npm:^1.0.6"
+    passport-naver-v2: "npm:^2.0.8"
     pg: "npm:^8.12.0"
     prettier: "npm:^3.0.0"
     reflect-metadata: "npm:^0.2.0"
@@ -7494,28 +7483,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-naver@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "passport-naver@npm:1.0.6"
+"passport-naver-v2@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "passport-naver-v2@npm:2.0.8"
   dependencies:
-    passport-oauth: "npm:^1.0.0"
-    underscore: "npm:^1.8.3"
-  checksum: 10c0/e141f269e69104f30c97209c5e24e3e040b23840b91b530f3ca275995eac2039985fda8c79a10488bc4bdfa57833519444097ae84994ff34ab0caf649c239e52
+    passport-oauth2: "npm:^1.5.0"
+  checksum: 10c0/2aefe12bbb8e39fee3bc183c9164afef0487c27a854b14c6649c9d540df9c10fd2b6f8782e087dddd65de4123a3fa7dbd5b7fbcf9b431f539bdb3f9abf9c14a8
   languageName: node
   linkType: hard
 
-"passport-oauth1@npm:1.x.x":
-  version: 1.3.0
-  resolution: "passport-oauth1@npm:1.3.0"
-  dependencies:
-    oauth: "npm:0.9.x"
-    passport-strategy: "npm:1.x.x"
-    utils-merge: "npm:1.x.x"
-  checksum: 10c0/2bf9b0fe9942f5e4d0cda1d9b526f4f2395e3e547f17aa45ea020aa8017831a33bbb0227c747defdb0c1b9f1ad778551dbd310c9cc6866fb09e9986eb20c1745
-  languageName: node
-  linkType: hard
-
-"passport-oauth2@npm:1.x.x":
+"passport-oauth2@npm:1.x.x, passport-oauth2@npm:^1.5.0":
   version: 1.8.0
   resolution: "passport-oauth2@npm:1.8.0"
   dependencies:
@@ -7536,16 +7513,6 @@ __metadata:
     passport-strategy: "npm:1.x.x"
     uid2: "npm:0.0.x"
   checksum: 10c0/0e7666988a86e0dd53458aa091bb126fd5ed99ae7db680e3a4a5e48bdd954f777e65a7a18661149088f1f049749e63f3a833208f861ad0ba4abc9a4fd93a47e8
-  languageName: node
-  linkType: hard
-
-"passport-oauth@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-oauth@npm:1.0.0"
-  dependencies:
-    passport-oauth1: "npm:1.x.x"
-    passport-oauth2: "npm:1.x.x"
-  checksum: 10c0/bdf74433f6f2c68fe3cc80110769f18ea6d50f2f352119f657b47a62fb9073933f0ddf683fd09c2e499fca54238f835b106f41a14f57b250f9abd469795093be
   languageName: node
   linkType: hard
 
@@ -9677,13 +9644,6 @@ __metadata:
     has-symbols: "npm:^1.0.3"
     which-boxed-primitive: "npm:^1.0.2"
   checksum: 10c0/81ca2e81134167cc8f75fa79fbcc8a94379d6c61de67090986a2273850989dd3bae8440c163121b77434b68263e34787a675cbdcb34bb2f764c6b9c843a11b66
-  languageName: node
-  linkType: hard
-
-"underscore@npm:^1.8.3":
-  version: 1.13.6
-  resolution: "underscore@npm:1.13.6"
-  checksum: 10c0/5f57047f47273044c045fddeb8b141dafa703aa487afd84b319c2495de2e685cecd0b74abec098292320d518b267c0c4598e45aa47d4c3628d0d4020966ba521
   languageName: node
   linkType: hard
 
