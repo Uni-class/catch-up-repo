@@ -16,5 +16,8 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-  ) {}
+  ) {
+    const user = { id: profile.id, provider: profile.provider };
+    return user;
+  }
 }
