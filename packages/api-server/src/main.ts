@@ -1,11 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import helmet from 'helmet';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as process from 'node:process';
-import { ValidationPipe } from '@nestjs/common';
-
-declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,5 +30,7 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
+
+  await app.listen(3000);
 }
 bootstrap();
