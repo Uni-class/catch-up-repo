@@ -1605,6 +1605,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webpack-node-externals@npm:^3":
+  version: 3.0.4
+  resolution: "@types/webpack-node-externals@npm:3.0.4"
+  dependencies:
+    "@types/node": "npm:*"
+    webpack: "npm:^5"
+  checksum: 10c0/07a324c0130fb5b49ae31010ecee2690330e9f397b13dd7e826f8b9adeb2be415c57261f5b39c20350aeb53c972d36cea38c6feed9414487c2bbdc3ae41429f4
+  languageName: node
+  linkType: hard
+
 "@types/yargs-parser@npm:*":
   version: 21.0.3
   resolution: "@types/yargs-parser@npm:21.0.3"
@@ -2199,6 +2209,7 @@ __metadata:
     "@types/jest": "npm:^29.5.2"
     "@types/node": "npm:^20.3.1"
     "@types/supertest": "npm:^6.0.0"
+    "@types/webpack-node-externals": "npm:^3"
     "@typescript-eslint/eslint-plugin": "npm:^7.0.0"
     "@typescript-eslint/parser": "npm:^7.0.0"
     eslint: "npm:^8.42.0"
@@ -2207,6 +2218,7 @@ __metadata:
     jest: "npm:^29.5.0"
     prettier: "npm:^3.0.0"
     reflect-metadata: "npm:^0.2.0"
+    run-script-webpack-plugin: "npm:^0.2.0"
     rxjs: "npm:^7.8.1"
     source-map-support: "npm:^0.5.21"
     supertest: "npm:^7.0.0"
@@ -2215,6 +2227,8 @@ __metadata:
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.2.0"
     typescript: "npm:^5.1.3"
+    webpack: "npm:^5.92.1"
+    webpack-node-externals: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7625,6 +7639,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"run-script-webpack-plugin@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "run-script-webpack-plugin@npm:0.2.0"
+  checksum: 10c0/940c102705afdd2d506680a3570f9b7ba0901bc68b2d063b486329c3cba98deb5a64cfb6fc2643394eff2bd1da9ff67d49726579420fd52a0bbc6db3a55a2752
+  languageName: node
+  linkType: hard
+
 "rxjs@npm:7.8.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.1":
   version: 7.8.1
   resolution: "rxjs@npm:7.8.1"
@@ -8894,7 +8915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-node-externals@npm:3.0.0":
+"webpack-node-externals@npm:3.0.0, webpack-node-externals@npm:^3.0.0":
   version: 3.0.0
   resolution: "webpack-node-externals@npm:3.0.0"
   checksum: 10c0/9f645a4dc8e122dac43cdc8c1367d4b44af20c79632438b633acc1b4fe64ea7ba1ad6ab61bd0fc46e1b873158c48d8c7a25a489cdab1f31299f00eb3b81cfc61
@@ -8908,7 +8929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:5.92.1":
+"webpack@npm:5.92.1, webpack@npm:^5, webpack@npm:^5.92.1":
   version: 5.92.1
   resolution: "webpack@npm:5.92.1"
   dependencies:
