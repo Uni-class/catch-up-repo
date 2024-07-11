@@ -1,0 +1,60 @@
+name: Delete Inactive Branches
+
+on:
+  schedule:
+    - cron: '0 15 * * 6'  # UTC 15:00 but KST 00:00
+
+jobs:
+  delete-inactive-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install -g @actions/github @octokit/rest
+
+      - name: Delete inactive branches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node <<EOF
+          const { Octokit } = require("@octokit/rest");
+          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+          async function run() {
+            // 기본 정보
+            const owner = 'Uni-class';
+            const repo = 'catch-up-repo';
+            // branch 받아오기
+            const { data: branches } = await octokit.repos.listBranches({
+              owner,
+              repo,
+            });
+            // 21일 기준으로 삭제
+            const inactiveBranches = branches.filter(branch => {
+              const lastCommitDate = new Date(branch.commit.commit.author.date);
+              const daysInactive = (Date.now() - lastCommitDate) / (1000 * 60 * 60 * 24);
+              return daysInactive > 21 && branch.name !== 'main' && branch.name !== 'master'; 
+            });
+
+            for (const branch of inactiveBranches) {
+              await octokit.git.deleteRef({
+                owner,
+                repo,
+                ref: `heads/${branch.name}`,
+              });
+              console.log(`Deleted branch: ${branch.name}`);
+            }
+          }
+
+          run().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          EOF
