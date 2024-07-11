@@ -1,5 +1,4 @@
-import QueryClientProvider from "@/provider/query-client-provider";
-import StyledComponentsContainer from "@/provider/styled-components-container";
+import Provider from "@/provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -18,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <StyledComponentsContainer>
-          <QueryClientProvider>{children}</QueryClientProvider>
-        </StyledComponentsContainer>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

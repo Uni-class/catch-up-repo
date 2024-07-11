@@ -1,3 +1,4 @@
+"use client";
 import { theme } from "@/style/theme";
 import { ReactNode } from "react";
 import { ThemeProvider } from "styled-components";
