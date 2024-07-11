@@ -1,5 +1,5 @@
-import QueryClientProvider from "@/util/query-clinent-provider";
-import StyledComponentsContainer from "@/util/styled-components-container";
+import QueryClientProvider from "@/provider/query-client-provider";
+import StyledComponentsContainer from "@/provider/styled-components-container";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 

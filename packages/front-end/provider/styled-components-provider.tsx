@@ -10,7 +10,7 @@ import {
 import { theme } from "@/style/theme";
 import { Reset } from "styled-reset";
 
-export default function StyledComponentsContainer({
+export default function StyledComponentsProvider({
   children,
 }: {
   children: React.ReactNode;
