@@ -7,7 +7,7 @@ export default function NaverLogin() {
     <Link
       href={{
         pathname: "https://nid.naver.com/oauth2.0/authorize",
-        query: { client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID },
+        query: { client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID, response_type: 'code' },
       }}
     >
       <Image src="/login-naver.png" alt="login" width={200} height={50} />
