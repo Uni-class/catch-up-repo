@@ -18,7 +18,11 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     refreshToken: string,
     profile: Profile,
   ) {
-    const user = { id: profile.id, provider: profile.provider };
-    return user;
+    try {
+      const user = { id: profile.id, provider: profile.provider };
+      return user;
+    } catch (error) {
+      console.log(req.query);
+    }
   }
 }

@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { NaverAuthGuard } from './guards/naverauth.guard';
 import { Request, Response } from 'express';
 import { GoogleAuthGuard } from './guards/googleauth.guard';
+import { KakaoAuthGuard } from './guards/kakaoauth.guard';
+import * as process from 'node:process';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +18,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return;
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
@@ -30,13 +32,13 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return;
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
   }
 
-  @UseGuards(NaverAuthGuard)
+  @UseGuards(KakaoAuthGuard)
   @Get('kakao/callback')
   async kakaoCallback(
     @Req() req: Request,
@@ -44,7 +46,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return;
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
