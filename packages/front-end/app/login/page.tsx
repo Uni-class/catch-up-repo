@@ -1,9 +1,13 @@
 "use client";
-import Image from "next/image";
+
+import KaKaoLogin from "./_components/kakao-login";
+import NaverLogin from "./_components/naver-login";
+
 export default function Page() {
   return (
     <main>
-      <Image src="/icon/naver-icon.png" alt="naver" width={40} height={40}/>
+      <NaverLogin/>
+      <KaKaoLogin/>
     </main>
   );
 }

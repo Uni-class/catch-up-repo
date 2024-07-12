@@ -5,10 +5,7 @@ import { useServerInsertedHTML } from "next/navigation";
 import {
   ServerStyleSheet,
   StyleSheetManager,
-  ThemeProvider,
 } from "styled-components";
-import { theme } from "@/style/theme";
-import { Reset } from "styled-reset";
 
 export default function StyledComponentsProvider({
   children,
@@ -29,8 +26,7 @@ export default function StyledComponentsProvider({
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      <Reset />
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      {children}
     </StyleSheetManager>
   );
 }
