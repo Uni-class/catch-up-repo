@@ -4,6 +4,7 @@ import { NaverAuthGuard } from './guards/naverauth.guard';
 import { Request, Response } from 'express';
 import { GoogleAuthGuard } from './guards/googleauth.guard';
 import { KakaoAuthGuard } from './guards/kakaoauth.guard';
+import * as process from 'node:process';
 
 @Controller('auth')
 export class AuthController {
@@ -17,7 +18,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return res.redirect('http://localhost:3000/');
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
@@ -31,7 +32,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return res.redirect('http://localhost:3000/');
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
@@ -45,7 +46,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       console.log(req.user);
-      return res.redirect('http://localhost:3000/');
+      return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
     }
