@@ -5,7 +5,7 @@ export default function KaKaoLogin() {
   return (
     <Link
       href={{
-        pathname: "authorize",
+        pathname: "https://kauth.kakao.com/oauth/authorize",
         query: {
           client_id: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
           response_type: "code",
