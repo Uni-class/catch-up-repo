@@ -8,6 +8,9 @@ export default function GoogleLogin() {
         pathname: "https://accounts.google.com/o/oauth2/v2/auth",
         query: {
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          response_type: "code",
+          redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL,
+          scope: "email profile openid",
         },
       }}
     >
