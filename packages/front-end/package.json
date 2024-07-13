@@ -4,6 +4,7 @@
   "private": true,
   "packageManager": "yarn@4.3.1",
   "scripts": {
+    "prepare": "panda codegen",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
