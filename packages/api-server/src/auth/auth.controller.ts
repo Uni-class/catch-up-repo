@@ -17,7 +17,13 @@ import * as process from 'node:process';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { RefreshGuard } from './guards/refresh.guard';
+import {
+  ApiCreatedResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -87,6 +93,8 @@ export class AuthController {
   }
 
   @UseGuards(RefreshGuard)
+  @ApiCreatedResponse({ description: 'Access token refreshed!' })
+  @ApiUnauthorizedResponse({ description: `Refresh token is not user's!` })
   @HttpCode(HttpStatus.CREATED)
   @Get('token-refresh')
   async tokenRefresh(@Req() req: Request, @Res() res): Promise<any> {
