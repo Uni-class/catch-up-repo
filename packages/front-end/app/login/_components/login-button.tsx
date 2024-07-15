@@ -1,8 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
-import { css } from "@/styled-system/css";
-import { token } from "@/styled-system/tokens";
 import { LoginButtonContainer } from "../_style/login-button-container";
+import { css } from "@/styled-system/css";
 
 interface PropType {
   pathname: string;
@@ -29,8 +27,17 @@ export default function LoginButton({
       href={{ pathname: pathname, query: { ...query, response_type: "code" } }}
       provider={provider}
     >
-      <Image alt={text} src={iconURL} width={20} height={20} />
-      {text}
+      <Image alt={text} src={iconURL} width={18} height={18} />
+      <p
+        className={css({
+          flexGrow: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        })}
+      >
+        {text}
+      </p>
     </LoginButtonContainer>
   );
 }

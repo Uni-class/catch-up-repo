@@ -6,10 +6,10 @@ export const LoginButtonContainer = styled(Link, {
     display: "flex",
     alignItems: "center",
     padding: "0.5rem 1.5rem",
-    width: "220px",
-    height: "50px",
-    fontSize: "20px",
-    gap: 6,
+    width: "100%",
+    fontSize: "18px",
+    borderRadius: "6px",
+    boxSizing:"border-box"
   },
   variants: {
     provider: {
@@ -24,6 +24,7 @@ export const LoginButtonContainer = styled(Link, {
       google: {
         bg: "google.bright",
         color: "#000",
+        border: "1px solid #dedede",
       },
     },
   },
