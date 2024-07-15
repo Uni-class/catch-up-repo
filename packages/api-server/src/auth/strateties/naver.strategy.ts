@@ -17,7 +17,7 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
     refreshToken: string,
     profile: Profile,
   ) {
-    const user = { id: profile.id, provider: profile.provider };
+    const user = await this.authService.validateNaverUser(profile);
     return user;
   }
 }

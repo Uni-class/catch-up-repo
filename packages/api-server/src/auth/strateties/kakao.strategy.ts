@@ -18,11 +18,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     refreshToken: string,
     profile: Profile,
   ) {
-    try {
-      const user = { id: profile.id, provider: profile.provider };
-      return user;
-    } catch (error) {
-      console.log(req.query);
-    }
+    const user = await this.authService.validateKakaoUser(profile);
+    return user;
   }
 }
