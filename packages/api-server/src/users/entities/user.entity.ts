@@ -2,10 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
@@ -57,16 +60,16 @@ export class User {
 
   @ApiProperty()
   @IsDate()
-  @Column({ default: Date.now() })
+  @CreateDateColumn({ default: Date.now() })
   createdAt: Date;
 
   @ApiProperty()
   @IsDate()
-  @Column({ nullable: true })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @ApiProperty()
   @IsDate()
-  @Column({ nullable: true })
+  @DeleteDateColumn()
   deletedAt: Date;
 }

@@ -5,10 +5,14 @@ import { Request, Response } from 'express';
 import { GoogleAuthGuard } from './guards/googleauth.guard';
 import { KakaoAuthGuard } from './guards/kakaoauth.guard';
 import * as process from 'node:process';
+import { UsersService } from '../users/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @UseGuards(NaverAuthGuard)
   @Get('naver/callback')
@@ -17,7 +21,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      console.log(req.user);
+      const user = req.user;
       return res.redirect(process.env.CLIENT_REDIRECT_URL);
     } catch (e) {
       console.log(e);
