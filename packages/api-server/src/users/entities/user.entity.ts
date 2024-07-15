@@ -50,7 +50,7 @@ export class User {
 
   @ApiProperty()
   @IsString()
-  @Column()
+  @Column({ nullable: true })
   refreshToken: string;
 
   @ApiProperty()
