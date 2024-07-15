@@ -20,17 +20,24 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(providerId: string, provider: string): Promise<User> {
+  async findOneByProviderId(
+    providerId: string,
+    provider: string,
+  ): Promise<User> {
     return await this.userRepository.findOne({
       where: { providerId, provider },
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async findOneById(id: number): Promise<User> {
+    return await this.userRepository.findOne({ where: { id } });
   }
 }
