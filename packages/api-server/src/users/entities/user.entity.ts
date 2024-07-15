@@ -44,9 +44,9 @@ export class User {
   provider: string;
 
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   @Column()
-  providerId: number;
+  providerId: string;
 
   @ApiProperty()
   @IsString()
