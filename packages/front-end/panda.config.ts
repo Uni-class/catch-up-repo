@@ -1,3 +1,4 @@
+import { theme } from "@/style/theme";
 import { defineConfig } from "@pandacss/dev";
 
 export default defineConfig({
@@ -17,20 +18,7 @@ export default defineConfig({
   theme: {
     extend: {
       tokens: {
-        colors: {
-          naver: {
-            green: { value: "#03c75a" },
-          },
-          kakao: {
-            container: { value: "#fee500" },
-            symbol: { value: "#000" },
-            lable: { value: "#000000d8" },
-          },
-          google: {
-            bright: { value: "#fff" },
-            dark: { value: "#4285F4" },
-          },
-        },
+        ...theme,
       },
     },
   },
