@@ -10,7 +10,7 @@ export default function NaverLogin() {
           client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
           response_type: "code",
           redirect_uri: process.env.NEXT_PUBLIC_NAVER_CALLBACK_URL,
-          state: "test",
+          state: "test", // redirect돼서 페이지 돌아왔을 때 받는 문자열, 로그인 후 되돌아갈 url 적으면 좋음
         },
       }}
     >

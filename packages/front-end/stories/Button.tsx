@@ -1,16 +1,7 @@
-import styled from "styled-components"
-
 export function Button(){
   return(
-    <_Button>
+    <button>
       button
-    </_Button>
+    </button>
   )
 }
-
-const _Button = styled.button`
-  color: #000;
-  border-radius: 0.5rem;
-  background-color: #fff;
-
-`

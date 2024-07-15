@@ -12,9 +12,9 @@ export const theme = {
       bright: "#fff",
       dark: "#4285F4",
     },
-    primary: "#0070f3",
-    secondary: "#1db954",
-    background: "#f0f0f0",
-    text: "#333",
+    // primary: "#0070f3",
+    // secondary: "#1db954",
+    // background: "#f0f0f0",
+    // text: "#333",
   },
 };

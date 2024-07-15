@@ -3,8 +3,8 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
-  compiler: {
-    styledComponents: true,
+  plugins: {
+    '@pandacss/dev/postcss': {},
   },
   // output: "export",
   // trailingSlash: true,
