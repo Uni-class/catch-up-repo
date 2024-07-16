@@ -15,8 +15,8 @@ import {
 export class User {
   @ApiProperty()
   @IsNumber()
-  @PrimaryGeneratedColumn({ name: 'user_id' })
-  id: number;
+  @PrimaryGeneratedColumn()
+  userId: number;
 
   @ApiProperty()
   @IsString()
@@ -35,7 +35,7 @@ export class User {
 
   @ApiProperty()
   @IsString()
-  @Column({ nullable: true, name: 'profile_url' })
+  @Column({ nullable: true })
   profileUrl: string;
 
   @ApiProperty()
@@ -45,12 +45,12 @@ export class User {
 
   @ApiProperty()
   @IsString()
-  @Column({ name: 'provider_id' })
+  @Column()
   providerId: string;
 
   @ApiProperty()
   @IsString()
-  @Column({ nullable: true, name: 'refresh_token' })
+  @Column({ nullable: true })
   refreshToken: string;
 
   @ApiProperty()
@@ -60,16 +60,16 @@ export class User {
 
   @ApiProperty()
   @IsString()
-  @Column({ nullable: true, name: 'created_at' })
+  @Column({ nullable: true })
   createdAt: string;
 
   @ApiProperty()
   @IsString()
-  @Column({ nullable: true, name: 'updated_at' })
+  @Column({ nullable: true })
   updatedAt: string;
 
   @ApiProperty()
   @IsString()
-  @Column({ nullable: true, name: 'deleted_at' })
+  @Column({ nullable: true })
   deletedAt: string;
 }

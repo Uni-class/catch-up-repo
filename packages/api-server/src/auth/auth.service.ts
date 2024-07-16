@@ -66,7 +66,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async generateAccessToken(user: User) {
-    const payload: JwtPayload = { id: user.id };
+    const payload: JwtPayload = { id: user.userId };
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('ACCESS_TOKEN_EXPIRATION'),
@@ -74,7 +74,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async generateRefreshToken(user: User) {
-    const payload = { id: user.id };
+    const payload = { id: user.userId };
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('REFRESH_TOKEN_EXPIRATION'),
