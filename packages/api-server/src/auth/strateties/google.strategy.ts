@@ -3,7 +3,7 @@ import { Strategy, Profile } from 'passport-google-oauth20';
 import { AuthService } from '../auth.service';
 import * as process from 'node:process';
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(private authService: AuthService) {
+  constructor() {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -17,7 +17,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     refreshToken: string,
     profile: Profile,
   ) {
-    const user = await this.authService.validateGoogleUser(profile);
-    return user;
+    return profile;
   }
 }

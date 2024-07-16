@@ -59,17 +59,17 @@ export class User {
   status: string;
 
   @ApiProperty()
-  @IsDate()
-  @CreateDateColumn({ default: Date.now() })
-  createdAt: Date;
+  @IsString()
+  @Column({ nullable: true })
+  createdAt: string;
 
   @ApiProperty()
-  @IsDate()
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @IsString()
+  @Column({ nullable: true })
+  updatedAt: string;
 
   @ApiProperty()
-  @IsDate()
-  @DeleteDateColumn()
-  deletedAt: Date;
+  @IsString()
+  @Column({ nullable: true })
+  deletedAt: string;
 }

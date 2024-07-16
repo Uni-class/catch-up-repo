@@ -8,7 +8,7 @@ import { User } from '../../users/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private authService: AuthService) {
+  constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
@@ -21,13 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload, done: VerifiedCallback): Promise<any> {
-    const user: User = await this.authService.tokenValidateUser(payload);
-    if (!user) {
-      return done(
-        new UnauthorizedException({ message: '존재 하지 않는 유저' }),
-        false,
-      );
-    }
-    return done(null, user);
+    return done(null, payload);
   }
 }

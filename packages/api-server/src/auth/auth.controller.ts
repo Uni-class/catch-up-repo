@@ -23,6 +23,9 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Profile as NaverProfile } from 'passport-naver-v2';
+import { Profile as GoogleProfile } from 'passport-google-oauth20';
+import { Profile as KakaoProfile } from 'passport-kakao';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -41,7 +44,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      const user: User = req.user as User;
+      const profile = req.user as NaverProfile;
+      const user = await this.authService.validateNaverUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.id, { refreshToken });
@@ -51,6 +55,7 @@ export class AuthController {
         .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
+      console.log(e);
       throw new InternalServerErrorException('Server Error', e);
     }
   }
@@ -64,7 +69,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      const user: User = req.user as User;
+      const profile = req.user as GoogleProfile;
+      const user = await this.authService.validateGoogleUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.id, { refreshToken });
@@ -87,8 +93,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      const user: User = req.user as User;
-
+      const profile = req.user as KakaoProfile;
+      const user = await this.authService.validateKakaoUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.id, { refreshToken });

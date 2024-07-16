@@ -16,7 +16,10 @@ export class UserConverter {
 
   async googleUserConverter(profile: GoogleProfile) {
     const userBuilder = Builder<User>();
-    userBuilder.provider(profile.provider).providerId(profile.id);
+    userBuilder
+      .provider(profile.provider)
+      .providerId(profile.id)
+      .status('using');
     if (profile.emails.length !== 0) userBuilder.email(profile.emails[0].value);
     if (profile.profileUrl) userBuilder.profileUrl(profile.profileUrl);
     userBuilder.nickname(await this.randomNickname());
@@ -30,14 +33,18 @@ export class UserConverter {
       .providerId(profile.id)
       .email(profile.email)
       .nickname(profile.nickname)
-      .username(profile.nickname);
+      .username(profile.nickname)
+      .status('using');
     if (profile.profileImage) userBuilder.profileUrl(profile.profileImage);
     return userBuilder.build();
   }
 
   async kakaoUserConverter(profile: KakaoProfile) {
     const userBuilder = Builder<User>();
-    userBuilder.provider(profile.provider).providerId(profile.id);
+    userBuilder
+      .provider(profile.provider)
+      .providerId(profile.id)
+      .status('using');
     if (profile.emails.length !== 0) userBuilder.email(profile.emails[0].value);
     userBuilder.nickname(profile.username).username(profile.username);
     if (profile.photos.length != 0)
