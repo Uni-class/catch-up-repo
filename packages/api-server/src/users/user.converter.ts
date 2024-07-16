@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { Builder } from 'builder-pattern';
 import { generateUsername } from 'unique-username-generator';
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserConverter {
@@ -15,7 +16,7 @@ export class UserConverter {
   }
 
   async googleUserConverter(profile: GoogleProfile) {
-    const userBuilder = Builder<User>();
+    const userBuilder = Builder<CreateUserDto>();
     userBuilder
       .provider(profile.provider)
       .providerId(profile.id)
@@ -27,7 +28,7 @@ export class UserConverter {
   }
 
   async naverUserConverter(profile: NaverProfile) {
-    const userBuilder = Builder<User>();
+    const userBuilder = Builder<CreateUserDto>();
     userBuilder
       .provider(profile.provider)
       .providerId(profile.id)
@@ -40,15 +41,16 @@ export class UserConverter {
   }
 
   async kakaoUserConverter(profile: KakaoProfile) {
-    const userBuilder = Builder<User>();
+    const userBuilder = Builder<CreateUserDto>();
     userBuilder
       .provider(profile.provider)
       .providerId(profile.id)
       .status('using');
-    if (profile.emails.length !== 0) userBuilder.email(profile.emails[0].value);
+    if (profile.emails != undefined && profile.emails.length !== 0)
+      userBuilder.email(profile.emails[0].value);
     userBuilder.nickname(profile.username).username(profile.username);
-    if (profile.photos.length != 0)
-      userBuilder.profileUrl(profile.photos[0].value);
+    if (profile._json.properties?.profile_image)
+      userBuilder.profileUrl(profile._json.properties?.profile_image);
     return userBuilder.build();
   }
 }

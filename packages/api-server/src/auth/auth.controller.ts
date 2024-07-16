@@ -49,7 +49,7 @@ export class AuthController {
       const user = await this.authService.validateNaverUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
-      await this.userService.update(user.id, { refreshToken });
+      await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
@@ -74,7 +74,7 @@ export class AuthController {
       const user = await this.authService.validateGoogleUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
-      await this.userService.update(user.id, { refreshToken });
+      await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
@@ -98,13 +98,14 @@ export class AuthController {
       const user = await this.authService.validateKakaoUser(profile);
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
-      await this.userService.update(user.id, { refreshToken });
+      await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
         .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
+      console.log(e);
       throw new InternalServerErrorException('Server Error', e);
     }
   }
