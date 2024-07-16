@@ -2,76 +2,20 @@ import Image from "next/image";
 import { LoginButtonContainer } from "../_style/login-button-container";
 import { css } from "@/styled-system/css";
 
-
-type Provider = "GOOGLE" | "NAVER" | "KAKAO";
-
-interface OAuth2Data {
-  pathname: string;
-  query: {
-    client_id: string;
-    redirect_uri: string;
-    scope?: string;
-    state?: string;
-  }
-  display: {
-    text: string;
-    iconURL: string;
-  }
-}
-
-const ProviderData: {
-  [key in Provider]: OAuth2Data
-} = {
-  "GOOGLE": {
-    pathname: "https://accounts.google.com/o/oauth2/v2/auth",
-    query: {
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL || "",
-      scope: "email profile openid"
-    },
-    display: {
-      text: "Google 로그인",
-      iconURL: "/icon/icon-google.svg"
-    }
-  },
-  "NAVER": {
-    pathname: "https://nid.naver.com/oauth2.0/authorize",
-    query: {
-      client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID || "",
-      redirect_uri: process.env.NEXT_PUBLIC_NAVER_CALLBACK_URL || "",
-      state: "HASH"
-    },
-    display: {
-      text: "Naver 로그인",
-      iconURL: "/icon/icon-naver.svg"
-    }
-  },
-  "KAKAO": {
-    pathname: "https://kauth.kakao.com/oauth/authorize",
-    query: {
-      client_id: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID || "",
-      redirect_uri: process.env.NEXT_PUBLIC_KAKAO_CALLBACK_URL || ""
-    },
-    display: {
-      text: "Kakao 로그인",
-      iconURL: "/icon/icon-kakao.svg"
-    }
-  },
-};
-
+import { ProviderEnum, ProviderData } from "@/app/login/_components/OAuth2ProviderData";
 
 
 interface PropType {
-  provider: Provider
+  providerEnum: ProviderEnum
 }
 
 
-export default function LoginButton({ provider }: PropType) {
-  const providerData = ProviderData[provider];
+export default function LoginButton({ providerEnum }: PropType) {
+  const providerData = ProviderData[providerEnum];
   return (
     <LoginButtonContainer
       href={{ pathname: providerData.pathname, query: { ...providerData.query, response_type: "code" } }}
-      provider={provider}
+      provider={providerEnum}
     >
       <Image alt={providerData.display.text} src={providerData.display.iconURL} width={18} height={18} />
       <p

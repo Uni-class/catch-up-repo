@@ -19,9 +19,9 @@ export default function Page() {
         <h1>캐치업</h1>
         <h2>로그인 & 시작하기</h2>
         <div className={css({height: "1px", width:"100%",bg:"gray.200"})}/>
-        <LoginButton provider="GOOGLE" />
-          <LoginButton provider="NAVER" />
-          <LoginButton provider="KAKAO" />
+        <LoginButton providerEnum="GOOGLE" />
+        <LoginButton providerEnum="NAVER" />
+        <LoginButton providerEnum="KAKAO" />
       </section>
     </main>
   );
