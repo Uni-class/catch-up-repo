@@ -2,12 +2,16 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-naver-v2';
 import { AuthService } from '../auth.service';
 import * as process from 'node:process';
+import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
 export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
-  constructor() {
+  constructor(private configService: ConfigService) {
     super({
-      clientID: process.env.NAVER_CLIENT_ID,
-      clientSecret: process.env.NAVER_CLIENT_SECRET,
-      callbackURL: process.env.NAVER_CALLBACK_URL,
+      clientID: configService.get<string>('NAVER_CLIENT_ID'),
+      clientSecret: configService.get<string>('NAVER_CLIENT_SECRET'),
+      callbackURL: configService.get<string>('NAVER_CALLBACK_URL'),
       passReqToCallback: true,
     });
   }

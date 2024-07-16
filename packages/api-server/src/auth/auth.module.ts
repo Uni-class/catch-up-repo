@@ -9,6 +9,7 @@ import { GoogleStrategy } from './strateties/google.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import * as process from 'node:process';
 import { UserConverter } from '../users/user.converter';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [

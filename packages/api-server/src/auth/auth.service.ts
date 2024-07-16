@@ -8,10 +8,12 @@ import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as process from 'node:process';
 import { JwtPayload } from './jwt.payload';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
   constructor(
+    private configService: ConfigService,
     private readonly userService: UsersService,
     private userConverter: UserConverter,
     private jwtService: JwtService,
@@ -66,16 +68,16 @@ export class AuthService implements OnModuleInit {
   async generateAccessToken(user: User) {
     const payload: JwtPayload = { id: user.id };
     return await this.jwtService.signAsync(payload, {
-      secret: process.env.ACCESS_TOKEN_SECRET,
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+      secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
+      expiresIn: this.configService.get<string>('ACCESS_TOKEN_EXPIRATION'),
     });
   }
 
   async generateRefreshToken(user: User) {
     const payload = { id: user.id };
     return await this.jwtService.signAsync(payload, {
-      secret: process.env.REFRESH_TOKEN_SECRET,
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
+      secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
+      expiresIn: this.configService.get<string>('REFRESH_TOKEN_EXPIRATION'),
     });
   }
 
