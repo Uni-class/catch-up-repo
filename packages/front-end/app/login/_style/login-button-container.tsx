@@ -9,13 +9,14 @@ export const LoginButtonContainer = styled(Link, {
     width: "100%",
     fontSize: "18px",
     borderRadius: "6px",
-    boxSizing:"border-box"
+    boxSizing:"border-box",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.25)",
   },
   variants: {
     provider: {
       GOOGLE: {
         bg: "google.bright",
-        color: "#000",
+        color: "google.text",
         border: "1px solid #dedede",
       },
       NAVER: {

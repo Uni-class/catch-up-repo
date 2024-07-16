@@ -15,6 +15,7 @@ export default function Page() {
         flexDirection:"column",
         alignItems:"center",
         gap: "1rem",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       })}>
         <h1>캐치업</h1>
         <h2>로그인 & 시작하기</h2>

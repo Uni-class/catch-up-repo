@@ -12,6 +12,7 @@ export const theme:Tokens = {
     },
     google: {
       bright: { value: "#fff" },
+      text: {value: "#0000008A"},
       dark: { value: "#4285F4" },
     },
   },
