@@ -2,7 +2,7 @@ import { css } from "@/styled-system/css";
 import { ChangeEventHandler } from "react";
 
 interface PropType {
-  checked: boolean;
+  checked?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   name?: "string";
 }
@@ -39,8 +39,8 @@ const switchInput = css({
 });
 
 const switchTrack = css({
-  width: "42px",
-  height: "24px",
+  width: "50px",
+  height: "calc(1.5rem + 4px)",
   background: "#ccc",
   borderRadius: "12px",
   position: "relative",
@@ -51,8 +51,8 @@ const switchTrack = css({
 });
 
 const switchThumb = css({
-  width: "20px",
-  height: "20px",
+  width: "1.5rem",
+  height: "1.5rem",
   background: "#fff",
   borderRadius: "50%",
   position: "absolute",
@@ -60,6 +60,6 @@ const switchThumb = css({
   left: "2px",
   transition: "left 0.2s",
   "&.checked": {
-    left: "20px",
+    left: "calc(50px - 1.5rem - 2px)",
   },
 });

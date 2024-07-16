@@ -15,5 +15,5 @@ export const globalCss = defineGlobalStyles({
     },
     "button":{
         cursor:"pointer",
-    }
+    },
 });

@@ -31,8 +31,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
     try {
-      console.log(req.user);
-      return res.redirect(process.env.CLIENT_REDIRECT_URL);
+      return res.redirect('http://localhost:3000');
     } catch (e) {
       console.log(e);
     }

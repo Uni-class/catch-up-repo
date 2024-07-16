@@ -6,10 +6,17 @@ import { NaverStrategy } from './strateties/naver.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { KakaoStrategy } from './strateties/kakao.strategy';
 import { GoogleStrategy } from './strateties/google.strategy';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [UsersModule, PassportModule],
   controllers: [AuthController],
-  providers: [AuthService, NaverStrategy, KakaoStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    UsersService,
+    GoogleStrategy,
+    KakaoStrategy,
+    NaverStrategy,
+  ],
 })
 export class AuthModule {}
