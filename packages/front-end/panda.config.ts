@@ -1,6 +1,6 @@
 import { theme } from "@/style/theme";
 import { defineConfig } from "@pandacss/dev";
-import { globalCss } from "./style/global-css";
+import { globalCss } from "@/style/global-css";
 
 export default defineConfig({
   // Whether to use css reset
@@ -21,8 +21,14 @@ export default defineConfig({
     },
   },
 
+  conditions: {
+    extend: {
+      hoverNotActive: "&:hover:not(:active)"
+    }
+  },
+
   // The output directory for your css system
   outdir: "styled-system",
-  jsxFramework: "react",
-  globalCss: globalCss,
+  jsxFramework: 'react',
+  globalCss: globalCss
 });

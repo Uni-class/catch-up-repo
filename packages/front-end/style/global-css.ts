@@ -1,6 +1,7 @@
 import { defineGlobalStyles } from "@pandacss/dev";
 
 export const globalCss = defineGlobalStyles({
+
     "h1":{
         fontWeight:1000,
         fontSize:"2.5rem",
@@ -16,4 +17,10 @@ export const globalCss = defineGlobalStyles({
     "button":{
         cursor:"pointer",
     },
+
+    "img": {
+        userSelect: "none",
+        pointerEvents: "none",
+    }
+
 });
