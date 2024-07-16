@@ -1,5 +1,6 @@
 import "./globals.css";
 import Provider from "@/provider";
+import { css } from "@/styled-system/css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <Provider>
-          <main>{children}</main>
+          <main className={css({
+            width: "100vw",
+            height: "100vh",
+          })}>{children}</main>
         </Provider>
       </body>
     </html>
