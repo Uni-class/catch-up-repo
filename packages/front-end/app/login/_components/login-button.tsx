@@ -2,32 +2,23 @@ import Image from "next/image";
 import { LoginButtonContainer } from "../_style/login-button-container";
 import { css } from "@/styled-system/css";
 
+import { ProviderEnum } from "@/app/login/_type/ProviderEnum";
+import { ProviderData } from "@/app/login/_const/ProviderData";
+
+
 interface PropType {
-  pathname: string;
-  query: {
-    client_id: string | undefined;
-    redirect_uri: string | undefined;
-    state?: string | undefined;
-    scope?: string | undefined;
-  };
-  text: string;
-  iconURL: string;
-  provider: "naver" | "kakao" | "google";
+  providerEnum: ProviderEnum
 }
 
-export default function LoginButton({
-  pathname,
-  query,
-  text,
-  iconURL,
-  provider,
-}: PropType) {
+
+export default function LoginButton({ providerEnum }: PropType) {
+  const providerData = ProviderData[providerEnum];
   return (
     <LoginButtonContainer
-      href={{ pathname: pathname, query: { ...query, response_type: "code" } }}
-      provider={provider}
+      href={{ pathname: providerData.pathname, query: { ...providerData.query, response_type: "code" } }}
+      provider={providerEnum}
     >
-      <Image alt={text} src={iconURL} width={18} height={18} />
+      <Image alt={providerData.display.text} src={providerData.display.iconURL} width={18} height={18} />
       <p
         className={css({
           flexGrow: 1,
@@ -36,7 +27,7 @@ export default function LoginButton({
           justifyContent: "center",
         })}
       >
-        {text}
+        {providerData.display.text}
       </p>
     </LoginButtonContainer>
   );
