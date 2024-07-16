@@ -18,15 +18,8 @@ export default function LoginButton({ providerEnum }: PropType) {
       href={{ pathname: providerData.pathname, query: { ...providerData.query, response_type: "code" } }}
       provider={providerEnum}
     >
-      <Image alt={providerData.display.text} src={providerData.display.iconURL} width={18} height={18} />
-      <p
-        className={css({
-          flexGrow: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        })}
-      >
+      <Image alt={providerData.display.text} src={providerData.display.iconURL} width={30} height={30} />
+      <p>
         {providerData.display.text}
       </p>
     </LoginButtonContainer>
