@@ -1,18 +1,6 @@
-export type ProviderEnum = "GOOGLE" | "NAVER" | "KAKAO";
+import { OAuth2DataType } from "@/app/login/_type/OAuth2DataType";
+import { ProviderEnum } from "@/app/login/_type/ProviderEnum";
 
-export interface OAuth2DataType {
-    pathname: string;
-    query: {
-        client_id: string;
-        redirect_uri: string;
-        scope?: string;
-        state?: string;
-    }
-    display: {
-        text: string;
-        iconURL: string;
-    }
-}
 
 export const ProviderData: {
     [key in ProviderEnum]: OAuth2DataType

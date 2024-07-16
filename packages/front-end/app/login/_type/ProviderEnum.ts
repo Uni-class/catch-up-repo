@@ -1,0 +1,1 @@
+export type ProviderEnum = "GOOGLE" | "NAVER" | "KAKAO";

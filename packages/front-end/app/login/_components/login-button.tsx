@@ -2,7 +2,8 @@ import Image from "next/image";
 import { LoginButtonContainer } from "../_style/login-button-container";
 import { css } from "@/styled-system/css";
 
-import { ProviderEnum, ProviderData } from "@/app/login/_components/OAuth2ProviderData";
+import { ProviderEnum } from "@/app/login/_type/ProviderEnum";
+import { ProviderData } from "@/app/login/_const/ProviderData";
 
 
 interface PropType {
