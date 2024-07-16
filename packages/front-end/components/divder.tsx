@@ -1,14 +1,25 @@
-import { css } from "@/styled-system/css";
+import { styled } from "@/styled-system/jsx";
 
-function Tmp({ backgroundColor }: { backgroundColor: string }) {
-  return <div className={css({ bg: backgroundColor })}></div>;
-}
+const Divider = styled('hr', {
+  variants: {
+    direction: {
+      horizontal: {
+        borderTop: '1px solid #ccc',
+        width: '100%',
+        margin: '1rem 0',
+        background: 'linear-gradient(to right, rgba(0, 0, 0, 0), #ccc, rgba(0, 0, 0, 0))'
+      },
+      vertical: {
+        borderLeft: '1px solid #ccc',
+        height: '100%',
+        margin: '0 1rem',
+        background: "'linear-gradient(to bottom, rgba(0, 0, 0, 0), #ccc, rgba(0, 0, 0, 0))';"
+      },
+    },
+  },
+  defaultVariants: {
+    direction: 'horizontal',
+  },
+});
 
-function Par() {
-  return (
-    <>
-      <Tmp backgroundColor="#fff" />
-      <Tmp backgroundColor="color.red.200" />
-    </>
-  );
-}
+export default Divider;
