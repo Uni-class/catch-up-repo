@@ -5681,6 +5681,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.2.0"
     typeorm: "npm:^0.3.20"
+    typeorm-naming-strategies: "npm:^4.1.0"
     typescript: "npm:^5.1.3"
     unique-username-generator: "npm:^1.3.0"
   languageName: unknown
@@ -16011,6 +16012,15 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 10c0/6005cb31df50eef8b1f3c780eb71a17925f3038a100d82f9406ac2ad1de5eb59f8e6decbdc145b3a1f8e5836e17b0c0002fb698b9fe2516b8f9f9ff602d36412
+  languageName: node
+  linkType: hard
+
+"typeorm-naming-strategies@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "typeorm-naming-strategies@npm:4.1.0"
+  peerDependencies:
+    typeorm: ^0.2.0 || ^0.3.0
+  checksum: 10c0/090315d5a6c51849bc8ddcc603e4be89de225ed52fe399f84eb6533e056d42cff5cd99f2e41aab1931030fc0c12b444559343f32444b49a1a59e6dfcb22d7b99
   languageName: node
   linkType: hard
 

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { UserConverter } from './users/user.converter';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserConverter } from './users/user.converter';
         ssl: {
           rejectUnauthorized: false,
         },
+        namingStrategy: new SnakeNamingStrategy(),
       }),
     }),
     AuthModule,
