@@ -1,5 +1,6 @@
 import { theme } from "@/style/theme";
 import { defineConfig } from "@pandacss/dev";
+import { globalCss } from "@/style/global-css";
 
 export default defineConfig({
   // Whether to use css reset
@@ -31,5 +32,6 @@ export default defineConfig({
 
   // The output directory for your css system
   outdir: "styled-system",
-  jsxFramework: 'react'
+  jsxFramework: 'react',
+  globalCss: globalCss
 });
