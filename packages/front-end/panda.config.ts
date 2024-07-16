@@ -23,6 +23,12 @@ export default defineConfig({
     },
   },
 
+  conditions: {
+    extend: {
+      hoverNotActive: "&:hover:not(:active)"
+    }
+  },
+
   // The output directory for your css system
   outdir: "styled-system",
   jsxFramework: 'react'
