@@ -26,6 +26,7 @@ import {
 import { Profile as NaverProfile } from 'passport-naver-v2';
 import { Profile as GoogleProfile } from 'passport-google-oauth20';
 import { Profile as KakaoProfile } from 'passport-kakao';
+import { JwtPayload } from './jwt.payload';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -115,7 +116,8 @@ export class AuthController {
   @Get('token-refresh')
   async tokenRefresh(@Req() req: Request, @Res() res): Promise<any> {
     const refreshToken = req.cookies.refresh_token;
-    const user: User = req.user as User;
+    const payload = req.user as JwtPayload;
+    const user: User = await this.authService.tokenValidateUser(payload);
     if (user.refreshToken !== refreshToken) {
       return res
         .status(HttpStatus.UNAUTHORIZED)
