@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async validateGoogleUser(profile: GoogleProfile) {
-    const user = await this.userService.findOneByProviderId(
+    const user = await this.userService.findOneByProviderIdAndProvider(
       profile.id,
       profile.provider,
     );
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   async validateNaverUser(profile: NaverProfile) {
-    const user = await this.userService.findOneByProviderId(
+    const user = await this.userService.findOneByProviderIdAndProvider(
       profile.id,
       profile.provider,
     );
@@ -46,7 +46,7 @@ export class AuthService {
   }
 
   async validateKakaoUser(profile: KakaoProfile) {
-    const user = await this.userService.findOneByProviderId(
+    const user = await this.userService.findOneByProviderIdAndProvider(
       profile.id,
       profile.provider,
     );

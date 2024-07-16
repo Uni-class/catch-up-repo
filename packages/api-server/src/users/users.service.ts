@@ -20,7 +20,7 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOneByProviderId(
+  async findOneByProviderIdAndProvider(
     providerId: string,
     provider: string,
   ): Promise<User> {
