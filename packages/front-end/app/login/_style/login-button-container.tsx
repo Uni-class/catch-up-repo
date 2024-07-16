@@ -13,19 +13,19 @@ export const LoginButtonContainer = styled(Link, {
   },
   variants: {
     provider: {
-      naver: {
-        bg: "naver.green",
-        color: "#fff",
-      },
-      kakao: {
-        bg: "kakao.container",
-        color: "kakao.lable",
-      },
-      google: {
+      GOOGLE: {
         bg: "google.bright",
         color: "#000",
         border: "1px solid #dedede",
       },
+      NAVER: {
+        bg: "naver.green",
+        color: "#fff",
+      },
+      KAKAO: {
+        bg: "kakao.container",
+        color: "kakao.lable",
+      }
     },
   },
 });

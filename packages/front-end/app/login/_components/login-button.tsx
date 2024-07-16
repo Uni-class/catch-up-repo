@@ -2,32 +2,79 @@ import Image from "next/image";
 import { LoginButtonContainer } from "../_style/login-button-container";
 import { css } from "@/styled-system/css";
 
-interface PropType {
+
+interface ProviderData {
   pathname: string;
   query: {
-    client_id: string | undefined;
-    redirect_uri: string | undefined;
-    state?: string | undefined;
-    scope?: string | undefined;
-  };
-  text: string;
-  iconURL: string;
-  provider: "naver" | "kakao" | "google";
+    client_id: string;
+    redirect_uri: string;
+    scope?: string;
+    state?: string;
+  }
+  display: {
+    text: string;
+    iconURL: string;
+  }
 }
 
-export default function LoginButton({
-  pathname,
-  query,
-  text,
-  iconURL,
-  provider,
-}: PropType) {
+const GoogleProviderData: ProviderData = {
+  pathname: "https://accounts.google.com/o/oauth2/v2/auth",
+  query: {
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL as string,
+    scope: "email profile openid"
+  },
+  display: {
+    text: "Google 로그인",
+    iconURL: "/icon/icon-google.svg"
+  }
+}
+
+const NaverProviderData: ProviderData = {
+  pathname: "https://nid.naver.com/oauth2.0/authorize",
+  query: {
+    client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID as string,
+    redirect_uri: process.env.NEXT_PUBLIC_NAVER_CALLBACK_URL as string,
+    state: "HASH"
+  },
+  display: {
+    text: "Naver 로그인",
+    iconURL: "/icon/icon-naver.svg"
+  }
+}
+
+const KakaoProviderData: ProviderData = {
+  pathname: "https://kauth.kakao.com/oauth/authorize",
+  query: {
+    client_id: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID as string,
+    redirect_uri: process.env.NEXT_PUBLIC_KAKAO_CALLBACK_URL as string
+  },
+  display: {
+    text: "Kakao 로그인",
+    iconURL: "/icon/icon-kakao.svg"
+  }
+}
+
+type Provider = "GOOGLE" | "NAVER" | "KAKAO";
+
+
+interface PropType {
+  provider: Provider
+}
+
+
+export default function LoginButton({ provider }: PropType) {
+  const providerData: ProviderData = {
+    "GOOGLE": GoogleProviderData,
+    "NAVER": NaverProviderData,
+    "KAKAO": KakaoProviderData,
+  }[provider];
   return (
     <LoginButtonContainer
-      href={{ pathname: pathname, query: { ...query, response_type: "code" } }}
+      href={{ pathname: providerData.pathname, query: { ...providerData.query, response_type: "code" } }}
       provider={provider}
     >
-      <Image alt={text} src={iconURL} width={18} height={18} />
+      <Image alt={providerData.display.text} src={providerData.display.iconURL} width={18} height={18} />
       <p
         className={css({
           flexGrow: 1,
@@ -36,7 +83,7 @@ export default function LoginButton({
           justifyContent: "center",
         })}
       >
-        {text}
+        {providerData.display.text}
       </p>
     </LoginButtonContainer>
   );
