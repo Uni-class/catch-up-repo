@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NaverAuthGuard } from './guards/naverauth.guard';
@@ -32,6 +33,8 @@ export class AuthController {
   ) {}
 
   @UseGuards(NaverAuthGuard)
+  @ApiCreatedResponse({ description: 'User logged in!' })
+  @HttpCode(HttpStatus.CREATED)
   @Get('naver/callback')
   async naverCallback(
     @Req() req: Request,
@@ -45,13 +48,16 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
+        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
-      console.log(e);
+      throw new InternalServerErrorException('Server Error', e);
     }
   }
 
   @UseGuards(GoogleAuthGuard)
+  @ApiCreatedResponse({ description: 'User logged in!' })
+  @HttpCode(HttpStatus.CREATED)
   @Get('google/callback')
   async googleCallback(
     @Req() req: Request,
@@ -65,13 +71,16 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
+        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
-      console.log(e);
+      throw new InternalServerErrorException('Server Error', e);
     }
   }
 
   @UseGuards(KakaoAuthGuard)
+  @ApiCreatedResponse({ description: 'User logged in!' })
+  @HttpCode(HttpStatus.CREATED)
   @Get('kakao/callback')
   async kakaoCallback(
     @Req() req: Request,
@@ -86,9 +95,10 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
+        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
-      console.log(e);
+      throw new InternalServerErrorException('Server Error', e);
     }
   }
 
@@ -108,6 +118,7 @@ export class AuthController {
     const newAccessToken = await this.authService.generateAccessToken(user);
     return res
       .cookie('access_token', newAccessToken)
+      .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
   }
 }
