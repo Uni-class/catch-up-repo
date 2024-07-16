@@ -20,10 +20,14 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <Provider>
-          <main className={css({
-            width: "100vw",
-            height: "100vh",
-          })}>{children}</main>
+          <main
+            className={css({
+              width: "100vw",
+              height: "100vh",
+            })}
+          >
+            {children}
+          </main>
         </Provider>
       </body>
     </html>
