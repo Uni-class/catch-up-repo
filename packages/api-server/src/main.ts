@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as process from 'node:process';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import { AllExceptionFilter } from './exception/all-exception.filter';
 
 declare const module: any;
 
@@ -12,6 +13,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.use(helmet());
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
 
   const config = new DocumentBuilder()
     .setTitle('Catch-UP API Documentation')
