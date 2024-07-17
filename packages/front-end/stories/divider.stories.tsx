@@ -1,8 +1,6 @@
 import type { Meta, StoryFn, StoryObj } from "@storybook/react";
-import { Button } from "./Button";
-import Switch from "@/components/switch";
-import { useState } from "react";
 import Divider from "@/components/divider";
+import { css } from "@/styled-system/css";
 
 const meta = {
   title: "Components/Divider",
@@ -16,28 +14,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Template: StoryFn = (args) => {
-  const [checked, setChecked] = useState(false);
-
   return (
-    <Switch
-      {...args}
-      checked={checked}
-      onChange={(e) => setChecked(e.target.checked)}
-    />
+    <div>
+      <div>
+        <p>안녕하세요</p>
+        <Divider />
+        <p>반갑습니다</p>
+      </div>
+      <div className={css({ display: "flex" })}>
+        <p>안녕하세요</p>
+        <Divider direction="vertical" />
+        <p>반갑습니다</p>
+      </div>
+    </div>
   );
 };
 
-export const Large: Story = Template.bind({});
-Large.args = {
-  size: "lg",
-};
-
-export const Medium: Story = Template.bind({});
-Medium.args = {
-  size: "md",
-};
-
-export const Small: Story = Template.bind({});
-Small.args = {
-  size: "sm",
-};
+export const Primary: Story = Template.bind({});
