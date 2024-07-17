@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
 import { CreateUserDto } from './create-user.dto';
-import { IsNotEmpty } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class UpdateUserDto extends PickType(PartialType(CreateUserDto), [
   'nickname',
@@ -8,6 +8,6 @@ export class UpdateUserDto extends PickType(PartialType(CreateUserDto), [
   'profileUrl',
 ]) {
   @ApiProperty()
-  @IsNotEmpty({ message: 'UserId is empty' })
+  @IsNumber()
   userId: number;
 }
