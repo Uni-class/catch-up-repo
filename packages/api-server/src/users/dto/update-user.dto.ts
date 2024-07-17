@@ -6,8 +6,5 @@ export class UpdateUserDto extends PickType(PartialType(CreateUserDto), [
   'nickname',
   'email',
   'profileUrl',
-]) {
-  @ApiProperty()
-  @IsNumber()
-  userId: number;
-}
+  'refreshToken',
+]) {}
