@@ -6,6 +6,7 @@ import * as process from 'node:process';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { AllExceptionFilter } from './exception/all-exception.filter';
+import { ResponseInterceptor } from './interceptor/response.interceptor';
 
 declare const module: any;
 
@@ -16,6 +17,8 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
+
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Catch-UP API Documentation')
