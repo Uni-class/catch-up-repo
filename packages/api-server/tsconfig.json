@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@cu/common": ["../../libs/common/src"]
-    }
+    },
+    "esModuleInterop": true
   }
 }

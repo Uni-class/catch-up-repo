@@ -8,6 +8,8 @@ import { KakaoStrategy } from './strateties/kakao.strategy';
 import { GoogleStrategy } from './strateties/google.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import * as process from 'node:process';
+import { UserConverter } from '../users/user.converter';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -20,6 +22,13 @@ import * as process from 'node:process';
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, NaverStrategy, KakaoStrategy, GoogleStrategy],
+  exports: [AuthService],
+  providers: [
+    AuthService,
+    NaverStrategy,
+    KakaoStrategy,
+    GoogleStrategy,
+    UserConverter,
+  ],
 })
 export class AuthModule {}
