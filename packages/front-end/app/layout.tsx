@@ -1,5 +1,6 @@
 import './globals.css'
 import Provider from "@/provider";
+import { styled } from '@/styled-system/jsx';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
