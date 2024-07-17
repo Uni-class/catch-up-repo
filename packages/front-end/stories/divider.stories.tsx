@@ -2,14 +2,15 @@ import type { Meta, StoryFn, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
 import Switch from "@/components/switch";
 import { useState } from "react";
+import Divider from "@/components/divider";
 
 const meta = {
-  title: "Components/Switch",
-  component: Switch,
+  title: "Components/Divider",
+  component: Divider,
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Switch>;
+} satisfies Meta<typeof Divider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
