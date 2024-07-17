@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from "@storybook/react";
-import Divider from "@/components/divider";
+import Divider from "@/components/Divider";
 import { css } from "@/styled-system/css";
 
 const meta = {

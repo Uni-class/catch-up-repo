@@ -1,7 +1,7 @@
 "use client";
 
 import { css } from "@/styled-system/css";
-import LoginButton from "./_components/login-button";
+import LoginButton from "./_components/LoginButton";
 import { PROJECT_NAME } from "@/Config";
 
 export default function Page() {
