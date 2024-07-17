@@ -1,6 +1,7 @@
 import { Profile as KakaoProfile } from 'passport-kakao';
 import { Profile as GoogleProfile } from 'passport-google-oauth20';
 import { Profile as NaverProfile } from 'passport-naver-v2';
+import { User } from './entities/user.entity';
 import { Builder } from 'builder-pattern';
 import { generateUsername } from 'unique-username-generator';
 import { Injectable } from '@nestjs/common';
