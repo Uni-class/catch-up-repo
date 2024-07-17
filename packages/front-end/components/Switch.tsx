@@ -7,6 +7,7 @@ interface PropType {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   name?: string;
   size?: "sm" | "md" | "lg";
+  id?: string;
 }
 
 export default function Switch({
@@ -14,6 +15,7 @@ export default function Switch({
   onChange,
   name = "switch",
   size = "md",
+  id
 }: PropType) {
   return (
     <label className={switchContainer}>
@@ -23,6 +25,7 @@ export default function Switch({
         onChange={onChange}
         className={switchInput}
         name={name}
+        id={id}
       />
       <SwitchTrack className={`${checked ? "checked" : ""}`} size={size}>
         <SwitchThumb className={`${checked ? "checked" : ""}`} size={size} />
