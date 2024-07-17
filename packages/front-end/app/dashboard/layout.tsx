@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import OptionHeader from "./_components/OptionHeader";
 import { css } from "@/styled-system/css";
+import { ReactNode } from "react";
+import Sidebar from "./_components/Sidebar";
 
 interface PropType {
   children: ReactNode;
@@ -8,9 +8,9 @@ interface PropType {
 
 export default function Layout({ children }: PropType) {
   return (
-    <div className={css({ flexGrow: 1 })}>
-      <OptionHeader />
+    <main className={css({ display: "flex", height: "100vh" })}>
+      <Sidebar />
       {children}
-    </div>
+    </main>
   );
 }

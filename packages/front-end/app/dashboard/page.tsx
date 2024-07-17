@@ -1,3 +1,3 @@
 export default function Page(){
-    return <>안녕</>
+    return <div>안녕</div>
 }
