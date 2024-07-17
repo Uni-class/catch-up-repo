@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { LoginButtonContainer } from "../_style/login-button-container";
+import { LoginButtonContainer } from "../_style/LoginButtonContainer";
 import { css } from "@/styled-system/css";
 
 import { ProviderEnum } from "@/app/login/_type/ProviderEnum";
