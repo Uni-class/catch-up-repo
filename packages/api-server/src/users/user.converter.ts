@@ -21,7 +21,8 @@ export class UserConverter {
       .provider(profile.provider)
       .providerId(profile.id)
       .status('using');
-    if (profile.emails.length !== 0) userBuilder.email(profile.emails[0].value);
+    if (profile.emails?.length !== 0)
+      userBuilder.email(profile.emails[0].value);
     if (profile.profileUrl) userBuilder.profileUrl(profile.profileUrl);
     userBuilder.nickname(await this.randomNickname());
     return userBuilder.build();
