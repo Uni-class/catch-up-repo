@@ -62,12 +62,12 @@ const SwitchTrack = styled("span", {
         borderRadius: "12px",
       },
       md: {
-        width: "42px",
+        width: "40px",
         height: "calc(1.25rem + 4px)",
         borderRadius: "10px",
       },
       sm: {
-        width: "40px",
+        width: "33px",
         height: "calc(1rem + 4px)",
         borderRadius: "8px",
       },
@@ -97,14 +97,14 @@ const SwitchThumb = styled("span", {
         width: "1.25rem",
         height: "1.25rem",
         "&.checked": {
-          left: "calc(42px - 1.25rem - 2px)",
+          left: "calc(40px - 1.25rem - 2px)",
         },
       },
       sm: {
         width: "1rem",
         height: "1rem",
         "&.checked": {
-          left: "calc(40px - 1rem - 2px)",
+          left: "calc(33px - 1rem - 2px)",
         },
       },
     },

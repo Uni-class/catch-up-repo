@@ -24,3 +24,9 @@ export const Medium: Story = {
     size: "md",
   },
 };
+
+export const Small: Story = {
+  args: {
+    size: "sm",
+  },
+};
