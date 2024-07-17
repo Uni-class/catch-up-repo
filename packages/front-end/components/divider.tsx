@@ -7,13 +7,13 @@ const Divider = styled('hr', {
         borderTop: '1px solid #ccc',
         width: '100%',
         margin: '1rem 0',
-        background: 'linear-gradient(to right, rgba(0, 0, 0, 0), #ccc, rgba(0, 0, 0, 0))'
+        minWidth: "1rem",
       },
       vertical: {
         borderLeft: '1px solid #ccc',
         height: '100%',
+        minHeight: "1rem",
         margin: '0 1rem',
-        background: "'linear-gradient(to bottom, rgba(0, 0, 0, 0), #ccc, rgba(0, 0, 0, 0))';"
       },
     },
   },
