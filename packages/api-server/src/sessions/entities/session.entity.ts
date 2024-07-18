@@ -5,12 +5,15 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
+import { SessionFile } from '../../session-files/entities/session-file.entity';
+import { UserSession } from '../../user-sessions/entities/user-session.entity';
 
 @Entity('sessions')
 export class Session {
@@ -25,7 +28,7 @@ export class Session {
   sessionName: string;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @Column()
   hostId: number;
 
@@ -47,4 +50,10 @@ export class Session {
   @ManyToOne(() => User, (user) => user.sessions)
   @JoinColumn({ name: 'host_id', referencedColumnName: 'userId' })
   host: User;
+
+  @OneToMany(() => SessionFile, (sessionFile) => sessionFile.session)
+  sessionFiles: SessionFile[];
+
+  @ManyToOne(() => UserSession, (userSession) => userSession.session)
+  userSessions: UserSession[];
 }
