@@ -1,4 +1,5 @@
 import Switch from "@/components/Switch";
+import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { ChangeEvent, useState } from "react";
 
@@ -9,7 +10,7 @@ export default function SidebarUser() {
   };
   return (
     <div>
-      <p>유저</p>
+      <Paragraph>유저</Para>
       <div
         className={css({
           display: "flex",

@@ -1,3 +1,4 @@
+import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
@@ -14,11 +15,18 @@ function MenuElement({ text, href }: ElementPropType) {
         "&:hover": {
           bg: "gray.100",
         },
-        cursor: "pointer",
       })}
     >
       <li>
-        <Link href={href}>{text}</Link>
+        <Link
+          href={href}
+          className={css({
+            width: "100%",
+            //padding: "4px 0.25rem"
+          })}
+        >
+          <Paragraph variant="body3">{text}</Paragraph>
+        </Link>
       </li>
     </ul>
   );
@@ -32,17 +40,20 @@ const elementProps: ({ id: number } & ElementPropType)[] = [
 
 export default function SidebarMenu() {
   return (
-    <nav
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        flexGrow:1,
-      })}
-    >
-      {elementProps.map(({ id, ...elementProp }) => {
-        return <MenuElement key={id} {...elementProp} />;
-      })}
-    </nav>
+    <>
+      <Paragraph variant="sub3">메뉴</Paragraph>
+      <nav
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.25rem",
+          flexGrow: 1,
+        })}
+      >
+        {elementProps.map(({ id, ...elementProp }) => {
+          return <MenuElement key={id} {...elementProp} />;
+        })}
+      </nav>
+    </>
   );
 }

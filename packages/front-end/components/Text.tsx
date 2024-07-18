@@ -39,7 +39,7 @@ export const Paragraph = styled("p", {
     },
   },
   defaultVariants: {
-    variant: "body1",
+    variant: "body3",
   },
 });
 
@@ -70,6 +70,6 @@ export const Heading = styled("h1", {
     },
   },
   defaultVariants:{
-    variant:"h1",
+    variant:"h3",
   }
 });

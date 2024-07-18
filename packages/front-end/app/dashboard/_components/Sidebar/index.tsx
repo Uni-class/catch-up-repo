@@ -17,9 +17,8 @@ export default function Sidebar() {
         flexDirection: "column",
       })}
     >
-      <Heading variant="h3">캐치업</Heading>
+      <Heading variant="h4">캐치업</Heading>
       <button>세션 접속</button>
-      <p>메뉴</p>
       <SidebarMenu />
       <Divider />
       <SidebarUser />
