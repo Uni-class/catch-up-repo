@@ -3,6 +3,7 @@ import { css } from "@/styled-system/css";
 import SidebarMenu from "./SidebarMenu";
 import SidebarUser from "./SidebarUser";
 import Divider from "@/components/Divider";
+import { Heading } from "@/components/Text";
 
 export default function Sidebar() {
   return (
@@ -16,7 +17,7 @@ export default function Sidebar() {
         flexDirection: "column",
       })}
     >
-      <h1>캐치업</h1>
+      <Heading variant="h3">캐치업</Heading>
       <button>세션 접속</button>
       <p>메뉴</p>
       <SidebarMenu />
