@@ -1,7 +1,7 @@
 import { Paragraph } from "@/components/Text";
-import { css } from "@/styled-system/css";
+import { css, cx } from "@/styled-system/css";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface ElementPropType {
   text: string;
@@ -14,14 +14,21 @@ function MenuElement({ text, href }: ElementPropType) {
   query.forEach((value, key) => {
     queryParams[key] = value;
   });
+  const pathname = usePathname();
   return (
     <ul
-      className={css({
-        "&:hover": {
-          bg: "gray.100",
-        },
-        borderRadius: "8px",
-      })}
+      className={cx(
+        css({
+          "&:hover": {
+            bg: "gray.100",
+          },
+          borderRadius: "8px",
+        }),
+        pathname === href &&
+          css({
+            bg: "rose.100",
+          })
+      )}
     >
       <li>
         <Link
