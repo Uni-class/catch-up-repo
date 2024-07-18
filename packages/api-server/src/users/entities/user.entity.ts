@@ -12,6 +12,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Session } from '../../sessions/entities/session.entity';
+import { UserFile } from '../../user-files/entities/user-file.entity';
+import { UserSession } from '../../user-sessions/entities/user-session.entity';
 
 @Entity('users')
 export class User {
@@ -78,4 +80,10 @@ export class User {
   @ApiProperty()
   @OneToMany(() => Session, (session) => session.hostId)
   sessions: Session[];
+
+  @OneToMany(() => UserFile, (userFile) => userFile.user)
+  userFiles: UserFile[];
+
+  @OneToMany(() => UserSession, (userSession) => userSession.user)
+  userSessions: UserSession[];
 }
