@@ -39,37 +39,37 @@ export const Paragraph = styled("p", {
     },
   },
   defaultVariants: {
-    variant: "body1",
+    variant: "body3",
   },
 });
 
 export const Heading = styled("h1", {
   base:{
-    fontWeight:750,
+    fontWeight:700,
   },
   variants: {
     variant: {
       h1: {
-        fontSize: "3.5rem",
-      },
-      h2: {
         fontSize: "3rem",
       },
-      h3: {
+      h2: {
         fontSize: "2.5rem",
       },
-      h4: {
+      h3: {
         fontSize: "2rem",
       },
-      h5: {
+      h4: {
         fontSize: "1.75rem",
       },
-      h6: {
+      h5: {
         fontSize: "1.5rem",
+      },
+      h6: {
+        fontSize: "1.25rem",
       },
     },
   },
   defaultVariants:{
-    variant:"h1",
+    variant:"h3",
   }
 });

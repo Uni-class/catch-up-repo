@@ -1,24 +1,39 @@
+import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface ElementPropType {
   text: string;
-  href: Url;
+  href: string;
 }
 
 function MenuElement({ text, href }: ElementPropType) {
+  const query = useSearchParams();
+  const queryParams: { [key: string]: string } = {};
+  query.forEach((value, key) => {
+    queryParams[key] = value;
+  });
   return (
     <ul
       className={css({
         "&:hover": {
           bg: "gray.100",
         },
-        cursor: "pointer",
+        borderRadius: "8px",
       })}
     >
       <li>
-        <Link href={href}>{text}</Link>
+        <Link
+          href={{ pathname: href, query: queryParams }}
+          className={css({
+            width: "100%",
+            padding: "8px 4px",
+            display: "inline-block",
+          })}
+        >
+          <Paragraph variant="body3">{text}</Paragraph>
+        </Link>
       </li>
     </ul>
   );
@@ -32,17 +47,22 @@ const elementProps: ({ id: number } & ElementPropType)[] = [
 
 export default function SidebarMenu() {
   return (
-    <nav
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        flexGrow:1,
-      })}
-    >
-      {elementProps.map(({ id, ...elementProp }) => {
-        return <MenuElement key={id} {...elementProp} />;
-      })}
-    </nav>
+    <>
+      <Paragraph variant="sub3" className={css({ margin: "8px 0" })}>
+        메뉴
+      </Paragraph>
+      <nav
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.25rem",
+          flexGrow: 1,
+        })}
+      >
+        {elementProps.map(({ id, ...elementProp }) => {
+          return <MenuElement key={id} {...elementProp} />;
+        })}
+      </nav>
+    </>
   );
 }
