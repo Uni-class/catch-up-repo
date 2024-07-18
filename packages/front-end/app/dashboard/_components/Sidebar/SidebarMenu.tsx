@@ -1,14 +1,19 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface ElementPropType {
   text: string;
-  href: Url;
+  href: string;
 }
 
 function MenuElement({ text, href }: ElementPropType) {
+  const query = useSearchParams();
+  const queryParams: { [key: string]: string } = {};
+  query.forEach((value, key) => {
+    queryParams[key] = value;
+  });
   return (
     <ul
       className={css({
@@ -20,11 +25,11 @@ function MenuElement({ text, href }: ElementPropType) {
     >
       <li>
         <Link
-          href={href}
+          href={{ pathname: href, query: queryParams }}
           className={css({
             width: "100%",
             padding: "8px 4px",
-            display:"inline-block",
+            display: "inline-block",
           })}
         >
           <Paragraph variant="body3">{text}</Paragraph>
@@ -43,7 +48,9 @@ const elementProps: ({ id: number } & ElementPropType)[] = [
 export default function SidebarMenu() {
   return (
     <>
-      <Paragraph variant="sub3" className={css({margin:"8px 0"})}>메뉴</Paragraph>
+      <Paragraph variant="sub3" className={css({ margin: "8px 0" })}>
+        메뉴
+      </Paragraph>
       <nav
         className={css({
           display: "flex",
