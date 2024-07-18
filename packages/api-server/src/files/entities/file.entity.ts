@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNumber, IsString } from 'class-validator';
+import { SessionFile } from '../../session-files/entities/session-file.entity';
+import { UserFile } from '../../user-files/entities/user-file.entity';
 
 @Entity('files')
 export class File {
@@ -40,4 +43,10 @@ export class File {
   @IsDate()
   @DeleteDateColumn()
   deletedAt: string;
+
+  @OneToMany(() => SessionFile, (sessionFile) => sessionFile.file)
+  sessionFiles: SessionFile;
+
+  @OneToMany(() => UserFile, (userFile) => userFile.file)
+  userFiles: UserFile[];
 }
