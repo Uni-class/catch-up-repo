@@ -27,12 +27,10 @@ export default function Page() {
           <div className={css({
             color: "#ffffff",
             fontSize: "4.5em",
-            fontWeight: "bold",
           })}>{PROJECT_NAME}</div>
           <div className={css({
             color: "#ffffff",
             fontSize: "1.5em",
-            fontWeight: "bold",
           })}>로그인 / 회원가입
           </div>
           <hr className={css({
