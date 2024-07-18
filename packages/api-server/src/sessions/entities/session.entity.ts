@@ -51,7 +51,9 @@ export class Session {
   @JoinColumn({ name: 'host_id', referencedColumnName: 'userId' })
   host: User;
 
-  @OneToMany(() => SessionFile, (sessionFile) => sessionFile.session)
+  @OneToMany(() => SessionFile, (sessionFile) => sessionFile.session, {
+    cascade: ['soft-remove'],
+  })
   sessionFiles: SessionFile[];
 
   @OneToMany(() => UserSession, (userSession) => userSession.session)

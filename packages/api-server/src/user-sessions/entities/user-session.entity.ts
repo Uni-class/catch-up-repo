@@ -58,6 +58,7 @@ export class UserSession {
   @OneToMany(
     () => UserSessionFile,
     (userSessionFile) => userSessionFile.userSession,
+    { cascade: ['soft-remove'] },
   )
   userSessionFiles: UserSessionFile[];
 }

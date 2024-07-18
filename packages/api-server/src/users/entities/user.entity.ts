@@ -77,13 +77,16 @@ export class User {
   @Column({ nullable: true })
   deletedAt: string;
 
-  @ApiProperty()
-  @OneToMany(() => Session, (session) => session.hostId)
+  @OneToMany(() => Session, (session) => session.host)
   sessions: Session[];
 
-  @OneToMany(() => UserFile, (userFile) => userFile.user)
+  @OneToMany(() => UserFile, (userFile) => userFile.user, {
+    cascade: ['soft-remove'],
+  })
   userFiles: UserFile[];
 
-  @OneToMany(() => UserSession, (userSession) => userSession.user)
+  @OneToMany(() => UserSession, (userSession) => userSession.user, {
+    cascade: ['soft-remove'],
+  })
   userSessions: UserSession[];
 }
