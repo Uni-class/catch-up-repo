@@ -6,10 +6,12 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Session } from '../../sessions/entities/session.entity';
 
 @Entity('users')
 export class User {
@@ -72,4 +74,8 @@ export class User {
   @IsDate()
   @Column({ nullable: true })
   deletedAt: string;
+
+  @ApiProperty()
+  @OneToMany(() => Session, (session) => session.hostId)
+  sessions: Session[];
 }

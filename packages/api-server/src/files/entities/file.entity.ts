@@ -9,7 +9,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
-@Entity()
+@Entity('files')
 export class File {
   @ApiProperty()
   @IsNumber()
