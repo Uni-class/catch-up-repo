@@ -54,6 +54,6 @@ export class Session {
   @OneToMany(() => SessionFile, (sessionFile) => sessionFile.session)
   sessionFiles: SessionFile[];
 
-  @ManyToOne(() => UserSession, (userSession) => userSession.session)
+  @OneToMany(() => UserSession, (userSession) => userSession.session)
   userSessions: UserSession[];
 }
