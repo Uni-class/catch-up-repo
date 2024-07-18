@@ -15,6 +15,7 @@ function MenuElement({ text, href }: ElementPropType) {
         "&:hover": {
           bg: "gray.100",
         },
+        borderRadius: "6px",
       })}
     >
       <li>
@@ -22,7 +23,8 @@ function MenuElement({ text, href }: ElementPropType) {
           href={href}
           className={css({
             width: "100%",
-            //padding: "4px 0.25rem"
+            padding: "8px 4px",
+            display:"inline-block",
           })}
         >
           <Paragraph variant="body3">{text}</Paragraph>
