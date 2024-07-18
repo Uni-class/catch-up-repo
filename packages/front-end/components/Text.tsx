@@ -1,8 +1,8 @@
-import { css, Styles } from "@/styled-system/css";
+import { Styles } from "@/styled-system/css";
 import { styled } from "@/styled-system/jsx";
 
 const subStyle: Styles = {
-  opacity: 0.75,
+  opacity: 0.65,
 };
 
 export const Paragraph = styled("p", {
@@ -38,4 +38,7 @@ export const Paragraph = styled("p", {
       },
     },
   },
+  defaultVariants:{
+    variant: "body1",
+  }
 });
