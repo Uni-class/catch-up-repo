@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { UserConverter } from './users/user.converter';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { SessionsModule } from './sessions/sessions.module';
+import { FilesModule } from './files/files.module';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -30,6 +33,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     }),
     AuthModule,
     UsersModule,
+    SessionsModule,
+    FilesModule,
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserConverter],
