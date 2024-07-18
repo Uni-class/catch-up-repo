@@ -10,6 +10,10 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { SessionsModule } from './sessions/sessions.module';
 import { FilesModule } from './files/files.module';
 import { NotesModule } from './notes/notes.module';
+import { UserSessionsModule } from './user-sessions/user-sessions.module';
+import { UserFilesModule } from './user-files/user-files.module';
+import { SessionFilesModule } from './session-files/session-files.module';
+import { UserSessionFilesModule } from './user-session-files/user-session-files.module';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import { NotesModule } from './notes/notes.module';
     SessionsModule,
     FilesModule,
     NotesModule,
+    UserSessionsModule,
+    UserFilesModule,
+    SessionFilesModule,
+    UserSessionFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserConverter],
