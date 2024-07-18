@@ -59,17 +59,17 @@ export class User {
   status: string;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @Column({ nullable: true })
   createdAt: string;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @Column({ nullable: true })
   updatedAt: string;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @Column({ nullable: true })
   deletedAt: string;
 }

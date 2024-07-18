@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -27,17 +27,17 @@ export class Session {
   hostId: number;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @CreateDateColumn()
   createdAt: string;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @UpdateDateColumn()
   updatedAt: string;
 
   @ApiProperty()
-  @IsString()
+  @IsDate()
   @DeleteDateColumn()
   closedAt: string;
 }
