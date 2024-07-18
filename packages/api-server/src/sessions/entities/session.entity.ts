@@ -3,13 +3,16 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '../../users/entities/user.entity';
 
-@Entity()
+@Entity('sessions')
 export class Session {
   @ApiProperty()
   @IsNumber()
@@ -40,4 +43,8 @@ export class Session {
   @IsDate()
   @DeleteDateColumn()
   closedAt: string;
+
+  @ManyToOne(() => User, (user) => user.sessions)
+  @JoinColumn({ name: 'host_id', referencedColumnName: 'userId' })
+  host: User;
 }

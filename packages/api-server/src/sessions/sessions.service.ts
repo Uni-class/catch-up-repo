@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Session } from './entities/session.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SessionsService {
+  constructor(
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
+  ) {}
   create(createSessionDto: CreateSessionDto) {
     return 'This action adds a new session';
   }
@@ -12,8 +19,15 @@ export class SessionsService {
     return `This action returns all sessions`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} session`;
+  async findOne(id: number) {
+    try {
+      return await this.sessionRepository.findOne({
+        where: { sessionId: id },
+        relations: ['host'],
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   update(id: number, updateSessionDto: UpdateSessionDto) {
