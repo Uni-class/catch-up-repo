@@ -15,7 +15,7 @@ function MenuElement({ text, href }: ElementPropType) {
         "&:hover": {
           bg: "gray.100",
         },
-        borderRadius: "6px",
+        borderRadius: "8px",
       })}
     >
       <li>
@@ -43,7 +43,7 @@ const elementProps: ({ id: number } & ElementPropType)[] = [
 export default function SidebarMenu() {
   return (
     <>
-      <Paragraph variant="sub3">메뉴</Paragraph>
+      <Paragraph variant="sub3" className={css({margin:"8px 0"})}>메뉴</Paragraph>
       <nav
         className={css({
           display: "flex",

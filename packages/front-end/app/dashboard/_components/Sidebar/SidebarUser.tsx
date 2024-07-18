@@ -10,7 +10,9 @@ export default function SidebarUser() {
   };
   return (
     <div>
-      <Paragraph variant="sub3">유저</Paragraph>
+      <Paragraph variant="sub3" className={css({ margin: "8px 0" })}>
+        유저
+      </Paragraph>
       <div
         className={css({
           display: "flex",
@@ -22,20 +24,25 @@ export default function SidebarUser() {
             display: "flex",
             justifyContent: "space-around",
             alignItems: "center",
-            width:"100%",
+            width: "100%",
           })}
         >
-          <label htmlFor="role-switch" className={css({cursor:"pointer"})}>수강자</label>
+          <label htmlFor="role-switch" className={css({ cursor: "pointer" })}>
+            수강자
+          </label>
           <Switch
             checked={isChecked}
             onChange={handleSwitchChange}
             id="role-switch"
           />
-          <label htmlFor="role-switch" className={css({cursor:"pointer"})}>강의자</label>
+          <label htmlFor="role-switch" className={css({ cursor: "pointer" })}>
+            강의자
+          </label>
         </div>
       </div>
-
-      <p>유저이름</p>
+      <div className={css({padding:"1rem 0"})}>
+        <p>유저이름</p>
+      </div>
     </div>
   );
 }
