@@ -5,7 +5,6 @@ import { ChangeEvent, useState } from "react";
 
 export default function SidebarUserSwitch() {
   const router = useRouter();
-
   const [isChecked, setIsChecked] = useState(
     router.query.get("role") === "tutor"
   );
