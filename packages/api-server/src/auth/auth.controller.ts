@@ -38,7 +38,7 @@ export class AuthController {
 
   @UseGuards(NaverAuthGuard)
   @ApiCreatedResponse({ description: 'User logged in!' })
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(302)
   @Get('naver/callback')
   async naverCallback(
     @Req() req: Request,
@@ -53,7 +53,6 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
       console.log(e);
@@ -63,7 +62,7 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @ApiCreatedResponse({ description: 'User logged in!' })
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(302)
   @Get('google/callback')
   async googleCallback(
     @Req() req: Request,
@@ -78,7 +77,6 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
@@ -87,7 +85,7 @@ export class AuthController {
 
   @UseGuards(KakaoAuthGuard)
   @ApiCreatedResponse({ description: 'User logged in!' })
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(302)
   @Get('kakao/callback')
   async kakaoCallback(
     @Req() req: Request,
@@ -102,7 +100,6 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .status(HttpStatus.CREATED)
         .redirect('http://localhost:3000/');
     } catch (e) {
       console.log(e);

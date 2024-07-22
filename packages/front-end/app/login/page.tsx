@@ -32,22 +32,13 @@ export default function Page() {
           className={css({
             color: "#ffffff",
             fontSize: "4.5em",
-            fontWeight: "bold",
-          })}
-        >
-          {PROJECT_NAME}
-        </div>
-        <div
-          className={css({
+          })}>{PROJECT_NAME}</div>
+          <div className={css({
             color: "#ffffff",
             fontSize: "1.5em",
-            fontWeight: "bold",
-          })}
-        >
-          로그인 / 회원가입
-        </div>
-        <hr
-          className={css({
+          })}>로그인 / 회원가입
+          </div>
+          <hr className={css({
             margin: "1em 0",
             width: "100%",
             borderWidth: "0.15em",
