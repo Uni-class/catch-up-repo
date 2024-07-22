@@ -2,7 +2,8 @@
 
 import { css } from "@/styled-system/css";
 import LoginButton from "./_components/LoginButton";
-import { PROJECT_NAME } from "@/Config";
+import { PROJECT_NAME } from "@/const/Config";
+
 
 export default function Page() {
   return (

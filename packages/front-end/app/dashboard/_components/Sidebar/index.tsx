@@ -15,7 +15,7 @@ export default function Sidebar() {
         borderColor: "gray.200",
         display: "flex",
         flexDirection: "column",
-        padding: "0 1rem"
+        padding: "1rem"
       })}
     >
       <Heading variant="h4">캐치업</Heading>
