@@ -2,12 +2,12 @@
 
 import { css } from "@/styled-system/css";
 import LoginButton from "./_components/LoginButton";
-import { PROJECT_NAME } from "@/const/Config";
-
+import { PROJECT_NAME } from "@/const/config";
 
 export default function Page() {
   return (
-      <div className={css({
+    <div
+      className={css({
         display: "flex",
         paddingBottom: "3em",
         width: "100vw",
@@ -16,16 +16,20 @@ export default function Page() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-      })}>
-        <div className={css({
+      })}
+    >
+      <div
+        className={css({
           display: "flex",
           padding: "2em 0",
           width: "25em",
           flexDirection: "column",
           alignItems: "center",
           gap: "1em",
-        })}>
-          <div className={css({
+        })}
+      >
+        <div
+          className={css({
             color: "#ffffff",
             fontSize: "4.5em",
           })}>{PROJECT_NAME}</div>
@@ -39,19 +43,22 @@ export default function Page() {
             width: "100%",
             borderWidth: "0.15em",
             borderRadius: "1em",
-            borderColor: "#ffffff"
-          })}/>
-        </div>
-        <div className={css({
+            borderColor: "#ffffff",
+          })}
+        />
+      </div>
+      <div
+        className={css({
           display: "flex",
           width: "25em",
           flexDirection: "column",
           gap: "1em",
-        })}>
-          <LoginButton providerEnum="GOOGLE"/>
-          <LoginButton providerEnum="NAVER"/>
-          <LoginButton providerEnum="KAKAO"/>
-        </div>
+        })}
+      >
+        <LoginButton providerEnum="GOOGLE" />
+        <LoginButton providerEnum="NAVER" />
+        <LoginButton providerEnum="KAKAO" />
       </div>
+    </div>
   );
 }
