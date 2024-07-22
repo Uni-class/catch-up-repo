@@ -2,6 +2,8 @@ import { Paragraph } from "@/components/Text";
 import { css, cx } from "@/styled-system/css";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import SidebarMenuGroup from "./SidebarMenuGroup";
+
 
 interface ElementPropType {
   text: string;
@@ -35,7 +37,7 @@ function MenuElement({ text, href }: ElementPropType) {
           href={{ pathname: href, query: queryParams }}
           className={css({
             width: "100%",
-            padding: "8px 4px",
+            padding: "0.8em",
             display: "inline-block",
           })}
         >
@@ -54,15 +56,14 @@ const elementProps: ({ id: number } & ElementPropType)[] = [
 
 export default function SidebarMenu() {
   return (
-    <>
-      <Paragraph variant="sub3" className={css({ margin: "8px 0" })}>
-        메뉴
-      </Paragraph>
+    <SidebarMenuGroup name="메뉴" className={css({
+        height: "100%",
+    })}>
       <nav
         className={css({
           display: "flex",
           flexDirection: "column",
-          gap: "0.25rem",
+          gap: "0.4rem",
           flexGrow: 1,
         })}
       >
@@ -70,6 +71,6 @@ export default function SidebarMenu() {
           return <MenuElement key={id} {...elementProp} />;
         })}
       </nav>
-    </>
+    </SidebarMenuGroup>
   );
 }

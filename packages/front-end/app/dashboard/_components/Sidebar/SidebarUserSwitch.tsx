@@ -12,12 +12,11 @@ function parsingQueryIter(query: IterableIterator<[string, string]>) {
 }
 
 function parsingQueryObj(pathname: string, query: { [key: string]: string }) {
-  // just construct dummy base url
-  const url = new URL(pathname, "http://example.com");
+  const url = new URL(window.location.href);
   Object.keys(query).forEach((key) => {
-    url.searchParams.append(key, query[key]);
+    url.searchParams.set(key, query[key]);
   });
-  return `${url.pathname}${url.search}`;
+  return url.toString();
 }
 
 export default function SidebarUserSwitch() {
