@@ -56,23 +56,21 @@ const SwitchTrack = styled("span", {
     "&.checked": {
       bg: "emerald.400",
     },
+    borderRadius: "100em",
   },
   variants: {
     size: {
       lg: {
         width: "50px",
         height: "calc(1.5rem + 4px)",
-        borderRadius: "12px",
       },
       md: {
         width: "40px",
         height: "calc(1.25rem + 4px)",
-        borderRadius: "10px",
       },
       sm: {
         width: "33px",
         height: "calc(1rem + 4px)",
-        borderRadius: "8px",
       },
     },
   },
