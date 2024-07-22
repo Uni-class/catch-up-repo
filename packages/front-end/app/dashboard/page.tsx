@@ -26,8 +26,12 @@ export default function Page() {
                 display: "flex",
                 gap: "1em"
             })}>
-                <Button text={`옆에 있는 버튼을 ${buttonEnabled ? "비활성화" : "활성화"}`} onClick={(event) => setButtonEnabled(!buttonEnabled)}/>
-                <Button text={buttonEnabled ? "활성화 상태" : "비활성화 상태"} disabled={!buttonEnabled} />
+                <Button onClick={(event) => setButtonEnabled(!buttonEnabled)}>
+                    옆에 있는 버튼을 {buttonEnabled ? "비활성화" : "활성화"}
+                </Button>
+                <Button disabled={!buttonEnabled}>
+                    {buttonEnabled ? "활성화 상태" : "비활성화 상태"}
+                </Button>
             </div>
         </div>
     );
