@@ -1,0 +1,92 @@
+import { styled } from "@/styled-system/jsx";
+
+export const TableContainer = styled("table", {
+  base: {
+    borderCollapse: "collapse",
+    border: "1px solid",
+    borderColor: "gray.200",
+    borderRadius: "0.75rem",
+    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+    boxSizing: "border-box",
+  },
+  variants: {
+    fullWidth: {
+      true: {
+        width: "100%",
+      },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    fullWidth: true,
+  },
+});
+
+export const TableHead = styled("thead", {
+  base: {
+    fontWeight: "700",
+    paddingTop: "1rem",
+    fontSize: "1.25rem",
+  },
+});
+
+export const TableBody = styled("tbody", {
+  base: {},
+});
+
+export const TableRow = styled("tr", {
+  base: {
+    borderBottom: "1px solid",
+    borderColor: "gray.200",
+  },
+});
+
+export const Th = styled("th", {
+  base: {},
+  variants: {
+    align: {
+      left: {
+        textAlign: "left",
+      },
+      center: {
+        textAlign: "center",
+      },
+      right: {
+        textAlign: "right",
+      },
+    },
+  },
+});
+
+export const Td = styled("td", {
+  base: {},
+  variants: {
+    align: {
+      left: {
+        textAlign: "left",
+      },
+      center: {
+        textAlign: "center",
+      },
+      right: {
+        textAlign: "right",
+      },
+    },
+  },
+});
+
+/*
+사용법
+<TableContainer>
+    <TableHead>
+        <TableRow>
+            {headData.map(e)=><Th key={e.id}>{e.name}</Th>}
+        </TableRow>
+    </TableHead>
+    <TableBody>
+        <TableRow>
+            {tableData.map(e)=><Td key={e.id}>{e.name}</Td>}
+        </TableRow>
+    </TableBody>
+</TableContainer>
+*/
