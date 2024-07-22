@@ -25,8 +25,6 @@ export const TableContainer = styled("table", {
 export const TableHead = styled("thead", {
   base: {
     fontWeight: "700",
-    paddingTop: "1rem",
-    fontSize: "1.25rem",
   },
 });
 
@@ -37,12 +35,14 @@ export const TableBody = styled("tbody", {
 export const TableRow = styled("tr", {
   base: {
     borderBottom: "1px solid",
-    borderColor: "gray.200",
+    borderColor: "gray.300",
   },
 });
 
 export const Th = styled("th", {
-  base: {},
+  base: {
+    padding:"1rem 0.5rem 0.25rem 0.5rem"
+  },
   variants: {
     align: {
       left: {
@@ -56,10 +56,15 @@ export const Th = styled("th", {
       },
     },
   },
+  defaultVariants: {
+    align: "left",
+  },
 });
 
 export const Td = styled("td", {
-  base: {},
+  base: {
+    padding:"0.5rem 0.5rem",
+  },
   variants: {
     align: {
       left: {
@@ -72,6 +77,9 @@ export const Td = styled("td", {
         textAlign: "right",
       },
     },
+  },
+  defaultVariants: {
+    align: "left",
   },
 });
 
