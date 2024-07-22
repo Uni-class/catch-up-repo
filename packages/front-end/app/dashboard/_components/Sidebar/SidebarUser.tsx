@@ -15,7 +15,7 @@ export default function SidebarUser() {
               bg: "gray.200",
           },
         })}>
-          <p>USER NAME</p>
+          <p>USER NAME [강의자]</p>
         </div>
       </SidebarMenuGroup>
       <SidebarMenuGroup>
