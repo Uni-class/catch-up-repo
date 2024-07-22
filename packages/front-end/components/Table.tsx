@@ -63,7 +63,7 @@ export const Th = styled("th", {
 
 export const Td = styled("td", {
   base: {
-    padding: "0.5rem 16px",
+    paddingX: "16px",
     minWidth: 0,
   },
   variants: {
@@ -78,9 +78,21 @@ export const Td = styled("td", {
         textAlign: "right",
       },
     },
+    size: {
+      sm: {
+        paddingY: "0.5rem",
+      },
+      md: {
+        paddingY: "0.75rem",
+      },
+      lg: {
+        paddingY: "1.25rem",
+      },
+    },
   },
   defaultVariants: {
     align: "left",
+    size: "md",
   },
 });
 

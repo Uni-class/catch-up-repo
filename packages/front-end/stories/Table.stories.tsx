@@ -28,7 +28,7 @@ const Template: StoryFn = (_args) => {
     <TableContainer>
       <TableHead>
         <TableRow>
-            <Th align="center"><input type="checkbox"/></Th>
+            <Th><input type="checkbox"/></Th>
           {headData.map((e, i) => (
             <Th key={i}>{e}</Th>
           ))}
@@ -37,7 +37,7 @@ const Template: StoryFn = (_args) => {
       <TableBody>
         {bodyData.map((e, i) => (
           <TableRow key={i}>
-            <Td align="center"><input type="checkbox"/></Td>
+            <Td><input type="checkbox"/></Td>
             <Td>{e.name}</Td>
             <Td>{e.location}</Td>
             <Td>{e.tel}</Td>
