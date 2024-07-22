@@ -23,9 +23,7 @@ export const TableContainer = styled("table", {
 });
 
 export const TableHead = styled("thead", {
-  base: {
-    fontWeight: "700",
-  },
+  base: {},
 });
 
 export const TableBody = styled("tbody", {
@@ -42,6 +40,8 @@ export const TableRow = styled("tr", {
 export const Th = styled("th", {
   base: {
     padding: "1.5rem 16px 0.25rem 16px",
+    fontWeight: 600,
+    minWidth: 0,
   },
   variants: {
     align: {
@@ -64,6 +64,7 @@ export const Th = styled("th", {
 export const Td = styled("td", {
   base: {
     padding: "0.5rem 16px",
+    minWidth: 0,
   },
   variants: {
     align: {
