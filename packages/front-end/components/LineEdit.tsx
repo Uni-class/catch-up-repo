@@ -9,7 +9,7 @@ interface PropType {
 }
 
 
-export default function LineEditElement({placeholder = "", text, onChange}: PropType) {
+export default function LineEdit({placeholder = "", text, onChange}: PropType) {
     return (
         <input
             type="text"
@@ -19,16 +19,16 @@ export default function LineEditElement({placeholder = "", text, onChange}: Prop
             className={css({
                 padding: "0.3em 0.5em",
                 color: "#000000",
-                background: "#ededed80",
+                background: "#ededed",
                 borderBottom: "0.15em solid transparent",
                 outline: "none",
                 transition: "all 0.2s ease-in-out",
                 _hover: {
-                    background: "#ededed",
+                    background: "#dcdcdc",
                     borderBottom: "0.15em solid #000000",
                 },
                 _focus: {
-                    background: "#ededed",
+                    background: "#dcdcdc",
                     borderBottom: "0.15em solid #000000",
                 }
             })}

@@ -1,4 +1,5 @@
 import { Paragraph } from "@/components/Text";
+import { useRouter } from "@/hook/useRouter";
 import { css, cx } from "@/styled-system/css";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -11,12 +12,7 @@ interface ElementPropType {
 }
 
 function MenuElement({ text, href }: ElementPropType) {
-  const query = useSearchParams();
-  const queryParams: { [key: string]: string } = {};
-  query.forEach((value, key) => {
-    queryParams[key] = value;
-  });
-  const pathname = usePathname();
+  const {queryObj,pathname} = useRouter();
   return (
     <ul
       className={cx(
@@ -34,7 +30,7 @@ function MenuElement({ text, href }: ElementPropType) {
     >
       <li>
         <Link
-          href={{ pathname: href, query: queryParams }}
+          href={{ pathname: href, query: queryObj }}
           className={css({
             width: "100%",
             padding: "0.8em",
