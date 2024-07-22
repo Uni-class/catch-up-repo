@@ -41,7 +41,7 @@ export const TableRow = styled("tr", {
 
 export const Th = styled("th", {
   base: {
-    padding:"1rem 0.5rem 0.25rem 0.5rem"
+    padding: "1.5rem 16px 0.25rem 16px",
   },
   variants: {
     align: {
@@ -63,7 +63,7 @@ export const Th = styled("th", {
 
 export const Td = styled("td", {
   base: {
-    padding:"0.5rem 0.5rem",
+    padding: "0.5rem 16px",
   },
   variants: {
     align: {
