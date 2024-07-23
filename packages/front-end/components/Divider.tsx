@@ -9,7 +9,7 @@ const Divider = styled('hr', {
       horizontal: {
         borderTop: '1px solid',
         width: '100%',
-        margin: '1rem 0',
+        margin: '0.5rem 0',
         minWidth: "1rem",
       },
       vertical: {

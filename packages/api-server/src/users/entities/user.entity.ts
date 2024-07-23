@@ -14,6 +14,7 @@ import {
 import { Session } from '../../sessions/entities/session.entity';
 import { UserFile } from '../../user-files/entities/user-file.entity';
 import { UserSession } from '../../user-sessions/entities/user-session.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
@@ -29,6 +30,7 @@ export class User {
 
   @ApiProperty()
   @IsString()
+  @Exclude()
   @Column({ nullable: true })
   username: string;
 
@@ -49,16 +51,19 @@ export class User {
 
   @ApiProperty()
   @IsString()
+  @Exclude()
   @Column()
   providerId: string;
 
   @ApiProperty()
   @IsString()
+  @Exclude()
   @Column({ nullable: true })
   refreshToken: string;
 
   @ApiProperty()
   @IsString()
+  @Exclude()
   @Column()
   status: string;
 
@@ -69,11 +74,13 @@ export class User {
 
   @ApiProperty()
   @IsDate()
+  @Exclude()
   @Column({ nullable: true })
   updatedAt: string;
 
   @ApiProperty()
   @IsDate()
+  @Exclude()
   @Column({ nullable: true })
   deletedAt: string;
 
