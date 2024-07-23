@@ -76,7 +76,7 @@ function Head({
     <TableHead>
       <TableRow>
         <Th>
-          <input type="checkbox" onChange={handleChange} />
+          <input type="checkbox" onChange={handleChange} checked={isTotalChecked}/>
         </Th>
         <Th>제목</Th>
         <Th>참여 시간</Th>

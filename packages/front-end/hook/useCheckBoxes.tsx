@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useRouter } from "./useRouter";
 
 /**
  * Generic type representing a checkbox state.
@@ -35,6 +36,7 @@ export function useCheckBoxes<T, K = number>({
 } {
   const [areChecked, setAreChecked] = useState<CheckType<K>[]>([]);
   const [isTotalChecked, setIsTotalChecked] = useState(initValue);
+  const { pathname, query } = useRouter();
   useEffect(() => {
     if (data) {
       setAreChecked(
@@ -44,6 +46,9 @@ export function useCheckBoxes<T, K = number>({
       );
     }
   }, [data, isTotalChecked]);
+  useEffect(() => {
+    setIsTotalChecked(false);
+  }, [pathname, query]);
   const setCheckOne = (id: K, value: boolean) => {
     setAreChecked(
       areChecked.map((areCheck) =>
