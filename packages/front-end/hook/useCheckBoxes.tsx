@@ -47,7 +47,7 @@ export function useCheckBoxes<T, K = number>({
     }
   }, [data, isTotalChecked]);
   useEffect(() => {
-    setIsTotalChecked(false);
+    setIsTotalChecked(initValue);
   }, [pathname, query]);
   const setCheckOne = (id: K, value: boolean) => {
     setAreChecked(
