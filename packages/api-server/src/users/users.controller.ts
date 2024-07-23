@@ -11,8 +11,8 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
@@ -21,7 +21,6 @@ import { ApiCookieAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
 import { Role } from './role.type';
-import { UpdateSessionDto } from '../sessions/dto/update-session.dto';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
@@ -36,30 +35,36 @@ export class UsersController {
   @Get()
   @UseGuards(JwtGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async findOne(@UserId() userId: number): Promise<User> {
-    return await this.usersService.findOneById(+userId);
+  async findOne(@UserId(ParseIntPipe) userId: number): Promise<User> {
+    return await this.usersService.findOneById(userId);
   }
 
   @Patch()
   @UseGuards(JwtGuard)
-  async update(@UserId() userId: number, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(+userId, updateUserDto);
+  async update(
+    @UserId(ParseIntPipe) userId: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.update(userId, updateUserDto);
   }
 
   @Delete()
   @UseGuards(JwtGuard)
-  async remove(@UserId() userId: number): Promise<User> {
-    return await this.usersService.remove(+userId);
+  async remove(@UserId(ParseIntPipe) userId: number): Promise<User> {
+    return await this.usersService.remove(userId);
   }
 
   @Get('sessions')
   @ApiQuery({ type: Role })
   @ApiResponse({ type: [Session] })
   @UseGuards(JwtGuard)
-  async getSessions(@UserId() userId: number, @Query() query: Role) {
+  async getSessions(
+    @UserId(ParseIntPipe) userId: number,
+    @Query() query: Role,
+  ) {
     if (query.role === 'host')
-      return await this.usersService.getSessionsByHost(+userId);
-    return await this.usersService.getSessionsByParticipant(+userId);
+      return await this.usersService.getSessionsByHost(userId);
+    return await this.usersService.getSessionsByParticipant(userId);
   }
 
   @Post('sessions')
@@ -68,8 +73,8 @@ export class UsersController {
   @ApiResponse({ type: UserSession })
   @UseGuards(JwtGuard)
   async postUserSession(
-    @UserId() userId: number,
-    @Query('sessionId') sessionId: number,
+    @UserId(ParseIntPipe) userId: number,
+    @Query('sessionId', ParseIntPipe) sessionId: number,
     @Query('displayName') displayName: string,
   ): Promise<UserSession> {
     const newCreateUserSession = new CreateUserSessionDto();
@@ -85,8 +90,8 @@ export class UsersController {
   @ApiResponse({ type: UpdateResult })
   @UseGuards(JwtGuard)
   async patchUserSession(
-    @UserId() userId: number,
-    @Query('sessionId') sessionId: number,
+    @UserId(ParseIntPipe) userId: number,
+    @Query('sessionId', ParseIntPipe) sessionId: number,
     @Query('displayName') displayName: string,
   ): Promise<UpdateResult> {
     const newUpdateUserSession = new UpdateUserSessionDto();
@@ -103,8 +108,8 @@ export class UsersController {
   @ApiResponse({ type: UserSession })
   @UseGuards(JwtGuard)
   async deleteUserSession(
-    @UserId() userId: number,
-    @Query('sessionId') sessionId: number,
+    @UserId(ParseIntPipe) userId: number,
+    @Query('sessionId', ParseIntPipe) sessionId: number,
   ): Promise<UserSession> {
     const result = await this.usersService.deleteUserSession(userId, sessionId);
     return result;
