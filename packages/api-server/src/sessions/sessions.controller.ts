@@ -7,6 +7,7 @@ import {
   Query,
   Delete,
   BadRequestException,
+  NotFoundException,
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
@@ -46,7 +47,11 @@ export class SessionsController {
   @Get()
   @UseGuards(JwtGuard)
   async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
-    return await this.sessionsService.findOne(sessionId);
+    const session = await this.sessionsService.findOne(sessionId);
+    if (!session) {
+      throw new NotFoundException();
+    }
+    return session;
   }
 
   @Patch()
