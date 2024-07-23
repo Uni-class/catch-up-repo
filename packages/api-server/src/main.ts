@@ -27,7 +27,9 @@ async function bootstrap() {
     .addCookieAuth('access_token')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    jsonDocumentUrl: 'api/json',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
