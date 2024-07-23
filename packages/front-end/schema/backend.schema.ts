@@ -25,6 +25,18 @@ export interface Session {
   closedAt: string;
 }
 
+export interface UserSession {
+  userSessionId: number;
+  userId: number;
+  sessionId: number;
+  displayName: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+
+export type UpdateResult = object;
+
 export type CreateSessionDto = object;
 
 export type UpdateSessionDto = object;
@@ -381,10 +393,78 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/user/sessions
      * @secure
      */
-    usersControllerGetSessions: (params: RequestParams = {}) =>
+    usersControllerGetSessions: (
+      query: {
+        role: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<any, Session[]>({
         path: `/user/sessions`,
         method: 'GET',
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerPostUserSession
+     * @request POST:/user/sessions
+     * @secure
+     */
+    usersControllerPostUserSession: (
+      query: {
+        displayName: string;
+        sessionId: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, UserSession>({
+        path: `/user/sessions`,
+        method: 'POST',
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerPatchUserSession
+     * @request PATCH:/user/sessions
+     * @secure
+     */
+    usersControllerPatchUserSession: (
+      query: {
+        displayName: string;
+        sessionId: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, UpdateResult>({
+        path: `/user/sessions`,
+        method: 'PATCH',
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerDeleteUserSession
+     * @request DELETE:/user/sessions
+     * @secure
+     */
+    usersControllerDeleteUserSession: (params: RequestParams = {}) =>
+      this.request<any, UserSession>({
+        path: `/user/sessions`,
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
