@@ -69,19 +69,19 @@ export class User {
 
   @ApiProperty()
   @IsDate()
-  @Column({ nullable: true })
+  @CreateDateColumn()
   createdAt: string;
 
   @ApiProperty()
   @IsDate()
   @Exclude()
-  @Column({ nullable: true })
+  @UpdateDateColumn()
   updatedAt: string;
 
   @ApiProperty()
   @IsDate()
   @Exclude()
-  @Column({ nullable: true })
+  @DeleteDateColumn()
   deletedAt: string;
 
   @OneToMany(() => Session, (session) => session.host)

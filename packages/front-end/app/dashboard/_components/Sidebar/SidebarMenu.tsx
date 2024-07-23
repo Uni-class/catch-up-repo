@@ -42,7 +42,7 @@ function MenuElement({ text, href }: ElementPropType) {
 }
 
 const elementProps: ({ id: number } & ElementPropType)[] = [
-  { id: 0, text: "대쉬보드", href: "/dashboard" },
+  { id: 0, text: "대시보드", href: "/dashboard" },
   { id: 1, text: "세션", href: "/dashboard/session" },
   { id: 2, text: "드라이브", href: "/dashboard/drive" },
 ];
