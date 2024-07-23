@@ -41,9 +41,11 @@ export default function SessionTable() {
     },
   });
   useEffect(() => {
-    const checkArr = data.map((e) => ({ id: e.id, checked: false }));
-    setAreChecked(checkArr);
-  }, []);
+    if (data) {
+      const checkArr = data.map((e) => ({ id: e.id, checked: false }));
+      setAreChecked(checkArr);
+    }
+  }, [data]);
 
   return (
     <TableContainer>

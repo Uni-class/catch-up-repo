@@ -10,7 +10,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response.status === 403) {
+    if (error?.response?.status === 403) {
       const config = error.config as InternalAxiosRequestConfig<any>;
       try {
         await apiClient.get("/token-refresh");
