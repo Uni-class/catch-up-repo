@@ -13,6 +13,7 @@ export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): any {
     const httpAdapterHost = this.httpAdapterHost;
     const ctx = host.switchToHttp();
+    console.log(exception);
     const exceptionResponse =
       exception instanceof HttpException
         ? exception.getResponse()

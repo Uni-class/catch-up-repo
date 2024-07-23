@@ -20,6 +20,12 @@ export class SessionFilesService {
     });
   }
 
+  async findAllBySessionId(sessionId: number) {
+    return await this.fileRepository.find({
+      where: { sessionId: sessionId },
+    });
+  }
+
   async remove(id: number) {
     return `This action removes a #${id} session file`;
   }

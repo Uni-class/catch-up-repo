@@ -31,13 +31,50 @@ export class SessionsController {
     @Body() createSessionDto: CreateSessionDto,
   ) {
     createSessionDto.hostId = userId;
-    createSessionDto.sessionFileIds = createSessionDto.sessionFileIds || [];
-    await this.validateFileIds(userId, createSessionDto.sessionFileIds);
+    const sessionFileIds = createSessionDto.sessionFileIds || [];
+    delete createSessionDto.sessionFileIds;
+    await this.validateFileIds(userId, sessionFileIds);
     const session = await this.sessionsService.create(createSessionDto);
-    for (const fileId of createSessionDto.sessionFileIds) {
+    for (const fileId of sessionFileIds) {
       await this.sessionFilesService.create(session[0].sessionId, fileId);
     }
     return session;
+  }
+
+  @Get()
+  @UseGuards(JwtGuard)
+  async findOne(@Query('id') id: number) {
+    return await this.sessionsService.findOne(+id);
+  }
+
+  @Patch()
+  @UseGuards(JwtGuard)
+  async update(
+    @Query('id') id: number,
+    @UserId() userId: number,
+    @Body() updateSessionDto: UpdateSessionDto,
+  ) {
+    const sessionFileIds = updateSessionDto.sessionFileIds || [];
+    delete updateSessionDto.sessionFileIds;
+    await this.validateFileIds(userId, sessionFileIds);
+    for (const sessionFile of await this.sessionFilesService.findAllBySessionId(id)) {
+      if (sessionFileIds.includes(sessionFile.fileId)) {
+        sessionFileIds.splice(sessionFileIds.indexOf(sessionFile.fileId), 1);
+      }
+      else {
+        await this.sessionFilesService.remove(sessionFile.sessionFileId);
+      }
+    }
+    for (const fileId of sessionFileIds) {
+      await this.sessionFilesService.create(id, fileId);
+    }
+    return this.sessionsService.update(+id, updateSessionDto);
+  }
+
+  @Delete()
+  @UseGuards(JwtGuard)
+  remove(@Query('id') id: number) {
+    return this.sessionsService.remove(+id);
   }
 
   async validateFileIds(userId: number, fileIds: number[]) {
@@ -49,23 +86,5 @@ export class SessionsController {
         );
       }
     }
-  }
-
-  @Get()
-  @UseGuards(JwtGuard)
-  async findOne(@Query('id') id: string) {
-    return await this.sessionsService.findOne(+id);
-  }
-
-  @Patch()
-  @UseGuards(JwtGuard)
-  update(@Query('id') id: string, @Body() updateSessionDto: UpdateSessionDto) {
-    return this.sessionsService.update(+id, updateSessionDto);
-  }
-
-  @Delete()
-  @UseGuards(JwtGuard)
-  remove(@Query('id') id: string) {
-    return this.sessionsService.remove(+id);
   }
 }

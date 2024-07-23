@@ -12,7 +12,6 @@ export class CreateSessionDto {
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  @IsOptional()
   @IsNumber({}, { each: true })
   sessionFileIds: number[];
 }
