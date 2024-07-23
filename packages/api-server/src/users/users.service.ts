@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -78,5 +78,20 @@ export class UsersService {
       }),
     );
     return sessions;
+  }
+
+  async postUserSession(userId: number, sessionId: number) {
+    const session: Session = await this.sessionRepository.findOneBy({
+      sessionId,
+    });
+    if (!session) {
+      throw new NotFoundException(`Session ${sessionId} does not exist`);
+    }
+    const newUserSession = this.userSessionRepository.create({
+      userId,
+      sessionId,
+    });
+    const userSession = await this.userSessionRepository.save(newUserSession);
+    return userSession;
   }
 }

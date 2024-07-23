@@ -17,10 +17,12 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserId } from './decorators/user-id.decorator';
-import { ApiCookieAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
 import { Role } from './role.type';
+import { UpdateSessionDto } from '../sessions/dto/update-session.dto';
+import { UserSession } from '../user-sessions/entities/user-session.entity';
 
 @ApiTags('user')
 @ApiCookieAuth()
@@ -48,11 +50,22 @@ export class UsersController {
   }
 
   @Get('sessions')
+  @ApiQuery({ type: Role })
   @ApiResponse({ type: [Session] })
   @UseGuards(JwtGuard)
   async getSessions(@UserId() userId: number, @Query() query: Role) {
     if (query.role === 'host')
-      return await this.usersService.getSessionsByHost(userId);
-    return await this.usersService.getSessionsByParticipant(userId);
+      return await this.usersService.getSessionsByHost(+userId);
+    return await this.usersService.getSessionsByParticipant(+userId);
+  }
+
+  @Post('sessions')
+  @ApiQuery({ name: 'sessionId' })
+  @UseGuards(JwtGuard)
+  async postUserSession(
+    @UserId() userId: number,
+    @Query('sessionId') sessionId: number,
+  ): Promise<UserSession> {
+    return await this.usersService.postUserSession(+userId, +sessionId);
   }
 }
