@@ -49,7 +49,7 @@ export class SessionsController {
   async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
     const session = await this.sessionsService.findOne(sessionId);
     if (!session) {
-      throw new NotFoundException();
+      throw new NotFoundException(`Session with ID: ${sessionId} does not exist or you do not have permission to access it.`);
     }
     return session;
   }
@@ -89,7 +89,7 @@ export class SessionsController {
       const file = await this.filesService.findOne(fileId);
       if (!file || file.ownerId !== userId) {
         throw new BadRequestException(
-          `File with ID ${fileId} is either invalid or you do not have access to it.`,
+          `File with ID: ${fileId} does not exist or you do not have permission to access it.`,
         );
       }
     }
