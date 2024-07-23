@@ -5,10 +5,8 @@ import {
   Body,
   Patch,
   Query,
-  Delete,
-  BadRequestException,
-  NotFoundException,
   UseGuards,
+  BadRequestException,
   ParseIntPipe,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
@@ -50,27 +48,22 @@ export class SessionsController {
   @Get()
   @UseGuards(JwtGuard)
   async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
-    const session = await this.sessionsService.findOne(sessionId);
-    if (!session) {
-      throw new NotFoundException(
-        `Session with ID: ${sessionId} does not exist or you do not have permission to access it.`,
-      );
-    }
-    return session;
+    return await this.getSessionAsUser(sessionId, null);
   }
 
   @Patch()
   @UseGuards(JwtGuard)
   async update(
-    @Query('sessionId', ParseIntPipe) sessionId: number,
+    @Query('sessionId', ParseIntPipe) requestedSessionId: number,
     @UserId() userId: number,
     @Body() updateSessionDto: UpdateSessionDto,
   ) {
     const sessionFileIds = updateSessionDto.sessionFileIds || [];
     delete updateSessionDto.sessionFileIds;
+    const session = await this.getSessionAsUser(requestedSessionId, userId);
     await this.validateFileIds(userId, sessionFileIds);
     for (const sessionFile of await this.sessionFilesService.findAllBySessionId(
-      sessionId,
+      session.sessionId,
     )) {
       if (sessionFileIds.includes(sessionFile.fileId)) {
         sessionFileIds.splice(sessionFileIds.indexOf(sessionFile.fileId), 1);
@@ -79,15 +72,20 @@ export class SessionsController {
       }
     }
     for (const fileId of sessionFileIds) {
-      await this.sessionFilesService.create(sessionId, fileId);
+      await this.sessionFilesService.create(session.sessionId, fileId);
     }
-    return this.sessionsService.update(sessionId, updateSessionDto);
+    await this.sessionsService.update(session.sessionId, updateSessionDto);
+    return null;
   }
 
-  @Delete()
-  @UseGuards(JwtGuard)
-  remove(@Query('sessionId', ParseIntPipe) sessionId: number) {
-    return this.sessionsService.remove(sessionId);
+  async getSessionAsUser(sessionId: number, userId: number | null = null) {
+    const session = await this.sessionsService.findOne(sessionId);
+    if (!session || (userId && session.hostId !== userId)) {
+      throw new BadRequestException(
+        `Session with ID: ${sessionId} does not exist or you do not have permission to access it.`,
+      );
+    }
+    return session;
   }
 
   async validateFileIds(userId: number, fileIds: number[]) {
