@@ -6,30 +6,19 @@ import {
   Td,
   Th,
 } from "@/components/Table";
+import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-
-interface CheckElType {
-  id: number;
-  checked: boolean;
-}
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export default function SessionTable() {
   const { queryObj } = useRouter();
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
   }
-  const [areChecked, setAreChecked] = useState<CheckElType[]>([]);
   const { data } = useSuspenseQuery({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
@@ -40,12 +29,7 @@ export default function SessionTable() {
       return data;
     },
   });
-  useEffect(() => {
-    if (data) {
-      const checkArr = data.map((e) => ({ id: e.id, checked: false }));
-      setAreChecked(checkArr);
-    }
-  }, [data]);
+  const tmp = useCheckBoxes<any, number>({ data: data, id: "id" });
 
   return (
     <TableContainer>
