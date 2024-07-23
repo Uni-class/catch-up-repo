@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "@/hook/useRouter";
-import { apiAuthClient } from "@/util/axios";
+import { apiClient } from "@/util/axios";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
@@ -8,8 +8,8 @@ export default function Page() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["user", "sessions"],
     queryFn: async () =>
-      await apiAuthClient.get("/user/sessions", { params: queryObj }),
-  });
+      await apiClient.get("/user", { params: queryObj }),
+  }); 
   if (isError) {
     return <>에러</>;
   }

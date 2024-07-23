@@ -7,7 +7,8 @@ export const userSessionHandler = http.get(
     await delay(1000);
     const url = new URL(request.url);
     const role = url.searchParams.get("role");
-    const accessToken = request.headers.get("Authorization");
+    const accessToken = request.headers.get("Cookie");
+    console.log(request.headers);
     if (!role) {
       return new HttpResponse(null, { status: 400, statusText: "Bad Request" });
     }
