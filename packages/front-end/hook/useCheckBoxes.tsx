@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 /**
  * Generic type representing a checkbox state.
@@ -26,7 +26,13 @@ export function useCheckBoxes<T, K = number>({
   data: T[];
   id: keyof T;
   initValue?: boolean;
-}): object {
+}): {
+  areChecked: CheckType<K>[];
+  setAreChecked: Dispatch<SetStateAction<CheckType<K>[]>>;
+  isTotalChecked: boolean;
+  setIsTotalChecked: Dispatch<SetStateAction<boolean>>;
+  setCheckOne: (id: K, value: boolean) => void;
+} {
   const [areChecked, setAreChecked] = useState<CheckType<K>[]>([]);
   const [isTotalChecked, setIsTotalChecked] = useState(initValue);
   useEffect(() => {
