@@ -5,11 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
   const { queryObj } = useRouter();
+  if (!queryObj["role"]) {
+    queryObj["role"] = "participant";
+  }
   const { data, isLoading, isError } = useQuery({
     queryKey: ["user", "sessions"],
     queryFn: async () =>
-      await apiClient.get("/user", { params: queryObj }),
-  }); 
+      await apiClient.get("/user/sessions", { params: queryObj }),
+  });
   if (isError) {
     return <>에러</>;
   }

@@ -3,12 +3,11 @@ import { sessionData } from "../data/sessions";
 
 export const userSessionHandler = http.get(
   `${process.env.NEXT_PUBLIC_API_SERVER}/user/sessions`,
-  async ({ request }) => {
+  async ({ request,cookies }) => {
     await delay(1000);
     const url = new URL(request.url);
     const role = url.searchParams.get("role");
-    const accessToken = request.headers.get("Cookie");
-    console.log(request.headers);
+    const accessToken = cookies.access_token;
     if (!role) {
       return new HttpResponse(null, { status: 400, statusText: "Bad Request" });
     }
