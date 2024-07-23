@@ -60,7 +60,7 @@ export class UsersController {
   }
 
   @Post('sessions')
-  @ApiQuery({ name: 'sessionId' })
+  @ApiQuery({ name: 'sessionId', type: Number })
   @UseGuards(JwtGuard)
   async postUserSession(
     @UserId() userId: number,
