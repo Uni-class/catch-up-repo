@@ -7,6 +7,7 @@ export const apiClient = axios.create({
 
 export const apiAuthClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  withCredentials: true,
 });
 
 apiAuthClient.interceptors.request.use(
