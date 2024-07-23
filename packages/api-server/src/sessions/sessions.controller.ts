@@ -6,7 +6,9 @@ import {
   Patch,
   Query,
   Delete,
-  BadRequestException, UseGuards,
+  BadRequestException,
+  UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { FilesService } from '../files/files.service';
@@ -43,21 +45,21 @@ export class SessionsController {
 
   @Get()
   @UseGuards(JwtGuard)
-  async findOne(@Query('id') id: number) {
-    return await this.sessionsService.findOne(+id);
+  async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
+    return await this.sessionsService.findOne(sessionId);
   }
 
   @Patch()
   @UseGuards(JwtGuard)
   async update(
-    @Query('id') id: number,
+    @Query('sessionId', ParseIntPipe) sessionId: number,
     @UserId() userId: number,
     @Body() updateSessionDto: UpdateSessionDto,
   ) {
     const sessionFileIds = updateSessionDto.sessionFileIds || [];
     delete updateSessionDto.sessionFileIds;
     await this.validateFileIds(userId, sessionFileIds);
-    for (const sessionFile of await this.sessionFilesService.findAllBySessionId(id)) {
+    for (const sessionFile of await this.sessionFilesService.findAllBySessionId(sessionId)) {
       if (sessionFileIds.includes(sessionFile.fileId)) {
         sessionFileIds.splice(sessionFileIds.indexOf(sessionFile.fileId), 1);
       }
@@ -66,15 +68,15 @@ export class SessionsController {
       }
     }
     for (const fileId of sessionFileIds) {
-      await this.sessionFilesService.create(id, fileId);
+      await this.sessionFilesService.create(sessionId, fileId);
     }
-    return this.sessionsService.update(+id, updateSessionDto);
+    return this.sessionsService.update(sessionId, updateSessionDto);
   }
 
   @Delete()
   @UseGuards(JwtGuard)
-  remove(@Query('id') id: number) {
-    return this.sessionsService.remove(+id);
+  remove(@Query('sessionId', ParseIntPipe) sessionId: number) {
+    return this.sessionsService.remove(sessionId);
   }
 
   async validateFileIds(userId: number, fileIds: number[]) {
