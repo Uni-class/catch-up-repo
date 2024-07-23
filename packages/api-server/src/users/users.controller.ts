@@ -17,7 +17,13 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserId } from './decorators/user-id.decorator';
-import { ApiCookieAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCookieAuth,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
 import { Role } from './types/role.type';
@@ -28,7 +34,7 @@ import { UpdateResult } from 'typeorm';
 import { UserSessionQueryType } from './types/user-session-query.type';
 
 @ApiTags('user')
-@ApiCookieAuth()
+@ApiBearerAuth()
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

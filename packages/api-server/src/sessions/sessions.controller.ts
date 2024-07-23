@@ -18,7 +18,10 @@ import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Sessions')
+@ApiBearerAuth()
 @Controller('sessions')
 export class SessionsController {
   constructor(
@@ -49,7 +52,9 @@ export class SessionsController {
   async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
     const session = await this.sessionsService.findOne(sessionId);
     if (!session) {
-      throw new NotFoundException(`Session with ID: ${sessionId} does not exist or you do not have permission to access it.`);
+      throw new NotFoundException(
+        `Session with ID: ${sessionId} does not exist or you do not have permission to access it.`,
+      );
     }
     return session;
   }
@@ -64,11 +69,12 @@ export class SessionsController {
     const sessionFileIds = updateSessionDto.sessionFileIds || [];
     delete updateSessionDto.sessionFileIds;
     await this.validateFileIds(userId, sessionFileIds);
-    for (const sessionFile of await this.sessionFilesService.findAllBySessionId(sessionId)) {
+    for (const sessionFile of await this.sessionFilesService.findAllBySessionId(
+      sessionId,
+    )) {
       if (sessionFileIds.includes(sessionFile.fileId)) {
         sessionFileIds.splice(sessionFileIds.indexOf(sessionFile.fileId), 1);
-      }
-      else {
+      } else {
         await this.sessionFilesService.remove(sessionFile.sessionFileId);
       }
     }
