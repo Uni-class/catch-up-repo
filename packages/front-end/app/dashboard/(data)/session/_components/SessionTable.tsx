@@ -6,7 +6,7 @@ import {
   Td,
   Th,
 } from "@/components/Table";
-import { CheckType, useCheckBoxes } from "@/hook/useCheckBoxes";
+import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
@@ -54,8 +54,8 @@ export default function SessionTable() {
           <Row
             el={e}
             key={e.id}
-            setAreChecked={setAreChecked}
-            areChecked={areChecked}
+            isCheckedOne={isCheckedOne}
+            setIsCheckedOne={setIsCheckedOne}
           />
         ))}
       </TableBody>
@@ -77,7 +77,11 @@ function Head({
     <TableHead>
       <TableRow>
         <Th>
-          <input type="checkbox" onChange={handleChange} checked={isTotalChecked}/>
+          <input
+            type="checkbox"
+            onChange={handleChange}
+            checked={isTotalChecked}
+          />
         </Th>
         <Th>제목</Th>
         <Th>참여 시간</Th>
@@ -88,19 +92,15 @@ function Head({
 
 function Row({
   el,
-  setAreChecked,
-  areChecked,
+  setIsCheckedOne,
+  isCheckedOne,
 }: {
   el: any;
-  setAreChecked: Dispatch<SetStateAction<CheckType<number>[]>>;
-  areChecked: CheckType<number>[];
+  setIsCheckedOne: (id: number, value: boolean) => void;
+  isCheckedOne: (id: number) => boolean;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAreChecked(
-      areChecked.map((x: any) =>
-        el.id === x.id ? { id: x.id, checked: e.target.checked } : x
-      )
-    );
+    setIsCheckedOne(el.id, e.target.checked);
   };
   return (
     <TableRow
@@ -116,7 +116,7 @@ function Row({
         <input
           type="checkbox"
           onChange={handleChange}
-          checked={areChecked.find((e) => e.id === el.id)?.checked}
+          checked={isCheckedOne(el.id)}
         />
       </Td>
       <Td>{el.displayName}</Td>
