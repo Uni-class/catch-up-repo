@@ -4,12 +4,18 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository, UpdateResult } from 'typeorm';
+import { Session } from '../sessions/entities/session.entity';
+import { UserSession } from '../user-sessions/entities/user-session.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
+    @InjectRepository(UserSession)
+    private readonly userSessionRepository: Repository<UserSession>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newUser = this.userRepository.create(createUserDto);
@@ -47,5 +53,30 @@ export class UsersService {
     return await this.userRepository.findOne({
       where: { userId: userId },
     });
+  }
+
+  async getSessionsByHost(userId: number): Promise<Session[]> {
+    const sessions = await this.sessionRepository.find({
+      where: { hostId: userId },
+      order: { createdAt: 'DESC' },
+      take: 10,
+    });
+    return sessions;
+  }
+
+  async getSessionsByParticipant(userId: number): Promise<Session[]> {
+    const userSessions = await this.userSessionRepository.find({
+      where: { userId },
+      order: { createdAt: 'DESC' },
+      take: 10,
+    });
+    const sessions = await Promise.all(
+      userSessions.map((userSession) => {
+        return this.sessionRepository.findOneBy({
+          sessionId: userSession.sessionId,
+        });
+      }),
+    );
+    return sessions;
   }
 }

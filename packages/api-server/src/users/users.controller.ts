@@ -10,13 +10,17 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserId } from './decorators/user-id.decorator';
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
+import { Session } from '../sessions/entities/session.entity';
+import { Role } from './role.type';
 
 @ApiTags('user')
 @ApiCookieAuth()
@@ -27,19 +31,28 @@ export class UsersController {
   @Get()
   @UseGuards(JwtGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async findOne(@UserId() userId: number) {
+  async findOne(@UserId() userId: number): Promise<User> {
     return await this.usersService.findOneById(+userId);
   }
 
   @Patch()
   @UseGuards(JwtGuard)
-  update(@UserId() userId: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+userId, updateUserDto);
+  async update(@UserId() userId: number, @Body() updateUserDto: UpdateUserDto) {
+    return await this.usersService.update(+userId, updateUserDto);
   }
 
   @Delete()
   @UseGuards(JwtGuard)
-  remove(@UserId() userId: number) {
-    return this.usersService.remove(+userId);
+  async remove(@UserId() userId: number): Promise<User> {
+    return await this.usersService.remove(+userId);
+  }
+
+  @Get('sessions')
+  @ApiResponse({ type: [Session] })
+  @UseGuards(JwtGuard)
+  async getSessions(@UserId() userId: number, @Query() query: Role) {
+    if (query.role === 'host')
+      return await this.usersService.getSessionsByHost(userId);
+    return await this.usersService.getSessionsByParticipant(userId);
   }
 }
