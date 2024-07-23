@@ -121,9 +121,7 @@ export class UsersService {
       sessionId,
     });
     if (!userSession) {
-      throw new NotFoundException(
-        `UserSession ${userSession.userSessionId} does not exist`,
-      );
+      throw new NotFoundException(`Session ${sessionId} does not exist`);
     }
     return await this.userSessionRepository.softRemove(userSession);
   }
