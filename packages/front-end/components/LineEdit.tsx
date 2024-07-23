@@ -17,9 +17,10 @@ export default function LineEdit({placeholder = "", text, onChange}: PropType) {
             value={text}
             onChange={onChange}
             className={css({
-                padding: "0.3em 0.5em",
+                padding: "0.5em 0.8em",
                 color: "#000000",
                 background: "#ededed",
+                borderRadius: "0.4em",
                 borderBottom: "0.15em solid transparent",
                 outline: "none",
                 transition: "all 0.2s ease-in-out",

@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('REFRESH_JWT_SECRET'),
+      secretOrKey: configService.get<string>('REFRESH_TOKEN_SECRET'),
     });
   }
 

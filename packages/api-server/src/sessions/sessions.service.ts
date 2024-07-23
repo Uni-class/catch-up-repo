@@ -11,30 +11,23 @@ export class SessionsService {
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
   ) {}
-  create(createSessionDto: CreateSessionDto) {
-    return 'This action adds a new session';
-  }
-
-  findAll() {
-    return `This action returns all sessions`;
+  async create(createSessionDto: CreateSessionDto) {
+    const newUser = this.sessionRepository.create(createSessionDto);
+    return await this.sessionRepository.save(newUser);
   }
 
   async findOne(id: number) {
-    try {
-      return await this.sessionRepository.findOne({
-        where: { sessionId: id },
-        relations: ['host'],
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.sessionRepository.findOne({
+      where: { sessionId: id },
+    });
   }
 
-  update(id: number, updateSessionDto: UpdateSessionDto) {
-    return `This action updates a #${id} session`;
+  async update(id: number, updateSessionDto: UpdateSessionDto) {
+    return await this.sessionRepository.update(id, updateSessionDto);
   }
 
   remove(id: number) {
     return `This action removes a #${id} session`;
   }
 }
+

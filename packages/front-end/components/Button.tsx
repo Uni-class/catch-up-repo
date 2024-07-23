@@ -3,26 +3,27 @@ import { styled } from "@/styled-system/jsx";
 
 const Button = styled("button", {
     base: {
-        padding: "0.3em 0.7em",
-        color: "#000000",
-        background: "#ededed",
+        padding: "0.8em",
+        color: "#ffffff",
+        background: "blue.500",
         outline: "none",
+        borderRadius: "0.5em",
         transition: "all 0.2s ease-in-out",
         cursor: "pointer",
         _enabled: {
             _hover: {
-                background: "#dcdcdc",
+                background: "blue.600",
             },
             _active: {
                 color: "#ffffff",
-                background: "#a8a8a8",
+                background: "orange.40",
             },
         },
         _disabled: {
-            background: "#ffe4e4",
+            background: "red.400",
             cursor: "not-allowed",
         }
-        }
+    }
 });
 
 export default Button;
