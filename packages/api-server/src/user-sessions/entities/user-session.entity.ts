@@ -33,6 +33,11 @@ export class UserSession {
   sessionId: number;
 
   @ApiProperty()
+  @IsString()
+  @Column()
+  displayName: string;
+
+  @ApiProperty()
   @IsDate()
   @CreateDateColumn()
   createdAt: string;
