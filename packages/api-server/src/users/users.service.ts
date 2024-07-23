@@ -106,7 +106,7 @@ export class UsersService {
     });
     if (!userSession) {
       throw new NotFoundException(
-        `UserSession ${userSession.userSessionId} does not exist`,
+        `Session ${updateUserSessionDto.sessionId} does not exist`,
       );
     }
     return await this.userSessionRepository.update(
