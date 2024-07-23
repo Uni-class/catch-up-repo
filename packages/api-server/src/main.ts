@@ -24,7 +24,7 @@ async function bootstrap() {
     .setTitle('Catch-UP API Documentation')
     .setDescription('Catch-UP API description')
     .setVersion('1.0.0')
-    .addCookieAuth('access_token')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {
