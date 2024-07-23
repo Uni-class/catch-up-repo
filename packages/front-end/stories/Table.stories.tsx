@@ -35,16 +35,38 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const headData: string[] = ["name", "location", "tel"];
-const bodyData: { name: string; location: string; tel: string }[] = [
-  { name: "John", location: "USA", tel: "010-1234-5678" },
-  { name: "Younsang", location: "KOR", tel: "010-2468-1357" },
-  { name: "Aru", location: "JAP", tel: "010-9876-5432" },
+const headData: string[] = ["name", "location", "tel", "comment"];
+const bodyData: {
+  name: string;
+  location: string;
+  tel: string;
+  comment: string;
+}[] = [
+  {
+    name: "John",
+    location: "USA",
+    tel: "010-1234-5678",
+    comment: "blahblah~~~",
+  },
+  { name: "Younsang", location: "KOR", tel: "010-2468-1357", comment: "hello" },
+  {
+    name: "Aru",
+    location: "JAP",
+    tel: "010-9876-5432",
+    comment: "blahblah~~~ hihi",
+  },
 ];
 
 const Template: StoryFn = (args) => {
   return (
     <TableContainer>
+      <colgroup>
+        <col width="45px" />
+        <col width="20%" />
+        <col width="100px" />
+        <col width="20%" />
+        <col />
+      </colgroup>
       <TableHead>
         <TableRow>
           <Th align={args.align}>
@@ -66,6 +88,7 @@ const Template: StoryFn = (args) => {
             <Td {...args}>{e.name}</Td>
             <Td {...args}>{e.location}</Td>
             <Td {...args}>{e.tel}</Td>
+            <Td {...args}>{e.comment}</Td>
           </TableRow>
         ))}
       </TableBody>
