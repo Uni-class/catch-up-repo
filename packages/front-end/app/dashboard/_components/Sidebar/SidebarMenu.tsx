@@ -2,9 +2,6 @@ import { Paragraph } from "@/components/Text";
 import { useRouter } from "@/hook/useRouter";
 import { css, cx } from "@/styled-system/css";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import SidebarMenuGroup from "./SidebarMenuGroup";
-
 
 interface ElementPropType {
   text: string;
