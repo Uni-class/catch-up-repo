@@ -1,24 +1,8 @@
 "use client";
-import { useRouter } from "@/hook/useRouter";
-import { apiClient } from "@/util/axios";
-import { useQuery } from "@tanstack/react-query";
+
+import SessionTable from "./_components/SessionTable";
 
 export default function Page() {
-  const { queryObj } = useRouter();
-  if (!queryObj["role"]) {
-    queryObj["role"] = "participant";
-  }
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["user", "sessions"],
-    queryFn: async () =>
-      await apiClient.get("/user/sessions", { params: queryObj }),
-  });
-  if (isError) {
-    return <>에러</>;
-  }
-  if (isLoading) {
-    return <>로딩</>;
-  }
-  console.log(data);
-  return <>안녕</>;
+  
+  return <><SessionTable/></>;
 }
