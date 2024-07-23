@@ -34,7 +34,8 @@ export default function SessionTable() {
     setAreChecked,
     isTotalChecked,
     setIsTotalChecked,
-    setCheckOne,
+    setIsCheckedOne,
+    isCheckedOne,
   } = useCheckBoxes<any, number>({ data: data, id: "id" });
 
   return (

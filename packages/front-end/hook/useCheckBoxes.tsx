@@ -32,7 +32,8 @@ export function useCheckBoxes<T, K = number>({
   setAreChecked: Dispatch<SetStateAction<CheckType<K>[]>>;
   isTotalChecked: boolean;
   setIsTotalChecked: Dispatch<SetStateAction<boolean>>;
-  setCheckOne: (id: K, value: boolean) => void;
+  setIsCheckedOne: (id: K, value: boolean) => void;
+  isCheckedOne: (id: K) => boolean;
 } {
   const [areChecked, setAreChecked] = useState<CheckType<K>[]>([]);
   const [isTotalChecked, setIsTotalChecked] = useState(initValue);
@@ -49,18 +50,21 @@ export function useCheckBoxes<T, K = number>({
   useEffect(() => {
     setIsTotalChecked(initValue);
   }, [pathname, query]);
-  const setCheckOne = (id: K, value: boolean) => {
+  const setIsCheckedOne = (id: K, value: boolean) => {
     setAreChecked(
       areChecked.map((areCheck) =>
         areCheck.id === id ? { id: areCheck.id, checked: value } : areCheck
       )
     );
   };
+  const isCheckedOne = (id: K) =>
+    areChecked.find((e) => e.id === id)?.checked ?? initValue;
   return {
     areChecked,
     setAreChecked,
     isTotalChecked,
     setIsTotalChecked,
-    setCheckOne,
+    setIsCheckedOne,
+    isCheckedOne,
   };
 }
