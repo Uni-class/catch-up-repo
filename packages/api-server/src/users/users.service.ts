@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -105,8 +109,8 @@ export class UsersService {
       sessionId: updateUserSessionDto.sessionId,
     });
     if (!userSession) {
-      throw new NotFoundException(
-        `Session ${updateUserSessionDto.sessionId} does not exist`,
+      throw new BadRequestException(
+        `You did not joined this session. SessionId: ${updateUserSessionDto.sessionId}`,
       );
     }
     return await this.userSessionRepository.update(
@@ -121,7 +125,9 @@ export class UsersService {
       sessionId,
     });
     if (!userSession) {
-      throw new NotFoundException(`Session ${sessionId} does not exist`);
+      throw new BadRequestException(
+        `You did not joined this session. SessionId: ${sessionId}`,
+      );
     }
     return await this.userSessionRepository.softRemove(userSession);
   }
