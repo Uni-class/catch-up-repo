@@ -5,7 +5,7 @@ export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
 
-export const apiAuthClient = axios.create({
+const apiAuthClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
 });
@@ -36,10 +36,12 @@ apiAuthClient.interceptors.response.use(
           },
         });
         return apiAuthClient(config);
-      } catch (e) {
-        return Promise.reject(e);
+      } catch (error) {
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);
   }
 );
+
+export { apiAuthClient };

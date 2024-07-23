@@ -1,4 +1,4 @@
-const sessionData: {
+export const sessionData: {
   id: number;
   sessionID: number;
   userID: number;

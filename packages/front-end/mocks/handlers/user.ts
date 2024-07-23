@@ -1,4 +1,5 @@
 import { HttpResponse, delay, http } from "msw";
+import { sessionData } from "../data/sessions";
 
 export const userSessionHandler = http.get(
   `${process.env.NEXT_PUBLIC_API_SERVER}/user/sessions`,
@@ -6,7 +7,7 @@ export const userSessionHandler = http.get(
     await delay(1000);
     const url = new URL(request.url);
     const role = url.searchParams.get("role");
-    const accessToken = request.headers.get("access_token");
+    const accessToken = request.headers.get("Authorization");
     if (!role) {
       return new HttpResponse(null, { status: 400, statusText: "Bad Request" });
     }
