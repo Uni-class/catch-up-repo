@@ -25,9 +25,4 @@ export class SessionsService {
   async update(id: number, updateSessionDto: UpdateSessionDto) {
     return await this.sessionRepository.update(id, updateSessionDto);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} session`;
-  }
 }
-
