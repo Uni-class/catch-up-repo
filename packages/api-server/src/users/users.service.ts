@@ -114,4 +114,17 @@ export class UsersService {
       updateUserSessionDto,
     );
   }
+
+  async deleteUserSession(userId: number, sessionId: number) {
+    const userSession = await this.userSessionRepository.findOneBy({
+      userId,
+      sessionId,
+    });
+    if (!userSession) {
+      throw new NotFoundException(
+        `UserSession ${userSession.userSessionId} does not exist`,
+      );
+    }
+    return await this.userSessionRepository.softRemove(userSession);
+  }
 }

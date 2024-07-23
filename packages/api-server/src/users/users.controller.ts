@@ -95,4 +95,16 @@ export class UsersController {
       await this.usersService.patchUserSession(newUpdateUserSession);
     return result;
   }
+
+  @Delete('sessions')
+  @ApiQuery({ name: 'sessionId', type: Number })
+  @ApiResponse({})
+  @UseGuards(JwtGuard)
+  async deleteUserSession(
+    @UserId() userId: number,
+    @Query('sessionId') sessionId: number,
+  ): Promise<UserSession> {
+    const result = await this.usersService.deleteUserSession(userId, sessionId);
+    return result;
+  }
 }
