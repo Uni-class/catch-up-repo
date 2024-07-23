@@ -6,6 +6,8 @@ import { User } from './entities/user.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { Session } from '../sessions/entities/session.entity';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
+import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
+import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
 
 @Injectable()
 export class UsersService {
@@ -80,18 +82,36 @@ export class UsersService {
     return sessions;
   }
 
-  async postUserSession(userId: number, sessionId: number) {
+  async postUserSession(
+    createUserSessionDto: CreateUserSessionDto,
+  ): Promise<UserSession> {
     const session: Session = await this.sessionRepository.findOneBy({
-      sessionId,
+      sessionId: createUserSessionDto.sessionId,
     });
     if (!session) {
-      throw new NotFoundException(`Session ${sessionId} does not exist`);
+      throw new NotFoundException(
+        `Session ${createUserSessionDto.sessionId} does not exist`,
+      );
     }
-    const newUserSession = this.userSessionRepository.create({
-      userId,
-      sessionId,
-    });
+    const newUserSession =
+      this.userSessionRepository.create(createUserSessionDto);
     const userSession = await this.userSessionRepository.save(newUserSession);
     return userSession;
+  }
+
+  async patchUserSession(updateUserSessionDto: UpdateUserSessionDto) {
+    const userSession = await this.userSessionRepository.findOneBy({
+      userId: updateUserSessionDto.userId,
+      sessionId: updateUserSessionDto.sessionId,
+    });
+    if (!userSession) {
+      throw new NotFoundException(
+        `UserSession ${userSession.userSessionId} does not exist`,
+      );
+    }
+    return await this.userSessionRepository.update(
+      userSession.userSessionId,
+      updateUserSessionDto,
+    );
   }
 }

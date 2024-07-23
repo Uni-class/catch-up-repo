@@ -23,6 +23,9 @@ import { Session } from '../sessions/entities/session.entity';
 import { Role } from './role.type';
 import { UpdateSessionDto } from '../sessions/dto/update-session.dto';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
+import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
+import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
+import { UpdateResult } from 'typeorm';
 
 @ApiTags('user')
 @ApiCookieAuth()
@@ -65,7 +68,29 @@ export class UsersController {
   async postUserSession(
     @UserId() userId: number,
     @Query('sessionId') sessionId: number,
+    @Query('displayName') displayName: string,
   ): Promise<UserSession> {
-    return await this.usersService.postUserSession(+userId, +sessionId);
+    const newCreateUserSession = new CreateUserSessionDto();
+    newCreateUserSession.userId = userId;
+    newCreateUserSession.displayName = displayName;
+    newCreateUserSession.sessionId = sessionId;
+    return await this.usersService.postUserSession(newCreateUserSession);
+  }
+
+  @Patch('sessions')
+  @ApiQuery({ name: 'sessionId', type: Number })
+  @UseGuards(JwtGuard)
+  async patchUserSession(
+    @UserId() userId: number,
+    @Query('sessionId') sessionId: number,
+    @Query('displayName') displayName: string,
+  ): Promise<UpdateResult> {
+    const newUpdateUserSession = new UpdateUserSessionDto();
+    newUpdateUserSession.userId = userId;
+    newUpdateUserSession.displayName = displayName;
+    newUpdateUserSession.sessionId = sessionId;
+    const result: UpdateResult =
+      await this.usersService.patchUserSession(newUpdateUserSession);
+    return result;
   }
 }
