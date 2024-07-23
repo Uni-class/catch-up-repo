@@ -18,8 +18,9 @@ import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Sessions')
 @ApiBearerAuth()
 @Controller('sessions')
 export class SessionsController {
