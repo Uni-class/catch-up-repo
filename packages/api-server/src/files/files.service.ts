@@ -16,10 +16,6 @@ export class FilesService {
     return 'This action adds a new file';
   }
 
-  findAll() {
-    return `This action returns all files`;
-  }
-
   async findOne(id: number) {
     return await this.fileRepository.findOne({
       where: { fileId: id },
@@ -30,7 +26,10 @@ export class FilesService {
     return `This action updates a #${id} file`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} file`;
+  async remove(id: number) {
+    const file = await this.fileRepository.findOne({
+      where: { fileId: id },
+    });
+    return await this.fileRepository.softRemove(file);
   }
 }
