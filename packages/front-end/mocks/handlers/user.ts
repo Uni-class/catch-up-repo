@@ -42,6 +42,9 @@ export const tokenRefreshHandler = http.get(
     return new HttpResponse(null, {
       status: 200,
       statusText: "Get new access_token with refreshToken",
+      headers: {
+        "Set-Cookie": "access_token=123456789",
+      },
     });
   }
 );
