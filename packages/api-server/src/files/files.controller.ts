@@ -7,7 +7,6 @@ import {
   Delete,
   Param,
   ParseIntPipe,
-  BadRequestException,
   UseGuards,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
@@ -32,7 +31,7 @@ export class FilesController {
   @Get(':fileId/info')
   @UseGuards(JwtGuard)
   async findOne(@Param('fileId', ParseIntPipe) requestedFileId: number) {
-    return await this.getFileAsUser(requestedFileId, null);
+    return await this.filesService.getFileAsUser(requestedFileId, null);
   }
 
   @Patch(':fileId/info')
@@ -42,7 +41,7 @@ export class FilesController {
     @UserId() userId: number,
     @Body() updateFileDto: UpdateFileDto,
   ) {
-    const file = await this.getFileAsUser(requestedFileId, userId);
+    const file = await this.filesService.getFileAsUser(requestedFileId, userId);
     return this.filesService.update(file.fileId, updateFileDto);
   }
 
@@ -52,17 +51,7 @@ export class FilesController {
     @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
   ) {
-    const file = await this.getFileAsUser(requestedFileId, userId);
+    const file = await this.filesService.getFileAsUser(requestedFileId, userId);
     return this.filesService.remove(file.fileId);
-  }
-
-  async getFileAsUser(fileId: number, userId: number | null = null) {
-    const file = await this.filesService.findOne(fileId);
-    if (!file || (userId && file.ownerId !== userId)) {
-      throw new BadRequestException(
-        `File with ID: ${fileId} does not exist or you do not have permission to access it.`,
-      );
-    }
-    return file;
   }
 }
