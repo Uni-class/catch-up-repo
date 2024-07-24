@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Patch,
-  Query,
   UseGuards,
   BadRequestException,
   ParseIntPipe,

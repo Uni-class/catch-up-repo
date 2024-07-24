@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Delete,
-  Query,
+  Param,
   ParseIntPipe,
   BadRequestException,
   UseGuards,
