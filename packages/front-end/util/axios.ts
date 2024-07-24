@@ -1,11 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
-
-// just req with access_token
-export const authClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
-});
-
 // just req with refresh_token
 export const refreshClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
@@ -15,17 +9,6 @@ export const refreshClient = axios.create({
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
-
-authClient.interceptors.request.use(
-  (config) => {
-    const accessToken = Cookies.get("access_token");
-    config.headers.Authorization = `Bearer ${accessToken}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 refreshClient.interceptors.request.use(
   (config) => {
@@ -54,7 +37,6 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log({error});
     const originalReq = error.config as InternalAxiosRequestConfig<any> & {
       _retry?: boolean;
     };
@@ -62,7 +44,7 @@ apiClient.interceptors.response.use(
       originalReq._retry = true;
       try {
         await refreshClient.get("/auth/token-refresh");
-        return authClient(originalReq);
+        return apiClient(originalReq);
       } catch (err) {
         return Promise.reject(err);
       }
