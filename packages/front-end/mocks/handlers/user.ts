@@ -38,7 +38,7 @@ export const userFileHandler = http.get(
         statusText: "Authorization Error",
       });
     }
-    return new HttpResponse(null, { status: 200, statusText: "임시 성공" });
+    return HttpResponse.json([1, 2, 3]);
   }
 );
 
