@@ -14,7 +14,7 @@ import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 
 @Injectable()
 export class FilesService {
-  private s3Client: S3Client;
+  private readonly s3Client: S3Client;
 
   constructor(
     private readonly configService: ConfigService,
@@ -53,27 +53,38 @@ export class FilesService {
     return await this.fileRepository.softRemove(file);
   }
 
-  async uploadFile(file: Express.Multer.File): Promise<FileUploadResponseDto> {
+  async uploadFile(
+    userId: number,
+    file: Express.Multer.File,
+  ): Promise<FileUploadResponseDto> {
     if (!file) throw new BadRequestException(`File not exists`);
-    const s3UploadResult = await this.s3Upload(file);
-    if (s3UploadResult.$metadata.httpStatusCode !== 200)
+    const fileDto: CreateFileDto = await this.s3Upload(userId, file);
+    const newFile: File = this.fileRepository.create(fileDto);
+    await this.fileRepository.save(newFile);
+    return new FileUploadResponseDto(true);
+  }
+
+  async s3Upload(userId: number, file: Express.Multer.File) {
+    const key: string = `${Date.now().toString()}-${file.originalname}`;
+    const param = {
+      Key: key,
+      Body: file.buffer,
+      Bucket: this.configService.get<string>('S3_BUCKET_NAME'),
+    };
+
+    const command = new PutObjectCommand(param);
+    const res = await this.s3Client.send(command);
+    if (res.$metadata.httpStatusCode !== 200)
       throw new InternalServerErrorException(
         new FileUploadResponseDto(
           false,
           'Something went wrong while uploading file to S3 Bucket.',
         ),
       );
-    return new FileUploadResponseDto(true);
-  }
-
-  async s3Upload(file: Express.Multer.File) {
-    const param = {
-      Key: `${Date.now().toString()}-${file.originalname}`,
-      Body: file.buffer,
-      Bucket: this.configService.get<string>('S3_BUCKET_NAME'),
+    return {
+      ownerId: userId,
+      name: key,
+      url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
-
-    const command = new PutObjectCommand(param);
-    return await this.s3Client.send(command);
   }
 }

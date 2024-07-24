@@ -51,6 +51,7 @@ export class FilesController {
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
+    @UserId(ParseIntPipe) userId: number,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: 'pdf' })],
@@ -58,7 +59,7 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ): Promise<FileUploadResponseDto> {
-    return await this.filesService.uploadFile(file);
+    return await this.filesService.uploadFile(userId, file);
   }
 
   @Get(':fileId/info')
