@@ -17,6 +17,7 @@ import { UpdateSessionDto } from './dto/update-session.dto';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FilesController } from '../files/files.controller';
 
 @ApiTags('Sessions')
 @ApiBearerAuth()
@@ -26,6 +27,7 @@ export class SessionsController {
     private readonly sessionsService: SessionsService,
     private readonly filesService: FilesService,
     private readonly sessionFilesService: SessionFilesService,
+    private readonly filesController: FilesController,
   ) {}
 
   @Post()
@@ -40,7 +42,7 @@ export class SessionsController {
     await this.validateFileIds(userId, sessionFileIds);
     const session = await this.sessionsService.create(createSessionDto);
     for (const fileId of sessionFileIds) {
-      await this.sessionFilesService.create(session[0].sessionId, fileId);
+      await this.sessionFilesService.create(session.sessionId, fileId);
     }
     return session;
   }
@@ -90,12 +92,7 @@ export class SessionsController {
 
   async validateFileIds(userId: number, fileIds: number[]) {
     for (const fileId of fileIds) {
-      const file = await this.filesService.findOne(fileId);
-      if (!file || file.ownerId !== userId) {
-        throw new BadRequestException(
-          `File with ID: ${fileId} does not exist or you do not have permission to access it.`,
-        );
-      }
+      await this.filesController.getFileAsUser(fileId, userId);
     }
   }
 }

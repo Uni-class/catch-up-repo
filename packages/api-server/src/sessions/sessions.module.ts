@@ -7,10 +7,16 @@ import { FilesService } from '../files/files.service';
 import { SessionFilesService } from '../session-files/session-files.service';
 import { File } from '../files/entities/file.entity';
 import { SessionFile } from '../session-files/entities/session-file.entity';
+import { FilesController } from '../files/files.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Session, File, SessionFile])],
   controllers: [SessionsController],
-  providers: [SessionsService, FilesService, SessionFilesService],
+  providers: [
+    SessionsService,
+    FilesService,
+    SessionFilesService,
+    FilesController,
+  ],
 })
 export class SessionsModule {}

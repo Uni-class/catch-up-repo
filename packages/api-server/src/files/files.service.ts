@@ -12,7 +12,7 @@ export class FilesService {
     private readonly fileRepository: Repository<File>,
   ) {}
 
-  create(createFileDto: CreateFileDto) {
+  async create(createFileDto: CreateFileDto) {
     return 'This action adds a new file';
   }
 
@@ -22,7 +22,7 @@ export class FilesService {
     });
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
+  async update(id: number, updateFileDto: UpdateFileDto) {
     return `This action updates a #${id} file`;
   }
 
