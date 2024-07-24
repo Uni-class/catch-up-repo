@@ -1,4 +1,8 @@
 import {
+  sessionAreCheckedAtom,
+  sessionIsTotalCheckedAtom,
+} from "@/client/CheckBoxAtom";
+import {
   TableBody,
   TableContainer,
   TableHead,
@@ -29,12 +33,13 @@ export default function SessionTable() {
       return data;
     },
   });
-  const {
-    isTotalChecked,
-    setIsTotalChecked,
-    setIsCheckedOne,
-    isCheckedOne,
-  } = useCheckBoxes<Session, number>({ data: data, id: "sessionId" });
+  const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
+    useCheckBoxes<Session, number>({
+      data: data,
+      id: "sessionId",
+      isTotalCheckedAtom: sessionIsTotalCheckedAtom,
+      areCheckedAtom: sessionAreCheckedAtom,
+    });
 
   return (
     <TableContainer>
@@ -100,7 +105,6 @@ function Row({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsCheckedOne(el.sessionId, e.target.checked);
   };
-  console.log(el);
   return (
     <TableRow
       className={css({
