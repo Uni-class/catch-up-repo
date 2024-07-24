@@ -25,7 +25,6 @@ export default function SessionTable() {
       const { data }: { data: any[] } = await apiClient.get("/user/sessions", {
         params: queryObj,
       });
-
       return data;
     },
   });
