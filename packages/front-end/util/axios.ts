@@ -2,7 +2,6 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
-  withCredentials: true,
 });
 
 apiClient.interceptors.response.use(
