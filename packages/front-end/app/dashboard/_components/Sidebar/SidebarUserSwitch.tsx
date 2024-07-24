@@ -6,10 +6,10 @@ import { ChangeEvent, useState } from "react";
 export default function SidebarUserSwitch() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(
-    router.query.get("role") === "tutor"
+    router.query.get("role") === "host"
   );
   const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newRole = router.query.get("role") === "tutor" ? "student" : "tutor";
+    const newRole = router.query.get("role") === "host" ? "participant" : "host";
     router.queryObj["role"] = newRole;
     router.replace(router.getURLString(router.pathname, router.queryObj), {
       scroll: false,
