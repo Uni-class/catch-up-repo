@@ -1,16 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { File } from './entities/file.entity';
+import { ConfigService } from '@nestjs/config';
+import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 
 @Injectable()
 export class FilesService {
+  private s3Client: S3Client;
+
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
-  ) {}
+  ) {
+    this.s3Client = new S3Client({
+      region: this.configService.get<string>('S3_REGION'),
+      credentials: {
+        accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+        secretAccessKey: this.configService.get<string>(
+          'AWS_SECRET_ACCESS_KEY',
+        ),
+      },
+    });
+  }
 
   async create(createFileDto: CreateFileDto) {
     return 'This action adds a new file';
@@ -31,5 +51,29 @@ export class FilesService {
       where: { fileId: id },
     });
     return await this.fileRepository.softRemove(file);
+  }
+
+  async uploadFile(file: Express.Multer.File): Promise<FileUploadResponseDto> {
+    if (!file) throw new BadRequestException(`File not exists`);
+    const s3UploadResult = await this.s3Upload(file);
+    if (s3UploadResult.$metadata.httpStatusCode !== 200)
+      throw new InternalServerErrorException(
+        new FileUploadResponseDto(
+          false,
+          'Something went wrong while uploading file to S3 Bucket.',
+        ),
+      );
+    return new FileUploadResponseDto(true);
+  }
+
+  async s3Upload(file: Express.Multer.File) {
+    const param = {
+      Key: `${Date.now().toString()}-${file.originalname}`,
+      Body: file.buffer,
+      Bucket: this.configService.get<string>('S3_BUCKET_NAME'),
+    };
+
+    const command = new PutObjectCommand(param);
+    return await this.s3Client.send(command);
   }
 }
