@@ -1,3 +1,4 @@
+import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -16,6 +17,12 @@ export default function FileTable() {
       return data;
     },
   });
+  const {
+    isTotalChecked,
+    setIsTotalChecked,
+    setIsCheckedOne,
+    isCheckedOne,
+  } = useCheckBoxes<any, number>({ data: data, id: "id" });
 
   return <>지금은 아무것도 없음</>;
 }
