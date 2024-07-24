@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "./useRouter";
 import { CheckType } from "@/type/CheckType";
+import { PrimitiveAtom, useAtom } from "jotai";
+import { SetAtom } from "@/type/JotaiType";
 
 /**
  * Custom hook for managing checkboxes.
@@ -19,23 +21,27 @@ export function useCheckBoxes<T, K = number>({
   data,
   id,
   initValue = false,
+  isTotalCheckedAtom,
+  areCheckedAtom,
 }: {
   data: T[];
   id: keyof T;
   initValue?: boolean;
+  isTotalCheckedAtom: PrimitiveAtom<boolean>;
+  areCheckedAtom: PrimitiveAtom<CheckType<K>[]>;
 }): {
   areChecked: CheckType<K>[];
-  setAreChecked: Dispatch<SetStateAction<CheckType<K>[]>>;
+  setAreChecked: SetAtom<[SetStateAction<CheckType<K>[]>], void>;
   isTotalChecked: boolean;
-  setIsTotalChecked: Dispatch<SetStateAction<boolean>>;
+  setIsTotalChecked: SetAtom<[SetStateAction<boolean>], void>;
   setIsCheckedOne: (id: K, value: boolean) => void;
   isCheckedOne: (id: K) => boolean;
   getIsChecked: () => {
     id: K;
   }[];
 } {
-  const [areChecked, setAreChecked] = useState<CheckType<K>[]>([]);
-  const [isTotalChecked, setIsTotalChecked] = useState(initValue);
+  const [areChecked, setAreChecked] = useAtom(areCheckedAtom);
+  const [isTotalChecked, setIsTotalChecked] = useAtom(isTotalCheckedAtom);
   const { pathname, query } = useRouter();
   useEffect(() => {
     if (data) {
