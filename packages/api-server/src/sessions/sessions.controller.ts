@@ -8,6 +8,7 @@ import {
   UseGuards,
   BadRequestException,
   ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { FilesService } from '../files/files.service';
@@ -19,9 +20,9 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FilesController } from '../files/files.controller';
 
-@ApiTags('Sessions')
+@ApiTags('Session')
 @ApiBearerAuth()
-@Controller('sessions')
+@Controller('session')
 export class SessionsController {
   constructor(
     private readonly sessionsService: SessionsService,
@@ -30,9 +31,9 @@ export class SessionsController {
     private readonly filesController: FilesController,
   ) {}
 
-  @Post()
+  @Post('create')
   @UseGuards(JwtGuard)
-  async create(
+  async createSession(
     @UserId() userId: number,
     @Body() createSessionDto: CreateSessionDto,
   ) {
@@ -47,16 +48,19 @@ export class SessionsController {
     return session;
   }
 
-  @Get()
+  @Get(':sessionId/info')
   @UseGuards(JwtGuard)
-  async findOne(@Query('sessionId', ParseIntPipe) sessionId: number) {
-    return await this.getSessionAsUser(sessionId, null);
+  async getSessionInfo(
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @UserId(ParseIntPipe) userId: number,
+  ) {
+    return await this.getSessionAsUser(sessionId, userId);
   }
 
-  @Patch()
+  @Patch(':sessionId/info')
   @UseGuards(JwtGuard)
   async update(
-    @Query('sessionId', ParseIntPipe) requestedSessionId: number,
+    @Param('sessionId', ParseIntPipe) requestedSessionId: number,
     @UserId() userId: number,
     @Body() updateSessionDto: UpdateSessionDto,
   ) {

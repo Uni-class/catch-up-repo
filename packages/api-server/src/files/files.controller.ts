@@ -17,9 +17,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
-@ApiTags('files')
+@ApiTags('file')
 @ApiBearerAuth()
-@Controller('files')
+@Controller('file')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
@@ -29,16 +29,16 @@ export class FilesController {
     return await this.filesService.create(createFileDto);
   }
 
-  @Get()
+  @Get(':fileId/info')
   @UseGuards(JwtGuard)
-  async findOne(@Query('fileId', ParseIntPipe) requestedFileId: number) {
+  async findOne(@Param('fileId', ParseIntPipe) requestedFileId: number) {
     return await this.getFileAsUser(requestedFileId, null);
   }
 
-  @Patch()
+  @Patch(':fileId/info')
   @UseGuards(JwtGuard)
   async update(
-    @Query('fileId', ParseIntPipe) requestedFileId: number,
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
     @Body() updateFileDto: UpdateFileDto,
   ) {
@@ -46,10 +46,10 @@ export class FilesController {
     return this.filesService.update(file.fileId, updateFileDto);
   }
 
-  @Delete()
+  @Delete(':fileId')
   @UseGuards(JwtGuard)
   async remove(
-    @Query('fileId', ParseIntPipe) requestedFileId: number,
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
   ) {
     const file = await this.getFileAsUser(requestedFileId, userId);
