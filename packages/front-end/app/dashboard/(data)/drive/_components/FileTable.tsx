@@ -17,5 +17,5 @@ export default function FileTable() {
     },
   });
 
-  return <></>;
+  return <>지금은 아무것도 없음</>;
 }

@@ -30,8 +30,6 @@ export default function SessionTable() {
     },
   });
   const {
-    areChecked,
-    setAreChecked,
     isTotalChecked,
     setIsTotalChecked,
     setIsCheckedOne,
