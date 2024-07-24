@@ -8,6 +8,7 @@ import {
 } from "@/components/Table";
 import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
+import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -22,7 +23,7 @@ export default function SessionTable() {
   const { data } = useSuspenseQuery({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      const { data }: { data: any[] } = await apiClient.get("/user/sessions", {
+      const { data } = await apiClient.get<Session[]>("/user/sessions", {
         params: queryObj,
       });
       return data;
@@ -35,7 +36,7 @@ export default function SessionTable() {
     setIsTotalChecked,
     setIsCheckedOne,
     isCheckedOne,
-  } = useCheckBoxes<any, number>({ data: data, id: "id" });
+  } = useCheckBoxes<Session, number>({ data: data, id: "sessionId" });
 
   return (
     <TableContainer>
@@ -49,10 +50,10 @@ export default function SessionTable() {
         isTotalChecked={isTotalChecked}
       />
       <TableBody>
-        {data.map((e: any) => (
+        {data.map((e) => (
           <Row
             el={e}
-            key={e.id}
+            key={e.sessionId}
             isCheckedOne={isCheckedOne}
             setIsCheckedOne={setIsCheckedOne}
           />
@@ -94,12 +95,12 @@ function Row({
   setIsCheckedOne,
   isCheckedOne,
 }: {
-  el: any;
+  el: Session;
   setIsCheckedOne: (id: number, value: boolean) => void;
   isCheckedOne: (id: number) => boolean;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCheckedOne(el.id, e.target.checked);
+    setIsCheckedOne(el.sessionId, e.target.checked);
   };
   return (
     <TableRow
@@ -115,11 +116,11 @@ function Row({
         <input
           type="checkbox"
           onChange={handleChange}
-          checked={isCheckedOne(el.id)}
+          checked={isCheckedOne(el.sessionId)}
         />
       </Td>
-      <Td>{el.displayName}</Td>
-      <Td>{formatDate(el.joinedAt, "yyyy-MM-dd")}</Td>
+      <Td>{el.sessionName}</Td>
+      <Td>{formatDate(el.createdAt, "yyyy-MM-dd")}</Td>
     </TableRow>
   );
 }

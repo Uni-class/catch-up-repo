@@ -18,13 +18,27 @@ export const userSessionHandler = http.get(
       });
     }
     const data = sessionData.filter(
-      (e) => e.userID === (role === "host" ? 1 : 2)
+      (e) => e.hostId === (role === "host" ? 1 : 2)
     );
     if (data) {
       return HttpResponse.json(data);
     } else {
       return new HttpResponse(null, { status: 404, statusText: "not found" });
     }
+  }
+);
+
+export const userFileHandler = http.get(
+  `${process.env.NEXT_PUBLIC_API_SERVER}/user/files`,
+  async ({ request }) => {
+    const accessToken = request.headers.get("Authorization")?.split(" ")[1];
+    if (!accessToken || accessToken === "undefined") {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: "Authorization Error",
+      });
+    }
+    return new HttpResponse(null, { status: 200, statusText: "임시 성공" });
   }
 );
 

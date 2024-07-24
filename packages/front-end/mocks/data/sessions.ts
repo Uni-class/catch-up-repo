@@ -1,50 +1,52 @@
-export const sessionData: {
-  id: number;
-  sessionID: number;
-  userID: number;
-  displayName: string;
-  joinedAt: Date;
-}[] = [
+import { Session } from "@/schema/backend.schema";
+
+export const sessionData: Session[] = [
   {
-    id: 1,
-    sessionID: 1,
-    userID: 1,
-    displayName: "1234",
-    joinedAt: new Date(2024, 1, 1, 13, 0),
+    sessionId: 1,
+    sessionName: "1234",
+    hostId: 1,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
   {
-    id: 2,
-    sessionID: 2,
-    userID: 2,
-    displayName: "4321",
-    joinedAt: new Date(2024, 1, 2, 13, 0),
+    sessionId: 2,
+    sessionName: "4321",
+    hostId: 2,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
   {
-    id: 3,
-    sessionID: 3,
-    userID: 1,
-    displayName: "qwerty",
-    joinedAt: new Date(2024, 1, 3, 13, 0),
+    sessionId: 3,
+    sessionName: "qwerty",
+    hostId: 1,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
   {
-    id: 4,
-    sessionID: 4,
-    userID: 2,
-    displayName: "asdf",
-    joinedAt: new Date(2024, 1, 4, 13, 0),
+    sessionId: 4,
+    sessionName: "foobar",
+    hostId: 1,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
   {
-    id: 5,
-    sessionID: 5,
-    userID: 1,
-    displayName: "zzz",
-    joinedAt: new Date(2024, 1, 5, 13, 0),
+    sessionId: 5,
+    sessionName: "alicebob",
+    hostId: 2,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
   {
-    id: 6,
-    sessionID: 6,
-    userID: 1,
-    displayName: "hahaha",
-    joinedAt: new Date(2024, 1, 6, 13, 0),
+    sessionId: 6,
+    sessionName: "02468",
+    hostId: 1,
+    createdAt: "2024-07-24T05:52:21.838Z",
+    updatedAt: "2024-07-24T05:52:21.838Z",
+    closedAt: "2024-07-24T05:52:21.838Z",
   },
 ];

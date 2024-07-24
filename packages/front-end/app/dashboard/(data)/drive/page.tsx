@@ -1,3 +1,11 @@
-export default function Page(){
-    return <>안녕</>
+"use client";
+
+import FileTable from "./_components/FileTable";
+
+export default function Page() {
+  return (
+    <>
+      <FileTable />
+    </>
+  );
 }
