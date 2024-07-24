@@ -29,7 +29,7 @@ export const userSessionHandler = http.get(
 );
 
 export const tokenRefreshHandler = http.get(
-  `${process.env.NEXT_PUBLIC_API_SERVER}/token-refresh`,
+  `${process.env.NEXT_PUBLIC_API_SERVER}/auth/token-refresh`,
   async ({ request }) => {
     await delay(500);
     const refreshToken = request.headers.get("Authorization")?.split(" ")[1];
