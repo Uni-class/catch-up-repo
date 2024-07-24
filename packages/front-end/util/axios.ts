@@ -61,7 +61,7 @@ apiClient.interceptors.response.use(
     if (error?.response?.status === 401 && !originalReq._retry) {
       originalReq._retry = true;
       try {
-        await refreshClient.get("/token-refresh");
+        await refreshClient.get("/auth/token-refresh");
         return authClient(originalReq);
       } catch (err) {
         return Promise.reject(err);
