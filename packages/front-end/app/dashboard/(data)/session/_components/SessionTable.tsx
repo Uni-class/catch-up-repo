@@ -100,6 +100,7 @@ function Row({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsCheckedOne(el.sessionId, e.target.checked);
   };
+  console.log(el);
   return (
     <TableRow
       className={css({
@@ -118,7 +119,7 @@ function Row({
         />
       </Td>
       <Td>{el.sessionName}</Td>
-      <Td>{formatDate(el.createdAt, "yyyy-MM-dd")}</Td>
+      <Td>{formatDate(el.createdAt, "yyyy-MM-dd-HH")}</Td>
     </TableRow>
   );
 }

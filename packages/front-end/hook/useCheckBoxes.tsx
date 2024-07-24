@@ -1,11 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "./useRouter";
+import { CheckType } from "@/type/CheckType";
 
-/**
- * Generic type representing a checkbox state.
- * @template K - The type of the id.
- */
-export type CheckType<K> = { id: K; checked: boolean };
 /**
  * Custom hook for managing checkboxes.
  *
