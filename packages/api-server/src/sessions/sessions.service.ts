@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,5 +24,15 @@ export class SessionsService {
 
   async update(id: number, updateSessionDto: UpdateSessionDto) {
     return await this.sessionRepository.update(id, updateSessionDto);
+  }
+
+  async getSessionAsUser(sessionId: number, userId: number | null = null) {
+    const session = await this.findOne(sessionId);
+    if (!session || (userId && session.hostId !== userId)) {
+      throw new BadRequestException(
+        `Session with ID: ${sessionId} does not exist or you do not have permission to access it.`,
+      );
+    }
+    return session;
   }
 }
