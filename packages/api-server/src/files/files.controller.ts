@@ -13,9 +13,9 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('files')
+@ApiTags('file')
 @ApiBearerAuth()
-@Controller('files')
+@Controller('file')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
@@ -24,12 +24,12 @@ export class FilesController {
     return this.filesService.create(createFileDto);
   }
 
-  @Get()
+  @Get(':fileId/info')
   findOne(@Query('fileId', ParseIntPipe) fileId: number) {
     return this.filesService.findOne(fileId);
   }
 
-  @Patch()
+  @Patch(':fileId/info')
   update(
     @Query('fileId', ParseIntPipe) fileId: number,
     @Body() updateFileDto: UpdateFileDto,
@@ -37,7 +37,7 @@ export class FilesController {
     return this.filesService.update(fileId, updateFileDto);
   }
 
-  @Delete()
+  @Delete(':fileId')
   remove(@Query('fileId', ParseIntPipe) fileId: number) {
     return this.filesService.remove(fileId);
   }
