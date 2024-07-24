@@ -1,7 +1,12 @@
 import { HttpHandler } from "msw";
-import { tokenRefreshHandler, userSessionHandler } from "./handlers/user";
+import {
+  tokenRefreshHandler,
+  userFileHandler,
+  userSessionHandler,
+} from "./handlers/user";
 
-export const handlers:HttpHandler[] = [
-    userSessionHandler,
-    tokenRefreshHandler,
+export const handlers: HttpHandler[] = [
+  userSessionHandler,
+  userFileHandler,
+  tokenRefreshHandler,
 ];
