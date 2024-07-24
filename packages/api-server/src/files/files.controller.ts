@@ -1,34 +1,68 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Delete,
+  Param,
+  ParseIntPipe,
+  BadRequestException,
+  UseGuards,
+} from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserId } from '../users/decorators/user-id.decorator';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 
-@Controller('files')
+@ApiTags('file')
+@ApiBearerAuth()
+@Controller('file')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post()
-  create(@Body() createFileDto: CreateFileDto) {
-    return this.filesService.create(createFileDto);
+  @UseGuards(JwtGuard)
+  async create(@Body() createFileDto: CreateFileDto) {
+    return await this.filesService.create(createFileDto);
   }
 
-  @Get()
-  findAll() {
-    return this.filesService.findAll();
+  @Get(':fileId/info')
+  @UseGuards(JwtGuard)
+  async findOne(@Param('fileId', ParseIntPipe) requestedFileId: number) {
+    return await this.getFileAsUser(requestedFileId, null);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.filesService.findOne(+id);
+  @Patch(':fileId/info')
+  @UseGuards(JwtGuard)
+  async update(
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
+    @UserId() userId: number,
+    @Body() updateFileDto: UpdateFileDto,
+  ) {
+    const file = await this.getFileAsUser(requestedFileId, userId);
+    return this.filesService.update(file.fileId, updateFileDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.filesService.update(+id, updateFileDto);
+  @Delete(':fileId')
+  @UseGuards(JwtGuard)
+  async remove(
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
+    @UserId() userId: number,
+  ) {
+    const file = await this.getFileAsUser(requestedFileId, userId);
+    return this.filesService.remove(file.fileId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.filesService.remove(+id);
+  async getFileAsUser(fileId: number, userId: number | null = null) {
+    const file = await this.filesService.findOne(fileId);
+    if (!file || (userId && file.ownerId !== userId)) {
+      throw new BadRequestException(
+        `File with ID: ${fileId} does not exist or you do not have permission to access it.`,
+      );
+    }
+    return file;
   }
 }

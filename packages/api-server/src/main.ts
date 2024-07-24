@@ -12,7 +12,8 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+
+  app.enableCors({ origin: process.env.CORS_ORIGIN_SITE });
   app.use(helmet());
 
   const { httpAdapter } = app.get(HttpAdapterHost);
@@ -24,10 +25,12 @@ async function bootstrap() {
     .setTitle('Catch-UP API Documentation')
     .setDescription('Catch-UP API description')
     .setVersion('1.0.0')
-    .addCookieAuth('access_token')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    jsonDocumentUrl: 'api/json',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

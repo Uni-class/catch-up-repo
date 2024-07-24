@@ -33,6 +33,7 @@ import { UserSessionFilesModule } from './user-session-files/user-session-files.
           rejectUnauthorized: false,
         },
         namingStrategy: new SnakeNamingStrategy(),
+        useUTC: true,
       }),
     }),
     AuthModule,

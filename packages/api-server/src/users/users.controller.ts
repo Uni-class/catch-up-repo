@@ -10,36 +10,117 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserId } from './decorators/user-id.decorator';
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCookieAuth,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { User } from './entities/user.entity';
+import { Session } from '../sessions/entities/session.entity';
+import { Role } from './types/role.type';
+import { UserSession } from '../user-sessions/entities/user-session.entity';
+import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
+import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
+import { UpdateResult } from 'typeorm';
+import { UserSessionBodyType } from './types/user-session-body.type';
 
 @ApiTags('user')
-@ApiCookieAuth()
+@ApiBearerAuth()
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
+  @Get('profile')
   @UseGuards(JwtGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async findOne(@UserId() userId: number) {
-    return await this.usersService.findOneById(+userId);
+  async getUserProfile(@UserId(ParseIntPipe) userId: number): Promise<User> {
+    return await this.usersService.findOneById(userId);
   }
 
-  @Patch()
+  @Patch('profile')
   @UseGuards(JwtGuard)
-  update(@UserId() userId: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+userId, updateUserDto);
+  async updateUserProfile(
+    @UserId(ParseIntPipe) userId: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.update(userId, updateUserDto);
   }
 
   @Delete()
   @UseGuards(JwtGuard)
-  remove(@UserId() userId: number) {
-    return this.usersService.remove(+userId);
+  async deleteUser(@UserId(ParseIntPipe) userId: number): Promise<User> {
+    return await this.usersService.remove(userId);
+  }
+
+  @Get('sessions/list')
+  @ApiQuery({ name: 'role', type: String })
+  @ApiResponse({ type: [Session] })
+  @UseGuards(JwtGuard)
+  async getSessions(
+    @UserId(ParseIntPipe) userId: number,
+    @Query() query: Role,
+  ) {
+    if (query.role === 'host')
+      return await this.usersService.getSessionsByHost(userId);
+    return await this.usersService.getSessionsByParticipant(userId);
+  }
+
+  @Post('sessions/:sessionId/join')
+  @ApiParam({ name: 'sessionId', type: Number })
+  @ApiBody({ type: UserSessionBodyType })
+  @ApiResponse({ type: UserSession })
+  @UseGuards(JwtGuard)
+  async postUserSession(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @Body() body: UserSessionBodyType,
+  ): Promise<UserSession> {
+    const newCreateUserSession = new CreateUserSessionDto();
+    newCreateUserSession.userId = userId;
+    newCreateUserSession.displayName = body.displayName;
+    newCreateUserSession.sessionId = sessionId;
+    return await this.usersService.postUserSession(newCreateUserSession);
+  }
+
+  @Patch('sessions/:sessionId/display-name')
+  @ApiParam({ name: 'sessionId', type: Number })
+  @ApiBody({ type: UserSessionBodyType })
+  @ApiResponse({ type: UpdateResult })
+  @UseGuards(JwtGuard)
+  async patchUserSession(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @Body() body: UserSessionBodyType,
+  ): Promise<UpdateResult> {
+    const newUpdateUserSession = new UpdateUserSessionDto();
+    newUpdateUserSession.userId = userId;
+    newUpdateUserSession.displayName = body.displayName;
+    newUpdateUserSession.sessionId = sessionId;
+    const result: UpdateResult =
+      await this.usersService.patchUserSession(newUpdateUserSession);
+    return result;
+  }
+
+  @Delete('sessions/:sessionId')
+  @ApiParam({ name: 'sessionId', type: Number })
+  @ApiResponse({ type: UserSession })
+  @UseGuards(JwtGuard)
+  async deleteUserSession(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+  ): Promise<UserSession> {
+    const result = await this.usersService.deleteUserSession(userId, sessionId);
+    return result;
   }
 }

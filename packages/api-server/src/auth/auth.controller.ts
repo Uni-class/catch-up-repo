@@ -19,6 +19,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { RefreshGuard } from './guards/refresh.guard';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -108,6 +109,7 @@ export class AuthController {
   }
 
   @UseGuards(RefreshGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ description: 'Access token refreshed!' })
   @ApiUnauthorizedResponse({ description: `Refresh token is not user's!` })
   @HttpCode(HttpStatus.CREATED)

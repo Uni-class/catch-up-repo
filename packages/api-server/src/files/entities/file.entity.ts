@@ -20,6 +20,10 @@ export class File {
   fileId: number;
 
   @ApiProperty()
+  @IsNumber()
+  ownerId: number;
+
+  @ApiProperty()
   @IsString()
   @Column()
   name: string;
