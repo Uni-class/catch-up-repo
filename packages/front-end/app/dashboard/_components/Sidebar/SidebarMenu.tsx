@@ -19,6 +19,7 @@ function MenuElement({ text, href }: ElementPropType) {
             bg: "gray.100",
           },
           borderRadius: "8px",
+          transition:"background 0.2s",
         }),
         pathname === href &&
           css({

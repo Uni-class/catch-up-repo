@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "@/hook/useRouter";
+import { css } from "@/styled-system/css";
 import { ReactNode, useEffect } from "react";
 
 interface PropType {
@@ -21,10 +22,27 @@ export default function ModalContainer({ children }: PropType) {
       document.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
+  const handleBackdropClick = () => {
+    router.back();
+  };
   return (
-    <dialog open>
-        안녕하세요
-        {children}
+    <dialog
+      open
+      className={css({
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 100,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(128, 128, 128, 0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      })}
+      onClick={handleBackdropClick}
+    >
+      {children}
     </dialog>
-  )
+  );
 }

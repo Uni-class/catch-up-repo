@@ -11,15 +11,14 @@ export default function SidebarUser() {
         <Link
           href="/dashboard/user-menu"
           className={css({
-            width: "100%",
-            height: "100%",
             display: "block",
             padding: "0.8em",
             borderRadius: "8px",
             cursor: "pointer",
             "&:hover": {
-              bg: "gray.200",
+              bg: "gray.100",
             },
+            transition: "background 0.2s",
           })}
         >
           USER NAME [강의자]
