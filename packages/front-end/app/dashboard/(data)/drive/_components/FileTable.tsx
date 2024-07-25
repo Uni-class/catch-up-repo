@@ -1,4 +1,8 @@
 import {
+  fileAreCheckedAtom,
+  fileIsTotalCheckedAtom,
+} from "@/client/CheckBoxAtom";
+import {
   TableBody,
   TableContainer,
   TableHead,
@@ -29,7 +33,12 @@ export default function FileTable() {
     },
   });
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
-    useCheckBoxes<any, number>({ data: data, id: "id" });
+    useCheckBoxes<any, number>({
+      data: data,
+      id: "id",
+      areCheckedAtom: fileAreCheckedAtom,
+      isTotalCheckedAtom: fileIsTotalCheckedAtom,
+    });
 
   return (
     <TableContainer>
