@@ -8,7 +8,7 @@ interface PropType {
 
 export default function Layout({ children }: PropType) {
   return (
-    <div className={css({ flexGrow: 1 })}>
+    <div className={css({ flexGrow: 1,paddingX:"1rem" })}>
       <OptionHeader />
       {children}
     </div>

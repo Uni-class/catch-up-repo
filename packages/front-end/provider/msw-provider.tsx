@@ -7,10 +7,7 @@ interface PropType {
 
 async function startClientMSW() {
   if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-    const worker = await import("../mocks/browser").then((res) => res.default);
-    worker.start({
-      onUnhandledRequest: "bypass",
-    });
+    const { worker } = await import("../mocks/browser");
   }
 }
 
