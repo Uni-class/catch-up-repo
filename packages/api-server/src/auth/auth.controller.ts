@@ -54,7 +54,7 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/');
+        .redirect('http://localhost:3000/dashboard/session');
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException('Server Error', e);
@@ -78,7 +78,7 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/');
+        .redirect('http://localhost:3000/dashboard/session');
     } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
     }
@@ -101,7 +101,7 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/');
+        .redirect('http://localhost:3000/dashboard/session');
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException('Server Error', e);

@@ -15,16 +15,28 @@ function MenuElement({ text, href }: ElementPropType) {
     <ul
       className={cx(
         css({
-          "&:hover": {
-            bg: "gray.100",
-          },
-          borderRadius: "8px",
-          transition:"background 0.2s",
+          borderRadius: "0.5em",
         }),
-        pathname === href &&
-          css({
-            bg: "rose.100",
-          })
+        css(
+          pathname === href
+          ?
+          {
+            color: "#ffffff",
+            backgroundColor: "orange.400",
+            fontWeight: "bold",
+          }
+          :
+          {
+            "&:hover": {
+              backgroundColor: "gray.200",
+            },
+            "&:active": {
+              color: "#ffffff",
+              backgroundColor: "orange.300",
+              fontWeight: "bold",
+            }
+          }
+        )
       )}
     >
       <li>

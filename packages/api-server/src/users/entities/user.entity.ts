@@ -15,6 +15,7 @@ import { Session } from '../../sessions/entities/session.entity';
 import { UserFile } from '../../user-files/entities/user-file.entity';
 import { UserSession } from '../../user-sessions/entities/user-session.entity';
 import { Exclude } from 'class-transformer';
+import { File } from '../../files/entities/file.entity';
 
 @Entity('users')
 export class User {
@@ -96,4 +97,7 @@ export class User {
     cascade: ['soft-remove'],
   })
   userSessions: UserSession[];
+
+  @OneToMany(() => File, (file) => file.owner)
+  files: File[];
 }
