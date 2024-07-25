@@ -8,14 +8,13 @@ import {
 } from "@/components/Table";
 import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
-import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-export default function SessionTable() {
+export default function FileTable() {
   const { queryObj } = useRouter();
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
@@ -23,18 +22,14 @@ export default function SessionTable() {
   const { data } = useSuspenseQuery({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      const { data } = await apiClient.get<Session[]>("/user/sessions", {
+      const { data } = await apiClient.get<any[]>("/user/files", {
         params: queryObj,
       });
       return data;
     },
   });
-  const {
-    isTotalChecked,
-    setIsTotalChecked,
-    setIsCheckedOne,
-    isCheckedOne,
-  } = useCheckBoxes<Session, number>({ data: data, id: "sessionId" });
+  const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
+    useCheckBoxes<any, number>({ data: data, id: "id" });
 
   return (
     <TableContainer>
@@ -47,16 +42,7 @@ export default function SessionTable() {
         setIsTotalChecked={setIsTotalChecked}
         isTotalChecked={isTotalChecked}
       />
-      <TableBody>
-        {data.map((e) => (
-          <Row
-            el={e}
-            key={e.sessionId}
-            isCheckedOne={isCheckedOne}
-            setIsCheckedOne={setIsCheckedOne}
-          />
-        ))}
-      </TableBody>
+      <TableBody>{/* add row component */}</TableBody>
     </TableContainer>
   );
 }
@@ -93,12 +79,12 @@ function Row({
   setIsCheckedOne,
   isCheckedOne,
 }: {
-  el: Session;
+  el: any;
   setIsCheckedOne: (id: number, value: boolean) => void;
   isCheckedOne: (id: number) => boolean;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCheckedOne(el.sessionId, e.target.checked);
+    setIsCheckedOne(el.fileId, e.target.checked);
   };
   return (
     <TableRow
@@ -117,7 +103,7 @@ function Row({
           checked={isCheckedOne(el.sessionId)}
         />
       </Td>
-      <Td>{el.sessionName}</Td>
+      <Td>{el.fileName}</Td>
       <Td>{formatDate(el.createdAt, "yyyy-MM-dd")}</Td>
     </TableRow>
   );
