@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -31,5 +31,15 @@ export class FilesService {
       where: { fileId: id },
     });
     return await this.fileRepository.softRemove(file);
+  }
+
+  async getFileAsUser(fileId: number, userId: number | null = null) {
+    const file = await this.findOne(fileId);
+    if (!file || (userId && file.ownerId !== userId)) {
+      throw new BadRequestException(
+        `File with ID: ${fileId} does not exist or you do not have permission to access it.`,
+      );
+    }
+    return file;
   }
 }
