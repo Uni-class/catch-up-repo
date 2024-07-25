@@ -8,7 +8,6 @@ interface PropType {
     onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-
 export default function LineEdit({placeholder = "", text, onChange}: PropType) {
     return (
         <input

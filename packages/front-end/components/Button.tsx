@@ -8,7 +8,6 @@ const Button = styled("button", {
         background: "blue.500",
         outline: "none",
         borderRadius: "0.5em",
-        transition: "all 0.2s ease-in-out",
         cursor: "pointer",
         userSelect: "none",
         _enabled: {

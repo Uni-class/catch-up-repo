@@ -1,5 +1,6 @@
 import { styled } from "@/styled-system/jsx";
 
+
 const Divider = styled('hr', {
     base:{
         borderColor:"gray.200"
