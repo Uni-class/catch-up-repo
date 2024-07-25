@@ -8,6 +8,23 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  argTypes: {
+    size: {
+      control: false,
+    },
+    checked: {
+      control: false,
+    },
+    onChange: {
+      control: false,
+    },
+    name: {
+      control: false,
+    },
+    id: {
+      control: false,
+    },
+  },
 } satisfies Meta<typeof Switch>;
 
 export default meta;

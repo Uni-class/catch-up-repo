@@ -6,7 +6,7 @@ import {
 } from "./handlers/user";
 
 export const handlers: HttpHandler[] = [
-  userSessionHandler,
+  
   userFileHandler,
   tokenRefreshHandler,
 ];
