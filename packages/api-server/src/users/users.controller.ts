@@ -21,10 +21,12 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCookieAuth,
+  ApiExtraModels,
   ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
@@ -64,8 +66,21 @@ export class UsersController {
   }
 
   @Get('sessions')
+  @ApiExtraModels(Session, UserSession)
   @ApiQuery({ name: 'role', type: String })
-  @ApiResponse({ type: [Session] })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {
+        schema: {
+          oneOf: [
+            { $ref: getSchemaPath(Session) },
+            { $ref: getSchemaPath(UserSession) },
+          ],
+        },
+      },
+    },
+  })
   @UseGuards(JwtGuard)
   async getSessions(
     @UserId(ParseIntPipe) userId: number,
