@@ -25,6 +25,8 @@ export interface Session {
   closedAt: string;
 }
 
+export type Promise = object;
+
 export interface UserSession {
   userSessionId: number;
   userId: number;
@@ -33,17 +35,33 @@ export interface UserSession {
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
+  session: Promise;
 }
+
+export type UserSessionBodyType = object;
 
 export type UpdateResult = object;
 
-export type CreateSessionDto = object;
+export interface CreateSessionDto {
+  sessionName: string;
+  sessionFileIds: string[];
+}
 
-export type UpdateSessionDto = object;
+export interface UpdateSessionDto {
+  sessionName?: string;
+  sessionFileIds?: string[];
+}
 
-export type CreateFileDto = object;
+export interface FileUploadResponseDto {
+  success: boolean;
+  message: string;
+}
 
-export type UpdateFileDto = object;
+export interface UpdateFileDto {
+  ownerId?: number;
+  name?: string;
+  url?: string;
+}
 
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
@@ -326,11 +344,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Auth
      * @name AuthControllerTokenRefresh
      * @request GET:/auth/token-refresh
+     * @secure
      */
     authControllerTokenRefresh: (params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/auth/token-refresh`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
   };
@@ -339,13 +359,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name UsersControllerFindOne
-     * @request GET:/user
+     * @name UsersControllerGetUserProfile
+     * @request GET:/user/profile
      * @secure
      */
-    usersControllerFindOne: (params: RequestParams = {}) =>
+    usersControllerGetUserProfile: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/user`,
+        path: `/user/profile`,
         method: 'GET',
         secure: true,
         ...params,
@@ -355,13 +375,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name UsersControllerUpdate
-     * @request PATCH:/user
+     * @name UsersControllerUpdateUserProfile
+     * @request PATCH:/user/profile
      * @secure
      */
-    usersControllerUpdate: (data: UpdateUserDto, params: RequestParams = {}) =>
+    usersControllerUpdateUserProfile: (data: UpdateUserDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/user`,
+        path: `/user/profile`,
         method: 'PATCH',
         body: data,
         secure: true,
@@ -373,11 +393,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name UsersControllerRemove
+     * @name UsersControllerDeleteUser
      * @request DELETE:/user
      * @secure
      */
-    usersControllerRemove: (params: RequestParams = {}) =>
+    usersControllerDeleteUser: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/user`,
         method: 'DELETE',
@@ -399,11 +419,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<any, Session[]>({
+      this.request<Session | UserSession, any>({
         path: `/user/sessions`,
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -412,21 +433,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerPostUserSession
-     * @request POST:/user/sessions
+     * @request POST:/user/sessions/{sessionId}/join
      * @secure
      */
-    usersControllerPostUserSession: (
-      query: {
-        displayName: string;
-        sessionId: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    usersControllerPostUserSession: (sessionId: number, data: UserSessionBodyType, params: RequestParams = {}) =>
       this.request<any, UserSession>({
-        path: `/user/sessions`,
+        path: `/user/sessions/${sessionId}/join`,
         method: 'POST',
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -435,21 +451,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerPatchUserSession
-     * @request PATCH:/user/sessions
+     * @request PATCH:/user/sessions/{sessionId}/display-name
      * @secure
      */
-    usersControllerPatchUserSession: (
-      query: {
-        displayName: string;
-        sessionId: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    usersControllerPatchUserSession: (sessionId: number, data: UserSessionBodyType, params: RequestParams = {}) =>
       this.request<any, UpdateResult>({
-        path: `/user/sessions`,
+        path: `/user/sessions/${sessionId}/display-name`,
         method: 'PATCH',
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -458,29 +469,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerDeleteUserSession
-     * @request DELETE:/user/sessions
+     * @request DELETE:/user/sessions/{sessionId}
      * @secure
      */
-    usersControllerDeleteUserSession: (params: RequestParams = {}) =>
+    usersControllerDeleteUserSession: (sessionId: number, params: RequestParams = {}) =>
       this.request<any, UserSession>({
-        path: `/user/sessions`,
+        path: `/user/sessions/${sessionId}`,
         method: 'DELETE',
         secure: true,
         ...params,
       }),
   };
-  sessions = {
+  session = {
     /**
      * No description
      *
-     * @name SessionsControllerCreate
-     * @request POST:/sessions
+     * @tags Session
+     * @name SessionsControllerCreateSession
+     * @request POST:/session/create
+     * @secure
      */
-    sessionsControllerCreate: (data: CreateSessionDto, params: RequestParams = {}) =>
+    sessionsControllerCreateSession: (data: CreateSessionDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/sessions`,
+        path: `/session/create`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -488,110 +502,92 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name SessionsControllerFindAll
-     * @request GET:/sessions
+     * @tags Session
+     * @name SessionsControllerGetSessionInfo
+     * @request GET:/session/{sessionId}/info
+     * @secure
      */
-    sessionsControllerFindAll: (params: RequestParams = {}) =>
+    sessionsControllerGetSessionInfo: (sessionId: number, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/sessions`,
+        path: `/session/${sessionId}/info`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
 
     /**
      * No description
      *
-     * @name SessionsControllerFindOne
-     * @request GET:/sessions/{id}
-     */
-    sessionsControllerFindOne: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/sessions/${id}`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
+     * @tags Session
      * @name SessionsControllerUpdate
-     * @request PATCH:/sessions/{id}
+     * @request PATCH:/session/{sessionId}/info
+     * @secure
      */
-    sessionsControllerUpdate: (id: string, data: UpdateSessionDto, params: RequestParams = {}) =>
+    sessionsControllerUpdate: (sessionId: number, data: UpdateSessionDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/sessions/${id}`,
+        path: `/session/${sessionId}/info`,
         method: 'PATCH',
         body: data,
+        secure: true,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name SessionsControllerRemove
-     * @request DELETE:/sessions/{id}
-     */
-    sessionsControllerRemove: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/sessions/${id}`,
-        method: 'DELETE',
         ...params,
       }),
   };
-  files = {
+  file = {
     /**
      * No description
      *
-     * @name FilesControllerCreate
-     * @request POST:/files
+     * @tags file
+     * @name FilesControllerUploadFile
+     * @request POST:/file
+     * @secure
      */
-    filesControllerCreate: (data: CreateFileDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/files`,
+    filesControllerUploadFile: (
+      data: {
+        /** @format binary */
+        file?: File;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, FileUploadResponseDto>({
+        path: `/file`,
         method: 'POST',
         body: data,
-        type: ContentType.Json,
+        secure: true,
+        type: ContentType.FormData,
         ...params,
       }),
 
     /**
      * No description
      *
-     * @name FilesControllerFindAll
-     * @request GET:/files
-     */
-    filesControllerFindAll: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/files`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
+     * @tags file
      * @name FilesControllerFindOne
-     * @request GET:/files/{id}
+     * @request GET:/file/{fileId}/info
+     * @secure
      */
-    filesControllerFindOne: (id: string, params: RequestParams = {}) =>
+    filesControllerFindOne: (fileId: number, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/files/${id}`,
+        path: `/file/${fileId}/info`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
 
     /**
      * No description
      *
+     * @tags file
      * @name FilesControllerUpdate
-     * @request PATCH:/files/{id}
+     * @request PATCH:/file/{fileId}/info
+     * @secure
      */
-    filesControllerUpdate: (id: string, data: UpdateFileDto, params: RequestParams = {}) =>
+    filesControllerUpdate: (fileId: number, data: UpdateFileDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/files/${id}`,
+        path: `/file/${fileId}/info`,
         method: 'PATCH',
         body: data,
+        secure: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -599,13 +595,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags file
      * @name FilesControllerRemove
-     * @request DELETE:/files/{id}
+     * @request DELETE:/file/{fileId}
+     * @secure
      */
-    filesControllerRemove: (id: string, params: RequestParams = {}) =>
+    filesControllerRemove: (fileId: number, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/files/${id}`,
+        path: `/file/${fileId}`,
         method: 'DELETE',
+        secure: true,
         ...params,
       }),
   };
@@ -613,39 +612,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags Notes
      * @name NotesControllerFindAll
      * @request GET:/notes
+     * @secure
      */
     notesControllerFindAll: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/notes`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
 
     /**
      * No description
      *
+     * @tags Notes
      * @name NotesControllerFindOne
      * @request GET:/notes/{id}
+     * @secure
      */
     notesControllerFindOne: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/notes/${id}`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
 
     /**
      * No description
      *
+     * @tags Notes
      * @name NotesControllerRemove
      * @request DELETE:/notes/{id}
+     * @secure
      */
     notesControllerRemove: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/notes/${id}`,
         method: 'DELETE',
+        secure: true,
         ...params,
       }),
   };
