@@ -63,7 +63,7 @@ export class UsersController {
     return await this.usersService.remove(userId);
   }
 
-  @Get('sessions/list')
+  @Get('sessions')
   @ApiQuery({ name: 'role', type: String })
   @ApiResponse({ type: [Session] })
   @UseGuards(JwtGuard)
