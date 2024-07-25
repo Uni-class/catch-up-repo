@@ -86,6 +86,7 @@ export class FilesService {
       name: key,
       url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
+  }
 
   async getFileAsUser(fileId: number, userId: number | null = null) {
     const file = await this.findOne(fileId);
