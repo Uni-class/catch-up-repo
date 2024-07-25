@@ -2,6 +2,7 @@ import { css } from "@/styled-system/css";
 import { styled } from "@/styled-system/jsx";
 import { ChangeEventHandler } from "react";
 
+
 interface PropType {
   checked?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;

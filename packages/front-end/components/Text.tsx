@@ -1,6 +1,7 @@
 import { Styles } from "@/styled-system/css";
 import { styled } from "@/styled-system/jsx";
 
+
 const subStyle: Styles = {
   opacity: 0.65,
 };
