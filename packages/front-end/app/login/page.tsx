@@ -39,8 +39,6 @@ export default function Page() {
         </div>
         <div
           className={css({
-          })}>{PROJECT_NAME}</div>
-          <div className={css({
             color: "#ffffff",
             fontSize: "1.5em",
             fontWeight: "bold",

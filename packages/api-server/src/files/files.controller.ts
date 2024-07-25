@@ -8,13 +8,24 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
-import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -23,9 +34,31 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiResponse({ type: FileUploadResponseDto })
   @UseGuards(JwtGuard)
-  async create(@Body() createFileDto: CreateFileDto) {
-    return await this.filesService.create(createFileDto);
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @UserId(ParseIntPipe) userId: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: 'pdf' })],
+      }),
+    )
+    file: Express.Multer.File,
+  ): Promise<FileUploadResponseDto> {
+    return await this.filesService.uploadFile(userId, file);
   }
 
   @Get(':fileId/info')

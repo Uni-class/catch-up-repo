@@ -10,17 +10,18 @@ const Button = styled("button", {
         borderRadius: "0.5em",
         transition: "all 0.2s ease-in-out",
         cursor: "pointer",
+        userSelect: "none",
         _enabled: {
             _hover: {
                 background: "blue.600",
             },
             _active: {
                 color: "#ffffff",
-                background: "orange.40",
+                background: "orange.400",
             },
         },
         _disabled: {
-            background: "red.400",
+            background: "red.600",
             cursor: "not-allowed",
         }
     }

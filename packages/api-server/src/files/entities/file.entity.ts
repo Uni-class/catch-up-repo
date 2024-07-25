@@ -3,6 +3,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -11,6 +13,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import { SessionFile } from '../../session-files/entities/session-file.entity';
 import { UserFile } from '../../user-files/entities/user-file.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('files')
 export class File {
@@ -21,6 +24,7 @@ export class File {
 
   @ApiProperty()
   @IsNumber()
+  @Column()
   ownerId: number;
 
   @ApiProperty()
@@ -53,4 +57,8 @@ export class File {
 
   @OneToMany(() => UserFile, (userFile) => userFile.file)
   userFiles: UserFile[];
+
+  @ManyToMany(() => User, (user) => user.files)
+  @JoinColumn({ name: 'owner_id', referencedColumnName: 'userId' })
+  owner: User;
 }
