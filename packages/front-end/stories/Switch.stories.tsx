@@ -1,5 +1,6 @@
 import type { Meta, StoryFn, StoryObj } from "@storybook/react";
 import Switch from "@/components/Switch";
+import { useState } from "react";
 
 const meta = {
   title: "Components/Switch",
@@ -7,20 +8,51 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  argTypes: {
+    size: {
+      control: false,
+    },
+    checked: {
+      control: false,
+    },
+    onChange: {
+      control: false,
+    },
+    name: {
+      control: false,
+    },
+    id: {
+      control: false,
+    },
+  },
 } satisfies Meta<typeof Switch>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Template: StoryFn = (args) => {
+  const [checked, setChecked] = useState(false);
+
   return (
     <Switch
       {...args}
+      checked={checked}
+      onChange={(e) => setChecked(e.target.checked)}
     />
   );
 };
 
-export const Default: Story = Template.bind({});
-Default.args = {
+export const Large: Story = Template.bind({});
+Large.args = {
+  size: "lg",
+};
+
+export const Medium: Story = Template.bind({});
+Medium.args = {
   size: "md",
+};
+
+export const Small: Story = Template.bind({});
+Small.args = {
+  size: "sm",
 };
