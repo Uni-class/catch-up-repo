@@ -35,7 +35,7 @@ export default function ModalContainer({ children }: PropType) {
         zIndex: 100,
         width: "100vw",
         height: "100vh",
-        backgroundColor: "rgba(128, 128, 128, 0.5)",
+        backgroundColor: "rgba(64, 64, 64, 0.5)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
