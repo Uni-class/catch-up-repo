@@ -27,12 +27,14 @@ export default function SessionTable() {
   const { data } = useSuspenseQuery({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      const { data } = await apiClient.get<Session[]>("/user/sessions", {
+      return await apiClient.get("/user/sessions/list", {
         params: queryObj,
       });
-      return data;
     },
-  });
+  }).data.data;
+
+  console.log(data);
+
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
       data: data,
