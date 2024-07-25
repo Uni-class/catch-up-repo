@@ -8,8 +8,12 @@ export default function SidebarUser() {
   return (
     <>
       <SidebarMenuGroup>
-        <div
+        <Link
+          href="/dashboard/user-menu"
           className={css({
+            width: "100%",
+            height: "100%",
+            display: "block",
             padding: "0.8em",
             borderRadius: "8px",
             cursor: "pointer",
@@ -18,8 +22,8 @@ export default function SidebarUser() {
             },
           })}
         >
-          <Link href="/dashboard/user-menu">USER NAME [강의자]</Link>
-        </div>
+          USER NAME [강의자]
+        </Link>
       </SidebarMenuGroup>
       <SidebarMenuGroup>
         <SidebarUserSwitch />
