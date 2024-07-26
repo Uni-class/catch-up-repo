@@ -6,9 +6,9 @@ import { UsersService } from '../users/users.service';
 import { UserConverter } from '../users/user.converter';
 import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import * as process from 'node:process';
 import { JwtPayload } from './jwt.payload';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -87,5 +87,9 @@ export class AuthService implements OnModuleInit {
 
   async deleteRefreshTokenOfUser(userId: number) {
     return await this.userService.deletdeleteRefreshToken(userId);
+  }
+
+  async getRefreshTokenFromHeader(req: Request) {
+    return req.headers['authorization']?.toString().split(' ')[1];
   }
 }

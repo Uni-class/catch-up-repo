@@ -15,7 +15,6 @@ import { NaverAuthGuard } from './guards/naverauth.guard';
 import { Request, Response } from 'express';
 import { GoogleAuthGuard } from './guards/googleauth.guard';
 import { KakaoAuthGuard } from './guards/kakaoauth.guard';
-import * as process from 'node:process';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { RefreshGuard } from './guards/refresh.guard';
@@ -128,7 +127,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Get('token-refresh')
   async tokenRefresh(@Req() req: Request, @Res() res): Promise<any> {
-    const refreshToken = req.headers['Authorizaion']?.toString().split(' ')[1];
+    const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
     const payload = req.user as JwtPayload;
     const user: User = await this.authService.tokenValidateUser(payload);
     if (user.refreshToken !== refreshToken) {
@@ -147,13 +146,13 @@ export class AuthController {
   @ApiBearerAuth()
   @Post('logout')
   async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const refreshToken = req.headers['Authorizaion']?.toString().split(' ')[1];
+    const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
+    console.log(refreshToken);
     const payload = req.user as JwtPayload;
+    console.log(payload);
     const user: User = await this.authService.tokenValidateUser(payload);
     if (user.refreshToken !== refreshToken) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ msg: `This refresh token is not user's token` });
+      throw new UnauthorizedException(`This refresh token is not user's token`);
     }
     const result: UpdateResult =
       await this.authService.deleteRefreshTokenOfUser(payload.id);
