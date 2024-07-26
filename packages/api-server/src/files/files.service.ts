@@ -50,7 +50,7 @@ export class FilesService {
   }
 
   async remove(id: number) {
-    const file = await this.fileRepository.findOne({
+    const file: File = await this.fileRepository.findOne({
       where: { fileId: id },
     });
     return await this.fileRepository.softRemove(file);

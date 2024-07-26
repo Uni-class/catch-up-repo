@@ -27,7 +27,7 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 import { File } from './entities/file.entity';
-import { UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -86,12 +86,16 @@ export class FilesController {
   }
 
   @Delete(':fileId')
+  @ApiResponse({ type: File })
   @UseGuards(JwtGuard)
   async remove(
     @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
-  ) {
-    const file = await this.filesService.getFileAsUser(requestedFileId, userId);
+  ): Promise<File> {
+    const file: File = await this.filesService.getFileAsUser(
+      requestedFileId,
+      userId,
+    );
     return this.filesService.remove(file.fileId);
   }
 }
