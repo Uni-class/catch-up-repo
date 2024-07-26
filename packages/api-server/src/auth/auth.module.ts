@@ -27,7 +27,6 @@ import { UsersService } from '../users/users.service';
   controllers: [AuthController],
   exports: [AuthService],
   providers: [
-    UsersService,
     AuthService,
     NaverStrategy,
     KakaoStrategy,
