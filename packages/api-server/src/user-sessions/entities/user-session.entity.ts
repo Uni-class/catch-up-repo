@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { IsDate, IsNumber, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Session } from '../../sessions/entities/session.entity';
 import { User } from '../../users/entities/user.entity';
 import { UserSessionFile } from '../../user-session-files/entities/user-session-file.entity';
@@ -52,9 +52,10 @@ export class UserSession {
   @DeleteDateColumn()
   deletedAt: string;
 
+  @ApiProperty()
   @ManyToOne(() => Session, (session) => session.userSessions)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'sessionId' })
-  session: Session;
+  session: Promise<Session>;
 
   @ManyToOne(() => User, (user) => user.userSessions)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })

@@ -25,7 +25,7 @@ const Template: StoryFn = (args) => {
   );
 };
 
-export const Primary: Story = Template.bind({});
-Primary.args = {
+export const Default: Story = Template.bind({});
+Default.args = {
   children: "Button",
 };

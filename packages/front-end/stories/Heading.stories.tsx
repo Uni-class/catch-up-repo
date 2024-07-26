@@ -66,4 +66,4 @@ const Template: StoryFn = (_args) => {
   );
 };
 
-export const Primary: Story = Template.bind({});
+export const Default: Story = Template.bind({});

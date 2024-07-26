@@ -70,20 +70,14 @@ export class UsersService {
     return sessions;
   }
 
-  async getSessionsByParticipant(userId: number): Promise<Session[]> {
-    const userSessions = await this.userSessionRepository.find({
+  async getSessionsByParticipant(userId: number): Promise<UserSession[]> {
+    const userSessions: UserSession[] = await this.userSessionRepository.find({
       where: { userId },
       order: { createdAt: 'DESC' },
+      relations: ['session'],
       take: 10,
     });
-    const sessions = await Promise.all(
-      userSessions.map((userSession) => {
-        return this.sessionRepository.findOneBy({
-          sessionId: userSession.sessionId,
-        });
-      }),
-    );
-    return sessions;
+    return userSessions;
   }
 
   async postUserSession(
