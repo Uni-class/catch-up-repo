@@ -16,6 +16,7 @@ import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 import { formatDate } from "date-fns";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
@@ -24,14 +25,14 @@ export default function SessionTable() {
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
   }
-  const { data } = useSuspenseQuery({
+  const { data } = useSuspenseQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
       return await apiClient.get("/user/sessions/list", {
         params: queryObj,
       });
     },
-  }).data.data;
+  }).data;
 
   console.log(data);
 
