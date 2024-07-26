@@ -1,10 +1,7 @@
 "use client";
 
-import Button from "@/components/Button";
 import Divider from "@/components/Divider";
 import ModalContainer from "@/components/ModalContainer";
-import { Heading } from "@/components/Text";
-import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import UserModalTop from "./UserModalTop";
 
