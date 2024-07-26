@@ -48,7 +48,7 @@ export default function SessionTable() {
   return (
     <TableContainer>
       <colgroup>
-        <col width="52px" />
+        <col width="55.25px" />
         <col />
         <col width="20%" />
         <col width="180px" />
@@ -90,7 +90,7 @@ function Head({
             type="checkbox"
             onChange={handleChange}
             checked={isTotalChecked}
-            className={css({ zoom: 1.5, cursor: "pointer" })}
+            className={css({ zoom: 1.75, cursor: "pointer" })}
           />
         </Th>
         <Th>제목</Th>
@@ -125,7 +125,7 @@ function Row({
           type="checkbox"
           onChange={handleChange}
           checked={isCheckedOne(el.sessionId)}
-          className={css({ zoom: 1.5, cursor: "pointer" })}
+          className={css({ zoom: 1.75, cursor: "pointer" })}
         />
       </Td>
       <Td>{el.sessionName}</Td>
