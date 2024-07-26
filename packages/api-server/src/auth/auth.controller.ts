@@ -8,13 +8,13 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NaverAuthGuard } from './guards/naverauth.guard';
 import { Request, Response } from 'express';
 import { GoogleAuthGuard } from './guards/googleauth.guard';
 import { KakaoAuthGuard } from './guards/kakaoauth.guard';
-import * as process from 'node:process';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { RefreshGuard } from './guards/refresh.guard';
@@ -28,6 +28,8 @@ import { Profile as NaverProfile } from 'passport-naver-v2';
 import { Profile as GoogleProfile } from 'passport-google-oauth20';
 import { Profile as KakaoProfile } from 'passport-kakao';
 import { JwtPayload } from './jwt.payload';
+import { UpdateResult } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -35,6 +37,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,
+    private readonly configService: ConfigService,
   ) {}
 
   @UseGuards(NaverAuthGuard)
@@ -54,7 +57,10 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/dashboard/session');
+        .redirect(
+          this.configService.get<string>('CLIENT_DOMAIN') +
+            '/dashboard/session',
+        );
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException('Server Error', e);
@@ -78,7 +84,10 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/dashboard/session');
+        .redirect(
+          this.configService.get<string>('CLIENT_DOMAIN') +
+            '/dashboard/session',
+        );
     } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
     }
@@ -101,7 +110,10 @@ export class AuthController {
       return res
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
-        .redirect('http://localhost:3000/dashboard/session');
+        .redirect(
+          this.configService.get<string>('CLIENT_DOMAIN') +
+            '/dashboard/session',
+        );
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException('Server Error', e);
@@ -115,7 +127,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Get('token-refresh')
   async tokenRefresh(@Req() req: Request, @Res() res): Promise<any> {
-    const refreshToken = req.cookies.refresh_token;
+    const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
     const payload = req.user as JwtPayload;
     const user: User = await this.authService.tokenValidateUser(payload);
     if (user.refreshToken !== refreshToken) {
@@ -128,5 +140,25 @@ export class AuthController {
       .cookie('access_token', newAccessToken)
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
+  }
+
+  @UseGuards(RefreshGuard)
+  @ApiBearerAuth()
+  @Post('logout')
+  async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
+    const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
+    console.log(refreshToken);
+    const payload = req.user as JwtPayload;
+    console.log(payload);
+    const user: User = await this.authService.tokenValidateUser(payload);
+    if (user.refreshToken !== refreshToken) {
+      throw new UnauthorizedException(`This refresh token is not user's token`);
+    }
+    const result: UpdateResult =
+      await this.authService.deleteRefreshTokenOfUser(payload.id);
+    return res
+      .cookie('access_token', '', { maxAge: 0 })
+      .cookie('refresh_token', '', { maxAge: 0 })
+      .redirect(this.configService.get<string>('CLIENT_DOMAIN') + '/login');
   }
 }
