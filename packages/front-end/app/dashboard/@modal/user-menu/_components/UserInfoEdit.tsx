@@ -19,7 +19,6 @@ export default function UserInfoEdit() {
   };
   return (
     <>
-      <Heading variant="h5">내 정보 수정</Heading>
       <div
         className={css({
           display: "flex",

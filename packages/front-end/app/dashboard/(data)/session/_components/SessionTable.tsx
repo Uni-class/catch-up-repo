@@ -25,16 +25,16 @@ export default function SessionTable() {
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
   }
-  const { data } = useSuspenseQuery<AxiosResponse<Session[]>>({
+  const { data: response } = useSuspenseQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      return await apiClient.get("/user/sessions/list", {
+      return await apiClient.get("/user/sessions", {
         params: queryObj,
       });
     },
-  }).data;
+  });
 
-  console.log(data);
+  const data = response.data;
 
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
