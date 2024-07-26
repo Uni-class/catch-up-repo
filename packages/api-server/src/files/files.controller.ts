@@ -26,6 +26,7 @@ import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
+import { File } from './entities/file.entity';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -61,10 +62,13 @@ export class FilesController {
     return await this.filesService.uploadFile(userId, file);
   }
 
-  @Get(':fileId/info')
+  @Get(':fileId')
   @UseGuards(JwtGuard)
-  async findOne(@Param('fileId', ParseIntPipe) requestedFileId: number) {
-    return await this.filesService.getFileAsUser(requestedFileId, null);
+  async findOne(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
+  ): Promise<File> {
+    return await this.filesService.getFileAsUser(requestedFileId, userId);
   }
 
   @Patch(':fileId/info')

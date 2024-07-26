@@ -88,7 +88,10 @@ export class FilesService {
     };
   }
 
-  async getFileAsUser(fileId: number, userId: number | null = null) {
+  async getFileAsUser(
+    fileId: number,
+    userId: number | null = null,
+  ): Promise<File> {
     const file = await this.findOne(fileId);
     if (!file || (userId && file.ownerId !== userId)) {
       throw new BadRequestException(
