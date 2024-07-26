@@ -5,6 +5,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -58,7 +59,7 @@ export class File {
   @OneToMany(() => UserFile, (userFile) => userFile.file)
   userFiles: UserFile[];
 
-  @ManyToMany(() => User, (user) => user.files)
+  @ManyToOne(() => User, (user) => user.files)
   @JoinColumn({ name: 'owner_id', referencedColumnName: 'userId' })
   owner: User;
 }
