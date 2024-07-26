@@ -32,8 +32,8 @@ export default function SessionHeader() {
       <div className={css({ display: "flex", gap: "1rem" })}>
         <Button>
           {queryObj["role"] === "participant"
-            ? "새로운 세션 생성"
-            : "새로운 세션 참가"}
+            ? "새로운 세션 참가"
+            : "새로운 세션 생성"}
         </Button>
         <Button onClick={handleDeleteButtonClick}>선택한 세션 삭제</Button>
       </div>
