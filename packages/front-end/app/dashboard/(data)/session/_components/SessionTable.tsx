@@ -28,7 +28,7 @@ export default function SessionTable() {
   const { data: response } = useSuspenseQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      return await apiClient.get("/user/sessions/list", {
+      return await apiClient.get("/user/sessions", {
         params: queryObj,
       });
     },

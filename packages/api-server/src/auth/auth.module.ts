@@ -11,6 +11,7 @@ import * as process from 'node:process';
 import { UserConverter } from '../users/user.converter';
 import { ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strateties/jwt.strategy';
+import { JwtRefreshStrategy } from './strateties/refresh.strategy';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { JwtStrategy } from './strateties/jwt.strategy';
     KakaoStrategy,
     GoogleStrategy,
     JwtStrategy,
+    JwtRefreshStrategy,
     UserConverter,
   ],
 })
