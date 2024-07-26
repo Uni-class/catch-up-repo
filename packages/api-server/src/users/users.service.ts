@@ -139,4 +139,8 @@ export class UsersService {
     const files = await user.files;
     return files;
   }
+
+  async deletdeleteRefreshToken(userId: number) {
+    return await this.userRepository.update(userId, { refreshToken: '' });
+  }
 }
