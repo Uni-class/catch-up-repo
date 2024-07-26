@@ -29,6 +29,7 @@ export default function UserModal() {
         <UserModalTop />
         <Divider />
         <div>
+        <Heading variant="h5">내 정보 수정</Heading>
           <ErrorBoundary fallback={<h1>에러</h1>}>
             <Suspense fallback={<h1>로딩</h1>}>
               <UserInfoEdit />
