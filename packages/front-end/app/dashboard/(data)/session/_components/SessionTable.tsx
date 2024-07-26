@@ -2,6 +2,7 @@ import {
   sessionAreCheckedAtom,
   sessionIsTotalCheckedAtom,
 } from "@/client/CheckBoxAtom";
+import Button from "@/components/Button";
 import {
   TableBody,
   TableContainer,
@@ -36,8 +37,6 @@ export default function SessionTable() {
 
   const data = response.data;
   console.log(data);
-  console.log(response);
-
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
       data: data,
@@ -51,7 +50,9 @@ export default function SessionTable() {
       <colgroup>
         <col width="45px" />
         <col />
-        <col width="30%" />
+        <col width="20%" />
+        <col width="180px" />
+        <col width="180px" />
       </colgroup>
       <Head
         setIsTotalChecked={setIsTotalChecked}
@@ -93,6 +94,8 @@ function Head({
         </Th>
         <Th>제목</Th>
         <Th>참여 시간</Th>
+        <Th align="center">세션 상세보기</Th>
+        <Th align="center">세션 참여</Th>
       </TableRow>
     </TableHead>
   );
@@ -113,10 +116,6 @@ function Row({
   return (
     <TableRow
       className={css({
-        "&:hover": {
-          bg: "rose.50",
-        },
-        cursor: "pointer",
         transition: "background 0.2s",
       })}
     >
@@ -129,6 +128,12 @@ function Row({
       </Td>
       <Td>{el.sessionName}</Td>
       <Td>{formatDate(el.createdAt, "yyyy-MM-dd-HH")}</Td>
+      <Td align="center">
+        <Button>상세보기</Button>
+      </Td>
+      <Td align="center">
+        <Button>세션 참여</Button>
+      </Td>
     </TableRow>
   );
 }
