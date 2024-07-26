@@ -83,7 +83,7 @@ export class FilesService {
       );
     return {
       ownerId: userId,
-      name: key,
+      name: file.originalname,
       url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
   }
