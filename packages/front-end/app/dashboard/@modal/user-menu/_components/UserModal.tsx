@@ -4,9 +4,13 @@ import Divider from "@/components/Divider";
 import ModalContainer from "@/components/ModalContainer";
 import { css } from "@/styled-system/css";
 import UserModalTop from "./UserModalTop";
+import { Heading } from "@/components/Text";
+import Button from "@/components/Button";
+import UserInfoEdit from "./UserInfoEdit";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function UserModal() {
-  
   return (
     <ModalContainer>
       <div
@@ -22,9 +26,17 @@ export default function UserModal() {
           e.stopPropagation();
         }}
       >
-        <UserModalTop/>
+        <UserModalTop />
         <Divider />
-
+        <div>
+          <ErrorBoundary fallback={<h1>에러</h1>}>
+            <Suspense fallback={<h1>로딩</h1>}>
+              <UserInfoEdit />
+            </Suspense>
+          </ErrorBoundary>
+          <Heading variant="h5">로그아웃</Heading>
+          <Button>로그아웃</Button>
+        </div>
       </div>
     </ModalContainer>
   );
