@@ -35,6 +35,8 @@ export default function SessionTable() {
   });
 
   const data = response.data;
+  console.log(data);
+  console.log(response);
 
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
