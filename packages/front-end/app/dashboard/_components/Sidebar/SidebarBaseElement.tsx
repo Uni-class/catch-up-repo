@@ -17,11 +17,12 @@ export default function SidebarBaseElement({className, active, onClick, children
       className={cx(
         className,
         css({
-          display: "block",
+          display: "flex",
           padding: "0.8em",
           borderRadius: "0.5em",
           cursor: "pointer",
           userSelect: "none",
+          gap: "0.5em",
         }),
         css(
           active

@@ -14,13 +14,6 @@ export default function UserModalTop() {
       })}
     >
       <Heading>내 정보</Heading>
-      <Button
-        onClick={() => {
-          router.back();
-        }}
-      >
-        X
-      </Button>
     </div>
   );
 }
