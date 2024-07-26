@@ -27,6 +27,7 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 import { File } from './entities/file.entity';
+import { UpdateResult } from 'typeorm';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -63,21 +64,23 @@ export class FilesController {
   }
 
   @Get(':fileId')
+  @ApiResponse({ type: File })
   @UseGuards(JwtGuard)
-  async findOne(
+  async getFile(
     @UserId(ParseIntPipe) userId: number,
     @Param('fileId', ParseIntPipe) requestedFileId: number,
   ): Promise<File> {
     return await this.filesService.getFileAsUser(requestedFileId, userId);
   }
 
-  @Patch(':fileId/info')
+  @Patch(':fileId')
+  @ApiResponse({ type: UpdateResult })
   @UseGuards(JwtGuard)
-  async update(
+  async updateFile(
     @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
     @Body() updateFileDto: UpdateFileDto,
-  ) {
+  ): Promise<UpdateResult> {
     const file = await this.filesService.getFileAsUser(requestedFileId, userId);
     return this.filesService.update(file.fileId, updateFileDto);
   }
