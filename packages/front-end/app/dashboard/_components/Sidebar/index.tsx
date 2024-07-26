@@ -1,6 +1,8 @@
 "use client";
 import { css } from "@/styled-system/css";
-import SidebarMenu from "./SidebarMenu";
+import SidebarGroup from "@/app/dashboard/_components/Sidebar/SidebarGroup";
+import SidebarLink from "./SidebarLink";
+import SidebarDirectory from "./SidebarDirectory";
 import SidebarUser from "./SidebarUser";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
@@ -43,7 +45,17 @@ export default function Sidebar() {
           })}>세션 접속</Button>
         </div>
         <Divider/>
-        <SidebarMenu/>
+        <SidebarGroup name="메뉴" className={css({
+            height: "100%",
+        })}>
+          <SidebarLink name="대시보드" href="/dashboard" />
+          <SidebarDirectory name="세션" href="/dashboard/session">
+            <SidebarLink name="내가 참가한 세션" href="/dashboard/session/participant" />
+            <SidebarLink name="내가 주최한 세션" href="/dashboard/session/host" />
+            <SidebarLink name="세션 생성하기" href="/dashboard/session/create" />
+          </SidebarDirectory>
+          <SidebarLink name="드라이브" href="/dashboard/drive" />
+        </SidebarGroup>
         <Divider/>
         <SidebarUser/>
     </div>
