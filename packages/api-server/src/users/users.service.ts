@@ -125,4 +125,13 @@ export class UsersService {
     }
     return await this.userSessionRepository.softRemove(userSession);
   }
+
+  async getUserFiles(userId: number) {
+    const user: User = await this.userRepository.findOne({
+      where: { userId },
+      relations: ['files'],
+    });
+    const files = await user.files;
+    return files;
+  }
 }

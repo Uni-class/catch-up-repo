@@ -36,6 +36,7 @@ import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.d
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
 import { UpdateResult } from 'typeorm';
 import { UserSessionBodyType } from './types/user-session-body.type';
+import { File } from '../files/entities/file.entity';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -137,5 +138,13 @@ export class UsersController {
   ): Promise<UserSession> {
     const result = await this.usersService.deleteUserSession(userId, sessionId);
     return result;
+  }
+
+  @Get('files')
+  @ApiResponse({ type: File })
+  @UseGuards(JwtGuard)
+  async getUserFiles(@UserId(ParseIntPipe) userId: number) {
+    const files = await this.usersService.getUserFiles(userId);
+    return files;
   }
 }
