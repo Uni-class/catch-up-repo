@@ -31,13 +31,13 @@ export class SessionsController {
     private readonly sessionFilesService: SessionFilesService,
   ) {}
 
-  @Post('create')
-  @ApiResponse({ type: Session })
+  @Post()
+  @ApiResponse({ type: SessionResponseDto })
   @UseGuards(JwtGuard)
   async createSession(
     @UserId() userId: number,
     @Body() createSessionDto: CreateSessionDto,
-  ) {
+  ): Promise<SessionResponseDto> {
     createSessionDto.hostId = userId;
     const sessionFileIds = createSessionDto.sessionFileIds || [];
     delete createSessionDto.sessionFileIds;
@@ -45,10 +45,17 @@ export class SessionsController {
       await this.filesService.getFileAsUser(fileId, userId);
     }
     const session = await this.sessionsService.create(createSessionDto);
+    const sessionFiles: SessionFile[] = [];
     for (const fileId of sessionFileIds) {
-      await this.sessionFilesService.create(session.sessionId, fileId);
+      const sessionFile: SessionFile = await this.sessionFilesService.create(
+        session.sessionId,
+        fileId,
+      );
+      sessionFiles.push(sessionFile);
     }
-    return session;
+    const fileList: File[] =
+      await this.sessionsService.getFileListBySessionFiles(sessionFiles);
+    return new SessionResponseDto(session, fileList);
   }
 
   @Get(':sessionId')
