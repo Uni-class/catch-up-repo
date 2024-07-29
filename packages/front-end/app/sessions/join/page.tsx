@@ -5,6 +5,7 @@ import LineEdit from "@/components/LineEdit";
 import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import Button from "@/components/Button";
+import Divider from "@/components/Divider";
 
 export default function Page() {
   const [sessionId, setSessionId] = useState("");
@@ -12,9 +13,8 @@ export default function Page() {
     <div className={css({
       height: "100%",
     })}>
-      <Heading variant="h4">
-        세션 접속하기
-      </Heading>
+      <Heading>세션 접속하기</Heading>
+      <Divider/>
       <div className={css({
         margin: "10em 0",
       })}>
