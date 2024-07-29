@@ -56,7 +56,7 @@ export default function SidebarUser() {
           <SidebarLink href="/settings"><SettingsIcon width={"1.2em"}/>계정 설정</SidebarLink>
           <SidebarLink href="/settings"><SettingsIcon width={"1.2em"}/>계정 설정</SidebarLink>
           <Divider/>
-          <SidebarLink><LogoutIcon width={"1.2em"}/>로그아웃</SidebarLink>
+          <SidebarLink href="/logout"><LogoutIcon width={"1.2em"}/>로그아웃</SidebarLink>
         </div>
         :
         null
