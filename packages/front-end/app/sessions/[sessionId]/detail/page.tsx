@@ -43,7 +43,7 @@ export default function Page({ params }: PropType) {
         (userData.userId === sessionData.hostId ? (
           <HostSession sessionData={sessionData} />
         ) : (
-          <ParticipantSession />
+          <ParticipantSession sessionData={sessionData}/>
         ))}
     </>
   );
