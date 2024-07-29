@@ -17,6 +17,9 @@ import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Session } from './entities/session.entity';
+import { SessionFile } from '../session-files/entities/session-file.entity';
+import { File } from '../files/entities/file.entity';
+import { SessionResponseDto } from './dto/session.response.dto';
 
 @ApiTags('Session')
 @ApiBearerAuth()
@@ -49,13 +52,20 @@ export class SessionsController {
   }
 
   @Get(':sessionId')
-  @ApiResponse({ type: Session })
+  @ApiResponse({ type: SessionResponseDto })
   @UseGuards(JwtGuard)
   async getSessionInfo(
     @Param('sessionId', ParseIntPipe) sessionId: number,
     @UserId(ParseIntPipe) userId: number,
-  ) {
-    return await this.sessionsService.getSessionAsUser(sessionId, null);
+  ): Promise<SessionResponseDto> {
+    const session: Session = await this.sessionsService.getSessionAsUser(
+      sessionId,
+      null,
+    );
+    const sessionFiles: SessionFile[] = session.sessionFiles;
+    const fileList: File[] =
+      await this.sessionsService.getFileListBySessionFiles(sessionFiles);
+    return new SessionResponseDto(session, fileList);
   }
 
   @Patch(':sessionId')
