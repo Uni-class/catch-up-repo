@@ -58,8 +58,7 @@ export class AuthController {
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
         .redirect(
-          this.configService.get<string>('CLIENT_DOMAIN') +
-            '/dashboard/session',
+          this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
     } catch (e) {
       console.log(e);
@@ -85,8 +84,7 @@ export class AuthController {
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
         .redirect(
-          this.configService.get<string>('CLIENT_DOMAIN') +
-            '/dashboard/session',
+          this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
     } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
@@ -111,8 +109,7 @@ export class AuthController {
         .cookie('access_token', accessToken)
         .cookie('refresh_token', refreshToken)
         .redirect(
-          this.configService.get<string>('CLIENT_DOMAIN') +
-            '/dashboard/session',
+          this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
     } catch (e) {
       console.log(e);
