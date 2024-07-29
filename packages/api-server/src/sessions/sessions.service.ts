@@ -4,10 +4,14 @@ import { UpdateSessionDto } from './dto/update-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from './entities/session.entity';
 import { Repository } from 'typeorm';
+import { SessionFile } from '../session-files/entities/session-file.entity';
+import { FilesService } from '../files/files.service';
+import { File } from '../files/entities/file.entity';
 
 @Injectable()
 export class SessionsService {
   constructor(
+    private readonly filesService: FilesService,
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
   ) {}
@@ -19,6 +23,7 @@ export class SessionsService {
   async findOne(id: number) {
     return await this.sessionRepository.findOne({
       where: { sessionId: id },
+      relations: ['sessionFiles'],
     });
   }
 
@@ -34,5 +39,17 @@ export class SessionsService {
       );
     }
     return session;
+  }
+
+  async getFileListBySessionFiles(sessionFiles: SessionFile[]) {
+    if (!sessionFiles || !sessionFiles.length) {
+      return [];
+    }
+    const fileList: File[] = await Promise.all(
+      sessionFiles.map((sessionFile: SessionFile) => {
+        return this.filesService.findOne(sessionFile.fileId);
+      }),
+    );
+    return fileList;
   }
 }

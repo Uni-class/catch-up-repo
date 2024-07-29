@@ -1,37 +1,35 @@
-import { css } from "@/styled-system/css";
+import { css, cx } from "@/styled-system/css";
 import { ChangeEventHandler } from "react";
 
 
 interface PropType {
-    placeholder?: string;
-    text: string;
-    onChange: ChangeEventHandler<HTMLInputElement>;
+  className?: string;
+  placeholder?: string;
+  text?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function LineEdit({placeholder = "", text, onChange}: PropType) {
+export default function LineEdit({className, placeholder, text, onChange}: PropType) {
     return (
         <input
             type="text"
             placeholder={placeholder}
             value={text}
             onChange={onChange}
-            className={css({
+            className={cx(className, css({
                 padding: "0.5em 0.8em",
                 color: "#000000",
                 background: "#ededed",
                 borderRadius: "0.4em",
-                borderBottom: "0.15em solid transparent",
                 outline: "none",
                 transition: "all 0.2s ease-in-out",
                 _hover: {
                     background: "#dcdcdc",
-                    borderBottom: "0.15em solid #000000",
                 },
                 _focus: {
                     background: "#dcdcdc",
-                    borderBottom: "0.15em solid #000000",
                 }
-            })}
+            }))}
         />
     );
 };

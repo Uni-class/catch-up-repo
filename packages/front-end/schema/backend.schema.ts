@@ -9,12 +9,29 @@
  * ---------------------------------------------------------------
  */
 
+export interface User {
+  userId: number;
+  nickname: string;
+  username: string;
+  email: string;
+  profileUrl: string;
+  provider: string;
+  providerId: string;
+  refreshToken: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+
 export interface UpdateUserDto {
   nickname?: string;
   email?: string;
   profileUrl?: string;
   refreshToken?: string;
 }
+
+export type UpdateResult = object;
 
 export interface Session {
   sessionId: number;
@@ -40,7 +57,15 @@ export interface UserSession {
 
 export type UserSessionBodyType = object;
 
-export type UpdateResult = object;
+export interface File {
+  fileId: number;
+  ownerId: number;
+  name: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
 
 export interface File {
   fileId: number;
@@ -57,6 +82,14 @@ export interface CreateSessionDto {
   sessionFileIds: string[];
 }
 
+export interface SessionResponseDto {
+  sessionId: number;
+  sessionName: string;
+  hostId: number;
+  createdAt: string;
+  fileList: string[];
+}
+
 export interface UpdateSessionDto {
   sessionName?: string;
   sessionFileIds?: string[];
@@ -68,9 +101,7 @@ export interface FileUploadResponseDto {
 }
 
 export interface UpdateFileDto {
-  ownerId?: number;
-  name?: string;
-  url?: string;
+  name: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -363,6 +394,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerLogout
+     * @request POST:/auth/logout
+     * @secure
+     */
+    authControllerLogout: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/logout`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
   };
   user = {
     /**
@@ -374,7 +421,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     usersControllerGetUserProfile: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<any, User>({
         path: `/user/profile`,
         method: 'GET',
         secure: true,
@@ -390,7 +437,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     usersControllerUpdateUserProfile: (data: UpdateUserDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<any, UpdateResult>({
         path: `/user/profile`,
         method: 'PATCH',
         body: data,
@@ -408,7 +455,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     usersControllerDeleteUser: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<any, User>({
         path: `/user`,
         method: 'DELETE',
         secure: true,
@@ -511,12 +558,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Session
      * @name SessionsControllerCreateSession
-     * @request POST:/session/create
+     * @request POST:/session
      * @secure
      */
     sessionsControllerCreateSession: (data: CreateSessionDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/session/create`,
+      this.request<any, SessionResponseDto>({
+        path: `/session`,
         method: 'POST',
         body: data,
         secure: true,
@@ -529,12 +576,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Session
      * @name SessionsControllerGetSessionInfo
-     * @request GET:/session/{sessionId}/info
+     * @request GET:/session/{sessionId}
      * @secure
      */
     sessionsControllerGetSessionInfo: (sessionId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/session/${sessionId}/info`,
+      this.request<any, SessionResponseDto>({
+        path: `/session/${sessionId}`,
         method: 'GET',
         secure: true,
         ...params,
@@ -545,12 +592,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Session
      * @name SessionsControllerUpdate
-     * @request PATCH:/session/{sessionId}/info
+     * @request PATCH:/session/{sessionId}
      * @secure
      */
     sessionsControllerUpdate: (sessionId: number, data: UpdateSessionDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/session/${sessionId}/info`,
+        path: `/session/${sessionId}`,
         method: 'PATCH',
         body: data,
         secure: true,
@@ -587,13 +634,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags file
-     * @name FilesControllerFindOne
-     * @request GET:/file/{fileId}/info
+     * @name FilesControllerGetFile
+     * @request GET:/file/{fileId}
      * @secure
      */
-    filesControllerFindOne: (fileId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/file/${fileId}/info`,
+    filesControllerGetFile: (fileId: number, params: RequestParams = {}) =>
+      this.request<any, File>({
+        path: `/file/${fileId}`,
         method: 'GET',
         secure: true,
         ...params,
@@ -603,13 +650,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags file
-     * @name FilesControllerUpdate
-     * @request PATCH:/file/{fileId}/info
+     * @name FilesControllerUpdateFile
+     * @request PATCH:/file/{fileId}
      * @secure
      */
-    filesControllerUpdate: (fileId: number, data: UpdateFileDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/file/${fileId}/info`,
+    filesControllerUpdateFile: (fileId: number, data: UpdateFileDto, params: RequestParams = {}) =>
+      this.request<any, UpdateResult>({
+        path: `/file/${fileId}`,
         method: 'PATCH',
         body: data,
         secure: true,
@@ -626,7 +673,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     filesControllerRemove: (fileId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<any, File>({
         path: `/file/${fileId}`,
         method: 'DELETE',
         secure: true,

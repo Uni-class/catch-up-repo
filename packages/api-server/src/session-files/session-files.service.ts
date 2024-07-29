@@ -7,21 +7,25 @@ import { SessionFile } from './entities/session-file.entity';
 export class SessionFilesService {
   constructor(
     @InjectRepository(SessionFile)
-    private readonly fileRepository: Repository<SessionFile>,
+    private readonly sessionFileRepository: Repository<SessionFile>,
   ) {}
 
   async create(sessionId: number, fileId: number) {
-    return 'This action adds a new file';
+    const newSessionFile: SessionFile = this.sessionFileRepository.create({
+      sessionId,
+      fileId,
+    });
+    return await this.sessionFileRepository.save(newSessionFile);
   }
 
   async findOne(id: number) {
-    return await this.fileRepository.findOne({
+    return await this.sessionFileRepository.findOne({
       where: { sessionFileId: id },
     });
   }
 
   async findAllBySessionId(sessionId: number) {
-    return await this.fileRepository.find({
+    return await this.sessionFileRepository.find({
       where: { sessionId: sessionId },
     });
   }
