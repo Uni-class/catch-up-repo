@@ -1,6 +1,7 @@
 "use client";
+
 import { css } from "@/styled-system/css";
-import SidebarGroup from "@/app/dashboard/_components/Sidebar/SidebarGroup";
+import SidebarGroup from "@/app/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
 import SidebarUser from "./SidebarUser";
@@ -49,7 +50,7 @@ export default function Sidebar() {
           <Image alt={PROJECT_NAME} src="/icon/logo.png" width={40} height={40}/>
           <Heading variant="h4">{PROJECT_NAME}</Heading>
         </div>
-        <Button onClick={() => router.push("/dashboard/session/join")} className={css({
+        <Button onClick={() => router.push("/sessions/join")} className={css({
           fontWeight: "bold",
         })}>세션 접속</Button>
       </div>
@@ -58,13 +59,13 @@ export default function Sidebar() {
           height: "100%",
       })}>
         <SidebarLink href="/dashboard"><LayoutIcon width={"1.2em"}/>대시보드</SidebarLink>
-        <SidebarDirectory display={<><CastIcon width={"1.2em"}/>세션</>} href="/dashboard/session">
-          <SidebarLink href="/dashboard/session/participant">내가 참가한 세션</SidebarLink>
-          <SidebarLink href="/dashboard/session/host">내가 주최한 세션</SidebarLink>
-          <SidebarLink href="/dashboard/session/create"><PlusCircleIcon width={"1.2em"}/>세션 생성하기</SidebarLink>
-          <SidebarLink href="/dashboard/session/join"><ExternalLinkIcon width={"1.2em"}/>세션 접속하기</SidebarLink>
+        <SidebarDirectory display={<><CastIcon width={"1.2em"}/>세션</>} href="/sessions">
+          <SidebarLink href="/sessions/participant">내가 참가한 세션</SidebarLink>
+          <SidebarLink href="/sessions/host">내가 주최한 세션</SidebarLink>
+          <SidebarLink href="/sessions/create"><PlusCircleIcon width={"1.2em"}/>세션 생성하기</SidebarLink>
+          <SidebarLink href="/sessions/join"><ExternalLinkIcon width={"1.2em"}/>세션 접속하기</SidebarLink>
         </SidebarDirectory>
-        <SidebarLink href="/dashboard/drive"><DatabaseIcon width={"1.2em"}/>드라이브</SidebarLink>
+        <SidebarLink href="/files"><DatabaseIcon width={"1.2em"}/>드라이브</SidebarLink>
       </SidebarGroup>
       <Divider/>
       <SidebarUser/>
