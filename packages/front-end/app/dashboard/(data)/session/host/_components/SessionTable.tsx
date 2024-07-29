@@ -15,27 +15,37 @@ import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { formatDate } from "date-fns";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-export default function SessionTable() {
+export default function SessionTableFetch() {
   const { queryObj } = useRouter();
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
   }
-  const { data } = useSuspenseQuery<AxiosResponse<Session[]>>({
+  const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      return await apiClient.get("/user/sessions/list", {
+      return await apiClient.get("/user/sessions", {
         params: queryObj,
       });
     },
-  }).data;
+    throwOnError: true,
+  });
+  const data = response?.data;
+  if (isLoading) {
+    return <h1>로딩...</h1>;
+  }
+  return <>{data !== undefined && <SessionTable data={data} />}</>;
+}
 
-  console.log(data);
+interface SessionTablePropType {
+  data: Session[];
+}
 
+export function SessionTable({ data }: SessionTablePropType) {
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
       data: data,

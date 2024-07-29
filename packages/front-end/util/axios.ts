@@ -50,6 +50,7 @@ apiClient.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get("access_token");
     config.headers.Authorization = `Bearer ${accessToken}`;
+    console.log("req",config);
     return config;
   },
   (error) => {
@@ -59,10 +60,12 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => {
+    console.log("success", response);
     return response.data;
   },
   async (error) => {
     const originalReq = error.config as InternalAxiosRequestConfig<any>;
+    console.log(error, originalReq);
     if (error?.response?.status === 401) {
       try {
         await refreshClient.get("/auth/token-refresh");
