@@ -57,7 +57,7 @@ export class SessionFile {
   session: Session;
 
   @ManyToOne(() => File, (file) => file.sessionFiles)
-  @JoinColumn({ name: 'session_id', referencedColumnName: 'fileId' })
+  @JoinColumn({ name: 'file_id', referencedColumnName: 'fileId' })
   file: File;
 
   @OneToMany(
