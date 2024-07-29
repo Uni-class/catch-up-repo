@@ -1,6 +1,7 @@
 import { Heading } from "@/components/Text";
 import { css, cx } from "@/styled-system/css";
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState } from "react";
+import LocalFileUpload from "./LocalFileUpload";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
@@ -15,6 +16,8 @@ export default function FileUploadModal() {
         backgroundColor: "#fff",
         borderRadius: "1rem",
         padding: "1rem",
+        display:"flex",
+        flexDirection:"column",
       })}
     >
       <Heading>강의 자료 업로드 및 수정</Heading>
@@ -30,6 +33,7 @@ export default function FileUploadModal() {
           />
         ))}
       </TabContainer>
+      {tabState === "내 컴퓨터" ? <LocalFileUpload /> : <></>}
     </div>
   );
 }
