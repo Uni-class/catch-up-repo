@@ -6,13 +6,17 @@ import { ReactNode, useEffect } from "react";
 
 interface PropType {
   children: ReactNode;
+  onClose?: () => void;
 }
 
-export default function ModalContainer({ children }: PropType) {
+export default function ModalContainer({
+  children,
+  onClose = () => {},
+}: PropType) {
   const router = useRouter();
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
-      router.back();
+      onClose();
     }
   };
   useEffect(() => {
@@ -23,7 +27,7 @@ export default function ModalContainer({ children }: PropType) {
     };
   }, []);
   const handleBackdropClick = () => {
-    router.back();
+    onClose();
   };
   return (
     <dialog

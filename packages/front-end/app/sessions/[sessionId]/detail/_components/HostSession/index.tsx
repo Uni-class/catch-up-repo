@@ -1,8 +1,12 @@
 import Button from "@/components/Button";
 import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
+import { overlay } from "overlay-kit";
 
 export default function HostSession() {
+  const handleFileButtonClick = () => {
+    overlay.open(({ isOpen, close }) => <></>, { overlayId: "file upload" });
+  };
   return (
     <main
       className={css({
@@ -18,7 +22,7 @@ export default function HostSession() {
           display: "flex",
           flexDirection: "column",
           width: "600px",
-          gap:"1rem",
+          gap: "1rem",
         })}
       >
         <Heading>세션 정보 및 작성</Heading>
@@ -29,7 +33,12 @@ export default function HostSession() {
           placeholder="세션 제목 입력"
         />
         <label htmlFor="select file">강의 자료 선택</label>
-        <Button id="select file" name="select file" type="button">
+        <Button
+          id="select file"
+          name="select file"
+          type="button"
+          onClick={handleFileButtonClick}
+        >
           자료 선택
         </Button>
         <label>현재 선택한 파일</label>
