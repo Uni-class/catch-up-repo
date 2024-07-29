@@ -156,6 +156,6 @@ export class AuthController {
     return res
       .cookie('access_token', '', { maxAge: 0 })
       .cookie('refresh_token', '', { maxAge: 0 })
-      .redirect(this.configService.get<string>('CLIENT_DOMAIN') + '/login');
+      .send();
   }
 }
