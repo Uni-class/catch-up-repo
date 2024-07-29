@@ -2,9 +2,9 @@
 
 import { apiClient } from "@/util/axios";
 import { useQueries } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 import HostSession from "./_components/HostSession";
-import { SessionResponseDto } from "@/schema/backend.schema";
+import { SessionResponseDto, User } from "@/schema/backend.schema";
+import ParticipantSession from "./_components/ParticipantSession";
 
 interface PropType {
   params: { sessionId: string };
@@ -19,7 +19,7 @@ export default function Page({ params }: PropType) {
     queries: [
       {
         queryKey: ["user", "profile"],
-        queryFn: async () => await apiClient.get<any>("/user/profile"),
+        queryFn: async () => await apiClient.get<User>("/user/profile"),
         throwOnError: true,
       },
       {
@@ -34,10 +34,17 @@ export default function Page({ params }: PropType) {
     return <h1>로딩...</h1>;
   }
   const sessionData = sessionRes?.data;
-  console.log(sessionData);
+  const userData = userRes?.data;
+
   return (
     <>
-      {sessionData !== undefined && <HostSession sessionData={sessionData} />}
+      {sessionData !== undefined &&
+        userData !== undefined &&
+        (userData.userId === sessionData.hostId ? (
+          <HostSession sessionData={sessionData} />
+        ) : (
+          <ParticipantSession />
+        ))}
     </>
   );
 }
