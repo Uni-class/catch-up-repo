@@ -7,6 +7,7 @@ import SidebarUser from "./SidebarUser";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
 import Button from "@/components/Button";
+import { useRouter } from "@/hook/useRouter";
 
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
@@ -19,6 +20,8 @@ import Image from "next/image";
 import { PROJECT_NAME } from "@/const/config";
 
 export default function Sidebar() {
+  const router = useRouter();
+
   return (
     <div
       className={css({
@@ -46,7 +49,7 @@ export default function Sidebar() {
           <Image alt={PROJECT_NAME} src="/icon/logo.png" width={40} height={40}/>
           <Heading variant="h4">{PROJECT_NAME}</Heading>
         </div>
-        <Button className={css({
+        <Button onClick={() => router.push("/dashboard/session/join")} className={css({
           fontWeight: "bold",
         })}>세션 접속</Button>
       </div>

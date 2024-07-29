@@ -20,7 +20,7 @@ const Button = styled("button", {
             },
         },
         _disabled: {
-            background: "red.600",
+            background: "gray.400",
             cursor: "not-allowed",
         }
     }
