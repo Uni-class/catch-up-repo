@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useState } from "react";
 import { css } from "@/styled-system/css";
-import SidebarBaseElement from "@/app/dashboard/_components/Sidebar/SidebarBaseElement";
+import SidebarBaseElement from "@/app/_components/Sidebar/SidebarBaseElement";
 import ChevronUpIcon from "@/public/icons/chevron-up.svg";
 import ChevronDownIcon from "@/public/icons/chevron-down.svg";
 import {useRouter} from "@/hook/useRouter";
@@ -16,12 +16,13 @@ interface PropType {
 export default function SidebarDirectory({ className, display, href, children }: PropType) {
   const [isOpen, setIsOpen] = useState(true);
   const { pathname } = useRouter();
+  const isSubDirectory = pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <div className={className}>
       <SidebarBaseElement className={
         css(
-          isOpen && pathname.startsWith(href)
+          isOpen && isSubDirectory
           ?
           {
             backgroundColor: "gray.200",
@@ -33,7 +34,7 @@ export default function SidebarDirectory({ className, display, href, children }:
           :
           null
         )
-      } active={!isOpen && pathname.startsWith(href)} onClick={() => setIsOpen(!isOpen)}>
+      } active={!isOpen && isSubDirectory} onClick={() => setIsOpen(!isOpen)}>
         <p className={css({
           display: "flex",
           width: "100%",

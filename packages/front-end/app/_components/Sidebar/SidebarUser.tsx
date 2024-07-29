@@ -1,9 +1,9 @@
-import SidebarBaseElement from "@/app/dashboard/_components/Sidebar/SidebarBaseElement";
+import SidebarBaseElement from "@/app/_components/Sidebar/SidebarBaseElement";
 
 import { css } from "@/styled-system/css";
 import { useState, useEffect, useRef } from "react";
 
-import SidebarLink from "@/app/dashboard/_components/Sidebar/SidebarLink";
+import SidebarLink from "@/app/_components/Sidebar/SidebarLink";
 import Divider from "@/components/Divider";
 
 import SettingsIcon from "@/public/icons/settings.svg";
