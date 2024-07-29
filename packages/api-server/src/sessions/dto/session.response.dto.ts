@@ -15,7 +15,7 @@ export class SessionResponseDto {
   @ApiProperty()
   createdAt: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: [File] })
   fileList: File[];
 
   public constructor(session: Session, fileList: File[]) {

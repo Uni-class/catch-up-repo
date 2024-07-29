@@ -67,16 +67,6 @@ export interface File {
   deletedAt: string;
 }
 
-export interface File {
-  fileId: number;
-  ownerId: number;
-  name: string;
-  url: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-}
-
 export interface CreateSessionDto {
   sessionName: string;
   sessionFileIds: string[];
@@ -87,7 +77,7 @@ export interface SessionResponseDto {
   sessionName: string;
   hostId: number;
   createdAt: string;
-  fileList: string[];
+  fileList: File[];
 }
 
 export interface UpdateSessionDto {
