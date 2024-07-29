@@ -55,7 +55,7 @@ export class SessionsController {
     @Param('sessionId', ParseIntPipe) sessionId: number,
     @UserId(ParseIntPipe) userId: number,
   ) {
-    return await this.sessionsService.getSessionAsUser(sessionId, userId);
+    return await this.sessionsService.getSessionAsUser(sessionId, null);
   }
 
   @Patch(':sessionId')
