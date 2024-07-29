@@ -15,7 +15,8 @@ import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Session } from './entities/session.entity';
 
 @ApiTags('Session')
 @ApiBearerAuth()
@@ -28,6 +29,7 @@ export class SessionsController {
   ) {}
 
   @Post('create')
+  @ApiResponse({ type: Session })
   @UseGuards(JwtGuard)
   async createSession(
     @UserId() userId: number,
@@ -46,7 +48,8 @@ export class SessionsController {
     return session;
   }
 
-  @Get(':sessionId/info')
+  @Get(':sessionId')
+  @ApiResponse({ type: Session })
   @UseGuards(JwtGuard)
   async getSessionInfo(
     @Param('sessionId', ParseIntPipe) sessionId: number,
@@ -55,7 +58,7 @@ export class SessionsController {
     return await this.sessionsService.getSessionAsUser(sessionId, userId);
   }
 
-  @Patch(':sessionId/info')
+  @Patch(':sessionId')
   @UseGuards(JwtGuard)
   async update(
     @Param('sessionId', ParseIntPipe) requestedSessionId: number,
