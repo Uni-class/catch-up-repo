@@ -3,6 +3,7 @@
 import { apiClient } from "@/util/axios";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import HostSession from "./_components/HostSession";
 
 interface PropType {
   params: { sessionId: string };
@@ -31,5 +32,9 @@ export default function Page({ params }: PropType) {
     return <h1>로딩...</h1>;
   }
 
-  return <></>;
+  return (
+    <>
+      <HostSession />
+    </>
+  );
 }
