@@ -5,4 +5,4 @@ import {
   userSessionHandler,
 } from "./handlers/user";
 
-export const handlers: HttpHandler[] = [userFileHandler];
+export const handlers: HttpHandler[] = [];

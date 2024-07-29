@@ -2,12 +2,18 @@ import { Heading } from "@/components/Text";
 import { css, cx } from "@/styled-system/css";
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState } from "react";
 import LocalFileUpload from "./LocalFileUpload";
+import DriveFileUploadFetch from "./DriveFileUpload";
+import Button from "@/components/Button";
+import { overlay } from "overlay-kit";
+import { ErrorBoundary } from "react-error-boundary";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
 export default function FileUploadModal() {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
+  const { reset } = useQueryErrorResetBoundary();
   return (
     <div
       className={css({
@@ -16,11 +22,23 @@ export default function FileUploadModal() {
         backgroundColor: "#fff",
         borderRadius: "1rem",
         padding: "1rem",
-        display:"flex",
-        flexDirection:"column",
+        display: "flex",
+        flexDirection: "column",
       })}
     >
-      <Heading>강의 자료 업로드 및 수정</Heading>
+      <div
+        className={css({ display: "flex", justifyContent: "space-between" })}
+      >
+        <Heading>강의 자료 업로드 및 수정</Heading>
+        <Button
+          onClick={() => {
+            overlay.close("file upload");
+          }}
+        >
+          X
+        </Button>
+      </div>
+
       <TabContainer>
         {tabData.map((e) => (
           <Tab
@@ -33,7 +51,13 @@ export default function FileUploadModal() {
           />
         ))}
       </TabContainer>
-      {tabState === "내 컴퓨터" ? <LocalFileUpload /> : <></>}
+      {tabState === "내 컴퓨터" ? (
+        <LocalFileUpload />
+      ) : (
+        <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+          <DriveFileUploadFetch />
+        </ErrorBoundary>
+      )}
     </div>
   );
 }

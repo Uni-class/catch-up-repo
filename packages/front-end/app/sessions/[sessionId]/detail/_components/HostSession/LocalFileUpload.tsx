@@ -34,9 +34,9 @@ export default function LocalFileUpload() {
       >
         <input {...getInputProps()} accept=".pdf"/>
         {isDragActive ? (
-          <Paragraph variant="body1">파일 드래그 & 드롭</Paragraph>
+          <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
         ) : (
-          <Paragraph variant="body1">파일 드래그 & 드롭</Paragraph>
+          <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
         )}
       </div>
     </div>
