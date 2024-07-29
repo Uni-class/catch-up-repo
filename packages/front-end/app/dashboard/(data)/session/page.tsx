@@ -1,10 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
-import SessionTable from "./_components/SessionTable";
 import { ErrorBoundary } from "react-error-boundary";
 import SessionHeader from "./_components/SessionHeader";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import SessionTableFetch from "./_components/SessionTable";
 
 export default function Page() {
   const { reset } = useQueryErrorResetBoundary();
@@ -12,11 +11,9 @@ export default function Page() {
   return (
     <>
       <SessionHeader />
-      <Suspense fallback={<h1>로딩...</h1>}>
-        <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
-          <SessionTable />
-        </ErrorBoundary>
-      </Suspense>
+      <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+        <SessionTableFetch />
+      </ErrorBoundary>
     </>
   );
 }

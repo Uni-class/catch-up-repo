@@ -42,6 +42,16 @@ export type UserSessionBodyType = object;
 
 export type UpdateResult = object;
 
+export interface File {
+  fileId: number;
+  ownerId: number;
+  name: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+
 export interface CreateSessionDto {
   sessionName: string;
   sessionFileIds: string[];
@@ -419,12 +429,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<Session | UserSession, any>({
+      this.request<any, Session[]>({
         path: `/user/sessions`,
         method: 'GET',
         query: query,
         secure: true,
-        format: 'json',
         ...params,
       }),
 
@@ -476,6 +485,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<any, UserSession>({
         path: `/user/sessions/${sessionId}`,
         method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerGetUserFiles
+     * @request GET:/user/files
+     * @secure
+     */
+    usersControllerGetUserFiles: (params: RequestParams = {}) =>
+      this.request<any, File>({
+        path: `/user/files`,
+        method: 'GET',
         secure: true,
         ...params,
       }),
