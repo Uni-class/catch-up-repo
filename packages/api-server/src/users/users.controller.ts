@@ -36,6 +36,7 @@ import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.d
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
 import { UpdateResult } from 'typeorm';
 import { UserSessionBodyType } from './types/user-session-body.type';
+import { File } from '../files/entities/file.entity';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -68,24 +69,12 @@ export class UsersController {
   @Get('sessions')
   @ApiExtraModels(Session, UserSession)
   @ApiQuery({ name: 'role', type: String })
-  @ApiResponse({
-    status: 200,
-    content: {
-      'application/json': {
-        schema: {
-          oneOf: [
-            { $ref: getSchemaPath(Session) },
-            { $ref: getSchemaPath(UserSession) },
-          ],
-        },
-      },
-    },
-  })
+  @ApiResponse({ type: [Session] })
   @UseGuards(JwtGuard)
   async getSessions(
     @UserId(ParseIntPipe) userId: number,
     @Query() query: Role,
-  ) {
+  ): Promise<Session[]> {
     if (query.role === 'host')
       return await this.usersService.getSessionsByHost(userId);
     return await this.usersService.getSessionsByParticipant(userId);
@@ -137,5 +126,13 @@ export class UsersController {
   ): Promise<UserSession> {
     const result = await this.usersService.deleteUserSession(userId, sessionId);
     return result;
+  }
+
+  @Get('files')
+  @ApiResponse({ type: File })
+  @UseGuards(JwtGuard)
+  async getUserFiles(@UserId(ParseIntPipe) userId: number) {
+    const files = await this.usersService.getUserFiles(userId);
+    return files;
   }
 }

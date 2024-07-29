@@ -70,14 +70,19 @@ export class UsersService {
     return sessions;
   }
 
-  async getSessionsByParticipant(userId: number): Promise<UserSession[]> {
+  async getSessionsByParticipant(userId: number): Promise<Session[]> {
     const userSessions: UserSession[] = await this.userSessionRepository.find({
       where: { userId },
       order: { createdAt: 'DESC' },
       relations: ['session'],
       take: 10,
     });
-    return userSessions;
+    const sessions = await Promise.all(
+      userSessions.map((userSession) => {
+        return userSession.session;
+      }),
+    );
+    return sessions;
   }
 
   async postUserSession(
@@ -124,5 +129,18 @@ export class UsersService {
       );
     }
     return await this.userSessionRepository.softRemove(userSession);
+  }
+
+  async getUserFiles(userId: number) {
+    const user: User = await this.userRepository.findOne({
+      where: { userId },
+      relations: ['files'],
+    });
+    const files = await user.files;
+    return files;
+  }
+
+  async deletdeleteRefreshToken(userId: number) {
+    return await this.userRepository.update(userId, { refreshToken: '' });
   }
 }

@@ -37,6 +37,15 @@ retryClient.interceptors.request.use(
   }
 );
 
+retryClient.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 apiClient.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get("access_token");
@@ -50,7 +59,7 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data;
   },
   async (error) => {
     const originalReq = error.config as InternalAxiosRequestConfig<any>;

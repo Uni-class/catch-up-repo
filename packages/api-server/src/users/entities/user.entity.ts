@@ -99,5 +99,5 @@ export class User {
   userSessions: UserSession[];
 
   @OneToMany(() => File, (file) => file.owner)
-  files: File[];
+  files: Promise<File[]>;
 }

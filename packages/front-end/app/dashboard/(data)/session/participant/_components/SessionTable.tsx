@@ -2,6 +2,7 @@ import {
   sessionAreCheckedAtom,
   sessionIsTotalCheckedAtom,
 } from "@/client/CheckBoxAtom";
+import Button from "@/components/Button";
 import {
   TableBody,
   TableContainer,
@@ -25,17 +26,17 @@ export default function SessionTable() {
   if (!queryObj["role"]) {
     queryObj["role"] = "participant";
   }
-  const { data } = useSuspenseQuery<AxiosResponse<Session[]>>({
+  const { data: response } = useSuspenseQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", queryObj["role"]],
     queryFn: async () => {
-      return await apiClient.get("/user/sessions/list", {
+      return await apiClient.get("/user/sessions", {
         params: queryObj,
       });
     },
-  }).data;
+  });
 
+  const data = response.data;
   console.log(data);
-
   const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
     useCheckBoxes<Session, number>({
       data: data,
@@ -47,9 +48,11 @@ export default function SessionTable() {
   return (
     <TableContainer>
       <colgroup>
-        <col width="45px" />
+        <col width="55.25px" />
         <col />
-        <col width="30%" />
+        <col width="20%" />
+        <col width="180px" />
+        <col width="180px" />
       </colgroup>
       <Head
         setIsTotalChecked={setIsTotalChecked}
@@ -87,10 +90,13 @@ function Head({
             type="checkbox"
             onChange={handleChange}
             checked={isTotalChecked}
+            className={css({ zoom: 1.75, cursor: "pointer" })}
           />
         </Th>
         <Th>제목</Th>
         <Th>참여 시간</Th>
+        <Th align="center">세션 상세보기</Th>
+        <Th align="center">세션 참여</Th>
       </TableRow>
     </TableHead>
   );
@@ -111,10 +117,6 @@ function Row({
   return (
     <TableRow
       className={css({
-        "&:hover": {
-          bg: "rose.50",
-        },
-        cursor: "pointer",
         transition: "background 0.2s",
       })}
     >
@@ -123,10 +125,17 @@ function Row({
           type="checkbox"
           onChange={handleChange}
           checked={isCheckedOne(el.sessionId)}
+          className={css({ zoom: 1.75, cursor: "pointer" })}
         />
       </Td>
       <Td>{el.sessionName}</Td>
       <Td>{formatDate(el.createdAt, "yyyy-MM-dd-HH")}</Td>
+      <Td align="center">
+        <Button>상세보기</Button>
+      </Td>
+      <Td align="center">
+        <Button>세션 참여</Button>
+      </Td>
     </TableRow>
   );
 }
