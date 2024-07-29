@@ -7,14 +7,14 @@ import { useRouter } from "@/hook/useRouter";
 
 export default function Page() {
   const router = useRouter();
-  const logout = async () => {
+  const logout = () => {
     apiClient.post("/auth/logout")
       .then((res) => {
         router.push("/");
       })
       .catch((err) => {
         router.push("/");
-      })
+      });
   };
 
   useEffect(() => {
