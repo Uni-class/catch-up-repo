@@ -138,7 +138,7 @@ export class AuthController {
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
     return res
-      .cookie('access_token', newAccessToken)
+      .cookie('access_token', newAccessToken, CookieOptions)
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
   }
