@@ -153,8 +153,8 @@ export class AuthController {
     const result: UpdateResult =
       await this.authService.deleteRefreshTokenOfUser(userId);
     return res
-      .cookie('access_token', '', CookieOptions)
-      .cookie('refresh_token', '', CookieOptions)
+      .cookie('access_token', '', { ...CookieOptions, maxAge: 0 })
+      .cookie('refresh_token', '', { ...CookieOptions, maxAge: 0 })
       .send();
   }
 }
