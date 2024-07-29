@@ -45,6 +45,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('profile')
+  @ApiResponse({ type: User })
   @UseGuards(JwtGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getUserProfile(@UserId(ParseIntPipe) userId: number): Promise<User> {
@@ -52,15 +53,17 @@ export class UsersController {
   }
 
   @Patch('profile')
+  @ApiResponse({ type: UpdateResult })
   @UseGuards(JwtGuard)
   async updateUserProfile(
     @UserId(ParseIntPipe) userId: number,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<UpdateResult> {
     return await this.usersService.update(userId, updateUserDto);
   }
 
   @Delete()
+  @ApiResponse({ type: User })
   @UseGuards(JwtGuard)
   async deleteUser(@UserId(ParseIntPipe) userId: number): Promise<User> {
     return await this.usersService.remove(userId);

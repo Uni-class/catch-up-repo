@@ -26,6 +26,8 @@ import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
+import { File } from './entities/file.entity';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -61,30 +63,39 @@ export class FilesController {
     return await this.filesService.uploadFile(userId, file);
   }
 
-  @Get(':fileId/info')
+  @Get(':fileId')
+  @ApiResponse({ type: File })
   @UseGuards(JwtGuard)
-  async findOne(@Param('fileId', ParseIntPipe) requestedFileId: number) {
-    return await this.filesService.getFileAsUser(requestedFileId, null);
+  async getFile(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('fileId', ParseIntPipe) requestedFileId: number,
+  ): Promise<File> {
+    return await this.filesService.getFileAsUser(requestedFileId, userId);
   }
 
-  @Patch(':fileId/info')
+  @Patch(':fileId')
+  @ApiResponse({ type: UpdateResult })
   @UseGuards(JwtGuard)
-  async update(
+  async updateFile(
     @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
     @Body() updateFileDto: UpdateFileDto,
-  ) {
+  ): Promise<UpdateResult> {
     const file = await this.filesService.getFileAsUser(requestedFileId, userId);
     return this.filesService.update(file.fileId, updateFileDto);
   }
 
   @Delete(':fileId')
+  @ApiResponse({ type: File })
   @UseGuards(JwtGuard)
   async remove(
     @Param('fileId', ParseIntPipe) requestedFileId: number,
     @UserId() userId: number,
-  ) {
-    const file = await this.filesService.getFileAsUser(requestedFileId, userId);
+  ): Promise<File> {
+    const file: File = await this.filesService.getFileAsUser(
+      requestedFileId,
+      userId,
+    );
     return this.filesService.remove(file.fileId);
   }
 }

@@ -12,6 +12,7 @@ import { UserConverter } from '../users/user.converter';
 import { ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strateties/jwt.strategy';
 import { JwtRefreshStrategy } from './strateties/refresh.strategy';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
