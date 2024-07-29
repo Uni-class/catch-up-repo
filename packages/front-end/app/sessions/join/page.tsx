@@ -27,9 +27,11 @@ export default function Page() {
         })}>
           <LineEdit className={css({
             width: "100%",
-            height: "3em",
+            height: "inherit",
           })} placeholder="세션 아이디를 입력해 주세요." text={sessionId} onChange={(event) => setSessionId(event.target.value)}/>
-          <Button disabled={sessionId === ""}>{"->"}</Button>
+          <Button className={css({
+            height: "inherit",
+          })} disabled={sessionId === ""}>{"->"}</Button>
         </div>
       </div>
     </div>
