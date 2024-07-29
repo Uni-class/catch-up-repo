@@ -1,11 +1,20 @@
 import Button from "@/components/Button";
+import ModalContainer from "@/components/ModalContainer";
 import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
+import FileUploadModal from "./FileUploadModal";
 
 export default function HostSession() {
   const handleFileButtonClick = () => {
-    overlay.open(({ isOpen, close }) => <></>, { overlayId: "file upload" });
+    overlay.open(
+      ({ isOpen, close }) => (
+        <ModalContainer isOpen={isOpen} onClose={close}>
+          <FileUploadModal />
+        </ModalContainer>
+      ),
+      { overlayId: "file upload" }
+    );
   };
   return (
     <main

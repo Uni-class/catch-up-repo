@@ -1,19 +1,19 @@
 "use client";
 
-import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import { ReactNode, useEffect } from "react";
 
 interface PropType {
   children: ReactNode;
   onClose?: () => void;
+  isOpen?: boolean;
 }
 
 export default function ModalContainer({
   children,
   onClose = () => {},
+  isOpen = false,
 }: PropType) {
-  const router = useRouter();
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose();
@@ -30,23 +30,33 @@ export default function ModalContainer({
     onClose();
   };
   return (
-    <dialog
-      open
-      className={css({
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 100,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "rgba(64, 64, 64, 0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      })}
-      onClick={handleBackdropClick}
-    >
-      {children}
-    </dialog>
+    <>
+      {isOpen && (
+        <dialog
+          open
+          className={css({
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: 100,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(64, 64, 64, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          })}
+          onClick={handleBackdropClick}
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {children}
+          </div>
+        </dialog>
+      )}
+    </>
   );
 }
