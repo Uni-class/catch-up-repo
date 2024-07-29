@@ -13,7 +13,6 @@ export default function SessionHeader() {
   return (
     <div
       className={css({
-        padding: "1.5rem 0",
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "space-between",
