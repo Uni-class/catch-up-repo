@@ -6,7 +6,7 @@ import {
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { File } from './entities/file.entity';
 import { ConfigService } from '@nestjs/config';
@@ -42,12 +42,15 @@ export class FilesService {
     });
   }
 
-  async update(id: number, updateFileDto: UpdateFileDto) {
-    return `This action updates a #${id} file`;
+  async update(
+    id: number,
+    updateFileDto: UpdateFileDto,
+  ): Promise<UpdateResult> {
+    return await this.fileRepository.update(id, updateFileDto);
   }
 
   async remove(id: number) {
-    const file = await this.fileRepository.findOne({
+    const file: File = await this.fileRepository.findOne({
       where: { fileId: id },
     });
     return await this.fileRepository.softRemove(file);
@@ -83,12 +86,15 @@ export class FilesService {
       );
     return {
       ownerId: userId,
-      name: key,
+      name: file.originalname,
       url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
   }
 
-  async getFileAsUser(fileId: number, userId: number | null = null) {
+  async getFileAsUser(
+    fileId: number,
+    userId: number | null = null,
+  ): Promise<File> {
     const file = await this.findOne(fileId);
     if (!file || (userId && file.ownerId !== userId)) {
       throw new BadRequestException(
