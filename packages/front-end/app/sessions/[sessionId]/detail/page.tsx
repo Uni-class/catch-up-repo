@@ -1,9 +1,10 @@
 "use client";
 
 import { apiClient } from "@/util/axios";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import HostSession from "./_components/HostSession";
+import { SessionResponseDto } from "@/schema/backend.schema";
 
 interface PropType {
   params: { sessionId: string };
@@ -14,16 +15,17 @@ export default function Page({ params }: PropType) {
   const [
     { data: userRes, isLoading: isUserLoading },
     { data: sessionRes, isLoading: isSessionLoading },
-  ] = useQueries<[AxiosResponse<any>, AxiosResponse<any>]>({
+  ] = useQueries({
     queries: [
       {
         queryKey: ["user", "profile"],
-        queryFn: async () => await apiClient.get("/user/profile"),
+        queryFn: async () => await apiClient.get<any>("/user/profile"),
         throwOnError: true,
       },
       {
         queryKey: ["session", sessionId],
-        queryFn: async () => await apiClient.get(`/session/${sessionId}/info`),
+        queryFn: async () =>
+          await apiClient.get<SessionResponseDto>(`/session/${sessionId}`),
         throwOnError: true,
       },
     ],
@@ -31,10 +33,11 @@ export default function Page({ params }: PropType) {
   if (isUserLoading || isSessionLoading) {
     return <h1>로딩...</h1>;
   }
-
+  const sessionData = sessionRes?.data;
+  console.log(sessionData);
   return (
     <>
-      <HostSession />
+      {sessionData !== undefined && <HostSession sessionData={sessionData} />}
     </>
   );
 }
