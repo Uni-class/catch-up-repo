@@ -1,12 +1,12 @@
 import { Heading } from "@/components/Text";
 import { css, cx } from "@/styled-system/css";
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState } from "react";
-import LocalFileUpload from "./LocalFileUpload";
 import DriveFileUploadFetch from "./DriveFileUpload";
 import Button from "@/components/Button";
 import { overlay } from "overlay-kit";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import LocalFileUpload from "@/components/LocalFileUpload";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];

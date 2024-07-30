@@ -1,8 +1,8 @@
 import Button from "@/components/Button";
+import LocalFileUpload from "@/components/LocalFileUpload";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
-import LocalFileUpload from "./LocalFileUpload";
 
 export default function FileUploadModal() {
   return (
@@ -29,7 +29,6 @@ export default function FileUploadModal() {
           X
         </Button>
       </div>
-
       <LocalFileUpload />
     </div>
   );
