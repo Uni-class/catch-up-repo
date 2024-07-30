@@ -11,34 +11,10 @@ import {
   Th,
 } from "@/components/Table";
 import { useCheckBoxes } from "@/hook/useCheckBoxes";
-import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
-import { apiClient } from "@/util/axios";
-import getRoleFromURL from "@/util/getRoleFromURL";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 import { formatDate } from "date-fns";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
-
-export default function SessionTableFetch() {
-  const { pathname } = useRouter();
-  const role = getRoleFromURL(pathname);
-  const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
-    queryKey: ["user", "sessions", role],
-    queryFn: async () => {
-      return await apiClient.get("/user/sessions", {
-        params: {role},
-      });
-    },
-    throwOnError: true,
-  });
-  const data = response?.data;
-  if (isLoading) {
-    return <h1>로딩...</h1>;
-  }
-  return data !== undefined && <SessionTable data={data} />;
-}
 
 interface SessionTablePropType {
   data: Session[];
