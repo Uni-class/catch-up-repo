@@ -19,7 +19,7 @@ export default function SessionHeader() {
         justifyContent: "space-between",
       })}
     >
-      <Heading variant="h4">
+      <Heading>
         내가 주최한 세션
       </Heading>
       <div className={css({ display: "flex", gap: "1rem" })}>
