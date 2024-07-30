@@ -69,7 +69,7 @@ export interface File {
 
 export interface CreateSessionDto {
   sessionName: string;
-  sessionFileIds: string[];
+  sessionFileIds: number[];
 }
 
 export interface SessionResponseDto {
@@ -82,7 +82,7 @@ export interface SessionResponseDto {
 
 export interface UpdateSessionDto {
   sessionName?: string;
-  sessionFileIds?: string[];
+  sessionFileIds?: number[];
 }
 
 export interface FileUploadResponseDto {
