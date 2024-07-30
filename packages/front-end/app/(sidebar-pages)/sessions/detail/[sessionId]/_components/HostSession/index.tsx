@@ -3,8 +3,9 @@ import ModalContainer from "@/components/ModalContainer";
 import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
-import FileUploadModal from "./FileUploadModal";
+
 import { SessionResponseDto } from "@/schema/backend.schema";
+import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 
 interface PropType {
   sessionData: SessionResponseDto;
@@ -15,7 +16,7 @@ export default function HostSession({ sessionData }: PropType) {
     overlay.open(
       ({ isOpen, close }) => (
         <ModalContainer isOpen={isOpen} onClose={close}>
-          <FileUploadModal />
+          <FileUploadAndSelectModal />
         </ModalContainer>
       ),
       { overlayId: "file upload" }
