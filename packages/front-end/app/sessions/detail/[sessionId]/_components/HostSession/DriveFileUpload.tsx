@@ -23,8 +23,7 @@ export default function DriveFileUploadFetch() {
     return <h1>로딩...</h1>;
   }
   const data = fileRes?.data;
-  console.log(data);
-  return <>{data !== undefined && <DriveFileUpload data={data} />}</>;
+  return data !== undefined && <DriveFileUpload data={data} />
 }
 
 export function DriveFileUpload({ data }: { data: File[] }) {

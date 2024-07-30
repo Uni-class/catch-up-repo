@@ -39,7 +39,7 @@ export default function SessionTableFetch() {
   if (isLoading) {
     return <h1>로딩...</h1>;
   }
-  return <>{data !== undefined && <SessionTable data={data} />}</>;
+  return data !== undefined && <SessionTable data={data} />
 }
 
 interface SessionTablePropType {
