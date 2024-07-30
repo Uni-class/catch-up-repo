@@ -26,7 +26,3 @@ export default function HostSessionTableFetcher() {
   else
     return <h1>오류</h1>;
 }
-
-interface SessionTablePropType {
-  data: Session[];
-}

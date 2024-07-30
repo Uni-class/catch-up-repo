@@ -8,11 +8,7 @@ import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
 
 
-interface SessionTablePropType {
-  data: Session[];
-}
-
-export function HostSessionTable({ data }: SessionTablePropType) {
+export function HostSessionTable({ data }: { data: Session[] }) {
   const router = useRouter();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
