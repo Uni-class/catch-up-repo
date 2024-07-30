@@ -13,12 +13,13 @@ interface PropType {
     values: ReactNode[];
     onClick?: () => void;
   }[],
+  placeholder?: ReactNode,
   selectedItems: number[]
   setSelectedItems: Dispatch<SetStateAction<number[]>>
 }
 
 
-export default function SelectableTable({ head, body, selectedItems, setSelectedItems }: PropType) {
+export default function SelectableTable({ head, body, placeholder, selectedItems, setSelectedItems }: PropType) {
   return (
     <TableContainer>
       <TableHead>
@@ -48,33 +49,39 @@ export default function SelectableTable({ head, body, selectedItems, setSelected
       </TableHead>
       <TableBody>
         {
-          body.map(item => {
-            return (
-              <TableRow key={item.id} onClick={item.onClick}>
-                <Td onClick={(event) => event.stopPropagation()}>
-                  <Checkbox
-                    checked={selectedItems.includes(item.id)}
-                    onChange={() => {
-                      if (selectedItems.includes(item.id)) {
-                        setSelectedItems(selectedItems.filter((id) => id !== item.id));
-                      }
-                      else {
-                        setSelectedItems([...selectedItems, item.id]);
-                      }
-                    }}
-                    onClick={(event) => event.stopPropagation()}
-                  />
-                </Td>
-                {
-                  item.values.map((value, index) => {
-                    return (
-                      <Td key={index}>{value}</Td>
-                    );
-                  })
-                }
-              </TableRow>
-            );
-          })
+          body.length === 0
+          ?
+            <TableRow>
+              <Td colSpan={head.length + 1}>{placeholder}</Td>
+            </TableRow>
+            :
+            body.map(item => {
+              return (
+                <TableRow key={item.id} onClick={item.onClick}>
+                  <Td onClick={(event) => event.stopPropagation()}>
+                    <Checkbox
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => {
+                        if (selectedItems.includes(item.id)) {
+                          setSelectedItems(selectedItems.filter((id) => id !== item.id));
+                        }
+                        else {
+                          setSelectedItems([...selectedItems, item.id]);
+                        }
+                      }}
+                      onClick={(event) => event.stopPropagation()}
+                    />
+                  </Td>
+                  {
+                    item.values.map((value, index) => {
+                      return (
+                        <Td key={index}>{value}</Td>
+                      );
+                    })
+                  }
+                </TableRow>
+              );
+            })
         }
       </TableBody>
     </TableContainer>

@@ -5,6 +5,7 @@ import { css } from "@/styled-system/css";
 import { formatDate } from "date-fns";
 import { useState } from "react";
 import SelectableTable from "@/components/SelectableTable";
+import { PROJECT_NAME } from "@/const/config";
 
 
 interface SessionTablePropType {
@@ -82,6 +83,27 @@ export function ParticipantSessionTable({ data }: SessionTablePropType) {
             onClick: () => router.push(`/sessions/detail/${item.sessionId}`)
           };
         })}
+        placeholder={
+          <div className={css({
+            display: "flex",
+            padding: "1em",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0.5em",
+          })}>
+            <p>표시할 데이터가 없습니다.</p>
+            <p>새로운 {PROJECT_NAME} 세션에 참가해 보세요!</p>
+            <Button
+              className={css({
+                padding: "0.5em 0.8em",
+              })}
+              onClick={() => router.push("/sessions/join")}
+            >
+              세션 참여
+            </Button>
+          </div>
+        }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
       />
