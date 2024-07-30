@@ -4,13 +4,19 @@ import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
+import { apiClient } from "@/util/axios";
+import { useMutation } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, FormEvent, useRef } from "react";
 
 export default function SessionCreateForm() {
   const formDataRef = useRef<CreateSessionDto>({
     sessionName: "",
     sessionFileIds: [],
+  });
+  const formMutation = useMutation({
+    mutationFn: async (body: CreateSessionDto) =>
+      await apiClient.post("/session", body),
   });
   const handleFileButtonClick = () => {
     overlay.open(
@@ -30,7 +36,7 @@ export default function SessionCreateForm() {
       className={css({ display: "flex", flexDirection: "column", gap: "1rem" })}
       onSubmit={(e) => {
         e.preventDefault();
-        console.log(formDataRef.current);
+        formMutation.mutate(formDataRef.current);
       }}
     >
       <label htmlFor="session title">세션 제목</label>
