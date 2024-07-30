@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { Heading, Paragraph } from "@/components/Text";
+import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
 import { useSuspenseQuery } from "@tanstack/react-query";
