@@ -13,7 +13,8 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({ origin: process.env.CORS_ORIGIN_SITE });
+  app.enableCors({ origin: process.env.CORS_ORIGIN_SITE, credentials: true });
+  console.log(process.env.CORS_ORIGIN_SITE);
   app.use(helmet());
 
   const { httpAdapter } = app.get(HttpAdapterHost);
