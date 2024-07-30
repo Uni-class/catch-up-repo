@@ -9,6 +9,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Post,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NaverAuthGuard } from './guards/naverauth.guard';
@@ -30,6 +31,9 @@ import { Profile as KakaoProfile } from 'passport-kakao';
 import { JwtPayload } from './jwt.payload';
 import { UpdateResult } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { CookieOptions } from './cookie.option';
+import { JwtGuard } from './guards/jwt.guard';
+import { UserId } from '../users/decorators/user-id.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -55,8 +59,8 @@ export class AuthController {
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
       return res
-        .cookie('access_token', accessToken)
-        .cookie('refresh_token', refreshToken)
+        .cookie('access_token', accessToken, CookieOptions)
+        .cookie('refresh_token', refreshToken, CookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -81,8 +85,8 @@ export class AuthController {
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
       return res
-        .cookie('access_token', accessToken)
-        .cookie('refresh_token', refreshToken)
+        .cookie('access_token', accessToken, CookieOptions)
+        .cookie('refresh_token', refreshToken, CookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -106,8 +110,8 @@ export class AuthController {
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
       return res
-        .cookie('access_token', accessToken)
-        .cookie('refresh_token', refreshToken)
+        .cookie('access_token', accessToken, CookieOptions)
+        .cookie('refresh_token', refreshToken, CookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -134,28 +138,23 @@ export class AuthController {
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
     return res
-      .cookie('access_token', newAccessToken)
+      .cookie('access_token', newAccessToken, CookieOptions)
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
   }
 
-  @UseGuards(RefreshGuard)
+  @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
-    console.log(refreshToken);
-    const payload = req.user as JwtPayload;
-    console.log(payload);
-    const user: User = await this.authService.tokenValidateUser(payload);
-    if (user.refreshToken !== refreshToken) {
-      throw new UnauthorizedException(`This refresh token is not user's token`);
-    }
+  async logout(
+    @UserId(ParseIntPipe) userId: number,
+    @Res() res: Response,
+  ): Promise<any> {
     const result: UpdateResult =
-      await this.authService.deleteRefreshTokenOfUser(payload.id);
+      await this.authService.deleteRefreshTokenOfUser(userId);
     return res
-      .cookie('access_token', '', { maxAge: 0 })
-      .cookie('refresh_token', '', { maxAge: 0 })
+      .cookie('access_token', '', { ...CookieOptions, maxAge: 0 })
+      .cookie('refresh_token', '', { ...CookieOptions, maxAge: 0 })
       .send();
   }
 }
