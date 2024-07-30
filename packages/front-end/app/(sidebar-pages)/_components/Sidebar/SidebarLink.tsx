@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 
-export default function SidebarLink({children, href, target, onClick}: {children?: ReactNode; href?: string, target?: string, onClick?: () => void}) {
+export default function SidebarLink({children, href, target, onClick}: {children?: ReactNode, href?: string, target?: string, onClick?: () => void}) {
   const { queryObj,pathname } = useRouter();
 
   return (

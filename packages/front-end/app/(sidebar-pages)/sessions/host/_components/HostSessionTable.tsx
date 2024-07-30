@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
@@ -24,14 +25,14 @@ export function HostSessionTable({ data }: { data: Session[] }) {
         gap: "1em",
         justifyContent: "flex-end",
       })}>
-        <Button
+        <LinkButton
           className={css({
-            padding: "0.5em 0.8em"
+            padding: "0.5em 0.8em",
           })}
-          onClick={() => router.push("/sessions/create")}
+          href="/sessions/create"
         >
           세션 생성
-        </Button>
+        </LinkButton>
         <Button
           className={css({
             padding: "0.5em 0.8em"
@@ -98,14 +99,14 @@ export function HostSessionTable({ data }: { data: Session[] }) {
           })}>
             <p>표시할 데이터가 없습니다.</p>
             <p>새로운 {PROJECT_NAME} 세션을 생성해 보세요!</p>
-            <Button
+            <LinkButton
               className={css({
                 padding: "0.5em 0.8em",
               })}
-              onClick={() => router.push("/sessions/create")}
+              href="/sessions/create"
             >
               세션 생성
-            </Button>
+            </LinkButton>
           </div>
         }
         selectedItems={selectedItems}
