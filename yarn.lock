@@ -5714,13 +5714,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/js-cookie@npm:^3":
-  version: 3.0.6
-  resolution: "@types/js-cookie@npm:3.0.6"
-  checksum: 10c0/173afaf5ea9d86c22395b9d2a00b6adb0006dcfef165d6dcb0395cdc32f5a5dcf9c3c60f97194119963a15849b8f85121e1ae730b03e40bc0c29b84396ba22f9
-  languageName: node
-  linkType: hard
-
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -10615,7 +10608,6 @@ __metadata:
     "@svgr/webpack": "npm:^8.1.0"
     "@tanstack/eslint-plugin-query": "npm:^5.50.1"
     "@tanstack/react-query": "npm:^5.50.1"
-    "@types/js-cookie": "npm:^3"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -10625,7 +10617,6 @@ __metadata:
     eslint-config-next: "npm:14.2.4"
     eslint-plugin-storybook: "npm:^0.8.0"
     jotai: "npm:^2.9.0"
-    js-cookie: "npm:^3.0.5"
     msw: "npm:^2.3.1"
     next: "npm:14.2.4"
     overlay-kit: "npm:^1.3.0"
@@ -12522,13 +12513,6 @@ __metadata:
     react:
       optional: true
   checksum: 10c0/c5551fb90933bcbc28b11cdb4af681398a12f8eb39a4a49568ec6ce5062c2257dd84a85cbfd7ec7d970d56dfa5023d16a0ec7056bc2697fdf9b3ec94da67c9d1
-  languageName: node
-  linkType: hard
-
-"js-cookie@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "js-cookie@npm:3.0.5"
-  checksum: 10c0/04a0e560407b4489daac3a63e231d35f4e86f78bff9d792011391b49c59f721b513411cd75714c418049c8dc9750b20fcddad1ca5a2ca616c3aca4874cce5b3a
   languageName: node
   linkType: hard
 
