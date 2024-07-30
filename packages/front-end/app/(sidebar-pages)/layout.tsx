@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";

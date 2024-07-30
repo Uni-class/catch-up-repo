@@ -16,21 +16,20 @@ import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
+import getRoleFromURL from "@/util/getRoleFromURL";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { formatDate } from "date-fns";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export default function SessionTableFetch() {
-  const { queryObj } = useRouter();
-  if (!queryObj["role"]) {
-    queryObj["role"] = "participant";
-  }
+  const { pathname } = useRouter();
+  const role = getRoleFromURL(pathname);
   const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
-    queryKey: ["user", "sessions", queryObj["role"]],
+    queryKey: ["user", "sessions", role],
     queryFn: async () => {
       return await apiClient.get("/user/sessions", {
-        params: queryObj,
+        params: {role},
       });
     },
     throwOnError: true,
