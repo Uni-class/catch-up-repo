@@ -56,6 +56,7 @@ export function FileTable({ data }: { data: File[] }) {
       <TableBody>
         {data.map((e) => (
           <Row
+          key={e.fileId}
             el={e}
             isCheckedOne={isCheckedOne}
             setIsCheckedOne={setIsCheckedOne}
