@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Divider from "@/components/Divider";
 import {Heading} from "@/components/Text";
-import UserInfoEdit from "@/app/settings/_components/UserInfoEdit";
+import UserInfoEdit from "./_components/UserInfoEdit";
 
 export default function Page() {
   return (
