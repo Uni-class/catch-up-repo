@@ -37,14 +37,12 @@ export default function Page({ params }: PropType) {
   const userData = userRes?.data;
 
   return (
-    <>
-      {sessionData !== undefined &&
-        userData !== undefined &&
-        (userData.userId === sessionData.hostId ? (
-          <HostSession sessionData={sessionData} />
-        ) : (
-          <ParticipantSession sessionData={sessionData}/>
-        ))}
-    </>
+    sessionData !== undefined &&
+    userData !== undefined &&
+    (userData.userId === sessionData.hostId ? (
+      <HostSession sessionData={sessionData} />
+    ) : (
+      <ParticipantSession sessionData={sessionData} />
+    ))
   );
 }
