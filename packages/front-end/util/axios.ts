@@ -18,7 +18,6 @@ export const apiClient = axios.create({
   withCredentials: true,
 });
 
-
 retryClient.interceptors.response.use(
   (response) => {
     return response.data;

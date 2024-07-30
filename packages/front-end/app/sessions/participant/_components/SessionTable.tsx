@@ -36,8 +36,8 @@ export default function SessionTableFetch() {
     throwOnError: true,
   });
   const data = response?.data;
-  if (isLoading){
-    return <h1>로딩...</h1>
+  if (isLoading) {
+    return <h1>로딩...</h1>;
   }
   return <>{data !== undefined && <SessionTable data={data} />}</>;
 }
@@ -125,9 +125,11 @@ function Row({
   setIsCheckedOne: (id: number, value: boolean) => void;
   isCheckedOne: (id: number) => boolean;
 }) {
+  const { push } = useRouter();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsCheckedOne(el.sessionId, e.target.checked);
   };
+  const handleDetailButtonClick = () => {};
   return (
     <TableRow
       className={css({
@@ -145,10 +147,16 @@ function Row({
       <Td>{el.sessionName}</Td>
       <Td>{formatDate(el.createdAt, "yyyy-MM-dd-HH")}</Td>
       <Td align="center">
-        <Button>상세보기</Button>
+        <Button
+          onClick={() => {
+            push(`/sessions/detail/${el.sessionId}`);
+          }}
+        >
+          상세보기
+        </Button>
       </Td>
       <Td align="center">
-        <Button>세션 참여</Button>
+        <Button onClick={() => {}}>세션 참여</Button>
       </Td>
     </TableRow>
   );
