@@ -1,51 +1,29 @@
-"use client";
-
-import './globals.css'
+import './globals.css';
 import Provider from "@/provider";
+import { ReactNode } from "react";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { css } from "@/styled-system/css";
-import { useRouter } from "@/hook/useRouter";
-import Sidebar from "@/app/_components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const router = useRouter();
+export const metadata: Metadata = {
+  title: "CatchUP",
+  description: "CatchUP WebPage",
+};
 
-  const showSidebar = (() => {
-    for (const path of ["/dashboard", "/sessions", "/files", "/settings"]) {
-      if (router.pathname === path || router.pathname.startsWith(`${path}/`)) {
-        return true;
-      }
-    }
-    return false;
-  })();
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
 
   return (
     <html lang="ko">
       <body className={inter.className}>
       <Provider>
-        <main className={css({display: "flex", height: "100vh"})}>
-          {
-            showSidebar
-            ?
-            <>
-              <Sidebar/>
-              <div className={css({
-                flexGrow: 1,
-                padding: "2em 1em",
-              })}>
-                {children}
-              </div>
-            </>
-            :
-            children
-          }
-        </main>
+        <div className={css({
+          width: "100vw",
+          height: "100vh",
+        })}>
+          {children}
+        </div>
       </Provider>
       </body>
     </html>

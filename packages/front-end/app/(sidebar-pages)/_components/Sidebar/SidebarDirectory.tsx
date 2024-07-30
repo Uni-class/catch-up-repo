@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useState } from "react";
 import { css } from "@/styled-system/css";
-import SidebarBaseElement from "@/app/_components/Sidebar/SidebarBaseElement";
+import SidebarBaseElement from "@/app/(sidebar-pages)/_components/Sidebar/SidebarBaseElement";
 import ChevronUpIcon from "@/public/icons/chevron-up.svg";
 import ChevronDownIcon from "@/public/icons/chevron-down.svg";
 import {useRouter} from "@/hook/useRouter";
