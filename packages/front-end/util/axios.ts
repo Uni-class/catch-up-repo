@@ -1,5 +1,4 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-import Cookies from "js-cookie";
 // just req with refresh_token
 export const refreshClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
@@ -17,6 +16,7 @@ export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
 });
+
 
 retryClient.interceptors.response.use(
   (response) => {

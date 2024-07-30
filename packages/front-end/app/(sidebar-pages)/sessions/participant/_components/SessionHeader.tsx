@@ -2,11 +2,12 @@ import { sessionAreCheckedAtom } from "@/client/CheckBoxAtom";
 import Button from "@/components/Button";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
+import { getIsChecked } from "@/util/getIsChecked";
 import { useAtom } from "jotai";
 
 export default function SessionHeader() {
-  const [areChecked, setAreChecked] = useAtom(sessionAreCheckedAtom);
-  const checkedData = areChecked.filter((e) => e.checked).map((e) => e.id);
+  const [areChecked] = useAtom(sessionAreCheckedAtom);
+  const checkedData = getIsChecked(areChecked);
   const handleDeleteButtonClick = () => {
     console.log({ checkedData });
   };

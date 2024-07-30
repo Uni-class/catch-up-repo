@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect } from "react";
 import { useRouter } from "./useRouter";
 import { CheckType } from "@/type/CheckType";
 import { PrimitiveAtom, useAtom } from "jotai";
 import { SetAtom } from "@/type/JotaiType";
+import { getIsChecked as _getIsChecked } from "@/util/getIsChecked";
 
 /**
  * Custom hook for managing checkboxes.
@@ -36,9 +37,7 @@ export function useCheckBoxes<T, K = number>({
   setIsTotalChecked: SetAtom<[SetStateAction<boolean>], void>;
   setIsCheckedOne: (id: K, value: boolean) => void;
   isCheckedOne: (id: K) => boolean;
-  getIsChecked: () => {
-    id: K;
-  }[];
+  getIsChecked: K[];
 } {
   const [areChecked, setAreChecked] = useAtom(areCheckedAtom);
   const [isTotalChecked, setIsTotalChecked] = useAtom(isTotalCheckedAtom);
@@ -64,12 +63,7 @@ export function useCheckBoxes<T, K = number>({
   };
   const isCheckedOne = (id: K) =>
     areChecked.find((e) => e.id === id)?.checked ?? initValue;
-  const getIsChecked = (): { id: K }[] =>
-    areChecked
-      .filter((isChecked) => isChecked.checked)
-      .map((isChecked) => ({
-        id: isChecked.id,
-      }));
+  const getIsChecked = _getIsChecked(areChecked);
   return {
     areChecked,
     setAreChecked,

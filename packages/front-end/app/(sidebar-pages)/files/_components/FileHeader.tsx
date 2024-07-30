@@ -6,6 +6,7 @@ import { overlay } from "overlay-kit";
 import FileUploadModal from "./FileUploadModal";
 import { fileAreCheckedAtom } from "@/client/CheckBoxAtom";
 import { useAtom } from "jotai";
+import { getIsChecked } from "@/util/getIsChecked";
 
 export default function FileHeader() {
   const [areChecked] = useAtom(fileAreCheckedAtom);
@@ -34,11 +35,7 @@ export default function FileHeader() {
         <Button
           onClick={() => {
             console.log(
-              areChecked
-                .filter((e) => e.checked)
-                .map((e) => ({
-                  id: e.id,
-                }))
+              getIsChecked(areChecked)
             );
           }}
         >
