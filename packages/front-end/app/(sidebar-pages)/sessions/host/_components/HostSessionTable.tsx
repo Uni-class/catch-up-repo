@@ -31,7 +31,7 @@ export function HostSessionTable({ data }: { data: Session[] }) {
           })}
           href="/sessions/create"
         >
-          세션 생성
+          새로 만들기
         </LinkButton>
         <Button
           className={css({
@@ -105,7 +105,7 @@ export function HostSessionTable({ data }: { data: Session[] }) {
               })}
               href="/sessions/create"
             >
-              세션 생성
+              새로 만들기
             </LinkButton>
           </div>
         }

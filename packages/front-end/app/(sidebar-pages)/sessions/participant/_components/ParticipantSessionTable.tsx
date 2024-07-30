@@ -25,6 +25,14 @@ export function ParticipantSessionTable({ data }: { data: Session[] }) {
         gap: "1em",
         justifyContent: "flex-end",
       })}>
+        <LinkButton
+          className={css({
+            padding: "0.5em 0.8em",
+          })}
+          href="/sessions/join"
+        >
+          새 세션 참여하기
+        </LinkButton>
         <Button
           className={css({
             padding: "0.5em 0.8em"
@@ -74,7 +82,7 @@ export function ParticipantSessionTable({ data }: { data: Session[] }) {
                   event.stopPropagation()
                 }}
               >
-                세션 참여
+                새 세션 참여하기
               </Button>
             ],
             onClick: () => router.push(`/sessions/detail/${item.sessionId}`)
@@ -97,7 +105,7 @@ export function ParticipantSessionTable({ data }: { data: Session[] }) {
               })}
               href="/sessions/join"
             >
-              세션 참여
+              새 세션 참여하기
             </LinkButton>
           </div>
         }
