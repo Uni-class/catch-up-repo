@@ -3,40 +3,20 @@ import Cookies from "js-cookie";
 // just req with refresh_token
 export const refreshClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  withCredentials: true,
 });
 
 // just retry req with access_token
 export const retryClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  withCredentials: true,
 });
 
 // req with access_token and re-req with refresh_token when 401
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  withCredentials: true,
 });
-
-refreshClient.interceptors.request.use(
-  (config) => {
-    const refreshToken = Cookies.get("refresh_token");
-    config.headers.Authorization = `Bearer ${refreshToken}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-  
-);
-
-retryClient.interceptors.request.use(
-  (config) => {
-    const accessToken = Cookies.get("access_token");
-    config.headers.Authorization = `Bearer ${accessToken}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 retryClient.interceptors.response.use(
   (response) => {
@@ -47,17 +27,6 @@ retryClient.interceptors.response.use(
   }
 );
 
-apiClient.interceptors.request.use(
-  (config) => {
-    const accessToken = Cookies.get("access_token");
-    config.headers.Authorization = `Bearer ${accessToken}`;
-    console.log("req",config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 apiClient.interceptors.response.use(
   (response) => {
