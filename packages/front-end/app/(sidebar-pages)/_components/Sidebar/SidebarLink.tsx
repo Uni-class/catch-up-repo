@@ -1,5 +1,5 @@
 import { useRouter } from "@/hook/useRouter";
-import SidebarBaseElement from "@/app/_components/Sidebar/SidebarBaseElement";
+import SidebarBaseElement from "@/app/(sidebar-pages)/_components/Sidebar/SidebarBaseElement";
 import Link from "next/link";
 import {ReactNode} from "react";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { css } from "@/styled-system/css";
-import SidebarGroup from "@/app/_components/Sidebar/SidebarGroup";
+import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
 import SidebarUser from "./SidebarUser";
