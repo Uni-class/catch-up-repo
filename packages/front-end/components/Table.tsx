@@ -1,4 +1,6 @@
 import { styled } from "@/styled-system/jsx";
+import { css, cx } from "@/styled-system/css";
+import { ReactNode } from "react";
 
 
 export const TableContainer = styled("table", {
@@ -31,12 +33,31 @@ export const TableBody = styled("tbody", {
   base: {},
 });
 
-export const TableRow = styled("tr", {
-  base: {
-    borderBottom: "1px solid",
-    borderColor: "gray.300",
-  },
-});
+export function TableRow({ children, onClick }: { children: ReactNode, onClick?: () => void }) {
+  return (
+    <tr className={cx(
+      css({
+        borderBottom: "1px solid",
+        borderColor: "gray.300",
+      }),
+      css(
+        onClick
+        ?
+        {
+          cursor: "pointer",
+          _hover: {
+            backgroundColor: "gray.200",
+          },
+          _active: {
+            backgroundColor: "gray.300",
+          },
+        }
+        :
+        {}
+      )
+    )} onClick={onClick}>{children}</tr>
+  );
+};
 
 export const Th = styled("th", {
   base: {
@@ -64,7 +85,7 @@ export const Th = styled("th", {
 
 export const Td = styled("td", {
   base: {
-    paddingX: "16px",
+    paddingX: "1em",
     minWidth: 0,
   },
   variants: {
@@ -81,13 +102,13 @@ export const Td = styled("td", {
     },
     size: {
       sm: {
-        paddingY: "0.5rem",
+        paddingY: "0.4rem",
       },
       md: {
-        paddingY: "0.75rem",
+        paddingY: "0.6rem",
       },
       lg: {
-        paddingY: "1.25rem",
+        paddingY: "1rem",
       },
     },
   },

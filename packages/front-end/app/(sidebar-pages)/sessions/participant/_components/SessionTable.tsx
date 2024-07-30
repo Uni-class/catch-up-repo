@@ -1,162 +1,82 @@
-import {
-  sessionAreCheckedAtom,
-  sessionIsTotalCheckedAtom,
-} from "@/client/CheckBoxAtom";
 import Button from "@/components/Button";
-import {
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Td,
-  Th,
-} from "@/components/Table";
-import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
-import { apiClient } from "@/util/axios";
-import getRoleFromURL from "@/util/getRoleFromURL";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 import { formatDate } from "date-fns";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import SelectableTable from "@/components/SelectableTable";
 
-export default function SessionTableFetch() {
-  const { pathname } = useRouter();
-  const role = getRoleFromURL(pathname);
-  const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
-    queryKey: ["user", "sessions", role],
-    queryFn: async () => {
-      return await apiClient.get("/user/sessions", {
-        params: {role},
-      });
-    },
-    throwOnError: true,
-  });
-  const data = response?.data;
-  if (isLoading) {
-    return <h1>로딩...</h1>;
-  }
-  return data !== undefined && <SessionTable data={data} />
-}
 
 interface SessionTablePropType {
   data: Session[];
 }
 
 export function SessionTable({ data }: SessionTablePropType) {
-  const { queryObj } = useRouter();
-  if (!queryObj["role"]) {
-    queryObj["role"] = "participant";
-  }
-  const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
-    useCheckBoxes<Session, number>({
-      data: data,
-      id: "sessionId",
-      isTotalCheckedAtom: sessionIsTotalCheckedAtom,
-      areCheckedAtom: sessionAreCheckedAtom,
-    });
+  const router = useRouter();
+
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   return (
-    <TableContainer>
-      <colgroup>
-        <col width="55.25px" />
-        <col />
-        <col width="20%" />
-        <col width="180px" />
-        <col width="180px" />
-      </colgroup>
-      <Head
-        setIsTotalChecked={setIsTotalChecked}
-        isTotalChecked={isTotalChecked}
-      />
-      <TableBody>
-        {data.map((e) => (
-          <Row
-            el={e}
-            key={e.sessionId}
-            isCheckedOne={isCheckedOne}
-            setIsCheckedOne={setIsCheckedOne}
-          />
-        ))}
-      </TableBody>
-    </TableContainer>
-  );
-}
-
-function Head({
-  setIsTotalChecked,
-  isTotalChecked,
-}: {
-  setIsTotalChecked: Dispatch<SetStateAction<boolean>>;
-  isTotalChecked: boolean;
-}) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsTotalChecked(e.target.checked);
-  };
-  return (
-    <TableHead>
-      <TableRow>
-        <Th>
-          <input
-            type="checkbox"
-            onChange={handleChange}
-            checked={isTotalChecked}
-            className={css({ zoom: 1.75, cursor: "pointer" })}
-          />
-        </Th>
-        <Th>제목</Th>
-        <Th>참여 시간</Th>
-        <Th align="center">세션 상세보기</Th>
-        <Th align="center">세션 참여</Th>
-      </TableRow>
-    </TableHead>
-  );
-}
-
-function Row({
-  el,
-  setIsCheckedOne,
-  isCheckedOne,
-}: {
-  el: Session;
-  setIsCheckedOne: (id: number, value: boolean) => void;
-  isCheckedOne: (id: number) => boolean;
-}) {
-  const { push } = useRouter();
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCheckedOne(el.sessionId, e.target.checked);
-  };
-  const handleDetailButtonClick = () => {};
-  return (
-    <TableRow
-      className={css({
-        transition: "background 0.2s",
-      })}
-    >
-      <Td>
-        <input
-          type="checkbox"
-          onChange={handleChange}
-          checked={isCheckedOne(el.sessionId)}
-          className={css({ zoom: 1.75, cursor: "pointer" })}
-        />
-      </Td>
-      <Td>{el.sessionName}</Td>
-      <Td>{formatDate(el.createdAt, "yyyy-MM-dd-HH")}</Td>
-      <Td align="center">
-        <Button
-          onClick={() => {
-            push(`/sessions/detail/${el.sessionId}`);
-          }}
-        >
-          상세보기
+    <div className={css({
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.6em",
+    })}>
+      <div className={css({
+        display: "flex",
+        gap: "1em",
+        justifyContent: "flex-end",
+      })}>
+        <Button onClick={() => router.push("/sessions/create")}>
+          새로운 세션 생성
         </Button>
-      </Td>
-      <Td align="center">
-        <Button onClick={() => {}}>세션 참여</Button>
-      </Td>
-    </TableRow>
+        <Button disabled={selectedItems.length === 0} onClick={() => {
+          console.log(`Delete Button Clicked`);
+          console.log(selectedItems);
+          setSelectedItems([]);
+        }}>
+          선택한 세션 삭제
+        </Button>
+      </div>
+      <SelectableTable
+        head={[
+          {
+            id: 0,
+            value: "제목"
+          },
+          {
+            id: 1,
+            value: "참여 시간"
+          },
+          {
+            id: 2,
+            value: "빠른 작업"
+          }
+        ]}
+        body={data.map((item) => {
+          return {
+            id: item.sessionId,
+            values: [
+              <div key={0}>{item.sessionName}</div>,
+              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>,
+              <Button
+                key={2}
+                className={css({
+                  padding: "0.5em 0.8em",
+                })}
+                onClick={(event) => {
+                  event.stopPropagation()
+                }}
+              >
+                세션 참여
+              </Button>
+            ],
+            onClick: () => router.push(`/sessions/detail/${item.sessionId}`)
+          };
+        })}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+      />
+    </div>
   );
 }
