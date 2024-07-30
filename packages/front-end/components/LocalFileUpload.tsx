@@ -17,6 +17,9 @@ export default function LocalFileUpload({
 }: PropType) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: onDrop,
+    accept:{
+      'application/pdf': ['.pdf']
+    },
   });
   return (
     <div
@@ -42,7 +45,7 @@ export default function LocalFileUpload({
           height: "100%",
         })}
       >
-        <input {...getInputProps()} accept=".pdf" />
+        <input {...getInputProps()} />
         {isDragActive ? (
           <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
         ) : (
