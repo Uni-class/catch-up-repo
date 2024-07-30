@@ -27,11 +27,17 @@ export function ParticipantSessionTable({ data }: SessionTablePropType) {
         gap: "1em",
         justifyContent: "flex-end",
       })}>
-        <Button disabled={selectedItems.length === 0} onClick={() => {
-          console.log(`Delete Button Clicked`);
-          console.log(selectedItems);
-          setSelectedItems([]);
-        }}>
+        <Button
+          className={css({
+            padding: "0.5em 0.8em"
+          })}
+          disabled={selectedItems.length === 0}
+          onClick={() => {
+            console.log(`Delete Button Clicked`);
+            console.log(selectedItems);
+            setSelectedItems([]);
+          }}
+        >
           선택한 기록 삭제
         </Button>
       </div>

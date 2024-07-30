@@ -27,14 +27,25 @@ export function HostSessionTable({ data }: SessionTablePropType) {
         gap: "1em",
         justifyContent: "flex-end",
       })}>
-        <Button onClick={() => router.push("/sessions/create")}>
+        <Button
+          className={css({
+            padding: "0.5em 0.8em"
+          })}
+          onClick={() => router.push("/sessions/create")}
+        >
           세션 생성
         </Button>
-        <Button disabled={selectedItems.length === 0} onClick={() => {
-          console.log(`Delete Button Clicked`);
-          console.log(selectedItems);
-          setSelectedItems([]);
-        }}>
+        <Button
+          className={css({
+            padding: "0.5em 0.8em"
+          })}
+          disabled={selectedItems.length === 0}
+          onClick={() => {
+            console.log(`Delete Button Clicked`);
+            console.log(selectedItems);
+            setSelectedItems([]);
+          }}
+        >
           선택한 세션 삭제
         </Button>
       </div>
