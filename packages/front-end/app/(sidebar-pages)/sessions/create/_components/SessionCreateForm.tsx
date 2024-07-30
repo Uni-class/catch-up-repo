@@ -16,18 +16,22 @@ export default function SessionCreateForm() {
     overlay.open(
       ({ isOpen, close }) => (
         <ModalContainer isOpen={isOpen} onClose={close}>
-          <FileUploadAndSelectModal formData={formDataRef}/>
+          <FileUploadAndSelectModal formData={formDataRef} />
         </ModalContainer>
       ),
       { overlayId: "file upload" }
     );
   };
-  const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     formDataRef.current.sessionName = e.target.value;
-  }
+  };
   return (
     <form
       className={css({ display: "flex", flexDirection: "column", gap: "1rem" })}
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(formDataRef.current);
+      }}
     >
       <label htmlFor="session title">세션 제목</label>
       <input

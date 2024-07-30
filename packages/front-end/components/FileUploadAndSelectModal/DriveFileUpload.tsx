@@ -53,13 +53,7 @@ function Row({ file }: { file: File }) {
   const [currentFormData, setCurrentFormData] =
     useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataAtom);
   const handleRowButtonClick = () => {
-    setCurrentFormData({
-      ...currentFormData,
-      current: {
-        ...currentFormData.current,
-        sessionFileIds: [String(file.fileId)],
-      },
-    });
+    currentFormData.current.sessionFileIds = [file.fileId];
     overlay.close("file upload");
   };
   return (
