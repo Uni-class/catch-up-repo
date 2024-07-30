@@ -28,7 +28,7 @@ export function HostSessionTable({ data }: SessionTablePropType) {
         justifyContent: "flex-end",
       })}>
         <Button onClick={() => router.push("/sessions/create")}>
-          새로운 세션 생성
+          세션 생성
         </Button>
         <Button disabled={selectedItems.length === 0} onClick={() => {
           console.log(`Delete Button Clicked`);

@@ -27,15 +27,12 @@ export function ParticipantSessionTable({ data }: SessionTablePropType) {
         gap: "1em",
         justifyContent: "flex-end",
       })}>
-        <Button onClick={() => router.push("/sessions/create")}>
-          새로운 세션 생성
-        </Button>
         <Button disabled={selectedItems.length === 0} onClick={() => {
           console.log(`Delete Button Clicked`);
           console.log(selectedItems);
           setSelectedItems([]);
         }}>
-          선택한 세션 삭제
+          선택한 기록 삭제
         </Button>
       </div>
       <SelectableTable
@@ -50,6 +47,10 @@ export function ParticipantSessionTable({ data }: SessionTablePropType) {
           },
           {
             id: 2,
+            value: "상태"
+          },
+          {
+            id: 3,
             value: "빠른 작업"
           }
         ]}
@@ -59,8 +60,9 @@ export function ParticipantSessionTable({ data }: SessionTablePropType) {
             values: [
               <div key={0}>{item.sessionName}</div>,
               <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>,
+              <div key={2}>{item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}</div>,
               <Button
-                key={2}
+                key={3}
                 className={css({
                   padding: "0.5em 0.8em",
                 })}

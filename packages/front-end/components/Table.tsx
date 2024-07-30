@@ -61,7 +61,7 @@ export function TableRow({ children, onClick }: { children: ReactNode, onClick?:
 
 export const Th = styled("th", {
   base: {
-    padding: "1.5rem 16px 0.25rem 16px",
+    padding: "1em 0.8em",
     fontWeight: 600,
     minWidth: 0,
   },
@@ -85,7 +85,7 @@ export const Th = styled("th", {
 
 export const Td = styled("td", {
   base: {
-    paddingX: "1em",
+    padding: "0.4em 0.8em",
     minWidth: 0,
   },
   variants: {
