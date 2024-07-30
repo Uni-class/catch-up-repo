@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session } from "@/schema/backend.schema";
 import { apiClient } from "@/util/axios";
-import { SessionTable } from "@/app/(sidebar-pages)/sessions/participant/_components/SessionTable";
+import { ParticipantSessionTable } from "../_components/ParticipantSessionTable";
 
 
 export default function ParticipantSessionTableFetcher() {
@@ -22,7 +22,7 @@ export default function ParticipantSessionTableFetcher() {
   }
   const data = response?.data;
   if (data)
-    return <SessionTable data={data} />;
+    return <ParticipantSessionTable data={data} />;
   else
     return <h1>오류</h1>;
 }

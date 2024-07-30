@@ -11,7 +11,7 @@ interface SessionTablePropType {
   data: Session[];
 }
 
-export function SessionTable({ data }: SessionTablePropType) {
+export function HostSessionTable({ data }: SessionTablePropType) {
   const router = useRouter();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -46,10 +46,14 @@ export function SessionTable({ data }: SessionTablePropType) {
           },
           {
             id: 1,
-            value: "참여 시간"
+            value: "생성 시간"
           },
           {
             id: 2,
+            value: "상태"
+          },
+          {
+            id: 3,
             value: "빠른 작업"
           }
         ]}
@@ -59,8 +63,9 @@ export function SessionTable({ data }: SessionTablePropType) {
             values: [
               <div key={0}>{item.sessionName}</div>,
               <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>,
+              <div key={2}>{item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}</div>,
               <Button
-                key={2}
+                key={3}
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
