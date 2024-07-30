@@ -5,11 +5,12 @@ import { Paragraph } from "@/components/Text";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/util/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
 import { ChangeEvent, FormEvent, useRef } from "react";
 
 export default function SessionCreateForm() {
+  const queryClient = useQueryClient();
   const formDataRef = useRef<CreateSessionDto>({
     sessionName: "",
     sessionFileIds: [],
@@ -17,6 +18,9 @@ export default function SessionCreateForm() {
   const formMutation = useMutation({
     mutationFn: async (body: CreateSessionDto) =>
       await apiClient.post("/session", body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
+    },
   });
   const handleFileButtonClick = () => {
     overlay.open(
