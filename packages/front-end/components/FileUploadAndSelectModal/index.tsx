@@ -15,7 +15,7 @@ import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import FileUploader from "../FileUploader";
+import FileUploader from "@/components/FileUploader";
 import DriveFileUploadFetch from "./DriveFileUpload";
 
 
