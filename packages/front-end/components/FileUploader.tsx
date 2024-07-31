@@ -6,6 +6,9 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
 
 interface PropType {
+  accept?: {
+    [name: string]: string[];
+  };
   onDrop?: <T extends File>(
     acceptedFiles: T[],
     fileRejections: FileRejection[],
@@ -14,6 +17,7 @@ interface PropType {
 }
 
 export default function FileUploader({
+  accept,
   onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
   },
@@ -24,9 +28,7 @@ export default function FileUploader({
       onDrop(acceptedFiles, fileRejections, event);
       setCurrentFile(acceptedFiles[0]);
     },
-    accept: {
-      "application/pdf": [".pdf"],
-    },
+    accept: accept
   });
   return (
     <div

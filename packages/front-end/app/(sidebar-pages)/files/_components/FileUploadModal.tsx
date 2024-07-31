@@ -29,7 +29,9 @@ export default function FileUploadModal() {
           X
         </Button>
       </div>
-      <FileUploader />
+      <FileUploader accept={{
+        "application/pdf": [".pdf"],
+      }} />
     </div>
   );
 }

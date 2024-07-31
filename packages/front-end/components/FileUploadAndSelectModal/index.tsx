@@ -72,7 +72,9 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <FileUploader />
+        <FileUploader accept={{
+          "application/pdf": [".pdf"],
+        }} />
       ) : (
         <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
           <DriveFileUploadFetch />
