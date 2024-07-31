@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import LocalFileUpload from "@/components/LocalFileUpload";
+import LocalFileUpload from "@/components/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
@@ -20,10 +20,10 @@ export default function FileUploadModal() {
       <div
         className={css({ display: "flex", justifyContent: "space-between" })}
       >
-        <Heading>강의 자료 업로드</Heading>
+        <Heading>파일 업로드</Heading>
         <Button
           onClick={() => {
-            overlay.close("file upload");
+            overlay.close("File Upload");
           }}
         >
           X

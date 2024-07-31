@@ -1,130 +1,139 @@
-import {
-  fileAreCheckedAtom,
-  fileIsTotalCheckedAtom,
-} from "@/client/CheckBoxAtom";
-import {
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Td,
-  Th,
-} from "@/components/Table";
-import { useCheckBoxes } from "@/hook/useCheckBoxes";
 import { File } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
-import { apiClient } from "@/util/axios";
-import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import Button from "@/components/Button";
+import SelectableTable from "@/components/SelectableTable";
+import { overlay } from "overlay-kit";
+import ModalContainer from "@/components/ModalContainer";
+import FileUploadModal from "@/app/(sidebar-pages)/files/_components/FileUploadModal";
 
-export default function FileTableFetch() {
-  const { data: fileRes, isLoading } = useQuery({
-    queryKey: ["user", "files"],
-    queryFn: async () => {
-      return await apiClient.get<File[]>("/user/files");
-    },
-    throwOnError: true,
-  });
-  if (isLoading) {
-    return <h1>로딩중...</h1>;
-  }
-  const data = fileRes?.data;
-  return <>{data && <FileTable data={data} />}</>;
-}
 
-export function FileTable({ data }: { data: File[] }) {
-  const { isTotalChecked, setIsTotalChecked, setIsCheckedOne, isCheckedOne } =
-    useCheckBoxes<File, number>({
-      data: data,
-      id: "fileId",
-      areCheckedAtom: fileAreCheckedAtom,
-      isTotalCheckedAtom: fileIsTotalCheckedAtom,
-    });
-
-  return (
-    <TableContainer>
-      <colgroup>
-        <col width="45px" />
-        <col />
-        <col width="30%" />
-      </colgroup>
-      <Head
-        setIsTotalChecked={setIsTotalChecked}
-        isTotalChecked={isTotalChecked}
-      />
-      <TableBody>
-        {data.map((e) => (
-          <Row
-          key={e.fileId}
-            el={e}
-            isCheckedOne={isCheckedOne}
-            setIsCheckedOne={setIsCheckedOne}
-          />
-        ))}
-      </TableBody>
-    </TableContainer>
+const showFileUploadModal = () => {
+  overlay.open(
+    ({ isOpen, close }) => (
+      <ModalContainer isOpen={isOpen} onClose={close}>
+        <FileUploadModal />
+      </ModalContainer>
+    ),
+    { overlayId: "File Upload" }
   );
-}
+};
 
-function Head({
-  setIsTotalChecked,
-  isTotalChecked,
-}: {
-  setIsTotalChecked: Dispatch<SetStateAction<boolean>>;
-  isTotalChecked: boolean;
-}) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsTotalChecked(e.target.checked);
-  };
-  return (
-    <TableHead>
-      <TableRow>
-        <Th>
-          <input
-            type="checkbox"
-            onChange={handleChange}
-            checked={isTotalChecked}
-          />
-        </Th>
-        <Th>제목</Th>
-        <Th>참여 시간</Th>
-      </TableRow>
-    </TableHead>
-  );
-}
 
-function Row({
-  el,
-  setIsCheckedOne,
-  isCheckedOne,
-}: {
-  el: File;
-  setIsCheckedOne: (id: number, value: boolean) => void;
-  isCheckedOne: (id: number) => boolean;
-}) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsCheckedOne(el.fileId, e.target.checked);
-  };
-  return (
-    <TableRow
+const DataEmptyPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>표시할 데이터가 없습니다.</p>
+    <p>새로운 파일을 업로드해 보세요!</p>
+    <Button
       className={css({
-        "&:hover": {
-          bg: "rose.50",
-        },
-        cursor: "pointer",
-        transition: "background 0.2s",
+        padding: "0.5em 0.8em",
       })}
+      onClick={() => showFileUploadModal()}
     >
-      <Td>
-        <input
-          type="checkbox"
-          onChange={handleChange}
-          checked={isCheckedOne(el.fileId)}
-        />
-      </Td>
-      <Td>{el.name}</Td>
-      <Td>{formatDate(el.createdAt, "yyyy-MM-dd")}</Td>
-    </TableRow>
+      새 파일 업로드
+    </Button>
+  </div>
+);
+
+
+const LoadingPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>불러오는 중...</p>
+  </div>
+);
+
+
+const ErrorPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>오류가 발생하였습니다.</p>
+  </div>
+);
+
+
+export function FileTable({data, status = null}: { data: File[], status?: "loading" | "error" | null }) {
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  return (
+    <div className={css({
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.6em",
+    })}>
+      <div className={css({
+        display: "flex",
+        gap: "1em",
+        justifyContent: "flex-end",
+      })}>
+        <Button
+          className={css({
+            padding: "0.5em 0.8em",
+          })}
+          onClick={() => showFileUploadModal()}
+        >
+          새 파일 업로드
+        </Button>
+        <Button
+          className={css({
+            padding: "0.5em 0.8em"
+          })}
+          disabled={selectedItems.length === 0}
+          onClick={() => {
+            console.log(`Delete Button Clicked`);
+            console.log(selectedItems);
+            setSelectedItems([]);
+          }}
+        >
+          선택한 파일 삭제
+        </Button>
+      </div>
+      <SelectableTable
+        head={[
+          {
+            id: 0,
+            value: "이름"
+          },
+          {
+            id: 1,
+            value: "업로드 시간"
+          }
+        ]}
+        body={data.map((item) => {
+          return {
+            id: item.fileId,
+            values: [
+              <div key={0}>{item.name}</div>,
+              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>
+            ]
+          };
+        })}
+        placeholder={
+          status === null ? DataEmptyPlaceholder : (status === "loading" ? LoadingPlaceholder : ErrorPlaceholder)
+        }
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+      />
+    </div>
   );
 }

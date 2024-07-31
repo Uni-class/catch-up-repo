@@ -10,7 +10,7 @@ interface PropType {
   ) => void;
 }
 
-export default function LocalFileUpload({
+export default function FileUploader({
   onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
   },
@@ -47,9 +47,13 @@ export default function LocalFileUpload({
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
+          <Paragraph variant="body1">여기로 파일을 끌어오세요.</Paragraph>
         ) : (
-          <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
+          <div>
+            <Paragraph variant="body1">여기로 파일을 끌어오세요.</Paragraph>
+            <Paragraph variant="body1">또는</Paragraph>
+            <Paragraph variant="body1">파일 선택하기</Paragraph>
+          </div>
         )}
       </div>
     </div>
