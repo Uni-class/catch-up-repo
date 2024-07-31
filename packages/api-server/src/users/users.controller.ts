@@ -12,6 +12,9 @@ import {
   ClassSerializerInterceptor,
   Query,
   ParseIntPipe,
+  UploadedFile,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,6 +23,7 @@ import { UserId } from './decorators/user-id.decorator';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiCookieAuth,
   ApiExtraModels,
   ApiParam,
@@ -37,12 +41,18 @@ import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.d
 import { UpdateResult } from 'typeorm';
 import { UserSessionBodyType } from './types/user-session-body.type';
 import { File } from '../files/entities/file.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesService } from '../files/files.service';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 
 @ApiTags('user')
 @ApiBearerAuth()
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly filesService: FilesService,
+  ) {}
 
   @Get('profile')
   @ApiResponse({ type: User })
@@ -54,12 +64,45 @@ export class UsersController {
 
   @Patch('profile')
   @ApiResponse({ type: UpdateResult })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        nickname: {
+          type: 'string',
+          nullable: true,
+        },
+        email: {
+          type: 'string',
+          nullable: true,
+        },
+        profileImage: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseGuards(JwtGuard)
+  @UseInterceptors(FileInterceptor('profileImage'))
   async updateUserProfile(
     @UserId(ParseIntPipe) userId: number,
-    @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+      }),
+    )
+    profileImg: Express.Multer.File,
+    @Body() updateUserProfileDto: UpdateUserProfileDto,
   ): Promise<UpdateResult> {
-    return await this.usersService.update(userId, updateUserDto);
+    if (profileImg) {
+      updateUserProfileDto.profileUrl = (
+        await this.filesService.s3Upload(userId, profileImg)
+      ).url;
+    }
+    return await this.usersService.update(userId, updateUserProfileDto);
   }
 
   @Delete()
