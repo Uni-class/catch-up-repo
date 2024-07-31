@@ -4,24 +4,41 @@ import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
 
-import { SessionResponseDto } from "@/schema/backend.schema";
+import { CreateSessionDto, SessionResponseDto } from "@/schema/backend.schema";
 import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
+import { ChangeEvent, useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "@/util/axios";
 
 interface PropType {
   sessionData: SessionResponseDto;
 }
 
 export default function HostSession({ sessionData }: PropType) {
-  
+  const queryClient = useQueryClient();
+  const formDataRef = useRef<CreateSessionDto>({
+    sessionFileIds: [],
+    sessionName: sessionData.sessionName,
+  });
+  const formMutation = useMutation({
+    mutationFn: async (body: CreateSessionDto) =>
+      await apiClient.patch(`/session/${sessionData.sessionId}`, body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
+    },
+  });
   const handleFileButtonClick = () => {
     overlay.open(
       ({ isOpen, close }) => (
         <ModalContainer isOpen={isOpen} onClose={close}>
-          <FileUploadAndSelectModal />
+          <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
       { overlayId: "file upload" }
     );
+  };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    formDataRef.current.sessionName = e.target.value;
   };
   return (
     <main
@@ -29,8 +46,8 @@ export default function HostSession({ sessionData }: PropType) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width:"100%",
-        height:"100%",
+        width: "100%",
+        height: "100%",
       })}
     >
       <form
@@ -40,6 +57,10 @@ export default function HostSession({ sessionData }: PropType) {
           width: "600px",
           gap: "1rem",
         })}
+        onSubmit={(e) => {
+          e.preventDefault();
+          formMutation.mutate(formDataRef.current);
+        }}
       >
         <Heading>세션 정보 및 작성</Heading>
         <label htmlFor="session title">세션 제목</label>
@@ -47,7 +68,8 @@ export default function HostSession({ sessionData }: PropType) {
           id="session title"
           name="session title"
           placeholder="세션 제목 입력"
-          value={sessionData.sessionName}
+          defaultValue={formDataRef.current.sessionName}
+          onChange={handleInputChange}
         />
         <label htmlFor="select file">강의 자료 선택</label>
         <Button
@@ -59,11 +81,9 @@ export default function HostSession({ sessionData }: PropType) {
           자료 선택
         </Button>
         <label>현재 선택한 파일</label>
-        {sessionData.fileList.map(
-          (file) => (
-            <Paragraph key={file.fileId}>{file.name}</Paragraph>
-          )
-        )}
+        {sessionData.fileList.map((file) => (
+          <Paragraph key={file.fileId}>{file.name}</Paragraph>
+        ))}
         <Paragraph>파일 제목 목록</Paragraph>
         <Button type="submit">세션 시작</Button>
       </form>
