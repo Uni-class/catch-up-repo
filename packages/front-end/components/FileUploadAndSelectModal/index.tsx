@@ -56,7 +56,7 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         <Heading>파일 선택</Heading>
         <Button
           onClick={() => {
-            overlay.close("File Select");
+            overlay.close("File-Select");
           }}
         >
           X

@@ -16,7 +16,7 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File Upload" }
+    { overlayId: "File-Upload" }
   );
 };
 

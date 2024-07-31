@@ -34,7 +34,7 @@ export default function HostSession({ sessionData }: PropType) {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File Select" }
+      { overlayId: "File-Select" }
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

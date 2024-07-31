@@ -3,7 +3,7 @@ import FileUploader from "@/components/FileUploader/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
-import CloseIcon from "@/public/icons/close.svg";
+
 
 export default function FileUploadModal() {
   return (
@@ -21,30 +21,36 @@ export default function FileUploadModal() {
         gap: "1em",
       })}
     >
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        })}
-      >
-        <Heading>파일 업로드</Heading>
-        <Button
-          className={css({
-            padding: "0.1em",
-          })}
-          onClick={() => {
-            overlay.close("File Upload");
-          }}
-        >
-          <CloseIcon width={"2em"} />
-        </Button>
-      </div>
+      <Heading>파일 업로드</Heading>
       <FileUploader
         accept={{
           "application/pdf": [".pdf"],
         }}
       />
+      <div className={css({
+        display: "flex",
+        gap: "0.5em",
+        justifyContent: "right",
+      })}>
+        <Button
+          className={css({
+            padding: "0.5em 1em",
+          })}
+        >
+          업로드
+        </Button>
+        <Button
+          className={css({
+            padding: "0.5em 1em",
+          })}
+          preset={"secondary"}
+          onClick={() => {
+            overlay.close("File-Upload");
+          }}
+        >
+          취소
+        </Button>
+      </div>
     </div>
   );
 }

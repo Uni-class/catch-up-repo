@@ -54,7 +54,7 @@ function Row({ file }: { file: File }) {
     useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataRefAtom);
   const handleRowButtonClick = () => {
     currentFormDataRef.current.sessionFileIds = [file.fileId];
-    overlay.close("File Select");
+    overlay.close("File-Select");
   };
   return (
     <TableRow>

@@ -29,7 +29,7 @@ export default function SessionCreateForm() {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File Select" }
+      { overlayId: "File-Select" }
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
