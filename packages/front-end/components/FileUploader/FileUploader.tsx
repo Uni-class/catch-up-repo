@@ -1,10 +1,9 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { format } from "date-fns";
 import { useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
-import FilePreview from "@/components/FileUploader/FilePreview";
+import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
 
 interface PropType {
   accept?: {
@@ -15,6 +14,7 @@ interface PropType {
     fileRejections: FileRejection[],
     event: DropEvent
   ) => void;
+  allowMultipleFiles?: boolean;
 }
 
 export default function FileUploader({
@@ -22,12 +22,18 @@ export default function FileUploader({
   onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
   },
+  allowMultipleFiles = true
 }: PropType) {
-  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
       onDrop(acceptedFiles, fileRejections, event);
-      setCurrentFile(acceptedFiles[0]);
+      if (allowMultipleFiles) {
+        setSelectedFiles([...selectedFiles, ...acceptedFiles]);
+      }
+      else {
+        setSelectedFiles(acceptedFiles.slice(0, 1));
+      }
     },
     accept: accept
   });
@@ -43,9 +49,9 @@ export default function FileUploader({
       <div
         {...getRootProps()}
         className={css({
-          border: "2px dashed #ccc",
-          borderRadius: "5px",
-          padding: "20px",
+          border: "1px dashed #ccc",
+          borderRadius: "0.5em",
+          padding: "0.5em",
           cursor: "pointer",
           backgroundColor: isDragActive ? "#f0f0f0" : "transparent",
           display: "flex",
@@ -56,50 +62,62 @@ export default function FileUploader({
         })}
       >
         <input {...getInputProps()} />
-        <StatusText isDragActive={isDragActive} currentFile={currentFile} />
+        <SelectedFilesView isDragActive={isDragActive} selectedFiles={selectedFiles} />
       </div>
     </div>
   );
 }
 
-function StatusText({
+function SelectedFilesView({
   isDragActive,
-  currentFile,
+  selectedFiles,
 }: {
   isDragActive: boolean;
-  currentFile: File | null;
+  selectedFiles: File[];
 }) {
-  if (currentFile !== null) {
-    const lastModified = new Date(currentFile.lastModified);
+  if (selectedFiles.length === 0) {
     return (
-      <div>
-        <FilePreview file={currentFile} />
-        <Paragraph variant="body2">눌러서 다시 선택</Paragraph>
+      isDragActive
+        ?
+        <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
+        :
+        <div className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5em",
+          justifyContent: "center",
+          alignItems: "center",
+        })}>
+          <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+          <Paragraph variant="body3">또는</Paragraph>
+          <Button
+            className={css({
+              padding: "0.5em 0.8em",
+              width: "fit-content",
+            })}
+          >
+            파일 선택하기
+          </Button>
+        </div>
+    )
+  }
+  else {
+    return (
+      <div className={css({
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        flexDirection: "column",
+        gap: "0.5em",
+      })}>
+        {
+          selectedFiles.map((file, index) => {
+            return (
+              <FileUploadPreview key={index} file={file}/>
+            );
+          })
+        }
       </div>
     );
   }
-  return (
-    isDragActive
-      ?
-      <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
-      :
-      <div className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        justifyContent: "center",
-        alignItems: "center",
-      })}>
-        <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
-        <Paragraph variant="body3">또는</Paragraph>
-        <Button
-          className={css({
-            padding: "0.5em 0.8em",
-            width: "fit-content",
-          })}
-        >
-          파일 선택하기
-        </Button>
-      </div>
-  )
 }
