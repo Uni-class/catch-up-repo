@@ -7,10 +7,15 @@ import { FilesService } from '../files/files.service';
 import { SessionFilesService } from '../session-files/session-files.service';
 import { File } from '../files/entities/file.entity';
 import { SessionFile } from '../session-files/entities/session-file.entity';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/entities/user.entity';
+import { UserSession } from '../user-sessions/entities/user-session.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Session, File, SessionFile])],
+  imports: [
+    TypeOrmModule.forFeature([Session, File, SessionFile, User, UserSession]),
+  ],
   controllers: [SessionsController],
-  providers: [SessionsService, FilesService, SessionFilesService],
+  providers: [SessionsService, FilesService, SessionFilesService, UsersService],
 })
 export class SessionsModule {}
