@@ -1,9 +1,11 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
 import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
+import PlusCircleIcon from "@/public/icons/plus-circle.svg";
+
 
 interface PropType {
   accept?: {
@@ -49,75 +51,101 @@ export default function FileUploader({
       <div
         {...getRootProps()}
         className={css({
+          display: "flex",
+          padding: "0.5em",
+          height: "100%",
           border: "1px dashed #ccc",
           borderRadius: "0.5em",
-          padding: "0.5em",
-          cursor: "pointer",
           backgroundColor: isDragActive ? "#f0f0f0" : "transparent",
-          display: "flex",
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
-          height: "100%",
         })}
       >
         <input {...getInputProps()} />
-        <SelectedFilesView isDragActive={isDragActive} selectedFiles={selectedFiles} />
+        <div className={css({
+          position: "relative",
+          width: "100%",
+          height: "100%",
+        })}>
+          <SelectedFilesView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+          {
+            selectedFiles.length === 0 || isDragActive
+            ?
+              <FileDropArea isDragActive={isDragActive} />
+              :
+              null
+          }
+        </div>
       </div>
     </div>
   );
 }
 
-function SelectedFilesView({
-  isDragActive,
-  selectedFiles,
-}: {
-  isDragActive: boolean;
-  selectedFiles: File[];
-}) {
-  if (selectedFiles.length === 0) {
-    return (
-      isDragActive
-        ?
-        <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
-        :
-        <div className={css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5em",
-          justifyContent: "center",
-          alignItems: "center",
-        })}>
-          <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
-          <Paragraph variant="body3">또는</Paragraph>
-          <Button
-            className={css({
-              padding: "0.5em 0.8em",
-              width: "fit-content",
-            })}
-          >
-            파일 선택하기
-          </Button>
-        </div>
-    )
-  }
-  else {
-    return (
-      <div className={css({
+function SelectedFilesView({ selectedFiles, setSelectedFiles }: { selectedFiles: File[], setSelectedFiles: Dispatch<SetStateAction<File[]>> }) {
+  return (
+    <div
+      className={css({
         display: "flex",
         width: "100%",
         height: "100%",
         flexDirection: "column",
         gap: "0.5em",
-      })}>
-        {
-          selectedFiles.map((file, index) => {
-            return (
-              <FileUploadPreview key={index} file={file}/>
-            );
-          })
-        }
-      </div>
-    );
-  }
+      })}
+      onClick={(event) => event.stopPropagation()}
+    >
+      {
+        selectedFiles.map((file, index) => {
+          return (
+            <FileUploadPreview key={index} file={file} removeButtonClickHandler={
+              () => setSelectedFiles(selectedFiles.toSpliced(index, 1))
+            }/>
+          );
+        })
+      }
+    </div>
+  );
+}
+
+
+function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
+  return (
+    <div className={css({
+      position: "absolute",
+      top: "0",
+      left: "0",
+      display: "flex",
+      width: "100%",
+      height: "100%",
+      flexDirection: "column",
+      gap: "0.5em",
+      justifyContent: "center",
+      alignItems: "center",
+      color: "#000000",
+      backgroundColor: "#dddddd80",
+      cursor: "pointer",
+    })}>
+      {
+        isDragActive
+          ?
+          <>
+            <PlusCircleIcon width={"3em"} />
+            <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
+          </>
+          :
+          <>
+            <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+            <Paragraph variant="body3">또는</Paragraph>
+            <Button
+              className={css({
+                padding: "0.5em 0.8em",
+                width: "fit-content",
+              })}
+            >
+              파일 선택하기
+            </Button>
+          </>
+      }
+    </div>
+  );
 }

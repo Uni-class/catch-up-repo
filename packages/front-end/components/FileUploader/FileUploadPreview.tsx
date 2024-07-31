@@ -1,6 +1,7 @@
 import { css, cx } from "@/styled-system/css";
 import { format } from "date-fns";
 import formatByteSize from "@/utils/formatByteSize";
+import Button from "@/components/Button";
 import CloseIcon from "@/public/icons/close.svg";
 import DocumentIcon from "@/public/icons/document.svg";
 import PdfIcon from "@/public/icons/pdf.svg";
@@ -42,9 +43,10 @@ function openFileInNewTab(file: File): void {
 interface PropType {
   className?: string;
   file: File;
+  removeButtonClickHandler?: () => void;
 }
 
-export default function FileUploadPreview({className, file}: PropType) {
+export default function FileUploadPreview({ className, file, removeButtonClickHandler }: PropType) {
   return (
     <div
       className={cx(css({
@@ -97,22 +99,19 @@ export default function FileUploadPreview({className, file}: PropType) {
           {formatByteSize(file.size)}
         </div>
       </div>
-      <div
+      <Button
         className={css({
           padding: "0.1em",
           borderRadius: "0.3em",
-          _hover: {
-            color: "#ffffff",
-            backgroundColor: "gray.400",
-          },
-          _active: {
-            color: "#ffffff",
-            backgroundColor: "#ff0000",
-          }
         })}
+        onClick={(event) => {
+          event.stopPropagation();
+          if (removeButtonClickHandler)
+            removeButtonClickHandler();
+        }}
       >
         <CloseIcon width={"2em"} />
-      </div>
+      </Button>
     </div>
   );
 };
