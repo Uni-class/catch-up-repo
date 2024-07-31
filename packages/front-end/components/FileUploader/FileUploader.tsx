@@ -42,21 +42,17 @@ export default function FileUploader({
   return (
     <div
       className={css({
-        padding: "1rem",
-        textAlign: "center",
-        flexGrow: 1,
-        marginTop: "1rem",
+        height: "100%",
+        border: "1px dashed #ccc",
+        borderRadius: "0.5em",
+        overflow: "hidden",
       })}
     >
       <div
         {...getRootProps()}
         className={css({
           display: "flex",
-          padding: "0.5em",
           height: "100%",
-          border: "1px dashed #ccc",
-          borderRadius: "0.5em",
-          backgroundColor: isDragActive ? "#f0f0f0" : "transparent",
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
@@ -68,11 +64,11 @@ export default function FileUploader({
           width: "100%",
           height: "100%",
         })}>
-          <SelectedFilesView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+          <SelectedFilesView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}/>
           {
             selectedFiles.length === 0 || isDragActive
-            ?
-              <FileDropArea isDragActive={isDragActive} />
+              ?
+              <FileDropArea isDragActive={isDragActive}/>
               :
               null
           }
@@ -82,15 +78,20 @@ export default function FileUploader({
   );
 }
 
-function SelectedFilesView({ selectedFiles, setSelectedFiles }: { selectedFiles: File[], setSelectedFiles: Dispatch<SetStateAction<File[]>> }) {
+function SelectedFilesView({selectedFiles, setSelectedFiles}: {
+  selectedFiles: File[],
+  setSelectedFiles: Dispatch<SetStateAction<File[]>>
+}) {
   return (
     <div
       className={css({
         display: "flex",
+        padding: "0.5em",
         width: "100%",
         height: "100%",
         flexDirection: "column",
         gap: "0.5em",
+        overflow: "scroll",
       })}
       onClick={(event) => event.stopPropagation()}
     >
@@ -108,7 +109,7 @@ function SelectedFilesView({ selectedFiles, setSelectedFiles }: { selectedFiles:
 }
 
 
-function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
+function FileDropArea({isDragActive}: { isDragActive: boolean }) {
   return (
     <div className={css({
       position: "absolute",
@@ -134,7 +135,7 @@ function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
           </>
           :
           <>
-            <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+            <Paragraph variant="body2">이곳에 파일을 끌어오세요.</Paragraph>
             <Paragraph variant="body3">또는</Paragraph>
             <Button
               className={css({

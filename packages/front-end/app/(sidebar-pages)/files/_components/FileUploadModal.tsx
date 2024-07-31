@@ -8,8 +8,8 @@ export default function FileUploadModal() {
   return (
     <div
       className={css({
-        width: "700px",
-        height: "500px",
+        width: "70vw",
+        height: "60vh",
         backgroundColor: "#fff",
         borderRadius: "1rem",
         padding: "1rem",
@@ -29,9 +29,11 @@ export default function FileUploadModal() {
           X
         </Button>
       </div>
-      <FileUploader accept={{
-        "application/pdf": [".pdf"],
-      }} />
+      <FileUploader
+        accept={{
+          "application/pdf": [".pdf"],
+        }}
+      />
     </div>
   );
 }
