@@ -1,9 +1,11 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { format } from "date-fns";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "@/util/axios";
 
 interface PropType {
   onDrop?: <T extends File>(
@@ -18,6 +20,7 @@ export default function FileUploader({
     console.log(acceptedFiles);
   },
 }: PropType) {
+  const queryClient = useQueryClient();
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
@@ -28,14 +31,41 @@ export default function FileUploader({
       "application/pdf": [".pdf"],
     },
   });
+  const fileMutate = useMutation({
+    mutationFn: async (body: FormData) =>
+      await apiClient.post("/file", body, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user files"] });
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+    if (!currentFile) {
+      alert("파일을 선택해라");
+      return;
+    }
+    formData.append("file", currentFile);
+    fileMutate.mutate(formData);
+  };
   return (
-    <div
+    <form
       className={css({
         padding: "1rem",
         textAlign: "center",
         flexGrow: 1,
         marginTop: "1rem",
+        display: "flex",
+        flexDirection: "column",
       })}
+      onSubmit={handleSubmit}
     >
       <div
         {...getRootProps()}
@@ -49,13 +79,14 @@ export default function FileUploader({
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
-          height: "100%",
+          flexGrow: 1,
         })}
       >
         <input {...getInputProps()} />
         <StatusText isDragActive={isDragActive} currentFile={currentFile} />
       </div>
-    </div>
+      <Button type="submit">업로드</Button>
+    </form>
   );
 }
 
@@ -73,34 +104,43 @@ function StatusText({
         <Paragraph variant="body3">{currentFile.name}</Paragraph>
         <Paragraph variant="body4">{`파일 용량: ${formatFileSize(currentFile.size)}`}</Paragraph>
         <Paragraph variant="body4">{`최종 수정: ${format(lastModified, "yyyy-MM-dd")}`}</Paragraph>
-        <Paragraph variant="body2">눌러서 다시 선택</Paragraph>
+        <Button
+        className={css({
+          padding: "0.5em 0.8em",
+          width: "fit-content",
+        })}
+        type = "button"
+      >
+        눌러서 다시 선택
+      </Button>
       </div>
     );
   }
-  return (
-    isDragActive
-      ?
-      <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
-      :
-      <div className={css({
+  return isDragActive ? (
+    <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+  ) : (
+    <div
+      className={css({
         display: "flex",
         flexDirection: "column",
         gap: "0.5rem",
         justifyContent: "center",
         alignItems: "center",
-      })}>
-        <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
-        <Paragraph variant="body3">또는</Paragraph>
-        <Button
-          className={css({
-            padding: "0.5em 0.8em",
-            width: "fit-content",
-          })}
-        >
-          파일 선택하기
-        </Button>
-      </div>
-  )
+      })}
+    >
+      <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+      <Paragraph variant="body3">또는</Paragraph>
+      <Button
+        className={css({
+          padding: "0.5em 0.8em",
+          width: "fit-content",
+        })}
+        type = "button"
+      >
+        파일 선택하기
+      </Button>
+    </div>
+  );
 }
 
 const formatFileSize = (size: number) => {
