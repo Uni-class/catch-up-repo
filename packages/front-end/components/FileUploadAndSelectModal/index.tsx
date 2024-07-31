@@ -1,5 +1,4 @@
 import { css, cx } from "@/styled-system/css";
-import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
 import {
   DetailedHTMLProps,
@@ -11,10 +10,14 @@ import {
 } from "react";
 import { Heading } from "../Text";
 import Button from "../Button";
-import LocalFileUpload from "../LocalFileUpload";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
-import LocalFileUpload from "@/components/FileUploader";
+import { CreateSessionDto } from "@/schema/backend.schema";
+import { useAtom } from "jotai";
+import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
+import LocalFileUpload from "../LocalFIleUpload";
+import DriveFileUploadFetch from "./DriveFileUpload";
+
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
