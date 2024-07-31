@@ -12,6 +12,7 @@ interface PropType {
 }
 
 export default function HostSession({ sessionData }: PropType) {
+  
   const handleFileButtonClick = () => {
     overlay.open(
       ({ isOpen, close }) => (

@@ -15,23 +15,24 @@ import LocalFileUpload from "../LocalFileUpload";
 import { ErrorBoundary } from "react-error-boundary";
 import DriveFileUploadFetch from "./DriveFileUpload";
 import { useAtom } from "jotai";
-import { currentFormDataAtom } from "@/client/FileSelectAtom";
+import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import { CreateSessionDto } from "@/schema/backend.schema";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
 interface PropType {
-  formData: MutableRefObject<CreateSessionDto>;
+  formDataRef: MutableRefObject<CreateSessionDto>;
 }
 
-export default function FileUploadAndSelectModal({ formData }: PropType) {
+export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
   const { reset } = useQueryErrorResetBoundary();
-  const [_currentFormData, setCurrentFormData] =
-    useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataAtom);
+  const [_currentFormData, setCurrentFormData] = useAtom<
+    MutableRefObject<CreateSessionDto>
+  >(currentFormDataRefAtom);
   useEffect(() => {
-    setCurrentFormData(formData);
+    setCurrentFormData(formDataRef);
   }, []);
   return (
     <div
@@ -57,7 +58,6 @@ export default function FileUploadAndSelectModal({ formData }: PropType) {
           X
         </Button>
       </div>
-
       <TabContainer>
         {tabData.map((e) => (
           <Tab

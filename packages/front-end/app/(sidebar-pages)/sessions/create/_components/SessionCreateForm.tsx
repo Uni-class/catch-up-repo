@@ -26,7 +26,7 @@ export default function SessionCreateForm() {
     overlay.open(
       ({ isOpen, close }) => (
         <ModalContainer isOpen={isOpen} onClose={close}>
-          <FileUploadAndSelectModal formData={formDataRef} />
+          <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
       { overlayId: "file upload" }

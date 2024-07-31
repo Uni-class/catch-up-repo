@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { MutableRefObject } from "react";
 
-export const currentFormDataAtom = atom<MutableRefObject<any>>({
+export const currentFormDataRefAtom = atom<MutableRefObject<any>>({
   current: null,
 });

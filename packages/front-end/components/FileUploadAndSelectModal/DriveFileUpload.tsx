@@ -14,7 +14,7 @@ import Button from "@/components/Button";
 import { formatDate } from "date-fns";
 import { overlay } from "overlay-kit";
 import { useAtom } from "jotai";
-import { currentFormDataAtom } from "@/client/FileSelectAtom";
+import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import { MutableRefObject } from "react";
 
 export default function DriveFileUploadFetch() {
@@ -50,10 +50,10 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
-  const [currentFormData, setCurrentFormData] =
-    useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataAtom);
+  const [currentFormDataRef] =
+    useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataRefAtom);
   const handleRowButtonClick = () => {
-    currentFormData.current.sessionFileIds = [file.fileId];
+    currentFormDataRef.current.sessionFileIds = [file.fileId];
     overlay.close("file upload");
   };
   return (
