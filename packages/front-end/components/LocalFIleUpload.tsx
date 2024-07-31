@@ -76,6 +76,11 @@ function StatusText({
       </div>
     );
   }
+  return isDragActive ? (
+    <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
+  ) : (
+    <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
+  );
 }
 
 const formatFileSize = (size: number) => {
