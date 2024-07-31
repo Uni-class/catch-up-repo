@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserSessionDto {
-  constructor() {}
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
@@ -16,5 +15,11 @@ export class CreateUserSessionDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  displayName;
+  displayName: string;
+
+  constructor(userId: number, sessionId: number, dispalyName: string) {
+    this.userId = userId;
+    this.sessionId = sessionId;
+    this.displayName = dispalyName;
+  }
 }

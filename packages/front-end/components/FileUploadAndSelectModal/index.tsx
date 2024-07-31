@@ -13,10 +13,8 @@ import { Heading } from "../Text";
 import Button from "../Button";
 import LocalFileUpload from "../LocalFileUpload";
 import { ErrorBoundary } from "react-error-boundary";
-import DriveFileUploadFetch from "./DriveFileUpload";
-import { useAtom } from "jotai";
-import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import { CreateSessionDto } from "@/schema/backend.schema";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import LocalFileUpload from "@/components/FileUploader";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];

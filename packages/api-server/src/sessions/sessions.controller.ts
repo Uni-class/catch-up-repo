@@ -20,6 +20,7 @@ import { Session } from './entities/session.entity';
 import { SessionFile } from '../session-files/entities/session-file.entity';
 import { File } from '../files/entities/file.entity';
 import { SessionResponseDto } from './dto/session.response.dto';
+import { UsersService } from '../users/users.service';
 
 @ApiTags('Session')
 @ApiBearerAuth()
@@ -29,6 +30,7 @@ export class SessionsController {
     private readonly sessionsService: SessionsService,
     private readonly filesService: FilesService,
     private readonly sessionFilesService: SessionFilesService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Post()
@@ -45,6 +47,12 @@ export class SessionsController {
       await this.filesService.getFileAsUser(fileId, userId);
     }
     const session = await this.sessionsService.create(createSessionDto);
+    const user = await this.usersService.findOneById(userId);
+    await this.usersService.postUserSession({
+      userId: userId,
+      sessionId: session.sessionId,
+      displayName: user.nickname,
+    });
     const sessionFiles: SessionFile[] = [];
     for (const fileId of sessionFileIds) {
       const sessionFile: SessionFile = await this.sessionFilesService.create(

@@ -1,24 +1,12 @@
-import { File } from "@/schema/backend.schema";
+import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
+import { useRouter } from "@/hook/useRouter";
+import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { formatDate } from "date-fns";
 import { useState } from "react";
-import Button from "@/components/Button";
 import SelectableTable from "@/components/SelectableTable";
-import { overlay } from "overlay-kit";
-import ModalContainer from "@/components/ModalContainer";
-import FileUploadModal from "@/app/(sidebar-pages)/files/_components/FileUploadModal";
-
-
-const showFileUploadModal = () => {
-  overlay.open(
-    ({ isOpen, close }) => (
-      <ModalContainer isOpen={isOpen} onClose={close}>
-        <FileUploadModal />
-      </ModalContainer>
-    ),
-    { overlayId: "File Upload" }
-  );
-};
+import { PROJECT_NAME } from "@/const/config";
 
 
 const DataEmptyPlaceholder = (
@@ -31,15 +19,15 @@ const DataEmptyPlaceholder = (
     gap: "0.5em",
   })}>
     <p>표시할 데이터가 없습니다.</p>
-    <p>새로운 파일을 업로드해 보세요!</p>
-    <Button
+    <p>새로운 {PROJECT_NAME} 세션에 참가해 보세요!</p>
+    <LinkButton
       className={css({
         padding: "0.5em 0.8em",
       })}
-      onClick={() => showFileUploadModal()}
+      href="/sessions/join"
     >
-      새 파일 업로드
-    </Button>
+      새 세션 참여하기
+    </LinkButton>
   </div>
 );
 
@@ -72,7 +60,9 @@ const ErrorPlaceholder = (
 );
 
 
-export function FileTable({data, status = null}: { data: File[], status?: "loading" | "error" | null }) {
+export function ParticipantSessionTable({data, status = null}: { data: Session[], status?: "loading" | "error" | null }) {
+  const router = useRouter();
+
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   return (
@@ -86,14 +76,14 @@ export function FileTable({data, status = null}: { data: File[], status?: "loadi
         gap: "1em",
         justifyContent: "flex-end",
       })}>
-        <Button
+        <LinkButton
           className={css({
             padding: "0.5em 0.8em",
           })}
-          onClick={() => showFileUploadModal()}
+          href="/sessions/join"
         >
-          새 파일 업로드
-        </Button>
+          새 세션 참여하기
+        </LinkButton>
         <Button
           className={css({
             padding: "0.5em 0.8em"
@@ -105,27 +95,48 @@ export function FileTable({data, status = null}: { data: File[], status?: "loadi
             setSelectedItems([]);
           }}
         >
-          선택한 파일 삭제
+          선택한 기록 삭제
         </Button>
       </div>
       <SelectableTable
         head={[
           {
             id: 0,
-            value: "이름"
+            value: "제목"
           },
           {
             id: 1,
-            value: "업로드 시간"
+            value: "참여 시간"
+          },
+          {
+            id: 2,
+            value: "상태"
+          },
+          {
+            id: 3,
+            value: "빠른 작업"
           }
         ]}
         body={data.map((item) => {
           return {
-            id: item.fileId,
+            id: item.sessionId,
             values: [
-              <div key={0}>{item.name}</div>,
-              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>
-            ]
+              <div key={0}>{item.sessionName}</div>,
+              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>,
+              <div key={2}>{item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}</div>,
+              <Button
+                key={3}
+                className={css({
+                  padding: "0.5em 0.8em",
+                })}
+                onClick={(event) => {
+                  event.stopPropagation()
+                }}
+              >
+                세션 참여
+              </Button>
+            ],
+            onClick: () => router.push(`/sessions/detail/${item.sessionId}`)
           };
         })}
         placeholder={

@@ -8,7 +8,8 @@
     "common": "yarn workspace @cu/common",
     "component": "yarn workspace @cu/component",
     "front-end": "yarn workspace front-end",
-    "api-server": "yarn workspace api-server"
+    "api-server": "yarn workspace api-server",
+    "socket-server": "yarn workspace socket-server"
   },
   "workspaces": [
     "packages/*",

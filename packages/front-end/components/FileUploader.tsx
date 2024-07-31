@@ -1,6 +1,7 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
+import Button from "@/components/Button";
 
 interface PropType {
   onDrop?: <T extends File>(
@@ -10,7 +11,7 @@ interface PropType {
   ) => void;
 }
 
-export default function LocalFileUpload({
+export default function FileUploader({
   onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
   },
@@ -46,11 +47,30 @@ export default function LocalFileUpload({
         })}
       >
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
-        ) : (
-          <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
-        )}
+        {
+          isDragActive
+            ?
+            <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+            :
+            <div className={css({
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              justifyContent: "center",
+              alignItems: "center",
+            })}>
+              <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+              <Paragraph variant="body3">또는</Paragraph>
+              <Button
+                className={css({
+                  padding: "0.5em 0.8em",
+                  width: "fit-content",
+                })}
+              >
+                파일 선택하기
+              </Button>
+            </div>
+        }
       </div>
     </div>
   );
