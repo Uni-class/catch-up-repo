@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsNumber, IsArray, IsString } from 'class-validator';
+import {
+  IsOptional,
+  IsNotEmpty,
+  IsNumber,
+  IsArray,
+  IsString,
+} from 'class-validator';
 
 export class CreateSessionDto {
   @ApiProperty()
@@ -9,7 +15,7 @@ export class CreateSessionDto {
 
   hostId: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: [Number] })
   @IsOptional()
   @IsArray()
   @IsNumber({}, { each: true })

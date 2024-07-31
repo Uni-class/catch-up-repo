@@ -1,9 +1,17 @@
-import { Heading } from "@/components/Text";
 import { css, cx } from "@/styled-system/css";
-import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState } from "react";
-import DriveFileUploadFetch from "./DriveFileUpload";
-import Button from "@/components/Button";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
+import {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  MutableRefObject,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import { Heading } from "../Text";
+import Button from "../Button";
+import LocalFileUpload from "../LocalFileUpload";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import LocalFileUpload from "@/components/FileUploader";
@@ -11,9 +19,19 @@ import LocalFileUpload from "@/components/FileUploader";
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
-export default function FileUploadModal() {
+interface PropType {
+  formDataRef: MutableRefObject<CreateSessionDto>;
+}
+
+export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
   const { reset } = useQueryErrorResetBoundary();
+  const [_currentFormData, setCurrentFormData] = useAtom<
+    MutableRefObject<CreateSessionDto>
+  >(currentFormDataRefAtom);
+  useEffect(() => {
+    setCurrentFormData(formDataRef);
+  }, []);
   return (
     <div
       className={css({
@@ -38,7 +56,6 @@ export default function FileUploadModal() {
           X
         </Button>
       </div>
-
       <TabContainer>
         {tabData.map((e) => (
           <Tab

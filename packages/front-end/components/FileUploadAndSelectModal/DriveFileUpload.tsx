@@ -9,9 +9,13 @@ import {
 import { apiClient } from "@/util/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { File } from "@/schema/backend.schema";
+import { CreateSessionDto, File } from "@/schema/backend.schema";
 import Button from "@/components/Button";
 import { formatDate } from "date-fns";
+import { overlay } from "overlay-kit";
+import { useAtom } from "jotai";
+import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
+import { MutableRefObject } from "react";
 
 export default function DriveFileUploadFetch() {
   const { data: fileRes, isLoading } = useQuery<AxiosResponse<File[]>>({
@@ -23,7 +27,7 @@ export default function DriveFileUploadFetch() {
     return <h1>로딩...</h1>;
   }
   const data = fileRes?.data;
-  return data !== undefined && <DriveFileUpload data={data} />
+  return data !== undefined && <DriveFileUpload data={data} />;
 }
 
 export function DriveFileUpload({ data }: { data: File[] }) {
@@ -46,12 +50,18 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
+  const [currentFormDataRef] =
+    useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataRefAtom);
+  const handleRowButtonClick = () => {
+    currentFormDataRef.current.sessionFileIds = [file.fileId];
+    overlay.close("file upload");
+  };
   return (
     <TableRow>
       <Td>{file.name}</Td>
       <Td>{formatDate(file.createdAt, "yyyy-MM-dd")}</Td>
       <Td align="center">
-        <Button>선택하기</Button>
+        <Button onClick={handleRowButtonClick}>선택하기</Button>
       </Td>
     </TableRow>
   );
