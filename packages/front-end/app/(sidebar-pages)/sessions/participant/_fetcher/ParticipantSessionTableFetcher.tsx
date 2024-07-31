@@ -6,7 +6,7 @@ import { ParticipantSessionTable } from "../_components/ParticipantSessionTable"
 
 
 export default function ParticipantSessionTableFetcher() {
-  const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
+  const { data: response, isLoading, isError } = useQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", "participant"],
     queryFn: async () => {
       return await apiClient.get("/user/sessions", {
@@ -15,14 +15,20 @@ export default function ParticipantSessionTableFetcher() {
         },
       });
     },
-    throwOnError: true,
   });
-  if (isLoading) {
-    return <h1>로딩...</h1>;
-  }
   const data = response?.data;
-  if (data)
-    return <ParticipantSessionTable data={data} />;
-  else
-    return <h1>오류</h1>;
+  const status = (
+    isLoading
+      ?
+      "loading"
+      :
+      (
+        isError || !Array.isArray(data)
+          ?
+          "error"
+          :
+          null
+      )
+  );
+  return <ParticipantSessionTable data={data || []} status={status} />
 }

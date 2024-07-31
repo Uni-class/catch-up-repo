@@ -9,7 +9,58 @@ import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
 
 
-export function HostSessionTable({ data }: { data: Session[] }) {
+const DataEmptyPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>표시할 데이터가 없습니다.</p>
+    <p>새로운 {PROJECT_NAME} 세션을 생성해 보세요!</p>
+    <LinkButton
+      className={css({
+        padding: "0.5em 0.8em",
+      })}
+      href="/sessions/create"
+    >
+      새로 만들기
+    </LinkButton>
+  </div>
+);
+
+
+const LoadingPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>불러오는 중...</p>
+  </div>
+);
+
+
+const ErrorPlaceholder = (
+  <div className={css({
+    display: "flex",
+    padding: "1em",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "0.5em",
+  })}>
+    <p>오류가 발생하였습니다.</p>
+  </div>
+);
+
+
+export function HostSessionTable({data, status = null}: { data: Session[], status?: "loading" | "error" | null }) {
   const router = useRouter();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -89,25 +140,7 @@ export function HostSessionTable({ data }: { data: Session[] }) {
           };
         })}
         placeholder={
-          <div className={css({
-            display: "flex",
-            padding: "1em",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5em",
-          })}>
-            <p>표시할 데이터가 없습니다.</p>
-            <p>새로운 {PROJECT_NAME} 세션을 생성해 보세요!</p>
-            <LinkButton
-              className={css({
-                padding: "0.5em 0.8em",
-              })}
-              href="/sessions/create"
-            >
-              새로 만들기
-            </LinkButton>
-          </div>
+          status === null ? DataEmptyPlaceholder : (status === "loading" ? LoadingPlaceholder : ErrorPlaceholder)
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}

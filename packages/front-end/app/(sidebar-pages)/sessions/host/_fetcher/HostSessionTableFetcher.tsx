@@ -6,7 +6,7 @@ import { HostSessionTable } from "../_components/HostSessionTable";
 
 
 export default function HostSessionTableFetcher() {
-  const { data: response, isLoading } = useQuery<AxiosResponse<Session[]>>({
+  const { data: response, isLoading, isError } = useQuery<AxiosResponse<Session[]>>({
     queryKey: ["user", "sessions", "host"],
     queryFn: async () => {
       return await apiClient.get("/user/sessions", {
@@ -14,15 +14,21 @@ export default function HostSessionTableFetcher() {
           role: "host"
         },
       });
-    },
-    throwOnError: true,
+    }
   });
-  if (isLoading) {
-    return <h1>로딩...</h1>;
-  }
   const data = response?.data;
-  if (data)
-    return <HostSessionTable data={data} />;
-  else
-    return <h1>오류</h1>;
+  const status = (
+    isLoading
+    ?
+      "loading"
+      :
+      (
+        isError || !Array.isArray(data)
+        ?
+          "error"
+          :
+          null
+      )
+  );
+  return <HostSessionTable data={data || []} status={status} />
 }
