@@ -32,6 +32,9 @@ function openFileInNewTab(file: File): void {
     ));
     window.open(url, "_blank");
   };
+  reader.onerror = (event) => {
+    console.log(`Unable to load file: ${file.name}`);
+  }
   reader.readAsArrayBuffer(file);
 }
 
@@ -51,6 +54,8 @@ export default function FileUploadPreview({className, file}: PropType) {
         borderRadius: "0.5em",
         gap: "0.3em",
         alignItems: "center",
+        userSelect: "none",
+        cursor: "pointer",
         _hover: {
           backgroundColor: "gray.300",
         },
@@ -70,10 +75,14 @@ export default function FileUploadPreview({className, file}: PropType) {
       <div className={css({
         padding: "0 0.5em",
         width: "100%",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
         textAlign: "left",
       })}>
         <div className={css({
           fontSize: "1.1em",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
         })}>
           {file.name}
         </div>
