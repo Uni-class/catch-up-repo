@@ -8,7 +8,7 @@ import { CreateSessionDto, SessionResponseDto } from "@/schema/backend.schema";
 import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 import { ChangeEvent, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 interface PropType {
   sessionData: SessionResponseDto;

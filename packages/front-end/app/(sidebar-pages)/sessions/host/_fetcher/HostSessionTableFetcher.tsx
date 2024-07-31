@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session } from "@/schema/backend.schema";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { HostSessionTable } from "../_components/HostSessionTable";
 
 

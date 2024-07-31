@@ -1,6 +1,6 @@
 "use client";
 
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useQueries } from "@tanstack/react-query";
 import HostSession from "./_components/HostSession";
 import { SessionResponseDto, User } from "@/schema/backend.schema";

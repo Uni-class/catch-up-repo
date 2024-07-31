@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
+import FilePreview from "@/components/FileUploader/FilePreview";
 
 interface PropType {
   accept?: {
@@ -72,9 +73,7 @@ function StatusText({
     const lastModified = new Date(currentFile.lastModified);
     return (
       <div>
-        <Paragraph variant="body3">{currentFile.name}</Paragraph>
-        <Paragraph variant="body4">{`파일 용량: ${formatFileSize(currentFile.size)}`}</Paragraph>
-        <Paragraph variant="body4">{`최종 수정: ${format(lastModified, "yyyy-MM-dd")}`}</Paragraph>
+        <FilePreview file={currentFile} />
         <Paragraph variant="body2">눌러서 다시 선택</Paragraph>
       </div>
     );
@@ -82,7 +81,7 @@ function StatusText({
   return (
     isDragActive
       ?
-      <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+      <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
       :
       <div className={css({
         display: "flex",
@@ -104,14 +103,3 @@ function StatusText({
       </div>
   )
 }
-
-const formatFileSize = (size: number) => {
-  if (size < 1024) return `${size} bytes`;
-  const units = ["KB", "MB", "GB", "TB"];
-  let unitIndex = -1;
-  do {
-    size /= 1024;
-    unitIndex++;
-  } while (size >= 1024 && unitIndex < units.length - 1);
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
-};

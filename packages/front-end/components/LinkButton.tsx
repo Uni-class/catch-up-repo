@@ -8,7 +8,7 @@ export default function SidebarLink({className, children, href, target}: {classN
   const { queryObj,pathname } = useRouter();
 
   return (
-    <Link className={cx(className, css({
+    <Link className={cx(css({
       base: {
         padding: "0.8em",
         color: "#ffffff",
@@ -24,7 +24,7 @@ export default function SidebarLink({className, children, href, target}: {classN
           background: "orange.400",
         }
       }
-    }))} href={{pathname: href, query: queryObj}} target={target}>
+    }), className)} href={{pathname: href, query: queryObj}} target={target}>
       {children}
     </Link>
   );

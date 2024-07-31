@@ -6,7 +6,7 @@ import {
   Td,
   Th,
 } from "@/components/Table";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { CreateSessionDto, File } from "@/schema/backend.schema";

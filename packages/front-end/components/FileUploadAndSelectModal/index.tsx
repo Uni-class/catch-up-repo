@@ -15,7 +15,7 @@ import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import FileUploader from "@/components/FileUploader";
+import FileUploader from "@/components/FileUploader/FileUploader";
 import DriveFileUploadFetch from "./DriveFileUpload";
 
 
@@ -42,13 +42,16 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         height: "500px",
         backgroundColor: "#fff",
         borderRadius: "1rem",
-        padding: "1rem",
+        padding: "1em",
         display: "flex",
         flexDirection: "column",
       })}
     >
       <div
-        className={css({ display: "flex", justifyContent: "space-between" })}
+        className={css({
+          display: "flex",
+          justifyContent: "space-between",
+        })}
       >
         <Heading>파일 선택</Heading>
         <Button

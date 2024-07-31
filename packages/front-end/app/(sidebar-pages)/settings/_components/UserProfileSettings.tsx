@@ -1,4 +1,4 @@
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import UserProfileEdit from "@/app/(sidebar-pages)/settings/_components/UserProfileEdit";

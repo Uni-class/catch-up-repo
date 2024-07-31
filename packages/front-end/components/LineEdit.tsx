@@ -16,7 +16,7 @@ export default function LineEdit({className, placeholder, text, onChange}: PropT
             placeholder={placeholder}
             value={text}
             onChange={onChange}
-            className={cx(className, css({
+            className={cx(css({
                 padding: "0.5em 0.8em",
                 color: "#000000",
                 background: "#ededed",
@@ -29,7 +29,7 @@ export default function LineEdit({className, placeholder, text, onChange}: PropT
                 _focus: {
                     background: "#dcdcdc",
                 }
-            }))}
+            }), className)}
         />
     );
 };

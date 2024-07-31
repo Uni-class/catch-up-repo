@@ -4,7 +4,7 @@ import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
 import { ChangeEvent, FormEvent, useRef } from "react";
