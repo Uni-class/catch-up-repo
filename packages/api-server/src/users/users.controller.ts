@@ -93,10 +93,11 @@ export class UsersController {
     @Param('sessionId', ParseIntPipe) sessionId: number,
     @Body() body: UserSessionBodyType,
   ): Promise<UserSession> {
-    const newCreateUserSession = new CreateUserSessionDto();
-    newCreateUserSession.userId = userId;
-    newCreateUserSession.displayName = body.displayName;
-    newCreateUserSession.sessionId = sessionId;
+    const newCreateUserSession = new CreateUserSessionDto(
+      userId,
+      sessionId,
+      body.displayName,
+    );
     return await this.usersService.postUserSession(newCreateUserSession);
   }
 
@@ -110,10 +111,11 @@ export class UsersController {
     @Param('sessionId', ParseIntPipe) sessionId: number,
     @Body() body: UserSessionBodyType,
   ): Promise<UpdateResult> {
-    const newUpdateUserSession = new UpdateUserSessionDto();
-    newUpdateUserSession.userId = userId;
-    newUpdateUserSession.displayName = body.displayName;
-    newUpdateUserSession.sessionId = sessionId;
+    const newUpdateUserSession = new UpdateUserSessionDto(
+      userId,
+      sessionId,
+      body.displayName,
+    );
     const result: UpdateResult =
       await this.usersService.patchUserSession(newUpdateUserSession);
     return result;

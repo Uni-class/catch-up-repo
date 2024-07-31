@@ -82,7 +82,9 @@ export class UsersService {
         return userSession.session;
       }),
     );
-    return sessions;
+    return sessions.filter((session) => {
+      return session.hostId !== userId;
+    });
   }
 
   async postUserSession(
