@@ -8,6 +8,7 @@ import SidebarUser from "./SidebarUser";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
 import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
 
 import LayoutIcon from "@/public/icons/layout.svg";
@@ -50,9 +51,14 @@ export default function Sidebar() {
           <Image alt={PROJECT_NAME} src="/icon/logo.png" width={40} height={40}/>
           <Heading variant="h4">{PROJECT_NAME}</Heading>
         </div>
-        <Button onClick={() => router.push("/sessions/join")} className={css({
-          fontWeight: "bold",
-        })}>세션 접속</Button>
+        <LinkButton
+          className={css({
+            fontWeight: "bold",
+          })}
+          href="/sessions/join"
+        >
+          세션 생성
+        </LinkButton>
       </div>
       <Divider/>
       <SidebarGroup name="메뉴" className={css({

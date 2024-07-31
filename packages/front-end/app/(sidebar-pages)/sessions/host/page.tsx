@@ -1,18 +1,16 @@
 "use client";
 
-import { ErrorBoundary } from "react-error-boundary";
-import SessionHeader from "./_components/SessionHeader";
-import SessionTableFetch from "./_components/SessionTable";
+
+import { Heading } from "@/components/Text";
+import HostSessionTableFetcher from "./_fetcher/HostSessionTableFetcher";
 import Divider from "@/components/Divider";
 
 export default function Page() {
   return (
     <>
-      <SessionHeader />
+      <Heading>내가 주최한 세션</Heading>
       <Divider/>
-      <ErrorBoundary fallback={<h1>에러</h1>}>
-        <SessionTableFetch />
-      </ErrorBoundary>
+      <HostSessionTableFetcher />
     </>
   );
 }

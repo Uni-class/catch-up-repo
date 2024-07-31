@@ -1,4 +1,6 @@
 import { styled } from "@/styled-system/jsx";
+import { css, cx } from "@/styled-system/css";
+import { ReactNode } from "react";
 
 
 export const TableContainer = styled("table", {
@@ -6,9 +8,6 @@ export const TableContainer = styled("table", {
     borderCollapse: "collapse",
     border: "1px solid",
     borderColor: "gray.200",
-    borderRadius: "0.75rem",
-    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-    boxSizing: "border-box",
   },
   variants: {
     fullWidth: {
@@ -31,16 +30,35 @@ export const TableBody = styled("tbody", {
   base: {},
 });
 
-export const TableRow = styled("tr", {
-  base: {
-    borderBottom: "1px solid",
-    borderColor: "gray.300",
-  },
-});
+export function TableRow({ children, onClick }: { children: ReactNode, onClick?: () => void }) {
+  return (
+    <tr className={cx(
+      css({
+        borderBottom: "1px solid",
+        borderColor: "gray.300",
+      }),
+      css(
+        onClick
+        ?
+        {
+          cursor: "pointer",
+          _hover: {
+            backgroundColor: "gray.200",
+          },
+          _active: {
+            backgroundColor: "gray.300",
+          },
+        }
+        :
+        {}
+      )
+    )} onClick={onClick}>{children}</tr>
+  );
+};
 
 export const Th = styled("th", {
   base: {
-    padding: "1.5rem 16px 0.25rem 16px",
+    padding: "1em 0.8em",
     fontWeight: 600,
     minWidth: 0,
   },
@@ -64,7 +82,7 @@ export const Th = styled("th", {
 
 export const Td = styled("td", {
   base: {
-    paddingX: "16px",
+    padding: "0.4em 0.8em",
     minWidth: 0,
   },
   variants: {
@@ -81,13 +99,13 @@ export const Td = styled("td", {
     },
     size: {
       sm: {
-        paddingY: "0.5rem",
+        paddingY: "0.4rem",
       },
       md: {
-        paddingY: "0.75rem",
+        paddingY: "0.6rem",
       },
       lg: {
-        paddingY: "1.25rem",
+        paddingY: "1rem",
       },
     },
   },
