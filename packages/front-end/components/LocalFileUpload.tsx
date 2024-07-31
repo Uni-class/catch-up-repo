@@ -1,10 +1,13 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
+import { format } from "date-fns";
+import Link from "next/link";
+import { useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 
 interface PropType {
-  onDrop?: <T extends File>(
-    acceptedFiles: T[],
+  onDrop?: (
+    acceptedFiles: File[],
     fileRejections: FileRejection[],
     event: DropEvent
   ) => void;
@@ -15,11 +18,16 @@ export default function LocalFileUpload({
     console.log(acceptedFiles);
   },
 }: PropType) {
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: onDrop,
-    accept:{
-      'application/pdf': ['.pdf']
+    onDrop: (acceptedFiles, fileRejection, event) => {
+      onDrop(acceptedFiles, fileRejection, event);
+      setCurrentFile(acceptedFiles[0]);
     },
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    maxFiles: 1,
   });
   return (
     <div
@@ -46,12 +54,53 @@ export default function LocalFileUpload({
         })}
       >
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
-        ) : (
-          <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
-        )}
+        <FileInputStatus
+          isDragActive={isDragActive}
+          currentFile={currentFile}
+        />
       </div>
     </div>
   );
 }
+
+function FileInputStatus({
+  isDragActive,
+  currentFile,
+}: {
+  isDragActive: boolean;
+  currentFile: File | null;
+}) {
+
+  if (currentFile !== null) {
+    const lastModified = new Date(currentFile.lastModified)
+    return (
+      <div>
+        <Paragraph variant="body3">현재 파일: {currentFile.name}</Paragraph>
+        <Paragraph variant="body4">
+          용량: {formatFileSize(currentFile.size)}
+        </Paragraph>
+        <Paragraph variant="body4">
+          마지막 수정: {format(lastModified,"yyyy-MM-dd")}
+        </Paragraph>
+        <Paragraph variant="body2">다시 눌러 수정</Paragraph>
+
+      </div>
+    );
+  }
+  return isDragActive ? (
+    <Paragraph variant="body1">이곳에 드래그 & 드랍</Paragraph>
+  ) : (
+    <Paragraph variant="body1">내 장치에서 업로드</Paragraph>
+  );
+}
+
+const formatFileSize = (size: number) => {
+  if (size < 1024) return `${size} bytes`;
+  const units = ["KB", "MB", "GB", "TB"];
+  let unitIndex = -1;
+  do {
+    size /= 1024;
+    unitIndex++;
+  } while (size >= 1024 && unitIndex < units.length - 1);
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
+};
