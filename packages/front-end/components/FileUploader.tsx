@@ -1,6 +1,7 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
+import Button from "@/components/Button";
 
 interface PropType {
   onDrop?: <T extends File>(
@@ -46,15 +47,30 @@ export default function FileUploader({
         })}
       >
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <Paragraph variant="body1">여기로 파일을 끌어오세요.</Paragraph>
-        ) : (
-          <div>
-            <Paragraph variant="body1">여기로 파일을 끌어오세요.</Paragraph>
-            <Paragraph variant="body1">또는</Paragraph>
-            <Paragraph variant="body1">파일 선택하기</Paragraph>
-          </div>
-        )}
+        {
+          isDragActive
+            ?
+            <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+            :
+            <div className={css({
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              justifyContent: "center",
+              alignItems: "center",
+            })}>
+              <Paragraph variant="body2">여기로 파일을 끌어오세요.</Paragraph>
+              <Paragraph variant="body3">또는</Paragraph>
+              <Button
+                className={css({
+                  padding: "0.5em 0.8em",
+                  width: "fit-content",
+                })}
+              >
+                파일 선택하기
+              </Button>
+            </div>
+        }
       </div>
     </div>
   );

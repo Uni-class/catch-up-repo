@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import LocalFileUpload from "@/components/FileUploader";
+import FileUploader from "@/components/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
@@ -29,7 +29,7 @@ export default function FileUploadModal() {
           X
         </Button>
       </div>
-      <LocalFileUpload />
+      <FileUploader />
     </div>
   );
 }
