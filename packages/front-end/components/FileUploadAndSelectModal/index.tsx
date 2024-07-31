@@ -15,7 +15,7 @@ import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import LocalFileUpload from "../LocalFIleUpload";
+import FileUploader from "../FileUploader";
 import DriveFileUploadFetch from "./DriveFileUpload";
 
 
@@ -50,10 +50,10 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
       <div
         className={css({ display: "flex", justifyContent: "space-between" })}
       >
-        <Heading>강의 자료 업로드 및 수정</Heading>
+        <Heading>파일 선택</Heading>
         <Button
           onClick={() => {
-            overlay.close("file upload");
+            overlay.close("File Select");
           }}
         >
           X
@@ -72,7 +72,7 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <LocalFileUpload />
+        <FileUploader />
       ) : (
         <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
           <DriveFileUploadFetch />
