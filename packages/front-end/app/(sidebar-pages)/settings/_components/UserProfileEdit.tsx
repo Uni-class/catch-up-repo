@@ -4,24 +4,42 @@ import { css } from "@/styled-system/css";
 import Image from "next/image";
 import { useState } from "react";
 import LineEdit from "@/components/LineEdit";
+import { User } from "@/schema/backend.schema";
 
+interface PropType {
+  data: User;
+}
 
-export default function UserProfileEdit(data: { displayName: string, profileImageURL: string | null }) {
-  const [displayName, setDisplayName] = useState(data.displayName);
+export default function UserProfileEdit({ data }: PropType) {
+  const [displayName, setDisplayName] = useState(data.nickname);
 
   return (
-    <div className={css({
-      display: "flex",
-      flexDirection: "column",
-      gap: "1em",
-    })}>
-      <div className={css({
+    <form
+      className={css({
         display: "flex",
+        flexDirection: "column",
         gap: "1em",
-      })}>
-        <div>
-          <Paragraph>프로필 사진</Paragraph>
-          <Image src={data.profileImageURL || ""} alt="프로필 사진"/>
+      })}
+    >
+      <div
+        className={css({
+          display: "flex",
+          flexDirection:"column",
+          gap: "1em",
+        })}
+      >
+        <div className={css({display:"flex",gap:"1.5rem"})}>
+          <div>
+            <Paragraph>프로필 사진</Paragraph>
+          <Image
+            src={data.profileUrl || "/icon/icon-google.svg"}
+            alt="프로필 사진"
+            width={32}
+            height={32}
+            className={css({ borderRadius: "50%" })}
+          />  
+          </div>
+          <Button>수정하기</Button>
         </div>
         <div>
           <Paragraph>닉네임</Paragraph>
@@ -33,6 +51,6 @@ export default function UserProfileEdit(data: { displayName: string, profileImag
         </div>
       </div>
       <Button type="submit">저장하기</Button>
-    </div>
+    </form>
   );
 }
