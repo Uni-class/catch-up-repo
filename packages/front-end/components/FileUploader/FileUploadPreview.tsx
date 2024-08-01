@@ -5,7 +5,8 @@ import Button from "@/components/Button";
 import CloseIcon from "@/public/icons/close.svg";
 import DocumentIcon from "@/public/icons/document.svg";
 import PdfIcon from "@/public/icons/pdf.svg";
-import { ReactNode } from "react";
+import { apiClient } from "@/utils/axios";
+import { ReactNode, useState, useImperativeHandle, forwardRef } from "react";
 
 
 const FileIcons: {
@@ -44,16 +45,56 @@ interface PropType {
   className?: string;
   file: File;
   removeButtonClickHandler?: () => void;
+  uploadResultHandler?: (success: boolean) => void;
 }
 
-export default function FileUploadPreview({ className, file, removeButtonClickHandler }: PropType) {
+
+const FileUploadPreview = forwardRef(({ className, file, removeButtonClickHandler, uploadResultHandler }: PropType, ref) => {
+  const [status, setStatus] = useState<"ready" | "uploading" | "error" | "finished">("ready");
+  const [progress, setProgress] = useState(0);
+
+  const uploadFile = () => {
+    setStatus("uploading");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    apiClient.post("file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      onUploadProgress: async (event) => {
+        if (event.lengthComputable) {
+          setProgress((event.loaded / (event.total || event.loaded)) * 100);
+        }
+      }
+    })
+      .then(() => {
+        setProgress(100);
+        setStatus("finished");
+        if (uploadResultHandler)
+          uploadResultHandler(true);
+      })
+      .catch((error) => {
+        setStatus("error");
+        if (uploadResultHandler)
+          uploadResultHandler(false);
+      });
+  }
+
+  useImperativeHandle(ref, () => ({
+    uploadFile
+  }));
+
   return (
     <div
       className={cx(css({
+        position: "relative",
         display: "flex",
         padding: "0.5em 1em",
         backgroundColor: "gray.200",
         borderRadius: "0.5em",
+        overflow: "hidden",
         gap: "0.3em",
         alignItems: "center",
         userSelect: "none",
@@ -99,19 +140,54 @@ export default function FileUploadPreview({ className, file, removeButtonClickHa
           {formatByteSize(file.size)}
         </div>
       </div>
-      <Button
+      {
+        status === "ready"
+        ?
+          <Button
+            className={css({
+              padding: "0.1em",
+              borderRadius: "0.3em",
+            })}
+            onClick={(event) => {
+              event.stopPropagation();
+              if (removeButtonClickHandler)
+                removeButtonClickHandler();
+            }}
+          >
+            <CloseIcon width={"2em"} />
+          </Button>
+          :
+          null
+      }
+      <div
         className={css({
-          padding: "0.1em",
-          borderRadius: "0.3em",
+          position: "absolute",
+          bottom: "0",
+          left: "0",
+          height: "0.5em",
+          transition: "all 0.1s ease",
         })}
-        onClick={(event) => {
-          event.stopPropagation();
-          if (removeButtonClickHandler)
-            removeButtonClickHandler();
+        style={{
+          width: `${progress}%`,
+          backgroundColor: (
+            status === "uploading"
+            ?
+              "#fc7328"
+              :
+              (
+                status === "error"
+                ?
+                  "#e80000"
+                  :
+                  "#00c40a"
+              )
+          )
         }}
       >
-        <CloseIcon width={"2em"} />
-      </Button>
+      </div>
     </div>
   );
-};
+});
+
+FileUploadPreview.displayName = "FileUploadPreview";
+export default FileUploadPreview;

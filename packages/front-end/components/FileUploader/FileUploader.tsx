@@ -1,6 +1,6 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
 import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
@@ -9,14 +9,15 @@ import PlusIcon from "@/public/icons/plus.svg";
 import RepeatIcon from "@/public/icons/repeat.svg";
 
 
-export default function FileUploader({ selectedFiles, setSelectedFiles, accept, allowMultipleFiles = true }: {
+const FileUploader = forwardRef(({ selectedFiles, setSelectedFiles, accept, allowMultipleFiles = true, uploadFinishHandler }: {
   selectedFiles: File[]
   setSelectedFiles: Dispatch<SetStateAction<File[]>>
   accept?: {
     [name: string]: string[]
   }
   allowMultipleFiles?: boolean
-}) {
+  uploadFinishHandler?: () => void
+}, ref) => {
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
       if (allowMultipleFiles) {
@@ -28,6 +29,22 @@ export default function FileUploader({ selectedFiles, setSelectedFiles, accept, 
     },
     accept: accept
   });
+  const [uploadStarted, setUploadStarted] = useState(false);
+  const selectedFilesViewRef = useRef<{
+    uploadFiles: () => void;
+  }>();
+
+  const upload = () => {
+    if (selectedFilesViewRef.current) {
+      setUploadStarted(true);
+      selectedFilesViewRef.current.uploadFiles();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    upload
+  }));
+
   return (
     <div
       className={css({
@@ -39,7 +56,7 @@ export default function FileUploader({ selectedFiles, setSelectedFiles, accept, 
       })}
     >
       {
-        selectedFiles.length === 0
+        selectedFiles.length === 0 || uploadStarted
           ?
           null
           :
@@ -88,7 +105,18 @@ export default function FileUploader({ selectedFiles, setSelectedFiles, accept, 
           width: "100%",
           height: "100%",
         })}>
-          <SelectedFilesView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}/>
+          <div className={css({
+            padding: "0.2em",
+            width: "100%",
+            height: "100%",
+          })}>
+            <SelectedFilesView
+              ref={selectedFilesViewRef}
+              selectedFiles={selectedFiles}
+              setSelectedFiles={setSelectedFiles}
+              uploadFinishHandler={uploadFinishHandler}
+            />
+          </div>
           {
             selectedFiles.length === 0 || isDragActive
               ?
@@ -100,37 +128,88 @@ export default function FileUploader({ selectedFiles, setSelectedFiles, accept, 
       </div>
     </div>
   );
-}
+});
+FileUploader.displayName = "FileUploader";
+export default FileUploader;
 
-function SelectedFilesView({selectedFiles, setSelectedFiles}: {
+
+
+const SelectedFilesView = forwardRef(({ selectedFiles, setSelectedFiles, uploadFinishHandler }: {
   selectedFiles: File[]
   setSelectedFiles: Dispatch<SetStateAction<File[]>>
-}) {
+  uploadFinishHandler?: () => void
+}, ref) => {
+  const [status, setStatus] = useState<"ready" | "uploading" | "finished">("ready");
+  const [finishedCount, setFinishedCount] = useState(0);
+  const fileUploadPreviewRefs = useRef<{
+    uploadFile: () => void;
+  }[]>([]);
+
+  useEffect(() => {
+    if (status === "uploading" && finishedCount === selectedFiles.length) {
+      setStatus("finished");
+      if (uploadFinishHandler)
+        uploadFinishHandler();
+    }
+  }, [status, selectedFiles, uploadFinishHandler, finishedCount]);
+
+  const uploadFiles = () => {
+    setStatus("uploading");
+    fileUploadPreviewRefs.current.forEach(ref => {
+      if (ref && ref.uploadFile) {
+        ref.uploadFile();
+      }
+    });
+  };
+
+  useImperativeHandle(ref, () => ({
+    uploadFiles
+  }));
+
   return (
     <div
       className={css({
-        display: "flex",
-        padding: "0.3em 0.5em",
         width: "100%",
         height: "100%",
-        flexDirection: "column",
-        gap: "0.5em",
         overflowY: "auto",
       })}
-      onClick={(event) => event.stopPropagation()}
     >
-      {
-        selectedFiles.map((file, index) => {
-          return (
-            <FileUploadPreview key={index} file={file} removeButtonClickHandler={
-              () => setSelectedFiles(selectedFiles.toSpliced(index, 1))
-            }/>
-          );
-        })
-      }
+      <div
+        className={css({
+          display: "flex",
+          padding: "0.3em",
+          width: "100%",
+          flexDirection: "column",
+          gap: "0.5em",
+        })}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {
+          selectedFiles.map((file, index) => {
+            return (
+              <FileUploadPreview
+                key={index}
+                ref={(element: { uploadFile: () => void }) => {
+                  fileUploadPreviewRefs.current[index] = element;
+                }}
+                file={file}
+                removeButtonClickHandler={
+                  () => setSelectedFiles(selectedFiles.toSpliced(index, 1))
+                }
+                uploadResultHandler={
+                  (success: boolean) => {
+                    setFinishedCount((count) => count + 1);
+                  }
+                }
+              />
+            );
+          })
+        }
+      </div>
     </div>
   );
-}
+});
+SelectedFilesView.displayName = "SelectedFilesView";
 
 
 function FileDropArea({isDragActive}: { isDragActive: boolean }) {

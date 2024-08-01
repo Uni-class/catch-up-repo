@@ -3,11 +3,16 @@ import FileUploader from "@/components/FileUploader/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
-import {useState} from "react";
+import { useState, useRef } from "react";
 
 
 export default function FileUploadModal() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadStarted, setUploadStarted] = useState(false);
+  const [uploadFinished, setUploadFinished] = useState(false);
+  const fileUploaderRef = useRef<{
+    upload: () => void;
+  }>();
 
   return (
     <div
@@ -26,11 +31,13 @@ export default function FileUploadModal() {
     >
       <Heading>파일 업로드</Heading>
       <FileUploader
+        ref={fileUploaderRef}
         accept={{
           "application/pdf": [".pdf"],
         }}
         selectedFiles={selectedFiles}
         setSelectedFiles={setSelectedFiles}
+        uploadFinishHandler={() => setUploadFinished(true)}
       />
       <div className={css({
         display: "flex",
@@ -41,7 +48,13 @@ export default function FileUploadModal() {
           className={css({
             padding: "0.5em 1em",
           })}
-          disabled={selectedFiles.length === 0}
+          disabled={selectedFiles.length === 0 || uploadStarted}
+          onClick={() => {
+            if (fileUploaderRef.current) {
+              setUploadStarted(true);
+              fileUploaderRef.current.upload();
+            }
+          }}
         >
           업로드
         </Button>
@@ -50,11 +63,18 @@ export default function FileUploadModal() {
             padding: "0.5em 1em",
           })}
           preset={"secondary"}
+          disabled={uploadStarted && !uploadFinished}
           onClick={() => {
             overlay.close("File-Upload");
           }}
         >
-          취소
+          {
+            uploadFinished
+            ?
+              "닫기"
+              :
+              "취소"
+          }
         </Button>
       </div>
     </div>
