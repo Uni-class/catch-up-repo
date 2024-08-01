@@ -45,7 +45,6 @@ export default function UserProfileEdit({ data }: PropType) {
           <Paragraph>닉네임</Paragraph>
           <LineEdit
             placeholder="닉네임을 입력해 주세요."
-            text={displayName}
             onChange={(event) => setDisplayName(event.target.value)}
           />
         </div>
