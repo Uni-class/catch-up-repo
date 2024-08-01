@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   ParseFilePipe,
   FileTypeValidator,
+  UploadedFiles,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { UpdateFileDto } from './dto/update-file.dto';
@@ -24,7 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 import { File } from './entities/file.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -41,26 +42,29 @@ export class FilesController {
     schema: {
       type: 'object',
       properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
         },
       },
     },
   })
   @ApiResponse({ type: FileUploadResponseDto })
   @UseGuards(JwtGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('files'))
   async uploadFile(
     @UserId(ParseIntPipe) userId: number,
-    @UploadedFile(
+    @UploadedFiles(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: 'pdf' })],
       }),
     )
-    file: Express.Multer.File,
+    files: Express.Multer.File[],
   ): Promise<FileUploadResponseDto> {
-    return await this.filesService.uploadFile(userId, file);
+    return await this.filesService.uploadFile(userId, files);
   }
 
   @Get(':fileId')
