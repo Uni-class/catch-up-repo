@@ -12,6 +12,7 @@ import { Session } from '../sessions/entities/session.entity';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
+import { File } from '../files/entities/file.entity';
 
 @Injectable()
 export class UsersService {
@@ -138,8 +139,11 @@ export class UsersService {
       where: { userId },
       relations: ['files'],
     });
-    const files = await user.files;
-    return files;
+    const files: File[] = await user.files;
+    files.sort((a, b) => {
+      return b.fileId - a.fileId;
+    });
+    return files.slice(0, 10);
   }
 
   async deletdeleteRefreshToken(userId: number) {
