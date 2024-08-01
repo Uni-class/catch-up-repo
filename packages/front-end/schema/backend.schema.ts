@@ -601,6 +601,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags file
+     * @name FilesControllerUploadFiles
+     * @request POST:/file/many
+     * @secure
+     */
+    filesControllerUploadFiles: (
+      data: {
+        files?: File[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, FileUploadResponseDto>({
+        path: `/file/many`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags file
      * @name FilesControllerUploadFile
      * @request POST:/file
      * @secure
@@ -608,7 +631,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     filesControllerUploadFile: (
       data: {
         /** @format binary */
-        file?: File;
+        files?: File;
       },
       params: RequestParams = {},
     ) =>

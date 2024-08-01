@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   ParseFilePipe,
   FileTypeValidator,
+  UploadedFiles,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { UpdateFileDto } from './dto/update-file.dto';
@@ -24,7 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { UserId } from '../users/decorators/user-id.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 import { File } from './entities/file.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -34,6 +35,37 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 @Controller('file')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
+
+  @Post('many')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({ type: FileUploadResponseDto })
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FilesInterceptor('files'))
+  async uploadFiles(
+    @UserId(ParseIntPipe) userId: number,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: 'pdf' })],
+      }),
+    )
+    files: Express.Multer.File[],
+  ): Promise<FileUploadResponseDto> {
+    return await this.filesService.uploadFile(userId, files);
+  }
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -50,7 +82,7 @@ export class FilesController {
   })
   @ApiResponse({ type: FileUploadResponseDto })
   @UseGuards(JwtGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('file'))
   async uploadFile(
     @UserId(ParseIntPipe) userId: number,
     @UploadedFile(
@@ -60,7 +92,7 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ): Promise<FileUploadResponseDto> {
-    return await this.filesService.uploadFile(userId, file);
+    return await this.filesService.uploadFile(userId, [file]);
   }
 
   @Get(':fileId')
