@@ -92,7 +92,8 @@ export function FileTable({
         })
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user files"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "files"] });
+      queryClient.refetchQueries({queryKey:["user","files"]})
     },
     onError: (e) => {
       console.error(e);
