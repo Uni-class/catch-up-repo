@@ -3,16 +3,19 @@ import FileUploader from "@/components/FileUploader/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef, SetStateAction, Dispatch } from "react";
 
 
-export default function FileUploadModal() {
+export default function FileUploadModal({ setClosingBlocked }: { setClosingBlocked: Dispatch<SetStateAction<boolean>> }) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [uploadStarted, setUploadStarted] = useState(false);
-  const [uploadFinished, setUploadFinished] = useState(false);
+  const [status, setStatus] = useState<"ready" | "uploading" | "finished">("ready");
   const fileUploaderRef = useRef<{
     upload: () => void;
   }>();
+
+  useEffect(() => {
+    setClosingBlocked(status === "uploading");
+  }, [status]);
 
   return (
     <div
@@ -37,7 +40,7 @@ export default function FileUploadModal() {
         }}
         selectedFiles={selectedFiles}
         setSelectedFiles={setSelectedFiles}
-        uploadFinishHandler={() => setUploadFinished(true)}
+        uploadFinishHandler={() => setStatus("finished")}
       />
       <div className={css({
         display: "flex",
@@ -48,10 +51,10 @@ export default function FileUploadModal() {
           className={css({
             padding: "0.5em 1em",
           })}
-          disabled={selectedFiles.length === 0 || uploadStarted}
+          disabled={selectedFiles.length === 0 || status !== "ready"}
           onClick={() => {
             if (fileUploaderRef.current) {
-              setUploadStarted(true);
+              setStatus("uploading");
               fileUploaderRef.current.upload();
             }
           }}
@@ -63,13 +66,13 @@ export default function FileUploadModal() {
             padding: "0.5em 1em",
           })}
           preset={"secondary"}
-          disabled={uploadStarted && !uploadFinished}
+          disabled={status === "uploading"}
           onClick={() => {
             overlay.close("File-Upload");
           }}
         >
           {
-            uploadFinished
+            status === "finished"
             ?
               "닫기"
               :

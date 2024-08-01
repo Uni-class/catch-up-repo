@@ -1,7 +1,7 @@
 "use client";
 
 import { css } from "@/styled-system/css";
-import { ReactNode, useEffect } from "react";
+import {ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement} from "react";
 
 interface PropType {
   children: ReactNode;
@@ -11,24 +11,29 @@ interface PropType {
 
 export default function ModalContainer({
   children,
-  onClose = () => {},
+  onClose,
   isOpen = false,
 }: PropType) {
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
 
+  const [closingBlocked, setClosingBlocked] = useState(false);
+
+  const closeWindow = () => {
+    if (!closingBlocked && onClose)
+      onClose();
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeWindow();
+      }
+    };
+    document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, []);
-  const handleBackdropClick = () => {
-    onClose();
-  };
+  }, [closeWindow]);
+
   return (
     <>
       {isOpen && (
@@ -46,14 +51,23 @@ export default function ModalContainer({
             justifyContent: "center",
             alignItems: "center",
           })}
-          onClick={handleBackdropClick}
+          onClick={closeWindow}
         >
           <div
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            {children}
+            {
+              Children.map(children, (child) => {
+                if (isValidElement(child)) {
+                  return cloneElement(child as ReactElement, {
+                    setClosingBlocked
+                  });
+                }
+                return child;
+              })
+            }
           </div>
         </dialog>
       )}
