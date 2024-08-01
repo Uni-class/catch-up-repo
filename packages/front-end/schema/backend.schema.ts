@@ -535,10 +535,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/user/files
      * @secure
      */
-    usersControllerGetUserFiles: (params: RequestParams = {}) =>
-      this.request<any, File>({
+    usersControllerGetUserFiles: (
+      query: {
+        last: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, File[]>({
         path: `/user/files`,
         method: 'GET',
+        query: query,
         secure: true,
         ...params,
       }),
@@ -631,7 +637,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     filesControllerUploadFile: (
       data: {
         /** @format binary */
-        files?: File;
+        file?: File;
       },
       params: RequestParams = {},
     ) =>
