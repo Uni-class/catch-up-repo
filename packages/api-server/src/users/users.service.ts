@@ -12,6 +12,7 @@ import { Session } from '../sessions/entities/session.entity';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
+import { File } from '../files/entities/file.entity';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +23,8 @@ export class UsersService {
     private readonly sessionRepository: Repository<Session>,
     @InjectRepository(UserSession)
     private readonly userSessionRepository: Repository<UserSession>,
+    @InjectRepository(File)
+    private readonly fileRepository: Repository<File>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newUser = this.userRepository.create(createUserDto);
@@ -133,12 +136,13 @@ export class UsersService {
     return await this.userSessionRepository.softRemove(userSession);
   }
 
-  async getUserFiles(userId: number) {
-    const user: User = await this.userRepository.findOne({
-      where: { userId },
-      relations: ['files'],
+  async getUserFiles(userId: number, last: number = 0): Promise<File[]> {
+    const files: File[] = await this.fileRepository.find({
+      where: { ownerId: userId },
+      order: { createdAt: 'DESC' },
+      skip: 10 * last,
+      take: 10,
     });
-    const files = await user.files;
     return files;
   }
 

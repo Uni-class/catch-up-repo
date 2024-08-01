@@ -44,6 +44,7 @@ import { File } from '../files/entities/file.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from '../files/files.service';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
+import { GetFilesQueryDto } from './dto/get-files-query.dto';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -179,10 +180,14 @@ export class UsersController {
   }
 
   @Get('files')
-  @ApiResponse({ type: File })
+  @ApiQuery({ name: 'last', type: Number })
+  @ApiResponse({ type: [File] })
   @UseGuards(JwtGuard)
-  async getUserFiles(@UserId(ParseIntPipe) userId: number) {
-    const files = await this.usersService.getUserFiles(userId);
+  async getUserFiles(
+    @UserId(ParseIntPipe) userId: number,
+    @Query() { last }: GetFilesQueryDto,
+  ): Promise<File[]> {
+    const files: File[] = await this.usersService.getUserFiles(userId, last);
     return files;
   }
 }
