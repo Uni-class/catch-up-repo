@@ -70,7 +70,7 @@ export class FilesService {
   }
 
   async s3Upload(userId: number, file: Express.Multer.File) {
-    const fileName: string = Buffer.from(file.originalname).toString('utf8');
+    const fileName: string = Buffer.from(file.originalname, 'latin1').toString('utf8').normalize('NFC');
     const key: string = `${Date.now().toString()}-${fileName}`;
     const param = {
       Key: key,
