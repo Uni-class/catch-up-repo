@@ -1,10 +1,12 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { Dispatch, SetStateAction, useState } from "react";
-import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
 import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
+import PlusIcon from "@/public/icons/plus.svg";
+import RepeatIcon from "@/public/icons/repeat.svg";
 
 
 export default function FileUploader({ accept, allowMultipleFiles = true }: {
@@ -42,13 +44,28 @@ export default function FileUploader({ accept, allowMultipleFiles = true }: {
           :
           <Button
             className={css({
-              display: "block",
+              display: "flex",
               margin: "0 0.5em 0 auto",
-              padding: "0.5em 1em",
+              padding: "0.5em 0.7em",
+              gap: "0.3em",
+              justifyContent: "center",
+              alignItems: "center",
             })}
             onClick={open}
           >
-            {allowMultipleFiles ? "파일 추가하기" : "파일 변경하기"}
+            {
+              allowMultipleFiles
+                ?
+                <>
+                  <PlusIcon width={"1.5em"} />
+                  <p>파일 추가하기</p>
+                </>
+                :
+                <>
+                  <RepeatIcon width={"1.5em"} />
+                  <p>파일 변경하기</p>
+                </>
+            }
           </Button>
       }
       <input {...getInputProps()} />
@@ -118,7 +135,7 @@ function SelectedFilesView({selectedFiles, setSelectedFiles}: {
 function FileDropArea({isDragActive}: { isDragActive: boolean }) {
   return (
     <div
-        className={css({
+      className={css({
         position: "absolute",
         top: "0",
         left: "0",
@@ -134,6 +151,7 @@ function FileDropArea({isDragActive}: { isDragActive: boolean }) {
         border: "1px dashed #ccc",
         borderRadius: "0.5em",
         cursor: "pointer",
+        userSelect: "none",
       })}
     >
       {
