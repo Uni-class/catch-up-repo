@@ -23,6 +23,8 @@ export class UsersService {
     private readonly sessionRepository: Repository<Session>,
     @InjectRepository(UserSession)
     private readonly userSessionRepository: Repository<UserSession>,
+    @InjectRepository(File)
+    private readonly fileRepository: Repository<File>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newUser = this.userRepository.create(createUserDto);
@@ -134,16 +136,14 @@ export class UsersService {
     return await this.userSessionRepository.softRemove(userSession);
   }
 
-  async getUserFiles(userId: number, last: number = 0) {
-    const user: User = await this.userRepository.findOne({
-      where: { userId },
-      relations: ['files'],
+  async getUserFiles(userId: number, last: number = 0): Promise<File[]> {
+    const files: File[] = await this.fileRepository.find({
+      where: { ownerId: userId },
+      order: { createdAt: 'DESC' },
+      skip: 10 * last,
+      take: 10,
     });
-    const files: File[] = await user.files;
-    files.sort((a, b) => {
-      return b.fileId - a.fileId;
-    });
-    return files.slice(10 * last, 10 * last + 10);
+    return files;
   }
 
   async deletdeleteRefreshToken(userId: number) {
