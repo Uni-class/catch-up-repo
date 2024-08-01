@@ -7,29 +7,15 @@ import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
 
 
-interface PropType {
+export default function FileUploader({ accept, allowMultipleFiles = true }: {
   accept?: {
     [name: string]: string[];
   };
-  onDrop?: <T extends File>(
-    acceptedFiles: T[],
-    fileRejections: FileRejection[],
-    event: DropEvent
-  ) => void;
   allowMultipleFiles?: boolean;
-}
-
-export default function FileUploader({
-  accept,
-  onDrop = (acceptedFiles) => {
-    console.log(acceptedFiles);
-  },
-  allowMultipleFiles = true
-}: PropType) {
+}) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
-      onDrop(acceptedFiles, fileRejections, event);
       if (allowMultipleFiles) {
         setSelectedFiles([...selectedFiles, ...acceptedFiles]);
       }
@@ -62,7 +48,7 @@ export default function FileUploader({
             })}
             onClick={open}
           >
-            파일 추가하기
+            {allowMultipleFiles ? "파일 추가하기" : "파일 변경하기"}
           </Button>
       }
       <input {...getInputProps()} />
