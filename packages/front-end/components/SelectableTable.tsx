@@ -26,7 +26,7 @@ export default function SelectableTable({ head, body, placeholder, selectedItems
         <TableRow>
           <Th>
             <Checkbox
-              checked={body.length === selectedItems.length}
+              checked={body.length === selectedItems.length && selectedItems.length !== 0}
               onChange={() => {
                 if (body.length === selectedItems.length) {
                   setSelectedItems([]);
