@@ -39,7 +39,7 @@ export default function FileUploader({
         },
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user files"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "files"] });
     },
     onError: (e) => {
       console.error(e);
@@ -52,7 +52,10 @@ export default function FileUploader({
       alert("파일을 선택해라");
       return;
     }
-    formData.append("file", currentFile);
+    formData.append("file",currentFile,Buffer.from(currentFile.name).toString("utf-8"));
+    for (const pair of formData.entries()) {
+      console.log(pair[0],pair[1]);
+    }
     fileMutate.mutate(formData);
   };
   return (
