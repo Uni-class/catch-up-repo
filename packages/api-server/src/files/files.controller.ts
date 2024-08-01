@@ -73,7 +73,7 @@ export class FilesController {
     schema: {
       type: 'object',
       properties: {
-        files: {
+        file: {
           type: 'string',
           format: 'binary',
         },
