@@ -16,7 +16,7 @@ import { CreateSessionDto } from "@/schema/backend.schema";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import FileUploader from "@/components/FileUploader";
-import DriveFileUploadFetch from "./DriveFileUpload";
+import DriveFileUploadFetch from "./DriveFileSelect";
 
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
