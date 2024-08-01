@@ -39,7 +39,7 @@ export default function FileUploader({
         },
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user files"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "files"] });
     },
     onError: (e) => {
       console.error(e);
