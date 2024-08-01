@@ -8,7 +8,7 @@ import { useState } from "react";
 import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 const DataEmptyPlaceholder = (
   <div
