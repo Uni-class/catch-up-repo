@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 interface PropType {
   data: User;

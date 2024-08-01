@@ -9,7 +9,7 @@ import Image from "next/image";
 import { User } from "@/schema/backend.schema";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 export default function SidebarUserFetch() {
   const { data: response, isLoading } = useQuery<AxiosResponse<User>>({
