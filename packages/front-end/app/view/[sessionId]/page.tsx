@@ -1,13 +1,11 @@
 "use client";
 
-import "./_util/pdfWorkerPolyfill";
-import { pdfjs } from "react-pdf";
+import PDFViewer from "./_components/PDFViewer";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
-export default function Page() {
-  return <>lkj</>;
+export default function _Page() {
+
+  return (
+    <PDFViewer/>
+  );
 }
