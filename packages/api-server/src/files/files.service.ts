@@ -86,7 +86,7 @@ export class FilesService {
       );
     return {
       ownerId: userId,
-      name: file.originalname,
+      name: Buffer.from(file.originalname, 'latin1').toString('utf8'),
       url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
   }
