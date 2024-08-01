@@ -58,17 +58,22 @@ export class FilesService {
 
   async uploadFile(
     userId: number,
-    file: Express.Multer.File,
+    files: Express.Multer.File[],
   ): Promise<FileUploadResponseDto> {
-    if (!file) throw new BadRequestException(`File not exists`);
-    const fileDto: CreateFileDto = await this.s3Upload(userId, file);
-    const newFile: File = this.fileRepository.create(fileDto);
-    await this.fileRepository.save(newFile);
+    if (!files) throw new BadRequestException(`File not exists`);
+    for (const file of files) {
+      const fileDto: CreateFileDto = await this.s3Upload(userId, file);
+      const newFile: File = this.fileRepository.create(fileDto);
+      await this.fileRepository.save(newFile);
+    }
     return new FileUploadResponseDto(true);
   }
 
   async s3Upload(userId: number, file: Express.Multer.File) {
-    const key: string = `${Date.now().toString()}-${file.originalname}`;
+    const fileName: string = Buffer.from(file.originalname, 'latin1')
+      .toString('utf8')
+      .normalize('NFC');
+    const key: string = `${Date.now().toString()}-${fileName}`;
     const param = {
       Key: key,
       Body: file.buffer,
@@ -86,7 +91,7 @@ export class FilesService {
       );
     return {
       ownerId: userId,
-      name: file.originalname,
+      name: fileName,
       url: this.configService.get<string>('S3_INSTANCE_URL') + key,
     };
   }

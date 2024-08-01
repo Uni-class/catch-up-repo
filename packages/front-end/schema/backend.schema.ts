@@ -24,13 +24,6 @@ export interface User {
   deletedAt: string;
 }
 
-export interface UpdateUserDto {
-  nickname?: string;
-  email?: string;
-  profileUrl?: string;
-  refreshToken?: string;
-}
-
 export type UpdateResult = object;
 
 export interface Session {
@@ -426,13 +419,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/user/profile
      * @secure
      */
-    usersControllerUpdateUserProfile: (data: UpdateUserDto, params: RequestParams = {}) =>
+    usersControllerUpdateUserProfile: (
+      data: {
+        nickname?: string | null;
+        email?: string | null;
+        /** @format binary */
+        profileImage?: File;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<any, UpdateResult>({
         path: `/user/profile`,
         method: 'PATCH',
         body: data,
         secure: true,
-        type: ContentType.Json,
+        type: ContentType.FormData,
         ...params,
       }),
 
@@ -600,6 +601,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags file
+     * @name FilesControllerUploadFiles
+     * @request POST:/file/many
+     * @secure
+     */
+    filesControllerUploadFiles: (
+      data: {
+        files?: File[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, FileUploadResponseDto>({
+        path: `/file/many`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags file
      * @name FilesControllerUploadFile
      * @request POST:/file
      * @secure
@@ -607,7 +631,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     filesControllerUploadFile: (
       data: {
         /** @format binary */
-        file?: File;
+        files?: File;
       },
       params: RequestParams = {},
     ) =>

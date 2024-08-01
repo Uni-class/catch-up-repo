@@ -7,7 +7,8 @@ import SelectableTable from "@/components/SelectableTable";
 import { overlay } from "overlay-kit";
 import ModalContainer from "@/components/ModalContainer";
 import FileUploadModal from "@/app/(sidebar-pages)/files/_components/FileUploadModal";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "@/util/axios";
 
 const showFileUploadModal = () => {
   overlay.open(
@@ -20,16 +21,17 @@ const showFileUploadModal = () => {
   );
 };
 
-
 const DataEmptyPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>표시할 데이터가 없습니다.</p>
     <p>새로운 파일을 업로드해 보세요!</p>
     <Button
@@ -43,49 +45,76 @@ const DataEmptyPlaceholder = (
   </div>
 );
 
-
 const LoadingPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>불러오는 중...</p>
   </div>
 );
 
-
 const ErrorPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>오류가 발생하였습니다.</p>
   </div>
 );
 
-
-export function FileTable({data, status = null}: { data: File[], status?: "loading" | "error" | null }) {
+export function FileTable({
+  data,
+  status = null,
+}: {
+  data: File[];
+  status?: "loading" | "error" | null;
+}) {
+  const queryClient = useQueryClient();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const fileMutate = useMutation({
+    mutationFn: async (selectedItems: number[]) =>
+      Promise.all(
+        selectedItems.map(async (e) => {
+          await apiClient.delete(`/file/${e}`);
+        })
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "files"] });
+      queryClient.refetchQueries({queryKey:["user","files"]})
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
 
   return (
-    <div className={css({
-      display: "flex",
-      flexDirection: "column",
-      gap: "0.6em",
-    })}>
-      <div className={css({
+    <div
+      className={css({
         display: "flex",
-        gap: "1em",
-        justifyContent: "flex-end",
-      })}>
+        flexDirection: "column",
+        gap: "0.6em",
+      })}
+    >
+      <div
+        className={css({
+          display: "flex",
+          gap: "1em",
+          justifyContent: "flex-end",
+        })}
+      >
         <Button
           className={css({
             padding: "0.5em 0.8em",
@@ -96,12 +125,13 @@ export function FileTable({data, status = null}: { data: File[], status?: "loadi
         </Button>
         <Button
           className={css({
-            padding: "0.5em 0.8em"
+            padding: "0.5em 0.8em",
           })}
           disabled={selectedItems.length === 0}
           onClick={() => {
             console.log(`Delete Button Clicked`);
             console.log(selectedItems);
+            fileMutate.mutate(selectedItems);
             setSelectedItems([]);
           }}
         >
@@ -112,24 +142,30 @@ export function FileTable({data, status = null}: { data: File[], status?: "loadi
         head={[
           {
             id: 0,
-            value: "이름"
+            value: "이름",
           },
           {
             id: 1,
-            value: "업로드 시간"
-          }
+            value: "업로드 시간",
+          },
         ]}
         body={data.map((item) => {
           return {
             id: item.fileId,
             values: [
               <div key={0}>{item.name}</div>,
-              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>
-            ]
+              <div key={1}>
+                {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
+              </div>,
+            ],
           };
         })}
         placeholder={
-          status === null ? DataEmptyPlaceholder : (status === "loading" ? LoadingPlaceholder : ErrorPlaceholder)
+          status === null
+            ? DataEmptyPlaceholder
+            : status === "loading"
+              ? LoadingPlaceholder
+              : ErrorPlaceholder
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}

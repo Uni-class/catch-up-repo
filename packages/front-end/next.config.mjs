@@ -4,17 +4,20 @@ const nextConfig = {
     externalDir: true,
   },
   plugins: {
-    '@pandacss/dev/postcss': {},
+    "@pandacss/dev/postcss": {},
   },
-  webpack: config => {
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
     config.module.rules.push({
       test: /\.svg$/,
-      use: [{
-        loader: "@svgr/webpack",
-        options: {
-          dimensions: false
-        }
-      }],
+      use: [
+        {
+          loader: "@svgr/webpack",
+          options: {
+            dimensions: false,
+          },
+        },
+      ],
     });
 
     return config;
