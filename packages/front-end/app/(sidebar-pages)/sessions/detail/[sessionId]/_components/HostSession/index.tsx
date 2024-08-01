@@ -8,7 +8,7 @@ import { CreateSessionDto, SessionResponseDto } from "@/schema/backend.schema";
 import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 import { ChangeEvent, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 interface PropType {
   sessionData: SessionResponseDto;
@@ -34,7 +34,7 @@ export default function HostSession({ sessionData }: PropType) {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File Select" }
+      { overlayId: "File-Select" }
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

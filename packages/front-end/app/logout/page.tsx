@@ -1,7 +1,7 @@
 "use client";
 
 import { css } from "@/styled-system/css";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useEffect } from "react";
 import { useRouter } from "@/hook/useRouter";
 

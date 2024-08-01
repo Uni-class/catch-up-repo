@@ -15,7 +15,7 @@ import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import FileUploader from "@/components/FileUploader";
+import FileUploader from "@/components/FileUploader/FileUploader";
 import DriveFileUploadFetch from "./DriveFileSelect";
 
 
@@ -28,6 +28,7 @@ interface PropType {
 
 export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { reset } = useQueryErrorResetBoundary();
   const [_currentFormData, setCurrentFormData] = useAtom<
     MutableRefObject<CreateSessionDto>
@@ -42,18 +43,21 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         height: "500px",
         backgroundColor: "#fff",
         borderRadius: "1rem",
-        padding: "1rem",
+        padding: "1em",
         display: "flex",
         flexDirection: "column",
       })}
     >
       <div
-        className={css({ display: "flex", justifyContent: "space-between" })}
+        className={css({
+          display: "flex",
+          justifyContent: "space-between",
+        })}
       >
         <Heading>파일 선택</Heading>
         <Button
           onClick={() => {
-            overlay.close("File Select");
+            overlay.close("File-Select");
           }}
         >
           X
@@ -72,7 +76,13 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <FileUploader />
+        <FileUploader
+          accept={{
+            "application/pdf": [".pdf"],
+          }}
+          selectedFiles={selectedFiles}
+          setSelectedFiles={setSelectedFiles}
+        />
       ) : (
         <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
           <DriveFileUploadFetch />

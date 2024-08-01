@@ -18,11 +18,11 @@ export default function Checkbox({className, checked, onChange, onClick, disable
       onChange={onChange}
       onClick={onClick}
       disabled={disabled}
-      className={cx(className, css({
+      className={cx(css({
         display: "block",
         width: "1.3em",
         height: "1.3em",
-      }))}
+      }), className)}
     />
   );
 };

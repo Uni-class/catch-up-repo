@@ -6,7 +6,7 @@ import {
   Td,
   Th,
 } from "@/components/Table";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { CreateSessionDto, File } from "@/schema/backend.schema";
@@ -16,6 +16,7 @@ import { overlay } from "overlay-kit";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import { MutableRefObject } from "react";
+
 
 export default function DriveFileUploadFetch() {
   const { data: fileRes, isLoading } = useQuery<AxiosResponse<File[]>>({
@@ -54,7 +55,7 @@ function Row({ file }: { file: File }) {
     useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataRefAtom);
   const handleRowButtonClick = () => {
     currentFormDataRef.current.sessionFileIds = [file.fileId];
-    overlay.close("File Select");
+    overlay.close("File-Select");
   };
   return (
     <TableRow>

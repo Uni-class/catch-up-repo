@@ -1,6 +1,5 @@
 import { css, cx } from "@/styled-system/css";
 import {
-  ChangeEventHandler,
   DetailedHTMLProps,
   InputHTMLAttributes,
 } from "react";

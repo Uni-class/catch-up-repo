@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { File } from "@/schema/backend.schema";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 import { FileTable } from "../_components/FileTable";
 
 

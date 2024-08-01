@@ -8,7 +8,7 @@ import { overlay } from "overlay-kit";
 import ModalContainer from "@/components/ModalContainer";
 import FileUploadModal from "@/app/(sidebar-pages)/files/_components/FileUploadModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/util/axios";
+import { apiClient } from "@/utils/axios";
 
 const showFileUploadModal = () => {
   overlay.open(
@@ -17,7 +17,7 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File Upload" }
+    { overlayId: "File-Upload" }
   );
 };
 
