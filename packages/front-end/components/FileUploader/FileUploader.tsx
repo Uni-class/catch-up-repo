@@ -27,7 +27,7 @@ export default function FileUploader({
   allowMultipleFiles = true
 }: PropType) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
       onDrop(acceptedFiles, fileRejections, event);
       if (allowMultipleFiles) {
@@ -42,23 +42,43 @@ export default function FileUploader({
   return (
     <div
       className={css({
+        display: "flex",
+        flexDirection: "column",
         height: "100%",
-        border: "1px dashed #ccc",
-        borderRadius: "0.5em",
         overflow: "hidden",
+        gap: "0.5em",
       })}
     >
+      {
+        selectedFiles.length === 0
+          ?
+          null
+          :
+          <Button
+            className={css({
+              display: "block",
+              margin: "0 0.5em 0 auto",
+              padding: "0.5em 1em",
+            })}
+            onClick={open}
+          >
+            파일 추가하기
+          </Button>
+      }
+      <input {...getInputProps()} />
       <div
         {...getRootProps()}
         className={css({
           display: "flex",
           height: "100%",
+          flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
+          gap: "0.5em",
+          overflow: "hidden",
         })}
       >
-        <input {...getInputProps()} />
         <div className={css({
           position: "relative",
           width: "100%",
@@ -86,12 +106,12 @@ function SelectedFilesView({selectedFiles, setSelectedFiles}: {
     <div
       className={css({
         display: "flex",
-        padding: "0.5em",
+        padding: "0.3em 0.5em",
         width: "100%",
         height: "100%",
         flexDirection: "column",
         gap: "0.5em",
-        overflow: "scroll",
+        overflowY: "auto",
       })}
       onClick={(event) => event.stopPropagation()}
     >
@@ -111,26 +131,30 @@ function SelectedFilesView({selectedFiles, setSelectedFiles}: {
 
 function FileDropArea({isDragActive}: { isDragActive: boolean }) {
   return (
-    <div className={css({
-      position: "absolute",
-      top: "0",
-      left: "0",
-      display: "flex",
-      width: "100%",
-      height: "100%",
-      flexDirection: "column",
-      gap: "0.5em",
-      justifyContent: "center",
-      alignItems: "center",
-      color: "#000000",
-      backgroundColor: "#dddddd80",
-      cursor: "pointer",
-    })}>
+    <div
+        className={css({
+        position: "absolute",
+        top: "0",
+        left: "0",
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        flexDirection: "column",
+        gap: "0.5em",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#000000",
+        backgroundColor: "#dddddd80",
+        border: "1px dashed #ccc",
+        borderRadius: "0.5em",
+        cursor: "pointer",
+      })}
+    >
       {
         isDragActive
           ?
           <>
-            <PlusCircleIcon width={"3em"} />
+            <PlusCircleIcon width={"3em"}/>
             <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
           </>
           :

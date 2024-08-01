@@ -18,7 +18,7 @@ export default function FileUploadModal() {
         backgroundColor: "#ffffff",
         borderRadius: "1em",
         flexDirection: "column",
-        gap: "1em",
+        gap: "0.5em",
       })}
     >
       <Heading>파일 업로드</Heading>
