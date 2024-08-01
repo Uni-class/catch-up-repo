@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "@/util/axios";
 
 interface PropType {
   data: User;
@@ -13,6 +15,18 @@ interface PropType {
 export default function UserProfileEdit({ data }: PropType) {
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
+  const queryClient = useQueryClient();
+  const formMutation = useMutation({
+    mutationFn: async (body: FormData) =>
+      await apiClient.patch("/user/profile", body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
+      queryClient.refetchQueries({ queryKey: ["user", "profile"] });
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
 
   return (
     <form
@@ -22,6 +36,14 @@ export default function UserProfileEdit({ data }: PropType) {
         gap: "1em",
       })}
       ref={formRef}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (formRef.current) {
+          const formData = new FormData(formRef.current);
+          formData.append("email","temp@gmail.com");
+          formMutation.mutate(formData);
+        }
+      }}
     >
       <div
         className={css({
