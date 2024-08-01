@@ -28,6 +28,7 @@ interface PropType {
 
 export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { reset } = useQueryErrorResetBoundary();
   const [_currentFormData, setCurrentFormData] = useAtom<
     MutableRefObject<CreateSessionDto>
@@ -75,9 +76,13 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <FileUploader accept={{
-          "application/pdf": [".pdf"],
-        }} />
+        <FileUploader
+          accept={{
+            "application/pdf": [".pdf"],
+          }}
+          selectedFiles={selectedFiles}
+          setSelectedFiles={setSelectedFiles}
+        />
       ) : (
         <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
           <DriveFileUploadFetch />

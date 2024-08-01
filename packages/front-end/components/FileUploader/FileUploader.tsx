@@ -9,13 +9,14 @@ import PlusIcon from "@/public/icons/plus.svg";
 import RepeatIcon from "@/public/icons/repeat.svg";
 
 
-export default function FileUploader({ accept, allowMultipleFiles = true }: {
+export default function FileUploader({ selectedFiles, setSelectedFiles, accept, allowMultipleFiles = true }: {
+  selectedFiles: File[]
+  setSelectedFiles: Dispatch<SetStateAction<File[]>>
   accept?: {
-    [name: string]: string[];
-  };
-  allowMultipleFiles?: boolean;
+    [name: string]: string[]
+  }
+  allowMultipleFiles?: boolean
 }) {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     onDrop: (acceptedFiles, fileRejections, event) => {
       if (allowMultipleFiles) {
@@ -102,7 +103,7 @@ export default function FileUploader({ accept, allowMultipleFiles = true }: {
 }
 
 function SelectedFilesView({selectedFiles, setSelectedFiles}: {
-  selectedFiles: File[],
+  selectedFiles: File[]
   setSelectedFiles: Dispatch<SetStateAction<File[]>>
 }) {
   return (

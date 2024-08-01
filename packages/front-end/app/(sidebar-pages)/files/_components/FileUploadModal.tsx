@@ -3,9 +3,12 @@ import FileUploader from "@/components/FileUploader/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
+import {useState} from "react";
 
 
 export default function FileUploadModal() {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
   return (
     <div
       className={css({
@@ -26,6 +29,8 @@ export default function FileUploadModal() {
         accept={{
           "application/pdf": [".pdf"],
         }}
+        selectedFiles={selectedFiles}
+        setSelectedFiles={setSelectedFiles}
       />
       <div className={css({
         display: "flex",
@@ -36,6 +41,7 @@ export default function FileUploadModal() {
           className={css({
             padding: "0.5em 1em",
           })}
+          disabled={selectedFiles.length === 0}
         >
           업로드
         </Button>
