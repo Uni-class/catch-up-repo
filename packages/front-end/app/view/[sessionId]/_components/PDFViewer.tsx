@@ -13,20 +13,20 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 export default function PDFViewer() {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   useEffect(() => {
     if (numPages === null) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
-        setPageNumber((pageNumber) => pageNumber < numPages ? pageNumber + 1 : pageNumber);
+        setPageNumber((pageNumber) =>
+          pageNumber < numPages ? pageNumber + 1 : pageNumber
+        );
       } else if (event.key === "ArrowLeft") {
-        setPageNumber((pageNumber) => pageNumber - 1 > 0 ? pageNumber - 1 : pageNumber);
+        setPageNumber((pageNumber) =>
+          pageNumber - 1 > 0 ? pageNumber - 1 : pageNumber
+        );
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
