@@ -7,6 +7,8 @@ import { formatDate } from "date-fns";
 import { useState } from "react";
 import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "@/util/axios";
 
 
 const DataEmptyPlaceholder = (
@@ -62,8 +64,23 @@ const ErrorPlaceholder = (
 
 export function ParticipantSessionTable({data, status = null}: { data: Session[], status?: "loading" | "error" | null }) {
   const router = useRouter();
-
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const queryClient = useQueryClient();
+  const sessionMutate = useMutation({
+    mutationFn: async (selectedItems: number[]) =>
+      Promise.all(
+        selectedItems.map(async (selectedItem) => {
+          await apiClient.delete(`user/session/${selectedItem}`);
+        })
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "participant"] });
+      queryClient.refetchQueries({ queryKey: ["user", "sessions", "participant"] });
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
 
   return (
     <div className={css({
@@ -90,8 +107,7 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
           })}
           disabled={selectedItems.length === 0}
           onClick={() => {
-            console.log(`Delete Button Clicked`);
-            console.log(selectedItems);
+            sessionMutate.mutate(selectedItems);
             setSelectedItems([]);
           }}
         >
