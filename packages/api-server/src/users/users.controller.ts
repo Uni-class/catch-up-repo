@@ -179,10 +179,14 @@ export class UsersController {
   }
 
   @Get('files')
-  @ApiResponse({ type: File })
+  @ApiQuery({ name: 'last', type: Number })
+  @ApiResponse({ type: [File] })
   @UseGuards(JwtGuard)
-  async getUserFiles(@UserId(ParseIntPipe) userId: number) {
-    const files = await this.usersService.getUserFiles(userId);
+  async getUserFiles(
+    @UserId(ParseIntPipe) userId: number,
+    @Query(ParseIntPipe) last: number,
+  ): Promise<File[]> {
+    const files: File[] = await this.usersService.getUserFiles(userId, last);
     return files;
   }
 }

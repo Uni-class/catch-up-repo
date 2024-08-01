@@ -134,7 +134,7 @@ export class UsersService {
     return await this.userSessionRepository.softRemove(userSession);
   }
 
-  async getUserFiles(userId: number) {
+  async getUserFiles(userId: number, last: number = 0) {
     const user: User = await this.userRepository.findOne({
       where: { userId },
       relations: ['files'],
@@ -143,7 +143,7 @@ export class UsersService {
     files.sort((a, b) => {
       return b.fileId - a.fileId;
     });
-    return files.slice(0, 10);
+    return files.slice(10 * last, 10 * last + 10);
   }
 
   async deletdeleteRefreshToken(userId: number) {
