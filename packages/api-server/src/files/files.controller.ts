@@ -82,7 +82,7 @@ export class FilesController {
   })
   @ApiResponse({ type: FileUploadResponseDto })
   @UseGuards(JwtGuard)
-  @UseInterceptors(FilesInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UserId(ParseIntPipe) userId: number,
     @UploadedFile(
