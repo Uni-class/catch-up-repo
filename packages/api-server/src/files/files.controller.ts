@@ -36,7 +36,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
-  @Post()
+  @Post('many')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -55,7 +55,7 @@ export class FilesController {
   @ApiResponse({ type: FileUploadResponseDto })
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('files'))
-  async uploadFile(
+  async uploadFiles(
     @UserId(ParseIntPipe) userId: number,
     @UploadedFiles(
       new ParseFilePipe({
@@ -65,6 +65,34 @@ export class FilesController {
     files: Express.Multer.File[],
   ): Promise<FileUploadResponseDto> {
     return await this.filesService.uploadFile(userId, files);
+  }
+
+  @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        files: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiResponse({ type: FileUploadResponseDto })
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FilesInterceptor('file'))
+  async uploadFile(
+    @UserId(ParseIntPipe) userId: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: 'pdf' })],
+      }),
+    )
+    file: Express.Multer.File,
+  ): Promise<FileUploadResponseDto> {
+    return await this.filesService.uploadFile(userId, [file]);
   }
 
   @Get(':fileId')
