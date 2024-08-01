@@ -15,6 +15,9 @@ interface PropType {
 export default function UserProfileEdit({ data }: PropType) {
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
+  const [imageSrc, setImageSrc] = useState<string>(
+    data.profileUrl || "/icon/icon-google.svg"
+  );
   const queryClient = useQueryClient();
   const formMutation = useMutation({
     mutationFn: async (body: FormData) =>
@@ -28,6 +31,18 @@ export default function UserProfileEdit({ data }: PropType) {
     },
   });
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageSrc(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+
   return (
     <form
       className={css({
@@ -40,7 +55,6 @@ export default function UserProfileEdit({ data }: PropType) {
         e.preventDefault();
         if (formRef.current) {
           const formData = new FormData(formRef.current);
-          formData.append("email","temp@gmail.com");
           formMutation.mutate(formData);
         }
       }}
@@ -52,22 +66,21 @@ export default function UserProfileEdit({ data }: PropType) {
           gap: "1em",
         })}
       >
+        <Paragraph>프로필 사진</Paragraph>
         <div className={css({ display: "flex", gap: "1.5rem" })}>
-          <div>
-            <Paragraph>프로필 사진</Paragraph>
-            <Image
-              src={data.profileUrl || "/icon/icon-google.svg"}
-              alt="프로필 사진"
-              width={32}
-              height={32}
-              className={css({ borderRadius: "50%" })}
-            />
-          </div>
+          <Image
+            src={imageSrc}
+            alt="프로필 사진"
+            width={50}
+            height={50}
+            className={css({ borderRadius: "50%",height:"50px" })}
+          />
           <input
             type="file"
             accept="image/*"
             ref={fileInputRef}
             name="profileImage"
+            onChange={handleImageChange}
             hidden
           />
           <Button
