@@ -91,7 +91,9 @@ export class UsersController {
     @UploadedFile(
       new ParseFilePipe({
         fileIsRequired: false,
-        validators: [new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|svg)' }),
+        ],
       }),
     )
     profileImg: Express.Multer.File,
