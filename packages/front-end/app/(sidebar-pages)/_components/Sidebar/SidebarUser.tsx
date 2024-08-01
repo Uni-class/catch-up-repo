@@ -62,6 +62,7 @@ function SidebarUser({ data }: PropType) {
         <p
           className={css({
             fontWeight: "bold",
+            alignSelf:"center"
           })}
         >
           {data.nickname}
