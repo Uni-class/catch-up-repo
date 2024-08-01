@@ -4,22 +4,18 @@ import { css } from "@/styled-system/css";
 import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
-import SidebarUser from "./SidebarUser";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
-import Button from "@/components/Button";
 import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
-
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
 import ExternalLinkIcon from "@/public/icons/external-link.svg"
 import DatabaseIcon from "@/public/icons/database.svg";
-
 import Image from "next/image";
-
 import { PROJECT_NAME } from "@/const/config";
+import SidebarUserFetch from "./SidebarUser";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -74,7 +70,7 @@ export default function Sidebar() {
         <SidebarLink href="/files"><DatabaseIcon width={"1.2em"}/>드라이브</SidebarLink>
       </SidebarGroup>
       <Divider/>
-      <SidebarUser/>
+      <SidebarUserFetch/>
     </div>
   );
 }
