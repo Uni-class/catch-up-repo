@@ -135,17 +135,20 @@ export function HostSessionTable({
           {
             id: 1,
             value: "생성 시간",
-            width: "13em",
+            width: "20vw",
+            minWidth: "13em",
           },
           {
             id: 2,
             value: "상태",
-            width: "6em",
+            width: "10vw",
+            minWidth: "6em",
           },
           {
             id: 3,
             value: "빠른 작업",
-            width: "8em",
+            width: "10vw",
+            minWidth: "8em",
           },
         ]}
         body={data.map((item) => {

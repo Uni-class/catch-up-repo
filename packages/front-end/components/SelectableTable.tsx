@@ -8,6 +8,7 @@ interface PropType {
     id: number;
     value: ReactNode;
     width?: string;
+    minWidth?: string;
   }[];
   body: {
     id: number;
@@ -43,7 +44,8 @@ export default function SelectableTable({ head, body, placeholder, selectedItems
             head.map((item) => {
               return (
                 <Th key={item.id} style={{
-                  width: item.width
+                  width: item.width,
+                  minWidth: item.minWidth
                 }}>{item.value}</Th>
               );
             })

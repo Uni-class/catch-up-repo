@@ -147,7 +147,8 @@ export function FileTable({
           {
             id: 1,
             value: "업로드 시간",
-            width: "13em",
+            width: "20vw",
+            minWidth: "13em",
           },
         ]}
         body={data.map((item) => {
