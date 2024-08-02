@@ -4,21 +4,25 @@ import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
 import { useEffect } from "react";
 import { useRouter } from "@/hook/useRouter";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Page() {
   const router = useRouter();
-  const logout = () => {
-    apiClient.post("/auth/logout")
-      .then((res) => {
-        router.push("/");
-      })
-      .catch((err) => {
-        router.push("/");
-      });
-  };
+  const queryClient = useQueryClient();
+  const logoutMutate = useMutation({
+    mutationFn: async () => await apiClient.post("/auth/logout"),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      router.push("/");
+    },
+    onError: (error) => {
+      alert(`넌 로그아웃할 수 없다:${error.message}`);
+      router.push("/");
+    },
+  });
 
   useEffect(() => {
-    logout();
+    logoutMutate.mutate();
   }, []);
 
   return (
