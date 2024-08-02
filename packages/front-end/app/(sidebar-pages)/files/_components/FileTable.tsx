@@ -158,6 +158,7 @@ export function FileTable({
                 {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
               </div>,
             ],
+            onClick: () => window.open(`/viewer/${item.fileId}`, "_blank"),
           };
         })}
         placeholder={
