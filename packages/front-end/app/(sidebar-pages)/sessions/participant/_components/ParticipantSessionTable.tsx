@@ -122,15 +122,18 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
           },
           {
             id: 1,
-            value: "참여 시간"
+            value: "참여 시간",
+            width: "13em",
           },
           {
             id: 2,
-            value: "상태"
+            value: "상태",
+            width: "6em",
           },
           {
             id: 3,
-            value: "빠른 작업"
+            value: "빠른 작업",
+            width: "8em",
           }
         ]}
         body={data.map((item) => {

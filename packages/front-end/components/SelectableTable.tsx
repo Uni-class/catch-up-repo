@@ -7,6 +7,7 @@ interface PropType {
   head: {
     id: number;
     value: ReactNode;
+    width?: string;
   }[];
   body: {
     id: number;
@@ -24,7 +25,7 @@ export default function SelectableTable({ head, body, placeholder, selectedItems
     <TableContainer>
       <TableHead>
         <TableRow>
-          <Th>
+          <Th width="3em">
             <Checkbox
               checked={body.length === selectedItems.length && selectedItems.length !== 0}
               onChange={() => {
@@ -41,7 +42,9 @@ export default function SelectableTable({ head, body, placeholder, selectedItems
           {
             head.map((item) => {
               return (
-                <Th key={item.id}>{item.value}</Th>
+                <Th key={item.id} style={{
+                  width: item.width
+                }}>{item.value}</Th>
               );
             })
           }
