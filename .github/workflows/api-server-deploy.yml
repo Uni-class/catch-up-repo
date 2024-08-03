@@ -34,8 +34,8 @@ on:
 env:
   AWS_REGION: ap-northeast-2                  # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: catchup-repo                # set this to your Amazon ECR repository name
-  ECS_SERVICE: api-server                     # set this to your Amazon ECS service name
-  ECS_CLUSTER: Catchup-dev-cluster                 # set this to your Amazon ECS cluster name
+  ECS_SERVICE: Api-server                     # set this to your Amazon ECS service name
+  ECS_CLUSTER: Catchup-dev-cluster                # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: aws/api-server-td.json # set this to the path to your Amazon ECS task definition
   # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: api-server          # set this to the name of the container in the
@@ -82,6 +82,10 @@ jobs:
           echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/api-server/.env
           echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> packages/api-server/.env
           echo "S3_INSTANCE_URL=${{ secrets.S3_INSTANCE_URL }}" >> packages/api-server/.env
+
+      - name: Check Directory
+        run: |
+          ls -a
           ls -a packages/api-server
 
       - name: Configure AWS credentials
