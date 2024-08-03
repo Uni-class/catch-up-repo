@@ -1,7 +1,7 @@
 "use client";
 
 import { css } from "@/styled-system/css";
-import {ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement} from "react";
+import {ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement, useCallback} from "react";
 
 interface PropType {
   children: ReactNode;
@@ -17,10 +17,10 @@ export default function ModalContainer({
 
   const [closingBlocked, setClosingBlocked] = useState(false);
 
-  const closeWindow = () => {
+  const closeWindow = useCallback(() => {
     if (!closingBlocked && onClose)
       onClose();
-  };
+  },[closingBlocked, onClose]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
