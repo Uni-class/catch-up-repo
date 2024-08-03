@@ -8,8 +8,6 @@ import cookieParser from 'cookie-parser';
 import { AllExceptionFilter } from './exception/all-exception.filter';
 import { ResponseInterceptor } from './interceptor/response.interceptor';
 
-declare const module: any;
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -46,10 +44,5 @@ async function bootstrap() {
   app.use(cookieParser());
 
   await app.listen(process.env.PORT);
-
-  if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
 }
 bootstrap();
