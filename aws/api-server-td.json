@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-api-server-td:2",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-api-server-td:4",
     "containerDefinitions": [
         {
             "name": "api-server",
-            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo:8640815b34f86104308cd00372f481a4025c3c2d",
+            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo:ceff6cd0564bbbfd775e7b6ad7ca6da00542dc14",
             "cpu": 1024,
             "memory": 3072,
             "memoryReservation": 1024,
@@ -18,15 +18,9 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [
-                {
-                    "value": "arn:aws:s3:::catchup-env/.env",
-                    "type": "s3"
-                }
-            ],
+            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -44,7 +38,7 @@
     "taskRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
     "executionRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 4,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -59,9 +53,6 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-        },
-        {
-            "name": "ecs.capability.env-files.s3"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
@@ -96,7 +87,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-08-03T08:19:49.890Z",
+    "registeredAt": "2024-08-03T08:55:49.810Z",
     "registeredBy": "arn:aws:iam::590184134001:root",
     "tags": []
 }
