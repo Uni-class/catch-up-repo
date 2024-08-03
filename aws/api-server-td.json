@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-td:2",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-td1:1",
     "containerDefinitions": [
         {
             "name": "api-server",
-            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo/api-server",
+            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo/api-server:latest",
             "cpu": 0,
             "portMappings": [
                 {
@@ -28,11 +28,11 @@
             "systemControls": []
         }
     ],
-    "family": "Catchup-td",
+    "family": "Catchup-td1",
     "taskRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
     "executionRoleArn": "arn:aws:iam::590184134001:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -69,7 +69,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-08-02T06:48:56.034Z",
+    "registeredAt": "2024-08-03T05:41:57.600Z",
     "registeredBy": "arn:aws:iam::590184134001:root",
     "tags": []
 }
