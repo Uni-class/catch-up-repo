@@ -82,6 +82,7 @@ jobs:
           echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/api-server/.env
           echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> packages/api-server/.env
           echo "S3_INSTANCE_URL=${{ secrets.S3_INSTANCE_URL }}" >> packages/api-server/.env
+          ls -a packages/api-server
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
