@@ -5,7 +5,6 @@ import { css } from "@/styled-system/css";
 import { ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement } from "react";
 import { useRouter } from "@/hook/useRouter";
 
-
 interface PropType {
   children: ReactNode;
   onClose?: () => void;
@@ -24,7 +23,7 @@ export default function ModalContainer({
   const closeWindow = () => {
     if (isOpen && !closingBlocked && onClose)
       onClose();
-  };
+  },[closingBlocked, onClose]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
