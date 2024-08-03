@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 RUN yarn set version stable
 RUN yarn init
 COPY package*.json ./
-COPY .env ./
+COPY .env.local ./
 RUN yarn install
 COPY . .
 RUN yarn build
