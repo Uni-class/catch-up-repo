@@ -20,9 +20,9 @@ export default function ModalContainer({
   const router = useRouter();
 
   const closeWindow = useCallback(() => {
-    if (!closingBlocked && onClose)
+    if (isOpen && !closingBlocked && onClose)
       onClose();
-  },[closingBlocked, onClose]);
+  },[closingBlocked, isOpen, onClose]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
