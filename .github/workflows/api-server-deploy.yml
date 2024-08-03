@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Make .env file
-        run:
+        run: |
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> packages/api-server/.env
           echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> packages/api-server/.env
           echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> packages/api-server/.env
