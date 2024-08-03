@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
@@ -17,20 +16,17 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserId } from './decorators/user-id.decorator';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiCookieAuth,
   ApiExtraModels,
   ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
