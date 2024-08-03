@@ -17,6 +17,7 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
+
   app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = new DocumentBuilder()
