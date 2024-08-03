@@ -105,11 +105,19 @@ const FileUploader = forwardRef(({ selectedFiles, setSelectedFiles, accept, allo
           width: "100%",
           height: "100%",
         })}>
-          <div className={css({
-            padding: "0.2em",
-            width: "100%",
-            height: "100%",
-          })}>
+          <div
+            className={css({
+              padding: "0.2em",
+              width: "100%",
+              height: "100%",
+            })}
+            onClick={
+              (event) => {
+                if (selectedFiles.length !== 0)
+                  event.stopPropagation();
+              }
+            }
+          >
             <SelectedFilesView
               ref={selectedFilesViewRef}
               selectedFiles={selectedFiles}

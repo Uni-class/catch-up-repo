@@ -6,7 +6,7 @@ import { overlay } from "overlay-kit";
 import { useEffect, useState, useRef, SetStateAction, Dispatch } from "react";
 
 
-export default function FileUploadModal({ setClosingBlocked }: { setClosingBlocked: Dispatch<SetStateAction<boolean>> }) {
+export default function FileUploadModal({ setClosingBlocked = () => {} }: { setClosingBlocked?: Dispatch<SetStateAction<boolean>> }) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<"ready" | "uploading" | "finished">("ready");
   const fileUploaderRef = useRef<{
@@ -15,7 +15,7 @@ export default function FileUploadModal({ setClosingBlocked }: { setClosingBlock
 
   useEffect(() => {
     setClosingBlocked(status === "uploading");
-  }, [status]);
+  }, [setClosingBlocked, status]);
 
   return (
     <div
