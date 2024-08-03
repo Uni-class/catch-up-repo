@@ -1,0 +1,75 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-td:2",
+    "containerDefinitions": [
+        {
+            "name": "api-server",
+            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo/api-server",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "api-server-3001-tcp",
+                    "containerPort": 3001,
+                    "hostPort": 3001,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::catchup-env/.env",
+                    "type": "s3"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "systemControls": []
+        }
+    ],
+    "family": "Catchup-td",
+    "taskRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
+    "executionRoleArn": "arn:aws:iam::590184134001:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.env-files.s3"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-08-02T06:48:56.034Z",
+    "registeredBy": "arn:aws:iam::590184134001:root",
+    "tags": []
+}
