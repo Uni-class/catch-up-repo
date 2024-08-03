@@ -147,6 +147,8 @@ export function FileTable({
           {
             id: 1,
             value: "업로드 시간",
+            width: "20vw",
+            minWidth: "13em",
           },
         ]}
         body={data.map((item) => {
@@ -158,6 +160,7 @@ export function FileTable({
                 {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
               </div>,
             ],
+            onClick: () => window.open(`/viewer/${item.fileId}`, "_blank"),
           };
         })}
         placeholder={

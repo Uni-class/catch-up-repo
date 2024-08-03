@@ -22,7 +22,7 @@ export const useRouter = (): RouterInstance => {
     pathname: string,
     queryObj:Record<string,string>
   ) => {
-    const url = new URL(pathname, "http://example.com"); // just dummy url, not use
+    const url = new URL(pathname, window.location.href);
     Object.keys(queryObj).forEach((key) => {
       url.searchParams.append(key, queryObj[key]);
     });

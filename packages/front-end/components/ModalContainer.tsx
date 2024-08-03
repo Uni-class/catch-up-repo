@@ -1,7 +1,9 @@
 "use client";
 
+
 import { css } from "@/styled-system/css";
-import {ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement} from "react";
+import { ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement } from "react";
+import { useRouter } from "@/hook/useRouter";
 
 interface PropType {
   children: ReactNode;
@@ -16,11 +18,12 @@ export default function ModalContainer({
 }: PropType) {
 
   const [closingBlocked, setClosingBlocked] = useState(false);
+  const router = useRouter();
 
   const closeWindow = () => {
-    if (!closingBlocked && onClose)
+    if (isOpen && !closingBlocked && onClose)
       onClose();
-  };
+  },[closingBlocked, onClose]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -33,6 +36,10 @@ export default function ModalContainer({
       document.removeEventListener("keydown", handleKeyPress);
     };
   }, [closeWindow]);
+
+  useEffect(() => {
+    closeWindow();
+  }, [router.pathname]);
 
   return (
     <>
