@@ -12,9 +12,6 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
-  plugins: {
-    "@pandacss/dev/postcss": {},
-  },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     config.module.rules.push({
