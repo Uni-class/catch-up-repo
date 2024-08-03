@@ -17,6 +17,5 @@ RUN yarn set version stable
 RUN yarn init
 COPY --from=builder /usr/src/app/ ./
 RUN yarn install
-
 EXPOSE 3001
 CMD ["yarn","start"]
