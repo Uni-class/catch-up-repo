@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "api-server",
-            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo/api-server:latest",
+            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo:latest",
             "cpu": 0,
             "portMappings": [
                 {
