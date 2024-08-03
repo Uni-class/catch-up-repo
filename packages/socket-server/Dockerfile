@@ -8,6 +8,7 @@ COPY package*.json ./
 COPY .env ./
 RUN yarn install
 COPY . .
+
 RUN yarn build
 
 FROM node:20
