@@ -1,0 +1,67 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:590184134001:task-definition/Catchup-socket-server-td:1",
+  "containerDefinitions": [
+    {
+      "name": "socket-server",
+      "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo/api-server:latest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "socket-server-3030-tcp",
+          "containerPort": 3030,
+          "hostPort": 3030,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "systemControls": []
+    }
+  ],
+  "family": "Catchup-socket-server-td",
+  "taskRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
+  "executionRoleArn": "arn:aws:iam::590184134001:role/uniclass-ecsRole",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2024-08-03T09:29:47.803Z",
+  "registeredBy": "arn:aws:iam::590184134001:root",
+  "tags": []
+}
