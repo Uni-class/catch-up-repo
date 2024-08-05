@@ -39,7 +39,7 @@ export default function ModalContainer({
 
   useEffect(() => {
     closeWindow();
-  }, [closeWindow, router.pathname]);
+  }, [router.pathname]);
 
   return (
     <>
