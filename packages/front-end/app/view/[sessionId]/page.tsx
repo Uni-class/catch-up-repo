@@ -2,6 +2,6 @@
 import "./_util/pdfWorkerPolyfill";
 import PDFViewer from "./_components/PDFViewer";
 
-export default function _Page() {
+export default function Page() {
   return <PDFViewer />;
 }
