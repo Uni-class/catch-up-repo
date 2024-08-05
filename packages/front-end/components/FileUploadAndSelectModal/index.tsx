@@ -35,8 +35,7 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   >(currentFormDataRefAtom);
   useEffect(() => {
     setCurrentFormData(formDataRef);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [formDataRef, setCurrentFormData]);
   return (
     <div
       className={css({
