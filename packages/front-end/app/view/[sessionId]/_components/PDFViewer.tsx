@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { pdfjs } from "react-pdf";
 import { Document, Page } from "react-pdf";
+import { css } from "@/styled-system/css";
 import { PDFDocumentProxy } from "pdfjs-dist/types/src/pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -11,17 +12,18 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 // ).toString();
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-export default function PDFViewer() {
+export default function PDFViewer({ documentURL, defaultPageIndex = 0 }: { documentURL: string, defaultPageIndex?: number }) {
   const [pageCount, setPageCount] = useState<number | null>(null);
-  const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
-
+  const [currentPageIndex, setCurrentPageIndex] = useState<number>(defaultPageIndex);
 
   useEffect(() => {
-    if (pageCount === null) return;
+    if (pageCount === null)
+      return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
         setCurrentPageIndex((index) => Math.min(pageCount - 1, index + 1));
-      } else if (event.key === "ArrowLeft") {
+      }
+      else if (event.key === "ArrowLeft") {
         setCurrentPageIndex((index) => Math.max(0, index - 1));
       }
     };
@@ -33,19 +35,24 @@ export default function PDFViewer() {
 
   const onDocumentLoadSuccess = (pdf: PDFDocumentProxy) => {
     setPageCount(pdf.numPages);
+    setCurrentPageIndex(Math.min(Math.max(0, currentPageIndex), pdf.numPages - 1));
   }
 
   return (
     <div>
       <Document
-        file="https://catch-up-dev-s3.s3.ap-northeast-2.amazonaws.com/1722418206623-[9-2] Index.pdf"
+        file={documentURL}
         onLoadSuccess={onDocumentLoadSuccess}
       >
         <Page pageIndex={currentPageIndex} />
       </Document>
-      <p>
-        Page {currentPageIndex} of {pageCount}
-      </p>
+      <div className={css({
+        padding: "1em",
+        color: "#ffffff",
+        backgroundColor: "#000000",
+      })}>
+        {currentPageIndex + 1} / {pageCount}
+      </div>
     </div>
   );
 }
