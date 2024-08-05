@@ -41,7 +41,9 @@ export class SessionsService {
     return session;
   }
 
-  async getFileListBySessionFiles(sessionFiles: SessionFile[]) {
+  async getFileListBySessionFiles(
+    sessionFiles: SessionFile[],
+  ): Promise<File[]> {
     if (!sessionFiles || !sessionFiles.length) {
       return [];
     }
@@ -50,6 +52,8 @@ export class SessionsService {
         return this.filesService.findOne(sessionFile.fileId);
       }),
     );
-    return fileList;
+    return fileList.filter((file) => {
+      return file !== null;
+    });
   }
 }
