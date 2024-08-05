@@ -7,7 +7,7 @@ import SidebarDirectory from "./SidebarDirectory";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
 import LinkButton from "@/components/LinkButton";
-import { useRouter } from "@/hook/useRouter";
+
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
@@ -18,7 +18,6 @@ import { PROJECT_NAME } from "@/const/config";
 import SidebarUserFetch from "./SidebarUser";
 
 export default function Sidebar() {
-  const router = useRouter();
 
   return (
     <div
