@@ -35,7 +35,7 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   >(currentFormDataRefAtom);
   useEffect(() => {
     setCurrentFormData(formDataRef);
-  }, []);
+  }, [formDataRef, setCurrentFormData]);
   return (
     <div
       className={css({

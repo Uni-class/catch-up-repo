@@ -23,7 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     logoutMutate.mutate();
-  }, []);
+  }, [logoutMutate]);
 
   return (
     <div

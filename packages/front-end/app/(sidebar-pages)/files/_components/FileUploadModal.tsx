@@ -15,7 +15,7 @@ export default function FileUploadModal({ setClosingBlocked }: { setClosingBlock
 
   useEffect(() => {
     setClosingBlocked(status === "uploading");
-  }, [status]);
+  }, [setClosingBlocked, status]);
 
   return (
     <div
