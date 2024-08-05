@@ -2,7 +2,7 @@
 
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "@/hook/useRouter";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -16,14 +16,15 @@ export default function Page() {
       router.push("/");
     },
     onError: (error) => {
-      alert(`넌 로그아웃할 수 없다:${error.message}`);
       router.push("/");
+      alert(`로그아웃 실패:${error.message}`);
     },
   });
 
   useEffect(() => {
     logoutMutate.mutate();
-  }, [logoutMutate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
