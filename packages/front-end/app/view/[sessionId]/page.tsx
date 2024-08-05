@@ -1,10 +1,12 @@
 "use client";
-import "./_util/pdfWorkerPolyfill";
+
+
 import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
 import {useQuery} from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
+import { css } from "@/styled-system/css";
 
 
 interface SessionReturnType extends Session {
@@ -27,7 +29,11 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   const documentURL = data.fileList[0].url;
 
   return (
-    <div>
+    <div className={css({
+      width: "100%",
+      height: "100%",
+      overflowX: "hidden",
+    })}>
       <PDFViewer documentURL={documentURL} />
     </div>
   );
