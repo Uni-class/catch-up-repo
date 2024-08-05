@@ -67,6 +67,7 @@ export default function PDFViewer({ documentURL, defaultPageIndex = 0 }: { docum
         backgroundColor: "#000000",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 2,
       })}>
         {currentPageIndex + 1} / {pageCount}
       </div>
