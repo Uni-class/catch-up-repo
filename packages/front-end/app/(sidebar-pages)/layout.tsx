@@ -1,6 +1,7 @@
 import { ReactNode, Suspense } from "react";
 import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
+import RedirectToLogin from "./_components/RedirectToLogin";
 
 export default function Layout({
   children,
@@ -13,6 +14,7 @@ export default function Layout({
         height: "100%",
       })}
     >
+      <RedirectToLogin />
       <Suspense fallback={<h1>페이지 로딩...</h1>}>
         <Sidebar />
       </Suspense>

@@ -7952,7 +7952,6 @@ __metadata:
   resolution: "catch-up-repo@workspace:."
   dependencies:
     typescript: "npm:^5.5.3"
-    usehooks-ts: "npm:^3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -10766,6 +10765,7 @@ __metadata:
     react-pdf: "npm:^9.1.0"
     storybook: "npm:^8.2.1"
     typescript: "npm:^5"
+    usehooks-ts: "npm:^3.1.0"
   languageName: unknown
   linkType: soft
 
