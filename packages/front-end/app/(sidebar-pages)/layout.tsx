@@ -14,7 +14,9 @@ export default function Layout({
         height: "100%",
       })}
     >
-      <RedirectToLogin />
+      <Suspense fallback={<h1>페이지 로딩...</h1>}>
+        <RedirectToLogin />
+      </Suspense>
       <Suspense fallback={<h1>페이지 로딩...</h1>}>
         <Sidebar />
       </Suspense>
