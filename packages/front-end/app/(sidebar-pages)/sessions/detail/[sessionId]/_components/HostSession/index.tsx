@@ -9,12 +9,14 @@ import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 import { ChangeEvent, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
+import { useRouter } from "@/hook/useRouter";
 
 interface PropType {
   sessionData: SessionResponseDto;
 }
 
 export default function HostSession({ sessionData }: PropType) {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const formDataRef = useRef<CreateSessionDto>({
     sessionFileIds: [],
@@ -25,6 +27,8 @@ export default function HostSession({ sessionData }: PropType) {
       await apiClient.patch(`/session/${sessionData.sessionId}`, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
+      router.push(`/view/${sessionData.sessionId}`)
+
     },
   });
   const handleFileButtonClick = () => {

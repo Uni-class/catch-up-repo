@@ -1,40 +1,49 @@
 "use client";
 
-
 import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 
-
 interface SessionReturnType extends Session {
-  fileList: File[]
+  fileList: File[];
 }
 
-
 export default function Page({ params }: { params: { sessionId: string } }) {
-  const { data: response, isLoading, isError } = useQuery<AxiosResponse<SessionReturnType>>({
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useQuery<AxiosResponse<SessionReturnType>>({
     queryKey: ["session", params.sessionId],
     queryFn: async () => {
       return await apiClient.get(`/session/${params.sessionId}`);
     },
   });
   const data = response?.data;
+  console.log("req to", `/session/${params.sessionId}`, params);
+  console.log({ data });
 
-  if (data === undefined) {
-    return <p>unable to load session: {params.sessionId}</p>
+  if (isLoading) {
+    return <p>로딩...</p>;
   }
-  const documentURL = data.fileList[0].url;
+  if (isError || data?.fileList[0]?.url === undefined) {
+    return <p>unable to load session: {params.sessionId}</p>;
+  }
 
-  return (
-    <div className={css({
-      width: "100%",
-      height: "100%",
-      overflowX: "hidden",
-    })}>
-      <PDFViewer documentURL={documentURL} />
+  return data !== undefined ? (
+    <div
+      className={css({
+        width: "100%",
+        height: "100%",
+        overflowX: "hidden",
+      })}
+    >
+      <PDFViewer documentURL={data.fileList[0]?.url} />
     </div>
+  ) : (
+    <></>
   );
 }
