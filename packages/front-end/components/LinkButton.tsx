@@ -1,11 +1,10 @@
-import { useRouter } from "@/hook/useRouter";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { css, cx } from "@/styled-system/css";
+import { Url } from "next/dist/shared/lib/router/router";
 
 
-export default function SidebarLink({className, children, href, target}: {className?: string, children?: ReactNode, href?: string, target?: string}) {
-  const { queryObj,pathname } = useRouter();
+export default function LinkButton({className, children, href, target}: {className?: string, children?: ReactNode, href: Url, target?: string}) {
 
   return (
     <Link className={cx(css({
@@ -24,7 +23,7 @@ export default function SidebarLink({className, children, href, target}: {classN
           background: "orange.400",
         }
       }
-    }), className)} href={{pathname: href, query: queryObj}} target={target}>
+    }), className)} href={href} target={target}>
       {children}
     </Link>
   );

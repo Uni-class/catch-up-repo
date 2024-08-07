@@ -162,17 +162,15 @@ export function HostSessionTable({
               <div key={2}>
                 {item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}
               </div>,
-              <Button
+              <LinkButton
                 key={3}
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
+                href={`view/${item.sessionId}`}
               >
-                세션 참여
-              </Button>,
+                세션 시작
+              </LinkButton>,
             ],
             onClick: () => router.push(`/sessions/detail/${item.sessionId}`),
           };
