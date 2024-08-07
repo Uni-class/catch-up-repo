@@ -167,7 +167,10 @@ export function HostSessionTable({
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                href={`view/${item.sessionId}`}
+                href={`/view/${item.sessionId}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
               >
                 세션 시작
               </LinkButton>,
