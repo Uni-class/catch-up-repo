@@ -6,6 +6,7 @@ import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
+import { Tldraw } from "tldraw";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -42,6 +43,9 @@ export default function Page({ params }: { params: { sessionId: string } }) {
       })}
     >
       <PDFViewer documentURL={data.fileList[0]?.url} />
+      <div className={css({ width: "100%", position: "absolute", inset: 0 })}>
+        <Tldraw />
+      </div>
     </div>
   ) : (
     <></>

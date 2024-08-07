@@ -1,1 +1,11 @@
 @layer reset, base, tokens, recipes, utilities;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap");
+@import url("tldraw/tldraw.css");
+
+.tl-theme__light {
+	--color-background: rgba(0, 0, 0, 0); /* Light Theme Background */
+}
+
+.tl-theme__dark {
+	--color-background: rgba(255, 255, 255, 0); /* Dark Theme Background */
+}
