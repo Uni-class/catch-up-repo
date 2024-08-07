@@ -10,16 +10,17 @@ import { PROJECT_NAME } from "@/const/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 
-
 const DataEmptyPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>표시할 데이터가 없습니다.</p>
     <p>새로운 {PROJECT_NAME} 세션에 참가해 보세요!</p>
     <LinkButton
@@ -33,36 +34,43 @@ const DataEmptyPlaceholder = (
   </div>
 );
 
-
 const LoadingPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>불러오는 중...</p>
   </div>
 );
 
-
 const ErrorPlaceholder = (
-  <div className={css({
-    display: "flex",
-    padding: "1em",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "0.5em",
-  })}>
+  <div
+    className={css({
+      display: "flex",
+      padding: "1em",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "0.5em",
+    })}
+  >
     <p>오류가 발생하였습니다.</p>
   </div>
 );
 
-
-export function ParticipantSessionTable({data, status = null}: { data: Session[], status?: "loading" | "error" | null }) {
+export function ParticipantSessionTable({
+  data,
+  status = null,
+}: {
+  data: Session[];
+  status?: "loading" | "error" | null;
+}) {
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const queryClient = useQueryClient();
@@ -74,8 +82,12 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
         })
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "participant"] });
-      queryClient.refetchQueries({ queryKey: ["user", "sessions", "participant"] });
+      queryClient.invalidateQueries({
+        queryKey: ["user", "sessions", "participant"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["user", "sessions", "participant"],
+      });
     },
     onError: (e) => {
       console.error(e);
@@ -83,16 +95,20 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
   });
 
   return (
-    <div className={css({
-      display: "flex",
-      flexDirection: "column",
-      gap: "0.6em",
-    })}>
-      <div className={css({
+    <div
+      className={css({
         display: "flex",
-        gap: "1em",
-        justifyContent: "flex-end",
-      })}>
+        flexDirection: "column",
+        gap: "0.6em",
+      })}
+    >
+      <div
+        className={css({
+          display: "flex",
+          gap: "1em",
+          justifyContent: "flex-end",
+        })}
+      >
         <LinkButton
           className={css({
             padding: "0.5em 0.8em",
@@ -103,7 +119,7 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
         </LinkButton>
         <Button
           className={css({
-            padding: "0.5em 0.8em"
+            padding: "0.5em 0.8em",
           })}
           disabled={selectedItems.length === 0}
           onClick={() => {
@@ -118,7 +134,7 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
         head={[
           {
             id: 0,
-            value: "제목"
+            value: "제목",
           },
           {
             id: 1,
@@ -137,32 +153,38 @@ export function ParticipantSessionTable({data, status = null}: { data: Session[]
             value: "빠른 작업",
             width: "10vw",
             minWidth: "8em",
-          }
+          },
         ]}
         body={data.map((item) => {
           return {
             id: item.sessionId,
             values: [
               <div key={0}>{item.sessionName}</div>,
-              <div key={1}>{formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}</div>,
-              <div key={2}>{item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}</div>,
-              <Button
+              <div key={1}>
+                {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
+              </div>,
+              <div key={2}>
+                {item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}
+              </div>,
+              <LinkButton
                 key={3}
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                onClick={(event) => {
-                  event.stopPropagation()
-                }}
+                href={`/view/${item.sessionId}`}
               >
                 세션 참여
-              </Button>
+              </LinkButton>,
             ],
-            onClick: () => router.push(`/sessions/detail/${item.sessionId}`)
+            onClick: () => router.push(`/sessions/detail/${item.sessionId}`),
           };
         })}
         placeholder={
-          status === null ? DataEmptyPlaceholder : (status === "loading" ? LoadingPlaceholder : ErrorPlaceholder)
+          status === null
+            ? DataEmptyPlaceholder
+            : status === "loading"
+              ? LoadingPlaceholder
+              : ErrorPlaceholder
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
