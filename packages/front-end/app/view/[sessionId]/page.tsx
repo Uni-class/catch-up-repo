@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   if (isLoading) {
     return <p>로딩...</p>;
   }
-  if (isError) {
+  if (isError || data?.fileList[0]?.url === undefined) {
     return <p>unable to load session: {params.sessionId}</p>;
   }
 
