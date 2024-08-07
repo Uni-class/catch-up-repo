@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { Heading, Paragraph } from "@/components/Text";
+import { useRouter } from "@/hook/useRouter";
 import { SessionResponseDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 
@@ -8,14 +9,15 @@ interface PropType {
 }
 
 export default function ParticipantSession({ sessionData }: PropType) {
+  const router = useRouter();
   return (
     <main
       className={css({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width:"100%",
-        height:"100%",
+        width: "100%",
+        height: "100%",
       })}
     >
       <div
@@ -34,7 +36,13 @@ export default function ParticipantSession({ sessionData }: PropType) {
           <Paragraph key={file.fileId}>{file.name}</Paragraph>
         ))}
         <Paragraph>파일 제목 목록</Paragraph>
-        <Button type="submit">세션 참여</Button>
+        <Button
+          onClick={() => {
+            router.push(`view/${sessionData.sessionId}`);
+          }}
+        >
+          세션 참여
+        </Button>
       </div>
     </main>
   );
