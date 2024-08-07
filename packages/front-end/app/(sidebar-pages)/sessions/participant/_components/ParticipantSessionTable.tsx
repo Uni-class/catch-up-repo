@@ -172,6 +172,9 @@ export function ParticipantSessionTable({
                   padding: "0.5em 0.8em",
                 })}
                 href={`/view/${item.sessionId}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
               >
                 세션 참여
               </LinkButton>,
