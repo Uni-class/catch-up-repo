@@ -5,7 +5,7 @@ on:
     branches: [dev]
 
 jobs:
-  setup:
+  build-front-end:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,46 +30,10 @@ jobs:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
           YARN_ENABLE_HARDENED_MODE: 0
 
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-
-      - name: Upload node_modules
-        uses: actions/upload-artifact@v2
-        with:
-          name: node_modules
-          path: node_modules
-
-  build-front-end:
-    needs: setup
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "20"
-          cache: 'yarn'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v2
-        with:
-          name: node_modules
-          path: node_modules
-
       - name: Build front-end
         run: yarn front-end run build
 
   build-api-server:
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
@@ -82,11 +46,17 @@ jobs:
           node-version: "20"
           cache: 'yarn'
 
-      - name: Download node_modules
-        uses: actions/download-artifact@v2
-        with:
-          name: node_modules
-          path: node_modules
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set Yarn version
+        run: corepack prepare yarn@4.3.1 --activate
+
+      - name: Install dependencies
+        run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+          YARN_ENABLE_HARDENED_MODE: 0
 
       - name: Build api-server
         run: yarn api-server run build
