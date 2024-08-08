@@ -1,6 +1,6 @@
 "use client";
 
-
+import "@/utils/pdfWorkerPolyfill";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { File } from "@/schema/backend.schema";
