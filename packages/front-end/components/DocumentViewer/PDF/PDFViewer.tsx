@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { pdfjs } from "react-pdf";
 import { Document, Page } from "react-pdf";
 import { css } from "@/styled-system/css";
-import { PDFDocumentProxy } from "pdfjs-dist/types/src/pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { useResizeObserver } from 'usehooks-ts';
@@ -38,7 +37,7 @@ export default function PDFViewer({ documentURL, defaultPageIndex = 0 }: { docum
     };
   }, [pageCount]);
 
-  const onDocumentLoadSuccess = (pdf: PDFDocumentProxy) => {
+  const onDocumentLoadSuccess = (pdf: pdfjs.PDFDocumentProxy) => {
     setPageCount(pdf.numPages);
     setCurrentPageIndex(Math.min(Math.max(0, currentPageIndex), pdf.numPages - 1));
   }
