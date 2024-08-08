@@ -31,7 +31,7 @@ jobs:
           YARN_ENABLE_HARDENED_MODE: 0
       
       - name: Gen panda-css styles
-        run: yarn prepare
+        run: yarn front-end run prepare
 
       - name: Build front-end
         run: yarn front-end run build
