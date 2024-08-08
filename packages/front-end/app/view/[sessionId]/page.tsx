@@ -1,5 +1,6 @@
 "use client";
 
+import "../../../utils/pdfWorkerPolyfill";
 import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
