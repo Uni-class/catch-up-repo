@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSocketDto } from './dto/create-socket.dto';
-import { UpdateSocketDto } from './dto/update-socket.dto';
+import { Socket } from 'socket.io';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { JwtPayload } from '../auth/jwt.payload';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class SocketService {
-  create(createSocketDto: CreateSocketDto) {
-    return 'This action adds a new socket';
-  }
-
-  findAll() {
-    return `This action returns all socket`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} socket`;
-  }
-
-  update(id: number, updateSocketDto: UpdateSocketDto) {
-    return `This action updates a #${id} socket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} socket`;
+  constructor(
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
+  async validateUser(socket: Socket): Promise<number> {
+    const cookies = socket.handshake.headers.cookie;
+    const accessToken = cookies['access_token'];
+    if (!accessToken) return 0;
+    try {
+      const payload: JwtPayload = await this.jwtService.verifyAsync(
+        accessToken,
+        {
+          secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
+        },
+      );
+      return payload.id;
+    } catch (ex) {
+      throw new WsException(ex.message);
+    }
   }
 }
