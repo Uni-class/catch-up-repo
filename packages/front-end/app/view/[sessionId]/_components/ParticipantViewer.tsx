@@ -13,9 +13,18 @@ interface SessionReturnType extends Session {
   fileList: File[];
 }
 
-export default function ParticipantViewer({ params }: { params: { sessionId: string } }) {
-    // user/session/:sessionId/join
-
+export default function ParticipantViewer({
+  params,
+}: {
+  params: { sessionId: string };
+}) {
+  // user/session/:sessionId/join
+  const joinQuery = useQuery<AxiosResponse<any>>({
+    queryKey: ["user", "session", params.sessionId, "join"],
+    queryFn: async () => {
+      return await apiClient.post(`/user/session/${params.sessionId}/join`);
+    },
+  });
   const {
     data: response,
     isLoading,
@@ -30,10 +39,10 @@ export default function ParticipantViewer({ params }: { params: { sessionId: str
   console.log("req to", `/session/${params.sessionId}`, params);
   console.log({ data });
 
-  if (isLoading) {
+  if (isLoading || joinQuery.isLoading) {
     return <p>로딩...</p>;
   }
-  if (isError || data?.fileList[0]?.url === undefined) {
+  if (joinQuery.isError || isError || data?.fileList[0]?.url === undefined) {
     return <p>unable to load session: {params.sessionId}</p>;
   }
 
