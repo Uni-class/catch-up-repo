@@ -8,5 +8,5 @@ export const CookieOptions: {
 } = {
   sameSite: 'strict',
   httpOnly: true,
-  domain: configService.get<string>('CLIENT_DOMAIN'),
+  domain: '.' + configService.get<string>('CLIENT_DOMAIN'),
 };
