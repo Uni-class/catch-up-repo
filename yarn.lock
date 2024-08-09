@@ -13975,7 +13975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^1.0.2, json5@npm:^2.1.2, json5@npm:^2.2.2":
+"json5@npm:^1.0.2, json5@npm:^2.2.2":
   version: 1.0.2
   resolution: "json5@npm:1.0.2"
   dependencies:
@@ -13986,7 +13986,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.2.3":
+"json5@npm:^2.1.2, json5@npm:^2.2.3":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
   bin:
