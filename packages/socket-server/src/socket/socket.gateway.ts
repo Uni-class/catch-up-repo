@@ -10,10 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { SocketService } from './socket.service';
-import { UseGuards } from '@nestjs/common';
-import { WsGuard } from '../auth/ws.guard';
 
-@UseGuards(WsGuard)
 @WebSocketGateway()
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -26,27 +23,28 @@ export class SocketGateway
   server: Server;
 
   connectedClients: { [socketId: string]: boolean } = {};
-  clientNickname: { [socketId: string]: string } = {};
-  roomUsers: { [key: string]: string[] } = {};
+  roomUsers: { [key: string]: number[] } = {};
 
-  afterInit(server: Server) {
+  async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
       console.log(socket.id);
       console.log('WebSocket Gateway initialized');
     });
   }
 
-  handleConnection(client: Socket): void {
+  async handleConnection(client: Socket): Promise<void> {
+    const userId = await this.socketService.validateUser(client);
+    if (!userId) return;
     if (this.connectedClients[client.id]) {
       client.disconnect(true);
       return;
     }
     this.clients.add(client);
-    this.connectedClients[client.id] = true;
+    this.connectedClients[userId] = true;
     return;
   }
 
-  handleDisconnect(client: Socket): any {
+  async handleDisconnect(client: Socket): Promise<any> {
     console.log('disconnected');
   }
 
@@ -57,11 +55,14 @@ export class SocketGateway
   }
 
   @SubscribeMessage('createRoom')
-  onCreateRoom(client: Socket, @MessageBody() { roomId }: any): any {
+  async onCreateRoom(
+    client: Socket,
+    @MessageBody() { roomId }: any,
+  ): Promise<any> {
+    const userId: number = await this.socketService.validateUser(client);
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
-    const userId = client.handshake.headers.user['userId'];
     this.roomUsers[roomId].push(userId);
     this.server
       .to(roomId)
@@ -69,10 +70,13 @@ export class SocketGateway
   }
 
   @SubscribeMessage('joinRoom')
-  onJoinRoom(client: Socket, @MessageBody() { roomId }: any): any {
+  async onJoinRoom(
+    client: Socket,
+    @MessageBody() { roomId }: any,
+  ): Promise<any> {
+    const userId: number = await this.socketService.validateUser(client);
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     client.join(roomId);
-    const userId = client.handshake.headers.user['userId'];
     this.roomUsers[roomId].push(userId);
     this.server.to(roomId).emit('joinedUser', { userId: userId });
     this.server

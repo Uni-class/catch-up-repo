@@ -12,8 +12,7 @@ export class SocketService {
     private configService: ConfigService,
   ) {}
   async validateUser(socket: Socket): Promise<number> {
-    const cookies = socket.handshake.headers.cookie;
-    const accessToken = cookies['access_token'];
+    const accessToken = socket.handshake.query?.access_token.toString();
     if (!accessToken) return 0;
     try {
       const payload: JwtPayload = await this.jwtService.verifyAsync(
