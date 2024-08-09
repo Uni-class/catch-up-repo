@@ -22,7 +22,7 @@ export default function ParticipantViewer({
   const joinQuery = useQuery<AxiosResponse<any>>({
     queryKey: ["user", "session", params.sessionId, "join"],
     queryFn: async () => {
-      return await apiClient.post(`/user/session/${params.sessionId}/join`);
+      return await apiClient.post(`/user/sessions/${params.sessionId}/join`);
     },
   });
   const {

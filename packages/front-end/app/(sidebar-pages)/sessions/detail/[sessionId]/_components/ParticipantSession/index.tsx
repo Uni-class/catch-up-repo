@@ -38,7 +38,7 @@ export default function ParticipantSession({ sessionData }: PropType) {
         <Paragraph>파일 제목 목록</Paragraph>
         <Button
           onClick={() => {
-            router.push(`view/${sessionData.sessionId}`);
+            router.push(`/view/${sessionData.sessionId}`);
           }}
         >
           세션 참여
