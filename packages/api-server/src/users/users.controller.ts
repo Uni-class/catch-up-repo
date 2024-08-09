@@ -125,25 +125,25 @@ export class UsersController {
     return await this.usersService.getSessionsByParticipant(userId);
   }
 
-  @Post('sessions/:sessionId/join')
+  @Post('session/:sessionId/join')
   @ApiParam({ name: 'sessionId', type: Number })
-  @ApiBody({ type: UserSessionBodyType })
   @ApiResponse({ type: UserSession })
   @UseGuards(JwtGuard)
   async postUserSession(
     @UserId(ParseIntPipe) userId: number,
     @Param('sessionId', ParseIntPipe) sessionId: number,
-    @Body() body: UserSessionBodyType,
   ): Promise<UserSession> {
+    const user = await this.usersService.findOneById(userId);
+    const nickname = user.nickname;
     const newCreateUserSession = new CreateUserSessionDto(
       userId,
       sessionId,
-      body.displayName,
+      nickname,
     );
     return await this.usersService.postUserSession(newCreateUserSession);
   }
 
-  @Patch('sessions/:sessionId/display-name')
+  @Patch('session/:sessionId/display-name')
   @ApiParam({ name: 'sessionId', type: Number })
   @ApiBody({ type: UserSessionBodyType })
   @ApiResponse({ type: UpdateResult })
@@ -163,7 +163,7 @@ export class UsersController {
     return result;
   }
 
-  @Delete('sessions/:sessionId')
+  @Delete('session/:sessionId')
   @ApiParam({ name: 'sessionId', type: Number })
   @ApiResponse({ type: UserSession })
   @UseGuards(JwtGuard)
