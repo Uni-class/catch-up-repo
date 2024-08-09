@@ -18064,6 +18064,7 @@ __metadata:
     "@nestjs/platform-ws": "npm:^10.3.10"
     "@nestjs/schematics": "npm:^10.0.0"
     "@nestjs/testing": "npm:^10.0.0"
+    "@nestjs/typeorm": "npm:^10.0.2"
     "@nestjs/websockets": "npm:^10.3.10"
     "@types/express": "npm:^4.17.17"
     "@types/jest": "npm:^29.5.2"
