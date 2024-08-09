@@ -3,9 +3,14 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'catch-up-dev-s3.s3.ap-northeast-2.amazonaws.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "catch-up-dev-s3.s3.ap-northeast-2.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "k.kakaocdn.net",
+        pathname: "/**",
       },
     ],
   },
