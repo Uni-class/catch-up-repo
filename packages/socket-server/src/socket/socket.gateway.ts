@@ -41,6 +41,7 @@ export class SocketGateway
       client.disconnect(true);
       return;
     }
+    this.clients.add(client);
     this.connectedClients[client.id] = true;
     return;
   }
@@ -53,5 +54,29 @@ export class SocketGateway
   onNewMessage(client: Socket, @MessageBody() body: any): void {
     console.log(body);
     this.server.emit('onMessage', body);
+  }
+
+  @SubscribeMessage('createRoom')
+  onCreateRoom(client: Socket, @MessageBody() { roomId }: any): any {
+    if (client.rooms.has(roomId)) return;
+    client.join(roomId);
+    if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
+    const userId = client.handshake.headers.user['userId'];
+    this.roomUsers[roomId].push(userId);
+    this.server
+      .to(roomId)
+      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+  }
+
+  @SubscribeMessage('joinRoom')
+  onJoinRoom(client: Socket, @MessageBody() { roomId }: any): any {
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    client.join(roomId);
+    const userId = client.handshake.headers.user['userId'];
+    this.roomUsers[roomId].push(userId);
+    this.server.to(roomId).emit('joinedUser', { userId: userId });
+    this.server
+      .to(roomId)
+      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
   }
 }
