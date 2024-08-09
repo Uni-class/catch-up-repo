@@ -6,11 +6,14 @@ import {
   OnGatewayInit,
   OnGatewayDisconnect,
   WebSocketServer,
-  WsException,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { SocketService } from './socket.service';
+import { UseFilters } from '@nestjs/common';
+import { WsExceptionFilter } from '../exception/ws-exception.filter';
 
+@UseFilters(new WsExceptionFilter())
 @WebSocketGateway()
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -45,21 +48,17 @@ export class SocketGateway
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
+    this.connectedClients[client.id] = false;
     console.log('disconnected');
-  }
-
-  @SubscribeMessage('newMessage')
-  onNewMessage(client: Socket, @MessageBody() body: any): void {
-    console.log(body);
-    this.server.emit('onMessage', body);
   }
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(
-    client: Socket,
+    @ConnectedSocket() client: any,
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
+    if (!userId) return;
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
@@ -71,14 +70,17 @@ export class SocketGateway
 
   @SubscribeMessage('joinRoom')
   async onJoinRoom(
-    client: Socket,
+    @ConnectedSocket() client: any,
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
+    if (!userId) return;
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     client.join(roomId);
-    this.roomUsers[roomId].push(userId);
-    this.server.to(roomId).emit('joinedUser', { userId: userId });
+    if (!this.roomUsers[roomId].includes(userId)) {
+      this.roomUsers[roomId].push(userId);
+      this.server.to(roomId).emit('joinedUser', { userId: userId });
+    }
     this.server
       .to(roomId)
       .emit('userList', { roomId, userList: this.roomUsers[roomId] });
