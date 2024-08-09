@@ -34,6 +34,7 @@ export default function ParticipantViewer({
     queryFn: async () => {
       return await apiClient.get(`/session/${params.sessionId}`);
     },
+    enabled: !!joinQuery.data,
   });
   const data = response?.data;
   console.log("req to", `/session/${params.sessionId}`, params);
