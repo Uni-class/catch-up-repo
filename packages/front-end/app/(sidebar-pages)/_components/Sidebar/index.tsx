@@ -43,17 +43,8 @@ export default function Sidebar() {
           alignItems: "center",
           gap: "0.5em",
         })}>
-          <Image alt={PROJECT_NAME} src="/icon/logo.png" width={40} height={40}/>
           <Heading variant="h4">{PROJECT_NAME}</Heading>
         </div>
-        <LinkButton
-          className={css({
-            fontWeight: "bold",
-          })}
-          href="/sessions/join"
-        >
-          세션 생성
-        </LinkButton>
       </div>
       <Divider/>
       <SidebarGroup name="메뉴" className={css({

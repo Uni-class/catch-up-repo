@@ -10,6 +10,7 @@ import { User } from "@/schema/backend.schema";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { apiClient } from "@/utils/axios";
+import { Paragraph } from "@/components/Text";
 
 export default function SidebarUserFetch() {
   const { data: response, isLoading } = useQuery<AxiosResponse<User>>({
@@ -49,6 +50,7 @@ function SidebarUser({ data }: PropType) {
         display: "inline-block",
       })}
     >
+      <Paragraph variant="sub3">유저</Paragraph>
       <SidebarBaseElement active={isOpen} onClick={() => setIsOpen(!isOpen)}>
         <Image
           src={data.profileUrl ? data.profileUrl : "/icon/icon-google.svg"}
@@ -57,12 +59,14 @@ function SidebarUser({ data }: PropType) {
           alt="프로필 사진"
           className={css({
             borderRadius: "50%",
+            width:"32px",
+            height:"32px",
           })}
         />
         <p
           className={css({
             fontWeight: "bold",
-            alignSelf:"center"
+            alignSelf: "center",
           })}
         >
           {data.nickname}
