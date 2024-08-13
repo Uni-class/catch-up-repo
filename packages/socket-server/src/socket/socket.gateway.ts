@@ -55,10 +55,10 @@ export class SocketGateway
   @SubscribeMessage('createRoom')
   async onCreateRoom(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId }: any,
+    @MessageBody() { userId, roomId }: any,
   ): Promise<any> {
-    const userId: number = await this.socketService.validateUser(client);
-    if (!userId) return;
+    //const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) return;
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
@@ -71,10 +71,10 @@ export class SocketGateway
   @SubscribeMessage('joinRoom')
   async onJoinRoom(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId }: any,
+    @MessageBody() { userId, roomId }: any,
   ): Promise<any> {
-    const userId: number = await this.socketService.validateUser(client);
-    if (!userId) return;
+    //const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) return;
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     client.join(roomId);
     if (!this.roomUsers[roomId].includes(userId)) {
@@ -84,5 +84,16 @@ export class SocketGateway
     this.server
       .to(roomId)
       .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+  }
+
+  @SubscribeMessage('sendMessage')
+  async onSendMessage(
+    @ConnectedSocket() client: any,
+    @MessageBody() { userId, roomId, data }: any,
+  ): Promise<any> {
+    if (!userId || !roomId) return;
+    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (this.roomUsers[roomId][0] !== userId) return;
+    this.server.to(roomId).emit('getData', { data });
   }
 }
