@@ -33,6 +33,11 @@ export class Session {
   hostId: number;
 
   @ApiProperty()
+  @IsString()
+  @Column()
+  sessionCode: number;
+
+  @ApiProperty()
   @IsDate()
   @CreateDateColumn()
   createdAt: string;
