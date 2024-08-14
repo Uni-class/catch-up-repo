@@ -9,13 +9,17 @@ import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
 import { useEffect } from "react";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 interface SessionReturnType extends Session {
   fileList: File[];
 }
 
-export default function HostViewer({ params }: { params: { sessionId: string } }) {
+export default function HostViewer({
+  params,
+}: {
+  params: { sessionId: string };
+}) {
   const {
     data: response,
     isLoading,
@@ -27,17 +31,18 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
     },
   });
   const data = response?.data;
-  
+
   useEffect(() => {
-    // 서버에 연결
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string,{
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
       withCredentials: true,
-    }); // 백엔드 서버의 주소로 대체
-    // 연결 성공시 실행
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket server');
     });
-    // Clean up when the component is unmounted
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+    socket.emit("createRoom", { userId: 1, roomId: 1 });
+    socket.on("userList", (userList: any) => {
+      console.log({ userList });
+    });
     return () => {
       socket.disconnect();
     };
@@ -49,8 +54,6 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
   if (isError || data?.fileList[0]?.url === undefined) {
     return <p>unable to load session: {params.sessionId}</p>;
   }
-
-
 
   return data !== undefined ? (
     <div
