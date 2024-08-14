@@ -9,10 +9,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { User } from './user.entity';
 import { SessionFile } from './session-file.entity';
 import { UserSession } from './user-session.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('sessions')
 export class Session {
@@ -27,6 +28,11 @@ export class Session {
   @IsNumber()
   @Column()
   hostId: number;
+
+  @IsString()
+  @Exclude()
+  @Column()
+  sessionCode: string;
 
   @IsDate()
   @CreateDateColumn()

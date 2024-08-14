@@ -7,6 +7,9 @@ import { Repository } from 'typeorm';
 import { SessionFile } from '../session-files/entities/session-file.entity';
 import { FilesService } from '../files/files.service';
 import { File } from '../files/entities/file.entity';
+import { SessionStatusResponseDto } from './dto/session-status-response.dto';
+import bcrypt from 'bcrypt';
+import { session } from 'passport';
 
 @Injectable()
 export class SessionsService {
@@ -55,5 +58,26 @@ export class SessionsService {
     return fileList.filter((file) => {
       return file !== null;
     });
+  }
+
+  async changeSessionStatus(
+    userId: number,
+    sessionId: number,
+    status: string,
+  ): Promise<SessionStatusResponseDto> {
+    if (status === 'open') {
+      const sessionCode: string = await this.makeSessionCode(sessionId);
+      await this.sessionRepository.update(sessionId, { sessionCode });
+      return { sessionCode };
+    } else {
+      await this.sessionRepository.update(sessionId, { sessionCode: '' });
+      return { sessionCode: '' };
+    }
+  }
+
+  async makeSessionCode(sessionId: number) {
+    const session: Session = await this.findOne(sessionId);
+    const code: string = bcrypt.hashSync(session.sessionName + Date.now(), 10);
+    return code.slice(0, 6);
   }
 }

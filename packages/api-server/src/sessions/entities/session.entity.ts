@@ -14,6 +14,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
 import { SessionFile } from '../../session-files/entities/session-file.entity';
 import { UserSession } from '../../user-sessions/entities/user-session.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('sessions')
 export class Session {
@@ -31,6 +32,12 @@ export class Session {
   @IsNumber()
   @Column()
   hostId: number;
+
+  @ApiProperty()
+  @IsString()
+  @Exclude()
+  @Column()
+  sessionCode: string;
 
   @ApiProperty()
   @IsDate()

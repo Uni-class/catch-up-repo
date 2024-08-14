@@ -7,6 +7,7 @@ import {
   UseGuards,
   ParseIntPipe,
   Param,
+  Query,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { FilesService } from '../files/files.service';
@@ -21,6 +22,8 @@ import { SessionFile } from '../session-files/entities/session-file.entity';
 import { File } from '../files/entities/file.entity';
 import { SessionResponseDto } from './dto/session.response.dto';
 import { UsersService } from '../users/users.service';
+import { SessionStatusDto } from './dto/session-status.dto';
+import { SessionStatusResponseDto } from './dto/session-status-response.dto';
 
 @ApiTags('Session')
 @ApiBearerAuth()
@@ -113,5 +116,18 @@ export class SessionsController {
     }
     await this.sessionsService.update(session.sessionId, updateSessionDto);
     return null;
+  }
+
+  @Post(':sessionId')
+  @ApiResponse({ type: SessionStatusResponseDto })
+  @UseGuards(JwtGuard)
+  async changeSessionStatus(
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @UserId(ParseIntPipe) userId: number,
+    @Query() { status }: SessionStatusDto,
+  ): Promise<SessionStatusResponseDto> {
+    const sessionCode: SessionStatusResponseDto =
+      await this.sessionsService.changeSessionStatus(userId, sessionId, status);
+    return sessionCode;
   }
 }
