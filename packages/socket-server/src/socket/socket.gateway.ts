@@ -34,7 +34,7 @@ export class SocketGateway
   server: Server;
 
   connectedClients: { [socketId: string]: boolean } = {};
-  roomUsers: { [key: string]: number[] } = {};
+  roomUsers: { [key: string]: Set<number> } = {};
 
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
@@ -69,8 +69,8 @@ export class SocketGateway
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
-    if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
-    this.roomUsers[roomId].push(userId);
+    if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
+    this.roomUsers[roomId].add(userId);
     this.server
       .to(roomId)
       .emit('userList', { roomId, userList: this.roomUsers[roomId] });
@@ -85,8 +85,8 @@ export class SocketGateway
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     client.join(roomId);
-    if (!this.roomUsers[roomId].includes(userId)) {
-      this.roomUsers[roomId].push(userId);
+    if (!this.roomUsers[roomId].has(userId)) {
+      this.roomUsers[roomId].add(userId);
       this.server.to(roomId).emit('joinedUser', { userId: userId });
     }
     this.server
@@ -100,7 +100,7 @@ export class SocketGateway
     @MessageBody() { userId, roomId, data }: any,
   ): Promise<any> {
     if (!userId || !roomId) return;
-    console.log(client.rooms,"------", this.roomUsers);
+    console.log(client.rooms, '------', this.roomUsers);
     if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     console.log('client rooms has roomId');
     if (this.roomUsers[roomId][0] !== userId) return;
