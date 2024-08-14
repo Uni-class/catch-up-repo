@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { createTLStore, RecordsDiff, TLRecord } from "tldraw";
+import {
+  createTLStore,
+  defaultShapeUtils,
+  RecordsDiff,
+  TLRecord,
+} from "tldraw";
 
 const isEmpty = (record: Object) => {
   return Object.keys(record).length == 0;
@@ -8,10 +13,10 @@ const isEmpty = (record: Object) => {
 
 const getRecord = (changes: RecordsDiff<TLRecord>) => {
   if (!isEmpty(changes.added)) {
-    return { added: changes.added };
+    return { added: Object.values(changes.added) };
   }
   if (!isEmpty(changes.removed)) {
-    return { removed: changes.removed };
+    return { removed: Object.values(changes.removed) };
   }
   const updated = changes.updated as unknown as TLRecord[][];
   return { updated: Object.values(updated)[0][1] };
@@ -19,7 +24,7 @@ const getRecord = (changes: RecordsDiff<TLRecord>) => {
 
 export const useHostSocket = () => {
   const [store] = useState(() => {
-    const store = createTLStore({});
+    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
   });
 
@@ -43,7 +48,7 @@ export const useHostSocket = () => {
         socket.emit("sendMessage", {
           userId: 1,
           roomId: 1,
-          changes: record,
+          data: record,
         });
       },
       { source: "user", scope: "document" }

@@ -100,8 +100,11 @@ export class SocketGateway
     @MessageBody() { userId, roomId, data }: any,
   ): Promise<any> {
     if (!userId || !roomId) return;
+    console.log(client.rooms,"------", this.roomUsers);
     if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    console.log('client rooms has roomId');
     if (this.roomUsers[roomId][0] !== userId) return;
+    console.log({ data });
     this.server.to(roomId).emit('getData', { data });
   }
 }

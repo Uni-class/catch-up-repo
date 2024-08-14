@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { createTLStore, TLRecord } from "tldraw";
+import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
 
 export const useParticipantSocket = () => {
   const [store] = useState(() => {
-    const store = createTLStore({});
+    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
   });
 
@@ -15,23 +15,26 @@ export const useParticipantSocket = () => {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("joinRoom", { userId: 1, roomId: 1 });
+    socket.emit("joinRoom", { userId: 2, roomId: 1 });
     socket.on(
       "getData",
       (message: {
-        added?: TLRecord;
-        updated?: TLRecord;
-        removed?: TLRecord;
+        data: {
+          added?: TLRecord[];
+          updated?: TLRecord;
+          removed?: TLRecord[];
+        };
       }) => {
-        const { added, updated, removed } = message;
+        const { added, updated, removed } = message.data;
         if (added) {
-          store.put([added]);
+            console.log(added);
+          store.put(added);
         } else if (updated) {
           store.update(updated.id, (_record) => {
             return updated;
           });
         } else if (removed) {
-          store.remove([removed.id]);
+          store.remove(removed.map((e) => e.id));
         }
       }
     );
