@@ -6,14 +6,14 @@ import {
   OnGatewayInit,
   OnGatewayDisconnect,
   WebSocketServer,
-  WsException,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { SocketService } from './socket.service';
-import { UseGuards } from '@nestjs/common';
-import { WsGuard } from '../auth/ws.guard';
+import { UseFilters } from '@nestjs/common';
+import { WsExceptionFilter } from '../exception/ws-exception.filter';
 
-@UseGuards(WsGuard)
+@UseFilters(new WsExceptionFilter())
 @WebSocketGateway()
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -26,32 +26,74 @@ export class SocketGateway
   server: Server;
 
   connectedClients: { [socketId: string]: boolean } = {};
-  clientNickname: { [socketId: string]: string } = {};
-  roomUsers: { [key: string]: string[] } = {};
+  roomUsers: { [key: string]: number[] } = {};
 
-  afterInit(server: Server) {
+  async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
       console.log(socket.id);
       console.log('WebSocket Gateway initialized');
     });
   }
 
-  handleConnection(client: Socket): void {
+  async handleConnection(client: Socket): Promise<void> {
+    const userId = await this.socketService.validateUser(client);
+    if (!userId) return;
     if (this.connectedClients[client.id]) {
       client.disconnect(true);
       return;
     }
-    this.connectedClients[client.id] = true;
+    this.clients.add(client);
+    this.connectedClients[userId] = true;
     return;
   }
 
-  handleDisconnect(client: Socket): any {
+  async handleDisconnect(client: Socket): Promise<any> {
+    this.connectedClients[client.id] = false;
     console.log('disconnected');
   }
 
-  @SubscribeMessage('newMessage')
-  onNewMessage(client: Socket, @MessageBody() body: any): void {
-    console.log(body);
-    this.server.emit('onMessage', body);
+  @SubscribeMessage('createRoom')
+  async onCreateRoom(
+    @ConnectedSocket() client: any,
+    @MessageBody() { userId, roomId }: any,
+  ): Promise<any> {
+    //const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) return;
+    if (client.rooms.has(roomId)) return;
+    client.join(roomId);
+    if (!this.roomUsers[roomId]) this.roomUsers[roomId] = [];
+    this.roomUsers[roomId].push(userId);
+    this.server
+      .to(roomId)
+      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+  }
+
+  @SubscribeMessage('joinRoom')
+  async onJoinRoom(
+    @ConnectedSocket() client: any,
+    @MessageBody() { userId, roomId }: any,
+  ): Promise<any> {
+    //const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) return;
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    client.join(roomId);
+    if (!this.roomUsers[roomId].includes(userId)) {
+      this.roomUsers[roomId].push(userId);
+      this.server.to(roomId).emit('joinedUser', { userId: userId });
+    }
+    this.server
+      .to(roomId)
+      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+  }
+
+  @SubscribeMessage('sendMessage')
+  async onSendMessage(
+    @ConnectedSocket() client: any,
+    @MessageBody() { userId, roomId, data }: any,
+  ): Promise<any> {
+    if (!userId || !roomId) return;
+    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (this.roomUsers[roomId][0] !== userId) return;
+    this.server.to(roomId).emit('getData', { data });
   }
 }
