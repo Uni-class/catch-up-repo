@@ -10,6 +10,6 @@ export const CookieOptions = (
   return {
     sameSite: 'lax',
     httpOnly: true,
-    domain: '.' + configService.get<string>('CLIENT_DOMAIN').split('://')[1],
+    domain: configService.get<string>('COOKIE_DOMAIN'),
   };
 };

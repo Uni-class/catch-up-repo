@@ -8,8 +8,7 @@ import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
-import { useEffect } from "react";
-import io from "socket.io-client";
+import { useHostSocket } from "../_hooks/useHostSocket";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -32,21 +31,7 @@ export default function HostViewer({
   });
   const data = response?.data;
 
-  useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-      withCredentials: true,
-    });
-    socket.on("connect", () => {
-      console.log("Connected to WebSocket server");
-    });
-    socket.emit("createRoom", { userId: 1, roomId: 1 });
-    socket.on("userList", (userList: any) => {
-      console.log({ userList });
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const store = useHostSocket();
 
   if (isLoading) {
     return <p>로딩...</p>;
@@ -64,8 +49,15 @@ export default function HostViewer({
       })}
     >
       <PDFViewer documentURL={data.fileList[0]?.url} />
-      <div className={css({ width: "100%", position: "absolute", inset: 0 })}>
-        <Tldraw />
+      <div
+        className={css({
+          width: "100%",
+          position: "absolute",
+          inset: 0,
+          zIndex: 50,
+        })}
+      >
+        <Tldraw store={store} />
       </div>
     </div>
   ) : (
