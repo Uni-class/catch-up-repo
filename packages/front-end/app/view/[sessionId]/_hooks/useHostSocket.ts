@@ -16,7 +16,7 @@ const getRecord = (changes: RecordsDiff<TLRecord>) => {
     return { added: Object.values(changes.added) };
   }
   if (!isEmpty(changes.removed)) {
-    return { removed: Object.values(changes.removed) };
+    return { removed: Object.values(changes.removed).map((value)=>value.id) };
   }
   const updated = changes.updated as unknown as TLRecord[][];
   return { updated: Object.values(updated)[0][1] };

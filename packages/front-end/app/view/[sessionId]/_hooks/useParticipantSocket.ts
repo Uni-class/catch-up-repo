@@ -22,7 +22,7 @@ export const useParticipantSocket = () => {
         data: {
           added?: TLRecord[];
           updated?: TLRecord;
-          removed?: TLRecord[];
+          removed?: RecordId<any>[];
         };
       }) => {
         const { added, updated, removed } = message.data;
@@ -34,7 +34,7 @@ export const useParticipantSocket = () => {
             return updated;
           });
         } else if (removed) {
-          store.remove(removed.map((e) => e.id));
+          store.remove(removed);
         }
       }
     );
