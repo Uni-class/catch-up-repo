@@ -12,9 +12,17 @@ import { Socket, Server } from 'socket.io';
 import { SocketService } from './socket.service';
 import { UseFilters } from '@nestjs/common';
 import { WsExceptionFilter } from '../exception/ws-exception.filter';
+import dotenv from 'dotenv';
+dotenv.config();
 
 @UseFilters(new WsExceptionFilter())
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: process.env.CLIENT_DOMAIN,
+    credentials: true,
+  },
+  Transports: ['websocket', 'polling'],
+})
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
