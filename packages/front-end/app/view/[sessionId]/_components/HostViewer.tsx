@@ -8,6 +8,8 @@ import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
+import { useEffect } from "react";
+import io from 'socket.io-client';
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -25,8 +27,21 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
     },
   });
   const data = response?.data;
-  console.log("req to", `/session/${params.sessionId}`, params);
-  console.log({ data });
+  
+  useEffect(() => {
+    // 서버에 연결
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string,{
+      withCredentials: true,
+    }); // 백엔드 서버의 주소로 대체
+    // 연결 성공시 실행
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+    // Clean up when the component is unmounted
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   if (isLoading) {
     return <p>로딩...</p>;
@@ -34,6 +49,8 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
   if (isError || data?.fileList[0]?.url === undefined) {
     return <p>unable to load session: {params.sessionId}</p>;
   }
+
+
 
   return data !== undefined ? (
     <div
