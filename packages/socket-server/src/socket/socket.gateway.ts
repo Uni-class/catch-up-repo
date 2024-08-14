@@ -57,6 +57,7 @@ export class SocketGateway
 
   async handleDisconnect(client: Socket): Promise<any> {
     this.connectedClients[client.id] = false;
+    client.disconnect(true);
     console.log('disconnected');
   }
 
