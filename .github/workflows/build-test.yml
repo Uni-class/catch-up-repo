@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-front-end:
+    if: contains(github.event.pull_request.changed_files, 'packages/front-end/')
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +45,7 @@ jobs:
         run: yarn front-end run build
 
   build-api-server:
+    if: contains(github.event.pull_request.changed_files, 'packages/api-server/')
     runs-on: ubuntu-latest
 
     steps:
@@ -72,6 +74,8 @@ jobs:
         run: yarn api-server run build
 
   build-socket-server:
+    if: contains(github.event.pull_request.changed_files, 'packages/socket-server/')
+
     runs-on: ubuntu-latest
 
     steps:
