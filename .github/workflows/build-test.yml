@@ -30,9 +30,6 @@ jobs:
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
           YARN_ENABLE_HARDENED_MODE: 0
-      
-      - name: Gen panda-css styles
-        run: yarn front-end run prepare
 
       - name: Build front-end
         run: yarn front-end run build
@@ -64,3 +61,31 @@ jobs:
 
       - name: Build api-server
         run: yarn api-server run build
+
+  build-socket-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set Yarn version
+        run: corepack prepare yarn@4.3.1 --activate
+
+      - name: Install dependencies
+        run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+          YARN_ENABLE_HARDENED_MODE: 0
+
+      - name: Build socket-server
+        run: yarn socket-server run build
