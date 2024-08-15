@@ -3,7 +3,7 @@ name: Build-test
 on:
   pull_request:
     branches: [dev]
-    types: ['opened']
+    types: ["opened"]
 
 jobs:
   build-front-end:
@@ -17,28 +17,27 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Set Yarn version
         run: corepack prepare yarn@4.3.1 --activate
-      
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: |
             ~/.npm
-            ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+            ${{ github.workspace }}/packages/front-end//.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('packages/front-end/**/*.js', '**/*.jsx', 'packages/front-end/**/*.ts', 'packages/front-end/**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Install dependencies
         run: yarn install
         env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
           YARN_ENABLE_HARDENED_MODE: 0
 
       - name: Build front-end
@@ -55,7 +54,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
@@ -83,7 +82,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
