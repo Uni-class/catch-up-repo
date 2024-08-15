@@ -31,7 +31,7 @@ jobs:
         with:
           path: |
             ~/.npm
-            ${{ github.workspace }}/packages/front-end//.next/cache
+            ${{ github.workspace }}/packages/front-end/.next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('packages/front-end/**/*.js', '**/*.jsx', 'packages/front-end/**/*.ts', 'packages/front-end/**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
