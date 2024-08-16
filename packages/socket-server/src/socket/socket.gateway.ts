@@ -37,6 +37,12 @@ export class SocketGateway
   roomHost: { [key: string]: number } = {};
   clientUserId: { [key: string]: number } = {};
 
+  private async isValidEvent(client: any, roomId: any) {
+    const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) return;
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+  }
+
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
       console.log(socket.id);
