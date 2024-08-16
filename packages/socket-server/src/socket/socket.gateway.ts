@@ -67,9 +67,10 @@ export class SocketGateway
     client.join(roomId);
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
-    this.server
-      .to(roomId)
-      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+    this.server.to(roomId).emit('userList', {
+      roomId,
+      userList: Array.from(this.roomUsers[roomId]),
+    });
   }
 
   @SubscribeMessage('joinRoom')
@@ -85,9 +86,10 @@ export class SocketGateway
       this.roomUsers[roomId].add(userId);
       this.server.to(roomId).emit('joinedUser', { userId: userId });
     }
-    this.server
-      .to(roomId)
-      .emit('userList', { roomId, userList: this.roomUsers[roomId] });
+    this.server.to(roomId).emit('userList', {
+      roomId,
+      userList: Array.from(this.roomUsers[roomId]),
+    });
   }
 
   @SubscribeMessage('sendMessage')
