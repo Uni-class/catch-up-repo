@@ -39,8 +39,9 @@ export class SocketGateway
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId) return;
-    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (!userId || !roomId) return false;
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return false;
+    return true;
   }
 
   async afterInit(server: Server) {
@@ -109,14 +110,39 @@ export class SocketGateway
     });
   }
 
-  @SubscribeMessage('sendMessage')
-  async onSendMessage(
+  @SubscribeMessage('sendPageNumber')
+  async onSendPageNumber(
     @ConnectedSocket() client: any,
     @MessageBody() { roomId, data }: any,
   ): Promise<any> {
-    const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId || userId !== this.roomHost[roomId]) return;
-    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
-    this.server.to(roomId).emit('getData', { data });
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getPageNumber', { data });
+  }
+
+  @SubscribeMessage('sendAddedDraw')
+  async onSendAddedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getPageNumber', { data });
+  }
+
+  @SubscribeMessage('sendRemovedDraw')
+  async onSendRemovedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getPageNumber', { data });
+  }
+
+  @SubscribeMessage('sendUpdatedDraw')
+  async onSendUpdatedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getPageNumber', { data });
   }
 }
