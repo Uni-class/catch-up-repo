@@ -126,7 +126,7 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data, index });
+    this.server.to(roomId).emit('getAddedDraw', { data, index });
   }
 
   @SubscribeMessage('sendRemovedDraw')
@@ -135,7 +135,7 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data, index });
+    this.server.to(roomId).emit('getRemovedDraw', { data, index });
   }
 
   @SubscribeMessage('sendUpdatedDraw')
@@ -144,6 +144,6 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data, index });
+    this.server.to(roomId).emit('getUpdatedDraw', { data, index });
   }
 }
