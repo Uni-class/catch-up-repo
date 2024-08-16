@@ -28,7 +28,7 @@ const getEventAndRecord = (
   return ["updated", Object.values(updated)[0][1]];
 };
 
-export const useHostSocket = () => {
+export const useHostSocket = (userId=8,roomId=1) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -41,7 +41,7 @@ export const useHostSocket = () => {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("createRoom", { userId: 1, roomId: 1 });
+    socket.emit("createRoom", { userId: userId, roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
@@ -51,7 +51,7 @@ export const useHostSocket = () => {
         if (isEmpty(record)) {
           return;
         }
-        const messageBody = { index: 1, record, userId: 1 };
+        const messageBody = { index: 1, record, userId: userId };
         switch (action) {
           case "added":
             socket.emit("sendAddedDraw", messageBody);
@@ -71,6 +71,6 @@ export const useHostSocket = () => {
     return () => {
       socket.disconnect();
     };
-  }, [store]);
+  }, [roomId, store, userId]);
   return store;
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
 
-export const useParticipantSocket = () => {
+export const useParticipantSocket = (userId = 10, roomId = 1) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -15,7 +15,7 @@ export const useParticipantSocket = () => {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("joinRoom", { userId: 2, roomId: 1 });
+    socket.emit("joinRoom", { userId: userId, roomId: roomId });
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
@@ -40,6 +40,6 @@ export const useParticipantSocket = () => {
     return () => {
       socket.disconnect();
     };
-  }, [store]);
+  }, [roomId, store, userId]);
   return store;
 };
