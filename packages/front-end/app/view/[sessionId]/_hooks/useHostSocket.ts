@@ -16,7 +16,7 @@ const getEventAndRecord = (
   changes: RecordsDiff<TLRecord>
 ): [
   action: "added" | "removed" | "updated",
-  record: TLRecord[] | RecordId<any>[] | TLRecord,
+  record: TLRecord[] | RecordId<any>[]
 ] => {
   if (!isEmpty(changes.added)) {
     return ["added", Object.values(changes.added)];
@@ -25,7 +25,6 @@ const getEventAndRecord = (
     return ["removed", Object.values(changes.removed).map((value) => value.id)];
   }
   const updated = changes.updated as unknown as TLRecord[][];
-  console.log(updated);
   return ["updated", Object.values(updated).map((e)=>e[1])];
 };
 
