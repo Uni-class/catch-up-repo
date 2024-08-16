@@ -113,36 +113,37 @@ export class SocketGateway
   @SubscribeMessage('sendPageNumber')
   async onSendPageNumber(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, data }: any,
+    @MessageBody() { roomId, userId, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data });
+    // TODO: if Host: broadcast to participants, else: broadcast to the host
+    this.server.to(roomId).emit('getPageNumber', { index, userId });
   }
 
   @SubscribeMessage('sendAddedDraw')
   async onSendAddedDraw(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, data }: any,
+    @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data });
+    this.server.to(roomId).emit('getPageNumber', { data, index });
   }
 
   @SubscribeMessage('sendRemovedDraw')
   async onSendRemovedDraw(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, data }: any,
+    @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data });
+    this.server.to(roomId).emit('getPageNumber', { data, index });
   }
 
   @SubscribeMessage('sendUpdatedDraw')
   async onSendUpdatedDraw(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, data }: any,
+    @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
-    this.server.to(roomId).emit('getPageNumber', { data });
+    this.server.to(roomId).emit('getPageNumber', { data, index });
   }
 }
