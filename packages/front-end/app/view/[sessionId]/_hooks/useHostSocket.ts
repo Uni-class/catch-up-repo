@@ -16,23 +16,16 @@ const getEventAndRecord = (
   changes: RecordsDiff<TLRecord>
 ): [
   action: "added" | "removed" | "updated",
-  record: {
-    added?: TLRecord[];
-    removed?: RecordId<any>[];
-    updated?: TLRecord;
-  },
+  record: TLRecord[] | RecordId<any>[] | TLRecord,
 ] => {
   if (!isEmpty(changes.added)) {
-    return ["added", { added: Object.values(changes.added) }];
+    return ["added", Object.values(changes.added)];
   }
   if (!isEmpty(changes.removed)) {
-    return [
-      "removed",
-      { removed: Object.values(changes.removed).map((value) => value.id) },
-    ];
+    return ["removed", Object.values(changes.removed).map((value) => value.id)];
   }
   const updated = changes.updated as unknown as TLRecord[][];
-  return ["updated", { updated: Object.values(updated)[0][1] }];
+  return ["updated", Object.values(updated)[0][1]];
 };
 
 export const useHostSocket = () => {
