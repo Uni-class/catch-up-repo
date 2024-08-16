@@ -1,5 +1,4 @@
 import Button from "@/components/Button";
-import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -7,6 +6,7 @@ import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
+import { Label } from "@/components/Label";
 
 interface PropType {
   data: User;
@@ -42,13 +42,13 @@ export default function UserProfileEdit({ data }: PropType) {
     }
   };
 
-
   return (
     <form
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "1em",
+        gap: "1rem",
+        width: "800px",
       })}
       ref={formRef}
       onSubmit={(e) => {
@@ -66,20 +66,21 @@ export default function UserProfileEdit({ data }: PropType) {
           gap: "1em",
         })}
       >
-        <Paragraph>프로필 사진</Paragraph>
+        <Label htmlFor="profileImage">프로필 사진</Label>
         <div className={css({ display: "flex", gap: "1.5rem" })}>
           <Image
             src={imageSrc}
             alt="프로필 사진"
             width={50}
             height={50}
-            className={css({ borderRadius: "50%",height:"50px" })}
+            className={css({ borderRadius: "50%", height: "50px" })}
           />
           <input
             type="file"
             accept="image/*"
             ref={fileInputRef}
             name="profileImage"
+            id="profileImage"
             onChange={handleImageChange}
             hidden
           />
@@ -89,20 +90,27 @@ export default function UserProfileEdit({ data }: PropType) {
                 fileInputRef.current.click();
               }
             }}
+            className={css({
+              backgroundColor: "green.600",
+              width: "200px",
+              height: "50px",
+            })}
           >
             수정하기
           </Button>
         </div>
-        <div>
-          <Paragraph>닉네임</Paragraph>
-          <LineEdit
-            placeholder="닉네임을 입력해 주세요."
-            defaultValue={data.nickname}
-            name="nickname"
-          />
-        </div>
+        <Label htmlFor="nickname">닉네임</Label>
+        <LineEdit
+          placeholder="닉네임을 입력해 주세요."
+          defaultValue={data.nickname}
+          name="nickname"
+          id="nickname"
+          className={css({ height: "50px" })}
+        />
       </div>
-      <Button type="submit">저장하기</Button>
+      <Button type="submit" className={css({ height: "50px" })}>
+        저장하기
+      </Button>
     </form>
   );
 }

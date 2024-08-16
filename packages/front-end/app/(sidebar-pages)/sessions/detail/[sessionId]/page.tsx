@@ -5,6 +5,9 @@ import { useQueries } from "@tanstack/react-query";
 import HostSession from "./_components/HostSession";
 import { SessionResponseDto, User } from "@/schema/backend.schema";
 import ParticipantSession from "./_components/ParticipantSession";
+import { css } from "@/styled-system/css";
+import { Heading } from "@/components/Text";
+import Divider from "@/components/Divider";
 
 interface PropType {
   params: { sessionId: string };
@@ -35,14 +38,38 @@ export default function Page({ params }: PropType) {
   }
   const sessionData = sessionRes?.data;
   const userData = userRes?.data;
+  const isHost = userData?.userId === sessionData?.hostId;
 
   return (
-    sessionData !== undefined &&
-    userData !== undefined &&
-    (userData.userId === sessionData.hostId ? (
-      <HostSession sessionData={sessionData} />
-    ) : (
-      <ParticipantSession sessionData={sessionData} />
-    ))
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      })}
+    >
+      <Heading>{isHost ? "세션 정보 & 수정" : "세션 정보"}</Heading>
+      <Heading variant="sub5">
+        {isHost ? "세션 시작시 수정 정보 반영" : "세션의 상세 정보"}
+      </Heading>
+      <Divider />
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          flexGrow: 1,
+        })}
+      >
+        {sessionData !== undefined &&
+          userData !== undefined &&
+          (isHost ? (
+            <HostSession sessionData={sessionData} />
+          ) : (
+            <ParticipantSession sessionData={sessionData} />
+          ))}
+      </div>
+    </div>
   );
 }

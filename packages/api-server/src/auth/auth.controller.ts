@@ -58,9 +58,10 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
+      const cookieOptions = CookieOptions(this.configService);
       return res
-        .cookie('access_token', accessToken, CookieOptions)
-        .cookie('refresh_token', refreshToken, CookieOptions)
+        .cookie('access_token', accessToken, cookieOptions)
+        .cookie('refresh_token', refreshToken, cookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -84,9 +85,10 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
+      const cookieOptions = CookieOptions(this.configService);
       return res
-        .cookie('access_token', accessToken, CookieOptions)
-        .cookie('refresh_token', refreshToken, CookieOptions)
+        .cookie('access_token', accessToken, cookieOptions)
+        .cookie('refresh_token', refreshToken, cookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -109,9 +111,11 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
+      const cookieOptions = CookieOptions(this.configService);
+
       return res
-        .cookie('access_token', accessToken, CookieOptions)
-        .cookie('refresh_token', refreshToken, CookieOptions)
+        .cookie('access_token', accessToken, cookieOptions)
+        .cookie('refresh_token', refreshToken, cookieOptions)
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -137,8 +141,9 @@ export class AuthController {
         .json({ msg: `This refresh token is not user's token` });
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
+    const cookieOptions = CookieOptions(this.configService);
     return res
-      .cookie('access_token', newAccessToken, CookieOptions)
+      .cookie('access_token', newAccessToken, cookieOptions)
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
   }
