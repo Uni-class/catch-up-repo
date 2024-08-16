@@ -8,6 +8,7 @@ import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
+import { useParticipantSocket } from "../_hooks/useParticipantSocket";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -37,8 +38,7 @@ export default function ParticipantViewer({
     enabled: !!joinQuery.data,
   });
   const data = response?.data;
-  console.log("req to", `/session/${params.sessionId}`, params);
-  console.log({ data });
+  const store = useParticipantSocket();
 
   if (isLoading || joinQuery.isLoading) {
     return <p>로딩...</p>;
@@ -57,7 +57,7 @@ export default function ParticipantViewer({
     >
       <PDFViewer documentURL={data.fileList[0]?.url} />
       <div className={css({ width: "100%", position: "absolute", inset: 0 })}>
-        <Tldraw />
+        <Tldraw store={store} />
       </div>
     </div>
   ) : (

@@ -1,12 +1,15 @@
 import { ConfigService } from '@nestjs/config';
 
-const configService = new ConfigService();
-export const CookieOptions: {
-  sameSite: 'strict';
+export const CookieOptions = (
+  configService: ConfigService,
+): {
+  sameSite: 'lax';
   httpOnly: boolean;
   domain: string;
-} = {
-  sameSite: 'strict',
-  httpOnly: true,
-  domain: configService.get<string>('CLIENT_DOMAIN'),
+} => {
+  return {
+    sameSite: 'lax',
+    httpOnly: true,
+    domain: '.' + configService.get<string>('COOKIE_DOMAIN'),
+  };
 };

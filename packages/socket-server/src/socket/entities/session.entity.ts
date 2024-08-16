@@ -9,47 +9,39 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsDate, IsNumber, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../users/entities/user.entity';
-import { SessionFile } from '../../session-files/entities/session-file.entity';
-import { UserSession } from '../../user-sessions/entities/user-session.entity';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { User } from './user.entity';
+import { SessionFile } from './session-file.entity';
+import { UserSession } from './user-session.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity('sessions')
 export class Session {
-  @ApiProperty()
   @IsNumber()
   @PrimaryGeneratedColumn()
   sessionId: number;
 
-  @ApiProperty()
   @IsString()
   @Column()
   sessionName: string;
 
-  @ApiProperty()
   @IsNumber()
   @Column()
   hostId: number;
 
-  @ApiProperty()
   @IsString()
   @Exclude()
   @Column()
   sessionCode: string;
 
-  @ApiProperty()
   @IsDate()
   @CreateDateColumn()
   createdAt: string;
 
-  @ApiProperty()
   @IsDate()
   @UpdateDateColumn()
   updatedAt: string;
 
-  @ApiProperty()
   @IsDate()
   @DeleteDateColumn()
   closedAt: string;

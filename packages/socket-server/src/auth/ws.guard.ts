@@ -6,12 +6,12 @@ export class WsGuard implements CanActivate {
   constructor() {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const token = context.switchToWs().getClient().handshake.headers.cookies;
-    console.log(token);
-    if (token === undefined) throw new WsException('No token provided');
+    const cookies = context.switchToWs().getClient().handshake.headers.cookie;
+    const access_token = cookies.get('access_token');
 
     try {
-      console.log(token);
+      console.log(access_token);
+      context.switchToWs().getClient().handshake.headers.user = access_token;
       return true;
     } catch (ex) {
       throw new WsException(ex.message);

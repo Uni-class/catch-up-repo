@@ -1,7 +1,6 @@
 import { Styles } from "@/styled-system/css";
 import { styled } from "@/styled-system/jsx";
 
-
 const subStyle: Styles = {
   opacity: 0.65,
 };
@@ -45,8 +44,8 @@ export const Paragraph = styled("p", {
 });
 
 export const Heading = styled("h1", {
-  base:{
-    fontWeight:700,
+  base: {
+    fontWeight: 700,
   },
   variants: {
     variant: {
@@ -68,9 +67,33 @@ export const Heading = styled("h1", {
       h6: {
         fontSize: "1.25rem",
       },
+      sub1: {
+        fontSize: "2.5rem",
+        ...subStyle,
+      },
+      sub2: {
+        fontSize: "2rem",
+        ...subStyle,
+      },
+      sub3: {
+        fontSize: "1.75rem",
+        ...subStyle,
+      },
+      sub4: {
+        fontSize: "1.5rem",
+        ...subStyle,
+      },
+      sub5: {
+        fontSize: "1.25rem",
+        ...subStyle,
+      },
+      sub6: {
+        fontSize: "1rem",
+        ...subStyle,
+      },
     },
   },
-  defaultVariants:{
-    variant:"h3",
-  }
+  defaultVariants: {
+    variant: "h3",
+  },
 });

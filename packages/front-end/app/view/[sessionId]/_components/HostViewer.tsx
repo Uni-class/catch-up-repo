@@ -8,12 +8,17 @@ import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
+import { useHostSocket } from "../_hooks/useHostSocket";
 
 interface SessionReturnType extends Session {
   fileList: File[];
 }
 
-export default function HostViewer({ params }: { params: { sessionId: string } }) {
+export default function HostViewer({
+  params,
+}: {
+  params: { sessionId: string };
+}) {
   const {
     data: response,
     isLoading,
@@ -25,8 +30,8 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
     },
   });
   const data = response?.data;
-  console.log("req to", `/session/${params.sessionId}`, params);
-  console.log({ data });
+
+  const store = useHostSocket();
 
   if (isLoading) {
     return <p>로딩...</p>;
@@ -44,8 +49,15 @@ export default function HostViewer({ params }: { params: { sessionId: string } }
       })}
     >
       <PDFViewer documentURL={data.fileList[0]?.url} />
-      <div className={css({ width: "100%", position: "absolute", inset: 0 })}>
-        <Tldraw />
+      <div
+        className={css({
+          width: "100%",
+          position: "absolute",
+          inset: 0,
+          zIndex: 50,
+        })}
+      >
+        <Tldraw store={store} />
       </div>
     </div>
   ) : (
