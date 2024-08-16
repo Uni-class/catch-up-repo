@@ -86,7 +86,6 @@ export class AuthController {
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
       const cookieOptions = CookieOptions(this.configService);
-      console.log(cookieOptions)
       return res
         .cookie('access_token', accessToken, cookieOptions)
         .cookie('refresh_token', refreshToken, cookieOptions)
