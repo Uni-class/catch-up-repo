@@ -33,10 +33,12 @@ export const useParticipantSocket = (userId = 10, roomId = 1) => {
     );
     socket.on(
       "getUpdatedDraw",
-      (message: { data: TLRecord; index: number }) => {
-        const updated = message.data;
-        store.update(updated.id, (_record) => {
-          return updated;
+      (message: { data: TLRecord[]; index: number }) => {
+        const updates = message.data;
+        updates.forEach((update) => {
+          store.update(update.id, (_record) => {
+            return update;
+          });
         });
       }
     );

@@ -43,8 +43,8 @@ export class SocketGateway
       console.log('invalid userId or roomId:', { userId, roomId });
       return false;
     }
-    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) {
-      console.log('invalid room for roomId:');
+    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) {
+      console.log('invalid room for roomId:', this.roomUsers, client.rooms);
       return false;
     }
     return true;

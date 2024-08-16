@@ -25,7 +25,8 @@ const getEventAndRecord = (
     return ["removed", Object.values(changes.removed).map((value) => value.id)];
   }
   const updated = changes.updated as unknown as TLRecord[][];
-  return ["updated", Object.values(updated)[0][1]];
+  console.log(updated);
+  return ["updated", Object.values(updated).map((e)=>e[1])];
 };
 
 export const useHostSocket = (userId = 8, roomId = 1) => {
@@ -53,7 +54,7 @@ export const useHostSocket = (userId = 8, roomId = 1) => {
         }
         const messageBody = {
           index: 1,
-          record,
+          data: record,
           userId: userId,
           roomId: roomId,
         };
