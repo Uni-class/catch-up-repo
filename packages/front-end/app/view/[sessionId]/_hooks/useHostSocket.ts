@@ -28,7 +28,7 @@ const getEventAndRecord = (
   return ["updated", Object.values(updated)[0][1]];
 };
 
-export const useHostSocket = (userId=8,roomId=1) => {
+export const useHostSocket = (userId = 8, roomId = 1) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -51,7 +51,12 @@ export const useHostSocket = (userId=8,roomId=1) => {
         if (isEmpty(record)) {
           return;
         }
-        const messageBody = { index: 1, record, userId: userId };
+        const messageBody = {
+          index: 1,
+          record,
+          userId: userId,
+          roomId: roomId,
+        };
         switch (action) {
           case "added":
             socket.emit("sendAddedDraw", messageBody);

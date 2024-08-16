@@ -16,6 +16,9 @@ export const useParticipantSocket = (userId = 10, roomId = 1) => {
       console.log("Connected to WebSocket server");
     });
     socket.emit("joinRoom", { userId: userId, roomId: roomId });
+    socket.on("userList", (userList: any) => {
+      console.log({ userList });
+    });
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {

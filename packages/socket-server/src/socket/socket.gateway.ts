@@ -39,8 +39,14 @@ export class SocketGateway
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId) return false;
-    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return false;
+    if (!userId || !roomId) {
+      console.log('invalid userId or roomId:', { userId, roomId });
+      return false;
+    }
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) {
+      console.log('invalid room for roomId:');
+      return false;
+    }
     return true;
   }
 
