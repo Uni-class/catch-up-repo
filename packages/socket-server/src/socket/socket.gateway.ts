@@ -39,19 +39,24 @@ export class SocketGateway
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
       console.log(socket.id);
-      console.log('WebSocket Gateway initialized');
     });
   }
 
   async handleConnection(client: Socket): Promise<void> {
     const userId = await this.socketService.validateUser(client);
-    if (!userId) return;
+    if (!userId) client.disconnect(true);
     client[client.id] = userId;
     this.clients.add(client);
     return;
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
+    const userId = await this.socketService.validateUser(client);
+    console.log(userId);
+    for (const roomId of client.rooms) {
+      this.roomUsers[roomId].delete(userId);
+      if (this.roomUsers[roomId].size === 0) delete this.roomUsers[roomId];
+    }
     client.disconnect(true);
     console.log('disconnected');
   }
