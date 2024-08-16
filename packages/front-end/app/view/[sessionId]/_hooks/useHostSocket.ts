@@ -3,23 +3,36 @@ import { io } from "socket.io-client";
 import {
   createTLStore,
   defaultShapeUtils,
+  RecordId,
   RecordsDiff,
   TLRecord,
 } from "tldraw";
 
-const isEmpty = (record: Object) => {
+const isEmpty = (record: { [key: string]: any }) => {
   return Object.keys(record).length == 0;
 };
 
-const getRecord = (changes: RecordsDiff<TLRecord>) => {
+const getEventAndRecord = (
+  changes: RecordsDiff<TLRecord>
+): [
+  action: "added" | "removed" | "updated",
+  record: {
+    added?: TLRecord[];
+    removed?: RecordId<any>[];
+    updated?: TLRecord;
+  },
+] => {
   if (!isEmpty(changes.added)) {
-    return { added: Object.values(changes.added) };
+    return ["added", { added: Object.values(changes.added) }];
   }
   if (!isEmpty(changes.removed)) {
-    return { removed: Object.values(changes.removed).map((value)=>value.id) };
+    return [
+      "removed",
+      { removed: Object.values(changes.removed).map((value) => value.id) },
+    ];
   }
   const updated = changes.updated as unknown as TLRecord[][];
-  return { updated: Object.values(updated)[0][1] };
+  return ["updated", { updated: Object.values(updated)[0][1] }];
 };
 
 export const useHostSocket = () => {
@@ -41,15 +54,24 @@ export const useHostSocket = () => {
     });
     store.listen(
       ({ changes }) => {
-        const record = getRecord(changes);
+        const [action, record] = getEventAndRecord(changes);
         if (isEmpty(record)) {
           return;
         }
-        socket.emit("sendMessage", {
-          userId: 1,
-          roomId: 1,
-          data: record,
-        });
+        const messageBody = { index: 1, record, userId: 1 };
+        switch (action) {
+          case "added":
+            socket.emit("sendAddedDraw", messageBody);
+            break;
+          case "removed":
+            socket.emit("sendRemovedDraw", messageBody);
+            break;
+          case "updated":
+            socket.emit("sendUpdatedDraw", messageBody);
+            break;
+          default:
+            break;
+        }
       },
       { source: "user", scope: "document" }
     );
