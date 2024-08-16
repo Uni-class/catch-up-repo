@@ -17,25 +17,24 @@ export const useParticipantSocket = () => {
     });
     socket.emit("joinRoom", { userId: 2, roomId: 1 });
     socket.on(
-      "getData",
-      (message: {
-        data: {
-          added?: TLRecord[];
-          updated?: TLRecord;
-          removed?: RecordId<any>[];
-        };
-      }) => {
-        const { added, updated, removed } = message.data;
-        if (added) {
-            console.log(added);
-          store.put(added);
-        } else if (updated) {
-          store.update(updated.id, (_record) => {
-            return updated;
-          });
-        } else if (removed) {
-          store.remove(removed);
-        }
+      "getAddedDraw",
+      (message: { data: TLRecord[]; index: number }) => {
+        store.put(message.data);
+      }
+    );
+    socket.on(
+      "getRemovedDraw",
+      (message: { data: RecordId<any>[]; index: number }) => {
+        store.remove(message.data);
+      }
+    );
+    socket.on(
+      "getUpdatedDraw",
+      (message: { data: TLRecord; index: number }) => {
+        const updated = message.data;
+        store.update(updated.id, (_record) => {
+          return updated;
+        });
       }
     );
     return () => {
