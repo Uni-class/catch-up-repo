@@ -34,6 +34,7 @@ export class SocketGateway
   server: Server;
 
   roomUsers: { [key: string]: Set<number> } = {};
+  roomHost: { [key: string]: number } = {};
   clientUserId: { [key: string]: number } = {};
 
   async afterInit(server: Server) {
@@ -56,6 +57,9 @@ export class SocketGateway
     for (const roomId of client.rooms) {
       this.roomUsers[roomId].delete(userId);
       if (this.roomUsers[roomId].size === 0) delete this.roomUsers[roomId];
+      if (this.roomHost[roomId] === userId) {
+        this.server.to(roomId).emit('hostExist', '0');
+      }
     }
     client.disconnect(true);
     console.log('disconnected');
@@ -70,8 +74,10 @@ export class SocketGateway
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
+    this.roomHost[roomId] = userId;
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
+    this.server.to(roomId).emit('hostExist', '1');
     this.server.to(roomId).emit('userList', {
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
@@ -100,11 +106,11 @@ export class SocketGateway
   @SubscribeMessage('sendMessage')
   async onSendMessage(
     @ConnectedSocket() client: any,
-    @MessageBody() { userId, roomId, data }: any,
+    @MessageBody() { roomId, data }: any,
   ): Promise<any> {
-    if (!userId || !roomId) return;
+    const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId || userId !== this.roomHost[roomId]) return;
     if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
-    if (this.roomUsers[roomId][0] !== userId) return;
     this.server.to(roomId).emit('getData', { data });
   }
 }
