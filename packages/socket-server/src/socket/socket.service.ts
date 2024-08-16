@@ -2,8 +2,7 @@ import { Injectable, UseFilters } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from '../auth/jwt.payload';
-import { WsException } from '@nestjs/websockets';
-import { WsExceptionFilter } from '../exception/ws-exception.filter';
+import cookie from 'cookie';
 
 @Injectable()
 export class SocketService {
@@ -16,7 +15,8 @@ export class SocketService {
     try {
       const cookies = socket.request.headers.cookie;
       if (!cookies) return 0;
-      const accessToken = JSON.parse(cookies).access_token;
+      const cookieList = cookie.parse(cookies);
+      const accessToken = cookieList['access_token'];
       if (!accessToken) return 0;
       const userId = await this.jwtService
         .verifyAsync(accessToken, {

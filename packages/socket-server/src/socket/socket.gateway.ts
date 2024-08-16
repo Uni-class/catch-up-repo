@@ -33,8 +33,8 @@ export class SocketGateway
   @WebSocketServer()
   server: Server;
 
-  connectedClients: { [socketId: string]: boolean } = {};
   roomUsers: { [key: string]: Set<number> } = {};
+  clientUserId: { [key: string]: number } = {};
 
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
@@ -46,17 +46,12 @@ export class SocketGateway
   async handleConnection(client: Socket): Promise<void> {
     const userId = await this.socketService.validateUser(client);
     if (!userId) return;
-    if (this.connectedClients[client.id]) {
-      client.disconnect(true);
-      return;
-    }
+    client[client.id] = userId;
     this.clients.add(client);
-    this.connectedClients[userId] = true;
     return;
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
-    this.connectedClients[client.id] = false;
     client.disconnect(true);
     console.log('disconnected');
   }
@@ -64,9 +59,9 @@ export class SocketGateway
   @SubscribeMessage('createRoom')
   async onCreateRoom(
     @ConnectedSocket() client: any,
-    @MessageBody() { userId, roomId }: any,
+    @MessageBody() { roomId }: any,
   ): Promise<any> {
-    //const userId: number = await this.socketService.validateUser(client);
+    const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
@@ -80,9 +75,9 @@ export class SocketGateway
   @SubscribeMessage('joinRoom')
   async onJoinRoom(
     @ConnectedSocket() client: any,
-    @MessageBody() { userId, roomId }: any,
+    @MessageBody() { roomId }: any,
   ): Promise<any> {
-    //const userId: number = await this.socketService.validateUser(client);
+    const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
     client.join(roomId);
