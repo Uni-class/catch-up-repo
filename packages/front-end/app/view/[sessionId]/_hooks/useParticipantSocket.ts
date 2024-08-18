@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
 
-export const useParticipantSocket = () => {
+export const useParticipantSocket = (userId = 10, roomId = 1) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -15,32 +15,36 @@ export const useParticipantSocket = () => {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("joinRoom", { userId: 2, roomId: 1 });
+    socket.emit("joinRoom", { userId: userId, roomId: roomId });
+    socket.on("userList", (userList: any) => {
+      console.log({ userList });
+    });
     socket.on(
-      "getData",
-      (message: {
-        data: {
-          added?: TLRecord[];
-          updated?: TLRecord;
-          removed?: RecordId<any>[];
-        };
-      }) => {
-        const { added, updated, removed } = message.data;
-        if (added) {
-            console.log(added);
-          store.put(added);
-        } else if (updated) {
-          store.update(updated.id, (_record) => {
-            return updated;
+      "getAddedDraw",
+      (message: { data: TLRecord[]; index: number }) => {
+        store.put(message.data);
+      }
+    );
+    socket.on(
+      "getRemovedDraw",
+      (message: { data: RecordId<any>[]; index: number }) => {
+        store.remove(message.data);
+      }
+    );
+    socket.on(
+      "getUpdatedDraw",
+      (message: { data: TLRecord[]; index: number }) => {
+        const updates = message.data;
+        updates.forEach((update) => {
+          store.update(update.id, (_record) => {
+            return update;
           });
-        } else if (removed) {
-          store.remove(removed);
-        }
+        });
       }
     );
     return () => {
       socket.disconnect();
     };
-  }, [store]);
+  }, [roomId, store, userId]);
   return store;
 };

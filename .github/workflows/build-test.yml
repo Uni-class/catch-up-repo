@@ -75,7 +75,6 @@ jobs:
 
   build-socket-server:
     if: contains(github.event.pull_request.changed_files, 'packages/socket-server/')
-
     runs-on: ubuntu-latest
 
     steps:

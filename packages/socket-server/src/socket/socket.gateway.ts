@@ -37,6 +37,19 @@ export class SocketGateway
   roomHost: { [key: string]: number } = {};
   clientUserId: { [key: string]: number } = {};
 
+  private async isValidEvent(client: any, roomId: any) {
+    const userId: number = await this.socketService.validateUser(client);
+    if (!userId || !roomId) {
+      console.log('invalid userId or roomId:', { userId, roomId });
+      return false;
+    }
+    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) {
+      console.log('invalid room for roomId:', this.roomUsers, client.rooms);
+      return false;
+    }
+    return true;
+  }
+
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
       console.log(socket.id);
@@ -103,14 +116,40 @@ export class SocketGateway
     });
   }
 
-  @SubscribeMessage('sendMessage')
-  async onSendMessage(
+  @SubscribeMessage('sendPageNumber')
+  async onSendPageNumber(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, data }: any,
+    @MessageBody() { roomId, userId, index }: any,
   ): Promise<any> {
-    const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId || userId !== this.roomHost[roomId]) return;
-    if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
-    this.server.to(roomId).emit('getData', { data });
+    if (!this.isValidEvent(client, roomId)) return;
+    // TODO: if Host: broadcast to participants, else: broadcast to the host
+    this.server.to(roomId).emit('getPageNumber', { index, userId });
+  }
+
+  @SubscribeMessage('sendAddedDraw')
+  async onSendAddedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data, index }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getAddedDraw', { data, index });
+  }
+
+  @SubscribeMessage('sendRemovedDraw')
+  async onSendRemovedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data, index }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getRemovedDraw', { data, index });
+  }
+
+  @SubscribeMessage('sendUpdatedDraw')
+  async onSendUpdatedDraw(
+    @ConnectedSocket() client: any,
+    @MessageBody() { roomId, data, index }: any,
+  ): Promise<any> {
+    if (!this.isValidEvent(client, roomId)) return;
+    this.server.to(roomId).emit('getUpdatedDraw', { data, index });
   }
 }
