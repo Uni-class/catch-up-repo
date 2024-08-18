@@ -3,10 +3,11 @@ name: Build-test
 on:
   pull_request:
     branches: [dev]
-    types: ['opened']
+    types: ["opened", "synchronize"]
 
 jobs:
   build-front-end:
+    if: contains(github.event.pull_request.changed_files, 'packages/front-end/')
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +18,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
@@ -25,16 +26,26 @@ jobs:
       - name: Set Yarn version
         run: corepack prepare yarn@4.3.1 --activate
 
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/packages/front-end/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('packages/front-end/**/*.js', '**/*.jsx', 'packages/front-end/**/*.ts', 'packages/front-end/**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
       - name: Install dependencies
         run: yarn install
         env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
           YARN_ENABLE_HARDENED_MODE: 0
 
       - name: Build front-end
         run: yarn front-end run build
 
   build-api-server:
+    if: contains(github.event.pull_request.changed_files, 'packages/api-server/')
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +56,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
@@ -63,6 +74,7 @@ jobs:
         run: yarn api-server run build
 
   build-socket-server:
+    if: contains(github.event.pull_request.changed_files, 'packages/socket-server/')
     runs-on: ubuntu-latest
 
     steps:
@@ -73,7 +85,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Enable Corepack
         run: corepack enable
