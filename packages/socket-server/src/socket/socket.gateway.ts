@@ -35,7 +35,9 @@ export class SocketGateway
 
   roomUsers: { [key: string]: Set<number> } = {};
   roomHost: { [key: string]: number } = {};
+  roomHostSocket: { [key: string]: Socket } = {};
   clientUserId: { [key: string]: number } = {};
+  roomPageViewerCount: { [key: string]: number[] } = {};
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
@@ -47,7 +49,7 @@ export class SocketGateway
       console.log('invalid room for roomId:', this.roomUsers, client.rooms);
       return false;
     }
-    return true;
+    return userId;
   }
 
   async afterInit(server: Server) {
@@ -80,7 +82,7 @@ export class SocketGateway
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(
-    @ConnectedSocket() client: any,
+    @ConnectedSocket() client: Socket,
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
@@ -88,8 +90,11 @@ export class SocketGateway
     if (client.rooms.has(roomId)) return;
     client.join(roomId);
     this.roomHost[roomId] = userId;
+    this.roomHostSocket[roomId] = client;
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
+    if (!this.roomPageViewerCount[roomId])
+      this.roomPageViewerCount[roomId] = new Array<number>(100);
     this.server.to(roomId).emit('hostExist', '1');
     this.server.to(roomId).emit('userList', {
       roomId,
@@ -99,7 +104,7 @@ export class SocketGateway
 
   @SubscribeMessage('joinRoom')
   async onJoinRoom(
-    @ConnectedSocket() client: any,
+    @ConnectedSocket() client: Socket,
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
@@ -118,38 +123,52 @@ export class SocketGateway
 
   @SubscribeMessage('sendPageNumber')
   async onSendPageNumber(
-    @ConnectedSocket() client: any,
-    @MessageBody() { roomId, userId, index }: any,
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { roomId, beforeIndex, currentIndex }: any,
   ): Promise<any> {
-    if (!this.isValidEvent(client, roomId)) return;
-    // TODO: if Host: broadcast to participants, else: broadcast to the host
-    this.server.to(roomId).emit('getPageNumber', { index, userId });
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
+    if (userId === this.roomHost[roomId]) {
+      this.server.to(roomId).emit('getPageNumber', { currentIndex, userId });
+    } else {
+      this.roomPageViewerCount[roomId][beforeIndex] -= 1;
+      this.roomPageViewerCount[roomId][currentIndex] += 1;
+      this.roomHostSocket[roomId].emit('getPageNumber', {
+        roomPageViewerCount: this.roomPageViewerCount[roomId],
+      });
+    }
   }
 
   @SubscribeMessage('sendAddedDraw')
   async onSendAddedDraw(
-    @ConnectedSocket() client: any,
+    @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!this.isValidEvent(client, roomId)) return;
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
+    if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getAddedDraw', { data, index });
   }
 
   @SubscribeMessage('sendRemovedDraw')
   async onSendRemovedDraw(
-    @ConnectedSocket() client: any,
+    @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!this.isValidEvent(client, roomId)) return;
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
+    if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getRemovedDraw', { data, index });
   }
 
   @SubscribeMessage('sendUpdatedDraw')
   async onSendUpdatedDraw(
-    @ConnectedSocket() client: any,
+    @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!this.isValidEvent(client, roomId)) return;
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
+    if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getUpdatedDraw', { data, index });
   }
 }
