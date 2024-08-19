@@ -93,6 +93,8 @@ export class SocketGateway
     this.roomHostSocket[roomId] = client;
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
+    if (!this.roomPageViewerCount[roomId])
+      this.roomPageViewerCount[roomId] = new Array<number>(100);
     this.server.to(roomId).emit('hostExist', '1');
     this.server.to(roomId).emit('userList', {
       roomId,
@@ -122,14 +124,18 @@ export class SocketGateway
   @SubscribeMessage('sendPageNumber')
   async onSendPageNumber(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, index }: any,
+    @MessageBody() { roomId, beforeIndex, currentIndex }: any,
   ): Promise<any> {
     if (!(await this.isValidEvent(client, roomId))) return;
     const userId: number = await this.socketService.validateUser(client);
     if (userId === this.roomHost[roomId]) {
-      this.server.to(roomId).emit('getPageNumber', { index, userId });
+      this.server.to(roomId).emit('getPageNumber', { currentIndex, userId });
     } else {
-      this.roomHostSocket[roomId].emit('getPageNumber', {});
+      this.roomPageViewerCount[roomId][beforeIndex] -= 1;
+      this.roomPageViewerCount[roomId][currentIndex] += 1;
+      this.roomHostSocket[roomId].emit('getPageNumber', {
+        roomPageViewerCount: this.roomPageViewerCount[roomId],
+      });
     }
   }
 
