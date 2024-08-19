@@ -49,7 +49,7 @@ export class SocketGateway
       console.log('invalid room for roomId:', this.roomUsers, client.rooms);
       return false;
     }
-    return true;
+    return userId;
   }
 
   async afterInit(server: Server) {
@@ -126,8 +126,8 @@ export class SocketGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, beforeIndex, currentIndex }: any,
   ): Promise<any> {
-    if (!(await this.isValidEvent(client, roomId))) return;
-    const userId: number = await this.socketService.validateUser(client);
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
     if (userId === this.roomHost[roomId]) {
       this.server.to(roomId).emit('getPageNumber', { currentIndex, userId });
     } else {
@@ -144,8 +144,8 @@ export class SocketGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!(await this.isValidEvent(client, roomId))) return;
-    const userId: number = await this.socketService.validateUser(client);
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getAddedDraw', { data, index });
   }
@@ -155,8 +155,8 @@ export class SocketGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!(await this.isValidEvent(client, roomId))) return;
-    const userId: number = await this.socketService.validateUser(client);
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getRemovedDraw', { data, index });
   }
@@ -166,8 +166,8 @@ export class SocketGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
-    if (!(await this.isValidEvent(client, roomId))) return;
-    const userId: number = await this.socketService.validateUser(client);
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
     this.server.to(roomId).emit('getUpdatedDraw', { data, index });
   }
