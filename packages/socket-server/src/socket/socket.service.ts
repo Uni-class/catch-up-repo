@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from '../auth/jwt.payload';
 import cookie from 'cookie';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class SocketService {
@@ -11,7 +12,7 @@ export class SocketService {
     private configService: ConfigService,
   ) {}
 
-  async validateUser(socket: any): Promise<number> {
+  async validateUser(socket: Socket): Promise<number> {
     try {
       const cookies = socket.request.headers.cookie;
       if (!cookies) return 0;
