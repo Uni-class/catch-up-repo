@@ -52,10 +52,16 @@ export class UserSessionFile {
   deletedAt: string;
 
   @ManyToOne(() => UserSession, (userSession) => userSession.userSessionFiles)
-  @JoinColumn({ name: 'userSession_id', referencedColumnName: 'userSessionId' })
+  @JoinColumn({
+    name: 'user_session_id',
+    referencedColumnName: 'userSessionId',
+  })
   userSession: UserSession;
 
   @ManyToOne(() => SessionFile, (sessionFile) => sessionFile.userSessionFiles)
-  @JoinColumn({ name: 'sessionFile_id', referencedColumnName: 'sessionFileId' })
+  @JoinColumn({
+    name: 'session_file_id',
+    referencedColumnName: 'sessionFileId',
+  })
   sessionFile: SessionFile;
 }
