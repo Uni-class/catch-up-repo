@@ -57,7 +57,7 @@ export default function HostViewer({
           zIndex: 50,
         })}
       >
-        <Tldraw store={store} />
+        {/* <Tldraw store={store} /> */}
       </div>
     </div>
   ) : (
