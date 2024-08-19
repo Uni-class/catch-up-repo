@@ -119,9 +119,10 @@ export class SocketGateway
   @SubscribeMessage('sendPageNumber')
   async onSendPageNumber(
     @ConnectedSocket() client: any,
-    @MessageBody() { roomId, userId, index }: any,
+    @MessageBody() { roomId, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
+    const userId: number = await this.socketService.validateUser(client);
     // TODO: if Host: broadcast to participants, else: broadcast to the host
     this.server.to(roomId).emit('getPageNumber', { index, userId });
   }
@@ -132,6 +133,7 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
+    const userId: number = await this.socketService.validateUser(client);
     this.server.to(roomId).emit('getAddedDraw', { data, index });
   }
 
@@ -141,6 +143,7 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
+    const userId: number = await this.socketService.validateUser(client);
     this.server.to(roomId).emit('getRemovedDraw', { data, index });
   }
 
@@ -150,6 +153,7 @@ export class SocketGateway
     @MessageBody() { roomId, data, index }: any,
   ): Promise<any> {
     if (!this.isValidEvent(client, roomId)) return;
+    const userId: number = await this.socketService.validateUser(client);
     this.server.to(roomId).emit('getUpdatedDraw', { data, index });
   }
 }
