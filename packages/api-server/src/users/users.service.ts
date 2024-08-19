@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,6 +14,8 @@ import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
 import { File } from '../files/entities/file.entity';
+import { SessionFile } from '../session-files/entities/session-file.entity';
+import { UserSessionFile } from '../user-session-files/entities/user-session-file.entity';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +28,10 @@ export class UsersService {
     private readonly userSessionRepository: Repository<UserSession>,
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
+    @InjectRepository(SessionFile)
+    private readonly sessionFilesRepository: Repository<SessionFile>,
+    @InjectRepository(UserSessionFile)
+    private readonly userSessionFilesRepository: Repository<UserSessionFile>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newUser = this.userRepository.create(createUserDto);
@@ -104,7 +111,27 @@ export class UsersService {
     const newUserSession =
       this.userSessionRepository.create(createUserSessionDto);
     const userSession = await this.userSessionRepository.save(newUserSession);
+
+    await this.createUserSessionFile(
+      session.sessionId,
+      userSession.userSessionId,
+    );
+
     return userSession;
+  }
+
+  async createUserSessionFile(sessionId: number, userSessionId: number) {
+    const sessionFiles = await this.sessionFilesRepository.findBy({
+      sessionId,
+    });
+
+    for (const sessionFile of sessionFiles) {
+      const newUserSessionFile = this.userSessionFilesRepository.create({
+        userSessionId,
+        sessionFileId: sessionFile.sessionFileId,
+      });
+      await this.userSessionFilesRepository.save(newUserSessionFile);
+    }
   }
 
   async patchUserSession(updateUserSessionDto: UpdateUserSessionDto) {
