@@ -10,10 +10,18 @@ import { SessionFile } from '../session-files/entities/session-file.entity';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
+import { UserSessionFile } from '../user-session-files/entities/user-session-file.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Session, File, SessionFile, User, UserSession]),
+    TypeOrmModule.forFeature([
+      Session,
+      File,
+      SessionFile,
+      User,
+      UserSession,
+      UserSessionFile,
+    ]),
   ],
   controllers: [SessionsController],
   providers: [SessionsService, FilesService, SessionFilesService, UsersService],
