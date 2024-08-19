@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useResizeObserver } from "usehooks-ts";
 import { pdfjs } from "react-pdf";
 
 export const useSetSize = () => {
