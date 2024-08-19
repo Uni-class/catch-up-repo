@@ -37,6 +37,7 @@ export class SocketGateway
   roomHost: { [key: string]: number } = {};
   roomHostSocket: { [key: string]: Socket } = {};
   clientUserId: { [key: string]: number } = {};
+  roomPageViewerCount: { [key: string]: number[] } = {};
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
@@ -125,7 +126,11 @@ export class SocketGateway
   ): Promise<any> {
     if (!(await this.isValidEvent(client, roomId))) return;
     const userId: number = await this.socketService.validateUser(client);
-    this.server.to(roomId).emit('getPageNumber', { index, userId });
+    if (userId === this.roomHost[roomId]) {
+      this.server.to(roomId).emit('getPageNumber', { index, userId });
+    } else {
+      this.roomHostSocket[roomId].emit('getPageNumber', {});
+    }
   }
 
   @SubscribeMessage('sendAddedDraw')
