@@ -90,7 +90,7 @@ export default function PDFViewer({
         <Document
           file={documentURL}
           onLoadSuccess={onDocumentLoadSuccess}
-          options={cmapOption}
+          options={cmapOption} // JSDocs
         >
           <Page
             pageIndex={currentPageIndex}
