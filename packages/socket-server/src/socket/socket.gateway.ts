@@ -88,6 +88,7 @@ export class SocketGateway
     const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId)) return;
+    if (!(await this.socketService.checkHostSession(userId, roomId))) return;
     client.join(roomId);
     this.roomHost[roomId] = userId;
     this.roomHostSocket[roomId] = client;
@@ -110,6 +111,7 @@ export class SocketGateway
     const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
     if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (!(await this.socketService.checkUserSession(userId, roomId))) return;
     client.join(roomId);
     if (!this.roomUsers[roomId].has(userId)) {
       this.roomUsers[roomId].add(userId);
