@@ -14,6 +14,7 @@ import { UserSessionsModule } from './user-sessions/user-sessions.module';
 import { UserFilesModule } from './user-files/user-files.module';
 import { SessionFilesModule } from './session-files/session-files.module';
 import { UserSessionFilesModule } from './user-session-files/user-session-files.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -34,6 +35,13 @@ import { UserSessionFilesModule } from './user-session-files/user-session-files.
         },
         namingStrategy: new SnakeNamingStrategy(),
         useUTC: true,
+      }),
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
     AuthModule,
