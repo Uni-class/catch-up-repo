@@ -44,4 +44,12 @@ export class SocketService {
     const session = await this.sessionRepository.findOneBy({ sessionId });
     return session.sessionId === sessionId;
   }
+
+  async checkUserSession(userId: number, sessionId: number): Promise<boolean> {
+    const userSession = await this.userSessionRepository.findOneBy({
+      userId,
+      sessionId,
+    });
+    return userSession.sessionId !== null;
+  }
 }
