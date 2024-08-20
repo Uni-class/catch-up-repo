@@ -4,12 +4,20 @@ import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from '../auth/jwt.payload';
 import cookie from 'cookie';
 import { Socket } from 'socket.io';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Session } from './entities/session.entity';
+import { Repository } from 'typeorm';
+import { UserSession } from './entities/user-session.entity';
 
 @Injectable()
 export class SocketService {
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
+    @InjectRepository(UserSession)
+    private readonly userSessionRepository: Repository<UserSession>,
   ) {}
 
   async validateUser(socket: Socket): Promise<number> {
@@ -30,5 +38,10 @@ export class SocketService {
     } catch (ex) {
       return 0;
     }
+  }
+
+  async checkHostSession(userId: number, sessionId: number): Promise<boolean> {
+    const session = await this.sessionRepository.findOneBy({ sessionId });
+    return session.sessionId === sessionId;
   }
 }
