@@ -6,10 +6,10 @@ export type CatDocument = HydratedDocument<Note>;
 @Schema()
 export class Note extends Document {
   @Prop()
-  userId: string;
+  userId: number;
 
   @Prop()
-  sessionId: string;
+  sessionId: number;
 
   @Prop()
   fileId: number;
