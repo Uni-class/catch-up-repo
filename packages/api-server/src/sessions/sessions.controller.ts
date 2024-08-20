@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Param,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { FilesService } from '../files/files.service';
@@ -24,6 +25,7 @@ import { SessionResponseDto } from './dto/session.response.dto';
 import { UsersService } from '../users/users.service';
 import { SessionStatusDto } from './dto/session-status.dto';
 import { SessionStatusResponseDto } from './dto/session-status-response.dto';
+import { GetSessionQueryDto } from './dto/get-session-query.dto';
 
 @ApiTags('Session')
 @ApiBearerAuth()
@@ -69,21 +71,32 @@ export class SessionsController {
     return new SessionResponseDto(session, fileList);
   }
 
-  @Get(':sessionId')
+  @Get()
   @ApiResponse({ type: SessionResponseDto })
   @UseGuards(JwtGuard)
   async getSessionInfo(
-    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @Query() { id, code }: GetSessionQueryDto,
     @UserId(ParseIntPipe) userId: number,
   ): Promise<SessionResponseDto> {
-    const session: Session = await this.sessionsService.getSessionAsUser(
-      sessionId,
-      null,
-    );
-    const sessionFiles: SessionFile[] = session.sessionFiles;
-    const fileList: File[] =
-      await this.sessionsService.getFileListBySessionFiles(sessionFiles);
-    return new SessionResponseDto(session, fileList);
+    if ((id && code) || !(id || code)) {
+      throw new BadRequestException('Invalid Request');
+    } else if (id) {
+      const session: Session = await this.sessionsService.getSessionAsUser(
+        id,
+        null,
+      );
+      const sessionFiles: SessionFile[] = session.sessionFiles;
+      const fileList: File[] =
+        await this.sessionsService.getFileListBySessionFiles(sessionFiles);
+      return new SessionResponseDto(session, fileList);
+    } else {
+      const session: Session =
+        await this.sessionsService.getSessionByCode(code);
+      const sessionFiles: SessionFile[] = session.sessionFiles;
+      const fileList: File[] =
+        await this.sessionsService.getFileListBySessionFiles(sessionFiles);
+      return new SessionResponseDto(session, fileList);
+    }
   }
 
   @Patch(':sessionId')

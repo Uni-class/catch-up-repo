@@ -9,7 +9,6 @@ import { FilesService } from '../files/files.service';
 import { File } from '../files/entities/file.entity';
 import { SessionStatusResponseDto } from './dto/session-status-response.dto';
 import bcrypt from 'bcrypt';
-import { session } from 'passport';
 
 @Injectable()
 export class SessionsService {
@@ -79,5 +78,17 @@ export class SessionsService {
     const session: Session = await this.findOne(sessionId);
     const code: string = bcrypt.hashSync(session.sessionName + Date.now(), 10);
     return code.slice(0, 6);
+  }
+
+  async getSessionByCode(sessionCode: string) {
+    const session: Session = await this.sessionRepository.findOneBy({
+      sessionCode,
+    });
+    if (!session) {
+      throw new BadRequestException(
+        `Session with Code: ${sessionCode} does not exist or you do not have permission to access it.`,
+      );
+    }
+    return session;
   }
 }
