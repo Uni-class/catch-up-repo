@@ -58,10 +58,17 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
-      const cookieOptions = CookieOptions(this.configService);
       return res
-        .cookie('access_token', accessToken, cookieOptions)
-        .cookie('refresh_token', refreshToken, cookieOptions)
+        .cookie(
+          'access_token',
+          accessToken,
+          await CookieOptions(this.configService, 1),
+        )
+        .cookie(
+          'refresh_token',
+          refreshToken,
+          await CookieOptions(this.configService, 0),
+        )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -85,10 +92,17 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
-      const cookieOptions = CookieOptions(this.configService);
       return res
-        .cookie('access_token', accessToken, cookieOptions)
-        .cookie('refresh_token', refreshToken, cookieOptions)
+        .cookie(
+          'access_token',
+          accessToken,
+          await CookieOptions(this.configService, 1),
+        )
+        .cookie(
+          'refresh_token',
+          refreshToken,
+          await CookieOptions(this.configService, 0),
+        )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -111,11 +125,17 @@ export class AuthController {
       const accessToken = await this.authService.generateAccessToken(user);
       const refreshToken = await this.authService.generateRefreshToken(user);
       await this.userService.update(user.userId, { refreshToken });
-      const cookieOptions = CookieOptions(this.configService);
-
       return res
-        .cookie('access_token', accessToken, cookieOptions)
-        .cookie('refresh_token', refreshToken, cookieOptions)
+        .cookie(
+          'access_token',
+          accessToken,
+          await CookieOptions(this.configService, 1),
+        )
+        .cookie(
+          'refresh_token',
+          refreshToken,
+          await CookieOptions(this.configService, 0),
+        )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
@@ -141,9 +161,12 @@ export class AuthController {
         .json({ msg: `This refresh token is not user's token` });
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
-    const cookieOptions = CookieOptions(this.configService);
     return res
-      .cookie('access_token', newAccessToken, cookieOptions)
+      .cookie(
+        'access_token',
+        newAccessToken,
+        await CookieOptions(this.configService, 1),
+      )
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
   }
@@ -158,8 +181,14 @@ export class AuthController {
     const result: UpdateResult =
       await this.authService.deleteRefreshTokenOfUser(userId);
     return res
-      .cookie('access_token', '', { ...CookieOptions, maxAge: 0 })
-      .cookie('refresh_token', '', { ...CookieOptions, maxAge: 0 })
+      .cookie('access_token', '', {
+        ...(await CookieOptions(this.configService, 1)),
+        maxAge: 0,
+      })
+      .cookie('refresh_token', '', {
+        ...(await CookieOptions(this.configService, 0)),
+        maxAge: 0,
+      })
       .send();
   }
 }
