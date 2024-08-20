@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -107,6 +108,13 @@ export class UsersService {
       throw new NotFoundException(
         `Session ${createUserSessionDto.sessionId} does not exist`,
       );
+    }
+    const userSessionCheck = await this.userSessionRepository.findBy({
+      userId: createUserSessionDto.userId,
+      sessionId: createUserSessionDto.sessionId,
+    });
+    if (userSessionCheck) {
+      throw new BadRequestException('You already joined this session.');
     }
     const newUserSession =
       this.userSessionRepository.create(createUserSessionDto);
