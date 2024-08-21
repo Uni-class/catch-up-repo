@@ -41,8 +41,11 @@ export class SocketService {
   }
 
   async checkHostSession(userId: number, sessionId: number): Promise<boolean> {
-    const session = await this.sessionRepository.findOneBy({ sessionId });
-    return session.sessionId === sessionId;
+    const session = await this.sessionRepository.findOneBy({
+      sessionId,
+      hostId: userId,
+    });
+    return session !== null;
   }
 
   async checkUserSession(userId: number, sessionId: number): Promise<boolean> {
