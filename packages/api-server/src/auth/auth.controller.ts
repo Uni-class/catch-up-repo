@@ -62,12 +62,12 @@ export class AuthController {
         .cookie(
           'access_token',
           accessToken,
-          await CookieOptions(this.configService, 1),
+          await CookieOptions(this.configService, 'accessToken'),
         )
         .cookie(
           'refresh_token',
           refreshToken,
-          await CookieOptions(this.configService, 0),
+          await CookieOptions(this.configService, 'refreshToken'),
         )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
@@ -96,12 +96,12 @@ export class AuthController {
         .cookie(
           'access_token',
           accessToken,
-          await CookieOptions(this.configService, 1),
+          await CookieOptions(this.configService, 'accessToken'),
         )
         .cookie(
           'refresh_token',
           refreshToken,
-          await CookieOptions(this.configService, 0),
+          await CookieOptions(this.configService, 'refreshToken'),
         )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
@@ -129,12 +129,12 @@ export class AuthController {
         .cookie(
           'access_token',
           accessToken,
-          await CookieOptions(this.configService, 1),
+          await CookieOptions(this.configService, 'accessToken'),
         )
         .cookie(
           'refresh_token',
           refreshToken,
-          await CookieOptions(this.configService, 0),
+          await CookieOptions(this.configService, 'refreshToken'),
         )
         .redirect(
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
@@ -165,7 +165,7 @@ export class AuthController {
       .cookie(
         'access_token',
         newAccessToken,
-        await CookieOptions(this.configService, 1),
+        await CookieOptions(this.configService, 'accessToken'),
       )
       .status(HttpStatus.CREATED)
       .json({ msg: 'Refresh token successfully.' });
@@ -181,14 +181,16 @@ export class AuthController {
     const result: UpdateResult =
       await this.authService.deleteRefreshTokenOfUser(userId);
     return res
-      .cookie('access_token', '', {
-        ...(await CookieOptions(this.configService, 1)),
-        maxAge: 0,
-      })
-      .cookie('refresh_token', '', {
-        ...(await CookieOptions(this.configService, 0)),
-        maxAge: 0,
-      })
+      .cookie(
+        'access_token',
+        '',
+        await CookieOptions(this.configService, 'logout'),
+      )
+      .cookie(
+        'refresh_token',
+        '',
+        await CookieOptions(this.configService, 'logout'),
+      )
       .send();
   }
 }
