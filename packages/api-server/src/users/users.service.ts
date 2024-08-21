@@ -109,12 +109,12 @@ export class UsersService {
         `Session ${createUserSessionDto.sessionId} does not exist`,
       );
     }
-    const userSessionCheck = await this.userSessionRepository.findBy({
+    const checkUserSession = await this.userSessionRepository.findOneBy({
       userId: createUserSessionDto.userId,
       sessionId: createUserSessionDto.sessionId,
     });
-    if (userSessionCheck) {
-      throw new BadRequestException('You already joined this session.');
+    if (checkUserSession) {
+      return checkUserSession;
     }
     const newUserSession =
       this.userSessionRepository.create(createUserSessionDto);
