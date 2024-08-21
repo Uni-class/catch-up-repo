@@ -5,12 +5,12 @@ import SidebarLink from "@/app/(sidebar-pages)/_components/Sidebar/SidebarLink";
 import Divider from "@/components/Divider";
 import SettingsIcon from "@/public/icons/settings.svg";
 import LogoutIcon from "@/public/icons/log-out.svg";
-import Image from "next/image";
 import { User } from "@/schema/backend.schema";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { apiClient } from "@/utils/axios";
 import { Paragraph } from "@/components/Text";
+import { ProfileImage } from "@/components/ProfileImage";
 
 export default function SidebarUserFetch() {
   const { data: response, isLoading } = useQuery<AxiosResponse<User>>({
@@ -52,8 +52,8 @@ function SidebarUser({ data }: PropType) {
     >
       <Paragraph variant="sub3">유저</Paragraph>
       <SidebarBaseElement active={isOpen} onClick={() => setIsOpen(!isOpen)}>
-        <Image
-          src={data.profileUrl ? data.profileUrl : "/icon/icon-google.svg"}
+        <ProfileImage
+          src={data.profileUrl}
           width={32}
           height={32}
           alt="프로필 사진"
