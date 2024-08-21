@@ -11,6 +11,8 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { UserSessionFile } from '../user-session-files/entities/user-session-file.entity';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Note, NoteSchema } from '../users/schemas/note.schema';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { UserSessionFile } from '../user-session-files/entities/user-session-fil
       UserSession,
       UserSessionFile,
     ]),
+    MongooseModule.forFeature([{ name: Note.name, schema: NoteSchema }]),
   ],
   controllers: [SessionsController],
   providers: [SessionsService, FilesService, SessionFilesService, UsersService],

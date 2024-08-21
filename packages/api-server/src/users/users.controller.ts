@@ -27,6 +27,7 @@ import {
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
@@ -185,5 +186,35 @@ export class UsersController {
   ): Promise<File[]> {
     const files: File[] = await this.usersService.getUserFiles(userId, last);
     return files;
+  }
+
+  @Get('session/:sessionId/file/:fileId/note')
+  @ApiOkResponse({ type: Object })
+  @UseGuards(JwtGuard)
+  async getFileNotes(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId') sessionId: number,
+    @Param('fileId') fileId: number,
+  ) {
+    const notes = this.usersService.getFileNotes(userId, sessionId, fileId);
+    return notes;
+  }
+
+  @Post('session/:sessionId/file/:fileId/note')
+  @ApiOkResponse({ type: Object })
+  @UseGuards(JwtGuard)
+  async postFileNotes(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId') sessionId: number,
+    @Param('fileId') fileId: number,
+    @Body() data: any,
+  ) {
+    const notes = this.usersService.saveFileNotes(
+      userId,
+      sessionId,
+      fileId,
+      data,
+    );
+    return notes;
   }
 }

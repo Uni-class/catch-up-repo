@@ -5,6 +5,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,10 +18,15 @@ import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.d
 import { File } from '../files/entities/file.entity';
 import { SessionFile } from '../session-files/entities/session-file.entity';
 import { UserSessionFile } from '../user-session-files/entities/user-session-file.entity';
+import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
+import { Note } from './schemas/note.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @InjectRepository(Session)
@@ -33,6 +39,8 @@ export class UsersService {
     private readonly sessionFilesRepository: Repository<SessionFile>,
     @InjectRepository(UserSessionFile)
     private readonly userSessionFilesRepository: Repository<UserSessionFile>,
+    @InjectModel(Note.name)
+    private readonly noteModel: Model<Note>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newUser = this.userRepository.create(createUserDto);
@@ -183,5 +191,29 @@ export class UsersService {
 
   async deletdeleteRefreshToken(userId: number) {
     return await this.userRepository.update(userId, { refreshToken: '' });
+  }
+
+  async getFileNotes(userId: number, sessionId: number, fileId: number) {
+    const note = this.noteModel.find({
+      userId,
+      sessionId,
+      fileId,
+    });
+    return note;
+  }
+
+  async saveFileNotes(
+    userId: number,
+    sessionId: number,
+    fileId: number,
+    data: any,
+  ) {
+    const note = new this.noteModel({
+      userId,
+      sessionId,
+      fileId,
+      data,
+    });
+    return note.save();
   }
 }
