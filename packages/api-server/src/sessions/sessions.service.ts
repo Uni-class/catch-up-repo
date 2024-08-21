@@ -9,6 +9,7 @@ import { FilesService } from '../files/files.service';
 import { File } from '../files/entities/file.entity';
 import { SessionStatusResponseDto } from './dto/session-status-response.dto';
 import bcrypt from 'bcrypt';
+import { SessionResponseDto } from './dto/session.response.dto';
 
 @Injectable()
 export class SessionsService {
@@ -80,7 +81,7 @@ export class SessionsService {
     return code.slice(0, 6);
   }
 
-  async getSessionByCode(sessionCode: string) {
+  async getSessionByCode(sessionCode: string): Promise<SessionResponseDto> {
     const session: Session = await this.sessionRepository.findOneBy({
       sessionCode,
     });
@@ -89,6 +90,20 @@ export class SessionsService {
         `Session with Code: ${sessionCode} does not exist or you do not have permission to access it.`,
       );
     }
-    return session;
+    const sessionFiles: SessionFile[] = session.sessionFiles;
+    const fileList: File[] = await this.getFileListBySessionFiles(sessionFiles);
+    return new SessionResponseDto(session, fileList);
+  }
+
+  async validateGetRequest(id: number, code: string) {
+    if ((id !== undefined && code !== undefined) || !(id || code))
+      throw new BadRequestException('Invalid Request.');
+  }
+
+  async getSessionByid(id: number): Promise<SessionResponseDto> {
+    const session: Session = await this.getSessionAsUser(id, null);
+    const sessionFiles: SessionFile[] = session.sessionFiles;
+    const fileList: File[] = await this.getFileListBySessionFiles(sessionFiles);
+    return new SessionResponseDto(session, fileList);
   }
 }

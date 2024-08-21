@@ -78,24 +78,11 @@ export class SessionsController {
     @Query() { id, code }: GetSessionQueryDto,
     @UserId(ParseIntPipe) userId: number,
   ): Promise<SessionResponseDto> {
-    if ((id && code) || !(id || code)) {
-      throw new BadRequestException('Invalid Request');
-    } else if (id) {
-      const session: Session = await this.sessionsService.getSessionAsUser(
-        id,
-        null,
-      );
-      const sessionFiles: SessionFile[] = session.sessionFiles;
-      const fileList: File[] =
-        await this.sessionsService.getFileListBySessionFiles(sessionFiles);
-      return new SessionResponseDto(session, fileList);
-    } else {
-      const session: Session =
-        await this.sessionsService.getSessionByCode(code);
-      const sessionFiles: SessionFile[] = session.sessionFiles;
-      const fileList: File[] =
-        await this.sessionsService.getFileListBySessionFiles(sessionFiles);
-      return new SessionResponseDto(session, fileList);
+    await this.sessionsService.validateGetRequest(id, code);
+    if (id) {
+      return await this.sessionsService.getSessionByid(id);
+    } else if (code) {
+      return await this.sessionsService.getSessionByCode(code);
     }
   }
 
