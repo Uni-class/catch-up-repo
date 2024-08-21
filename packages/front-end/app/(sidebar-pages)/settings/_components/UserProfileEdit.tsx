@@ -1,12 +1,12 @@
 import Button from "@/components/Button";
 import { css } from "@/styled-system/css";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import { Label } from "@/components/Label";
+import { ProfileImage } from "@/components/ProfileImage";
 
 interface PropType {
   data: User;
@@ -16,7 +16,7 @@ export default function UserProfileEdit({ data }: PropType) {
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
   const [imageSrc, setImageSrc] = useState<string>(
-    data.profileUrl || "/icon/icon-google.svg"
+    data.profileUrl
   );
   const queryClient = useQueryClient();
   const formMutation = useMutation({
@@ -68,7 +68,7 @@ export default function UserProfileEdit({ data }: PropType) {
       >
         <Label htmlFor="profileImage">프로필 사진</Label>
         <div className={css({ display: "flex", gap: "1.5rem" })}>
-          <Image
+          <ProfileImage
             src={imageSrc}
             alt="프로필 사진"
             width={50}
