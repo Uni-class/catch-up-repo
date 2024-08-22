@@ -180,7 +180,6 @@ export class AuthController {
   ): Promise<any> {
     const result: UpdateResult =
       await this.authService.deleteRefreshTokenOfUser(userId);
-
     return res
       .cookie(
         'access_token',
