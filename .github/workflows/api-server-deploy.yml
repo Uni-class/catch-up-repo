@@ -82,9 +82,9 @@ jobs:
           echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/api-server/.env
           echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> packages/api-server/.env
           echo "S3_INSTANCE_URL=${{ secrets.S3_INSTANCE_URL }}" >> packages/api-server/.env
-          echo "ACCESS_TOKEN_MAX_AGE=${{ ACCESS_TOKEN_MAX_AGE }}" >> packages/api-server/.env
-          echo "REFRESH_TOKEN_MAX_AGE=${{ REFRESH_TOKEN_MAX_AGE }}" >> packages/api-server/.env
-          echo "MONGODB_URI=${{ MONGODB_URI }}" >> packages/api-server/.env
+          echo "ACCESS_TOKEN_MAX_AGE=${{ secrets.ACCESS_TOKEN_MAX_AGE }}" >> packages/api-server/.env
+          echo "REFRESH_TOKEN_MAX_AGE=${{ secrets.REFRESH_TOKEN_MAX_AGE }}" >> packages/api-server/.env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> packages/api-server/.env
 
       - name: Check Directory
         run: |
