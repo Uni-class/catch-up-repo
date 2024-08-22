@@ -18,9 +18,7 @@ export default function Page({ params }: { params: { sessionId: string } }) {
       {
         queryKey: ["session", params.sessionId],
         queryFn: async () =>
-          await apiClient.get<SessionResponseDto>(
-            `/session/${params.sessionId}`
-          ),
+          await apiClient.get<SessionResponseDto>(`/session`, { params: params.sessionId }),
         throwOnError: true,
       },
     ],
