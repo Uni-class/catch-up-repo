@@ -7,18 +7,18 @@ import { AxiosResponse } from "axios";
 import { ReactNode, useEffect } from "react";
 
 export default function RedirectToLogin() {
-  const { error } = useQuery<AxiosResponse<User>>({
+  const { error, data } = useQuery<AxiosResponse<User>>({
     queryKey: ["user", "profile"],
     queryFn: async () => await apiClient.get("/user/profile"),
   });
   const router = useRouter();
   useEffect(() => {
-    if (error !== null) {
+    if (error !== null && data?.status === 401) {
       const currentURL = encodeURIComponent(
         `${router.pathname}?${router.query.toString()}`
       );
       router.push(`/login?url=${currentURL}`);
     }
-  }, [error, router]);
+  }, [data?.status, error, router]);
   return <></>;
 }
