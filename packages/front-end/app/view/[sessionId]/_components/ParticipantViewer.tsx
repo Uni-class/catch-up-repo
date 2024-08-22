@@ -33,7 +33,9 @@ export default function ParticipantViewer({
   } = useQuery<AxiosResponse<SessionReturnType>>({
     queryKey: ["session", params.sessionId],
     queryFn: async () => {
-      return await apiClient.get(`/session/${params.sessionId}`);
+      return await apiClient.get(`/session`, {
+        params: { id: params.sessionId },
+      });
     },
     enabled: !!joinQuery.data,
   });
