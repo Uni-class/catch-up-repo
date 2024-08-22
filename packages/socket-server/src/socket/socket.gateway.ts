@@ -59,9 +59,9 @@ export class SocketGateway
   }
 
   async handleConnection(client: Socket): Promise<void> {
-    const userId = await this.socketService.validateUser(client);
+    const userId: number = await this.socketService.validateUser(client);
     if (!userId) client.disconnect(true);
-    client[client.id] = userId;
+    this.clientUserId[client.id] = userId;
     this.clients.add(client);
     return;
   }
@@ -77,6 +77,7 @@ export class SocketGateway
       }
     }
     client.disconnect(true);
+    this.clients.delete(client);
     console.log('disconnected');
   }
 
