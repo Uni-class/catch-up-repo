@@ -7,6 +7,7 @@ COPY package*.json ./
 COPY .env.local ./
 RUN yarn install
 COPY . .
+
 RUN yarn build
 
 FROM node:20.15.1-alpine
