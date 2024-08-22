@@ -26,7 +26,9 @@ export default function HostViewer({
   } = useQuery<AxiosResponse<SessionReturnType>>({
     queryKey: ["session", params.sessionId],
     queryFn: async () => {
-      return await apiClient.get(`/session/${params.sessionId}`);
+      return await apiClient.get(`/session`, {
+        params: { id: params.sessionId },
+      });
     },
   });
   const data = response?.data;

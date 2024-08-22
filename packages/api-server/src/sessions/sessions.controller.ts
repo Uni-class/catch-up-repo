@@ -78,6 +78,7 @@ export class SessionsController {
     @Query() { id, code }: GetSessionQueryDto,
     @UserId(ParseIntPipe) userId: number,
   ): Promise<SessionResponseDto> {
+    console.log({id,code})
     await this.sessionsService.validateGetRequest(id, code);
     if (id) {
       return await this.sessionsService.getSessionByid(id);
