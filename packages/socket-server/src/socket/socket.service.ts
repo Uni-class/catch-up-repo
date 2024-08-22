@@ -53,6 +53,6 @@ export class SocketService {
       userId,
       sessionId,
     });
-    return userSession.sessionId !== null;
+    return userSession !== null;
   }
 }
