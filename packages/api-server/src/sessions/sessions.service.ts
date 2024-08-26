@@ -99,7 +99,6 @@ export class SessionsService {
   async makeSessionCode(sessionId: number) {
     const session: Session = await this.findOne(sessionId);
     const code: string = bcrypt.hashSync(session.sessionName + Date.now(), 10);
-    console.log(code);
     return code.slice(7, 13);
   }
 
