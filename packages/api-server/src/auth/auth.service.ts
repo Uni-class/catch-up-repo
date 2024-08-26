@@ -90,6 +90,6 @@ export class AuthService implements OnModuleInit {
   }
 
   async getRefreshTokenFromHeader(req: Request) {
-    return req.headers['authorization']?.toString().split(' ')[1];
+    return req.cookies['refresh_token'];
   }
 }
