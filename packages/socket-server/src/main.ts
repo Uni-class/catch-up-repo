@@ -8,7 +8,7 @@ import helmet from 'helmet';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: process.env.CORS_ORIGIN_SITE, credentials: true });
-  console.log(process.env.CORS_ORIGIN_SITE);
+  console.log(process.env.CORS_ORIGIN_SITE,"hello");
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalInterceptors(new ResponseInterceptor());

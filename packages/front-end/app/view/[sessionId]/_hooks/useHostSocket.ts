@@ -7,6 +7,7 @@ import {
   RecordsDiff,
   TLRecord,
 } from "tldraw";
+import { differentialRecord } from "../_utils/diffrentialRecord";
 
 const isEmpty = (record: { [key: string]: any }) => {
   return Object.keys(record).length == 0;
@@ -16,7 +17,7 @@ const getEventAndRecord = (
   changes: RecordsDiff<TLRecord>
 ): [
   action: "added" | "removed" | "updated",
-  record: TLRecord[] | RecordId<any>[]
+  record: TLRecord[] | RecordId<any>[] | Partial<TLRecord>[] | unknown,
 ] => {
   if (!isEmpty(changes.added)) {
     return ["added", Object.values(changes.added)];
@@ -25,10 +26,16 @@ const getEventAndRecord = (
     return ["removed", Object.values(changes.removed).map((value) => value.id)];
   }
   const updated = changes.updated as unknown as TLRecord[][];
-  return ["updated", Object.values(updated).map((e)=>e[1])];
+  return [
+    "updated",
+    Object.values(updated).map((e) => differentialRecord(e[0], e[1])),
+  ];
 };
 
-export const useHostSocket = (userId = 8, roomId = 1) => {
+export const useHostSocket = (
+  userId: number = 8,
+  roomId: number | string = 1
+) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -47,7 +54,8 @@ export const useHostSocket = (userId = 8, roomId = 1) => {
     });
     store.listen(
       ({ changes }) => {
-        const [action, record] = getEventAndRecord(changes);
+        const [action, _record] = getEventAndRecord(changes);
+        const record = _record as { [key: string]: number };
         if (isEmpty(record)) {
           return;
         }

@@ -46,7 +46,12 @@ export class SocketGateway
       return false;
     }
     if (!client.rooms.has(roomId) || !this.roomUsers[roomId]) {
-      console.log('invalid room for roomId:', this.roomUsers, client.rooms);
+      console.log(
+        'invalid room for roomId:',
+        this.roomUsers,
+        client.rooms,
+        roomId,
+      );
       return false;
     }
     return userId;
@@ -68,7 +73,7 @@ export class SocketGateway
 
   async handleDisconnect(client: Socket): Promise<any> {
     const userId = await this.socketService.validateUser(client);
-    console.log(userId);
+    console.log('userID', userId, 'is disconnect');
     for (const roomId of client.rooms) {
       this.roomUsers[roomId].delete(userId);
       if (this.roomUsers[roomId].size === 0) delete this.roomUsers[roomId];
@@ -79,6 +84,7 @@ export class SocketGateway
     client.disconnect(true);
     this.clients.delete(client);
     console.log('disconnected');
+    console.log(this.roomUsers, this.roomHost);
   }
 
   @SubscribeMessage('createRoom')

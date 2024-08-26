@@ -30,9 +30,10 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   }
   const userData = userQuery.data?.data;
   const sessionData = sessionQuery.data?.data;
+  const userId = userData?.userId;
   const isHost = userData?.userId === sessionData?.hostId;
-  return isHost ? (
-    <HostViewer params={params} />
+  return isHost && userId ? (
+    <HostViewer params={{ ...params, userId: userId }} />
   ) : (
     <ParticipantViewer params={params} />
   );
