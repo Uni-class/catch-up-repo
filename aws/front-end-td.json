@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "front-end",
-      "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo:4905d0b18b1feb70d07bb80998a2d49d227d9b46",
+      "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-front-end-dev-repo:4905d0b18b1feb70d07bb80998a2d49d227d9b46",
       "cpu": 0,
       "portMappings": [
         {
