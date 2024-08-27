@@ -70,7 +70,7 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> packages/socket-server/.env
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> packages/socket-server/.env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> packages/socket-server/.env
-          echo "PORT=${{ secrets.PORT }}" >> packages/socket-server/.env
+          echo "PORT=${{ secrets.SOCKET_PORT }}" >> packages/socket-server/.env
           echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> packages/socket-server/.env
           echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> packages/socket-server/.env
           echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> packages/socket-server/.env
