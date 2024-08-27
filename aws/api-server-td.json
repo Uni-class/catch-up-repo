@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "api-server",
-            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-repo:ceff6cd0564bbbfd775e7b6ad7ca6da00542dc14",
+            "image": "590184134001.dkr.ecr.ap-northeast-2.amazonaws.com/catchup-api-server-dev-repo:ceff6cd0564bbbfd775e7b6ad7ca6da00542dc14",
             "cpu": 1024,
             "memory": 3072,
             "memoryReservation": 1024,
