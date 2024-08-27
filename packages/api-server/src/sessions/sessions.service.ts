@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -65,11 +69,28 @@ export class SessionsService {
     sessionId: number,
     status: string,
   ): Promise<SessionStatusResponseDto> {
+    const session: Session = await this.sessionRepository.findOneBy({
+      hostId: userId,
+      sessionId,
+    });
+    if (!session)
+      throw new NotFoundException(
+        `Session with ID: ${sessionId} does not exist or you do not have permission to control it.`,
+      );
+
     if (status === 'open') {
+      if (session.sessionCode !== '')
+        throw new BadRequestException(
+          `Session with ID: ${sessionId} is already opened.`,
+        );
       const sessionCode: string = await this.makeSessionCode(sessionId);
       await this.sessionRepository.update(sessionId, { sessionCode });
       return { sessionCode };
     } else {
+      if (session.sessionCode === '')
+        throw new BadRequestException(
+          `Session with ID: ${sessionId} is already closed.`,
+        );
       await this.sessionRepository.update(sessionId, { sessionCode: '' });
       return { sessionCode: '' };
     }
@@ -78,7 +99,7 @@ export class SessionsService {
   async makeSessionCode(sessionId: number) {
     const session: Session = await this.findOne(sessionId);
     const code: string = bcrypt.hashSync(session.sessionName + Date.now(), 10);
-    return code.slice(0, 6);
+    return code.slice(7, 13);
   }
 
   async getSessionByCode(sessionCode: string): Promise<SessionResponseDto> {
