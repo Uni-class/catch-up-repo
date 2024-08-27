@@ -56,35 +56,35 @@ jobs:
 
       - name: Make .env file
         run: |
-          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> packages/api-server/.env
-          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> packages/api-server/.env
-          echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> packages/api-server/.env
-          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> packages/api-server/.env
-          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> packages/api-server/.env
-          echo "KAKAO_CALLBACK_URL=${{ secrets.KAKAO_CALLBACK_URL }}" >> packages/api-server/.env
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> packages/api-server/.env
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> packages/api-server/.env
-          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> packages/api-server/.env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> packages/api-server/.env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> packages/api-server/.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> packages/api-server/.env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> packages/api-server/.env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> packages/api-server/.env
-          echo "PORT=${{ secrets.PORT }}" >> packages/api-server/.env
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> packages/api-server/.env
-          echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> packages/api-server/.env
-          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> packages/api-server/.env
-          echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> packages/api-server/.env
-          echo "CORS_ORIGIN_SITE=${{ secrets.CORS_ORIGIN_SITE }}" >> packages/api-server/.env
-          echo "CLIENT_DOMAIN=${{ secrets.CLIENT_DOMAIN }}" >> packages/api-server/.env
-          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> packages/api-server/.env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> packages/api-server/.env
-          echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/api-server/.env
-          echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> packages/api-server/.env
-          echo "S3_INSTANCE_URL=${{ secrets.S3_INSTANCE_URL }}" >> packages/api-server/.env
-          echo "ACCESS_TOKEN_MAX_AGE=${{ secrets.ACCESS_TOKEN_MAX_AGE }}" >> packages/api-server/.env
-          echo "REFRESH_TOKEN_MAX_AGE=${{ secrets.REFRESH_TOKEN_MAX_AGE }}" >> packages/api-server/.env
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> packages/api-server/.env
+          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> packages/socket-server/.env
+          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> packages/socket-server/.env
+          echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> packages/socket-server/.env
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> packages/socket-server/.env
+          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> packages/socket-server/.env
+          echo "KAKAO_CALLBACK_URL=${{ secrets.KAKAO_CALLBACK_URL }}" >> packages/socket-server/.env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> packages/socket-server/.env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> packages/socket-server/.env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> packages/socket-server/.env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> packages/socket-server/.env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> packages/socket-server/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> packages/socket-server/.env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> packages/socket-server/.env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> packages/socket-server/.env
+          echo "PORT=${{ secrets.PORT }}" >> packages/socket-server/.env
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> packages/socket-server/.env
+          echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> packages/socket-server/.env
+          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> packages/socket-server/.env
+          echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> packages/socket-server/.env
+          echo "CORS_ORIGIN_SITE=${{ secrets.CORS_ORIGIN_SITE }}" >> packages/socket-server/.env
+          echo "CLIENT_DOMAIN=${{ secrets.CLIENT_DOMAIN }}" >> packages/socket-server/.env
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> packages/socket-server/.env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> packages/socket-server/.env
+          echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/socket-server/.env
+          echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> packages/socket-server/.env
+          echo "S3_INSTANCE_URL=${{ secrets.S3_INSTANCE_URL }}" >> packages/socket-server/.env
+          echo "ACCESS_TOKEN_MAX_AGE=${{ secrets.ACCESS_TOKEN_MAX_AGE }}" >> packages/socket-server/.env
+          echo "REFRESH_TOKEN_MAX_AGE=${{ secrets.REFRESH_TOKEN_MAX_AGE }}" >> packages/socket-server/.env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> packages/socket-server/.env
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
