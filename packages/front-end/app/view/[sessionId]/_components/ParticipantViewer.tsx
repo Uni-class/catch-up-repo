@@ -17,7 +17,7 @@ interface SessionReturnType extends Session {
 export default function ParticipantViewer({
   params,
 }: {
-  params: { sessionId: string };
+  params: { sessionId: string,userId:number };
 }) {
   // user/session/:sessionId/join
   const joinQuery = useQuery<AxiosResponse<any>>({
@@ -40,7 +40,7 @@ export default function ParticipantViewer({
     enabled: !!joinQuery.data,
   });
   const data = response?.data;
-  const store = useParticipantSocket();
+  const store = useParticipantSocket(params.userId,params.sessionId);
 
   if (isLoading || joinQuery.isLoading) {
     return <p>로딩...</p>;

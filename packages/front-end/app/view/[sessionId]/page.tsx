@@ -32,9 +32,12 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   const sessionData = sessionQuery.data?.data;
   const userId = userData?.userId;
   const isHost = userData?.userId === sessionData?.hostId;
-  return isHost && userId ? (
+  if (userId === undefined) {
+    return <h1>로딩...</h1>;
+  }
+  return isHost ? (
     <HostViewer params={{ ...params, userId: userId }} />
   ) : (
-    <ParticipantViewer params={params} />
+    <ParticipantViewer params={{ ...params, userId: userId }} />
   );
 }

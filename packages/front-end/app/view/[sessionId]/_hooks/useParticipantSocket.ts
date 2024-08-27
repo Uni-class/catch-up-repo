@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
+import { integralRecord } from "../_utils/integralRecord";
 
-export const useParticipantSocket = (userId = 10, roomId = 1) => {
+export const useParticipantSocket = (
+  userId: number,
+  roomId: number | string
+) => {
   const [store] = useState(() => {
     const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
     return store;
@@ -36,8 +40,10 @@ export const useParticipantSocket = (userId = 10, roomId = 1) => {
       (message: { data: TLRecord[]; index: number }) => {
         const updates = message.data;
         updates.forEach((update) => {
-          store.update(update.id, (_record) => {
-            return update;
+          //const original = store.get(update.id);
+          // console.log({integral:integralObject(store.get(update.id), update)});
+          store.update(update.id, (record) => {
+            return integralRecord(record, update);
           });
         });
       }
