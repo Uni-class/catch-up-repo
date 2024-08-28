@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { RecordId, RecordsDiff, TLRecord } from "tldraw";
 import { differentialRecord } from "../_utils/differentialRecord";
-import { io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 
 type ElementType = {
   type: "added" | "updated" | "removed";
@@ -9,29 +9,35 @@ type ElementType = {
 };
 
 const INTERVAL_TIME = 50; // fps = 1000 / INTERVAL_TIME
-
-export const useBatchSocket = () => {
+/**
+ *    ## 가정
+ *    - added -> updated -> removed는 순서가 보장
+ *    - 큐에서 added는 0번째만 가능, removed는 마지막만 가능
+ *    - 모든 tldraw 필기의 id는 유일하다는 가정 (removed element id === 새로 그렸을떄(added + updated) element id)인 경우 없음
+ *
+ *    ## 큐 데이터 처리
+ *    - 큐에 add가 포함된 경우: update까지 added에 포함([last][1]을 added이벤트로)
+ *    - updated만 있는 경우: 배열 [0][0] & 배열 [last][1] 압축
+ *    - remove가 포함된 경우: 다 비우고 추가 안함
+ *
+ *    ## 시간 트리거
+ *    - removed면 id배열에 id추가해 removed 이벤트
+ *    - added만 있거나 added가 포함된 경우 added 이벤트
+ *    - updated만 있는 경우 updated 이벤트
+ *    - 빈 큐의 id(key) 삭제
+ */
+export const useBatchSocket = ({
+  socket,
+  userId,
+  roomId,
+}: {
+  socket: Socket;
+  userId: number;
+  roomId: number | string;
+}) => {
   const queueRef = useRef<{
     [key in RecordId<any>]: ElementType[];
   }>({});
-  /* TODO
-    # 가정
-    - added -> updated -> removed는 순서가 보장
-    - 큐에서 added는 0번째만 가능, removed는 마지막만 가능
-    - 모든 tldraw 필기의 id는 유일하다는 가정 (removed element id === 새로 그렸을떄(added + updated) element id)인 경우 없음
-    
-    # 큐 데이터 처리
-    - 큐에 add가 포함된 경우: update까지 added에 포함([last][1]을 added이벤트로)
-    - updated만 있는 경우: 배열 [0][0] & 배열 [last][1] 압축
-    - remove가 포함된 경우: 다 비우고 추가 안함
-
-    # 시간 트리거
-    - removed면 id배열에 id추가해 removed 이벤트
-    - added만 있거나 added가 포함된 경우 added 이벤트
-    - updated만 있는 경우 updated 이벤트
-    - 빈 큐의 id(key) 삭제
-    */
-
   // push Element to queueRef Array
   const pushArray = (key: string, element: ElementType) => {
     const recordId = key as RecordId<any>;
@@ -140,7 +146,12 @@ export const useBatchSocket = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       const dataFormat = processBatchQueue();
-
+      const messageBody = {
+        index: 1,
+        data: {},
+        userId: userId,
+        roomId: roomId,
+      };
     }, INTERVAL_TIME);
 
     return () => {
