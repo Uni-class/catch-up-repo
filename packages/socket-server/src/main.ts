@@ -11,6 +11,7 @@ async function bootstrap() {
   app.enableCors({ origin: process.env.CORS_ORIGIN_SITE, credentials: true });
   const redisIoAdapter = new RedisIoAdapter(app);
   await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalInterceptors(new ResponseInterceptor());
