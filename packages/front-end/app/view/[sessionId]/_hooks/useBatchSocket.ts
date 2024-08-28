@@ -31,7 +31,7 @@ export const useBatchSocket = ({
   userId,
   roomId,
 }: {
-  socket: Socket;
+  socket: Socket | null;
   userId: number;
   roomId: number | string;
 }) => {
@@ -145,6 +145,7 @@ export const useBatchSocket = ({
   // process data & send at intervals
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (socket === null) return;
       const dataFormat = processBatchQueue();
       const messageBody = {
         index: 1,
