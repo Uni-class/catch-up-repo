@@ -31,7 +31,6 @@ const getEventAndRecord = (
     Object.values(updated).map((e) => {
       const id = e[1].id;
       const diff = differentialRecord(e[0], e[1]) as Partial<TLRecord>;
-      console.log({ e1: e[1], diff: { ...diff, id: id } });
       return { ...diff, id: id };
     }),
   ];

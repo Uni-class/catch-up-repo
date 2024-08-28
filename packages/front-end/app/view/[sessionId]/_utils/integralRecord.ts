@@ -1,5 +1,4 @@
 export const integralRecord = (original: any, delta: any) => {
-  // console.log({ original }, { delta });
   if (original === null || typeof original !== "object") {
     return delta; // 원시형 데이터라면 새로운 값으로 대체
   }
