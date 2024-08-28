@@ -18,6 +18,9 @@ export const useHostSocket = (userId: number, roomId: number | string) => {
         withCredentials: true,
       })
     );
+  }, []);
+
+  useEffect(() => {
     if (socket === null) return;
 
     socket.on("connect", () => {
