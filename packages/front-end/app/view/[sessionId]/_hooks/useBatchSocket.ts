@@ -148,15 +148,32 @@ export const useBatchSocket = ({
       const dataFormat = processBatchQueue();
       const messageBody = {
         index: 1,
-        data: {},
         userId: userId,
         roomId: roomId,
       };
+      if (dataFormat.added.length > 0) {
+        socket.emit("sendAddedDraw", {
+          ...messageBody,
+          data: dataFormat.added,
+        });
+      }
+      if (dataFormat.removed.length > 0) {
+        socket.emit("sendRemovedDraw", {
+          ...messageBody,
+          data: dataFormat.removed,
+        });
+      }
+      if (dataFormat.updated.length > 0) {
+        socket.emit("sendUpdatedDraw", {
+          ...messageBody,
+          data: dataFormat.updated,
+        });
+      }
     }, INTERVAL_TIME);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [processBatchQueue]);
+  }, [processBatchQueue, roomId, socket, userId]);
   return { queueRef, pushChanges };
 };
