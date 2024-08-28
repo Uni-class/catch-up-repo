@@ -17,7 +17,7 @@ interface SessionReturnType extends Session {
 export default function HostViewer({
   params,
 }: {
-  params: { sessionId: string };
+  params: { sessionId: string; userId: number };
 }) {
   const {
     data: response,
@@ -33,7 +33,7 @@ export default function HostViewer({
   });
   const data = response?.data;
 
-  const store = useHostSocket();
+  const store = useHostSocket(params.userId, params.sessionId);
 
   if (isLoading) {
     return <p>로딩...</p>;
