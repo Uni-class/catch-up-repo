@@ -7,7 +7,7 @@ import {
   RecordsDiff,
   TLRecord,
 } from "tldraw";
-import { differentialRecord } from "../_utils/diffrentialRecord";
+import { differentialRecord } from "../_utils/differentialRecord";
 
 const isEmpty = (record: { [key: string]: any }) => {
   return Object.keys(record).length == 0;
