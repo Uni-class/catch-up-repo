@@ -50,7 +50,7 @@ export const useBatchSocket = ({
       queueRef.current[recordId].push(element);
     }
   };
-  const pushChanges = (changes: RecordsDiff<TLRecord>) => {
+  const pushChanges = useCallback((changes: RecordsDiff<TLRecord>) => {
     Object.keys(changes.added).forEach((e) => {
       pushArray(e, { type: "added", data: changes.added[e as RecordId<any>] });
     });
@@ -66,7 +66,7 @@ export const useBatchSocket = ({
         data: changes.updated[e as RecordId<any>],
       });
     });
-  };
+  }, []);
 
   // get condition
   const toRemove = (id: RecordId<any>) => {

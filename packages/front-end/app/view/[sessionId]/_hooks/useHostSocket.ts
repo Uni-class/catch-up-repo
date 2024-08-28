@@ -27,10 +27,15 @@ export const useHostSocket = (userId: number, roomId: number | string) => {
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
-    store.listen(({ changes }) => {}, { source: "user", scope: "document" });
+    store.listen(
+      ({ changes }) => {
+        pushChanges(changes);
+      },
+      { source: "user", scope: "document" }
+    );
     return () => {
       socket.disconnect();
     };
-  }, [roomId, socket, store, userId]);
+  }, [pushChanges, roomId, socket, store, userId]);
   return store;
 };
