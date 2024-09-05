@@ -21,7 +21,7 @@ dotenv.config();
     origin: process.env.CLIENT_DOMAIN,
     credentials: true,
   },
-  Transports: ['websocket', 'polling'],
+  Transports: ['websocket'],
 })
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
