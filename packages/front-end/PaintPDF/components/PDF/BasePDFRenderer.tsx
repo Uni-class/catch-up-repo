@@ -7,6 +7,11 @@ import "react-pdf/dist/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
+const options = {
+	cMapUrl: `//unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
+	cMapPacked: true,
+  };
+
 const BasePDFRendererComponent = ({
 	pdfDocumentURL,
 	pdfPageIndex,
@@ -116,7 +121,7 @@ const BasePDFRendererComponent = ({
 	}, [createFallback]);
 
 	return (
-		<Document file={pdfDocumentURL} onLoadSuccess={onPdfDocumentLoadSuccess} onLoadError={onPdfDocumentLoadError} onItemClick={onPdfItemClickHandler}>
+		<Document file={pdfDocumentURL} onLoadSuccess={onPdfDocumentLoadSuccess} onLoadError={onPdfDocumentLoadError} onItemClick={onPdfItemClickHandler} options={options}>
 			<Page
 				loading={loadingComponent}
 				error={errorComponent}
