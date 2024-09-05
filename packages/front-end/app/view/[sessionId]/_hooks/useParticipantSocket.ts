@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { io } from "socket.io-client";
-import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
+import { RecordId, TLRecord } from "tldraw";
 import { integralRecord } from "../_utils/integralRecord";
+import { PDFPainterInstanceControllerHook } from "@/PaintPDF/components";
 
 export const useParticipantSocket = (
   userId: number,
-  roomId: number | string
+  roomId: number | string,
+  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook
 ) => {
-  const [store] = useState(() => {
-    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
-    return store;
-  });
+
+  const {pdfPainterInstanceController} = pdfPainterInstanceControllerHook
 
   useEffect(() => {
     const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
@@ -26,13 +26,13 @@ export const useParticipantSocket = (
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        store.put(message.data);
+        pdfPainterInstanceController.addPaintElement(message.data);
       }
     );
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
-        store.remove(message.data);
+        pdfPainterInstanceController.removePaintElement(message.data);
       }
     );
     socket.on(
@@ -40,17 +40,15 @@ export const useParticipantSocket = (
       (message: { data: TLRecord[]; index: number }) => {
         const updates = message.data;
         updates.forEach((update) => {
-          //const original = store.get(update.id);
-          // console.log({integral:integralObject(store.get(update.id), update)});
-          store.update(update.id, (record) => {
+          pdfPainterInstanceController.updatePaintElementByGenerator(update.id, (record) => {
             return integralRecord(record, update);
-          });
+          })
         });
       }
     );
     return () => {
       socket.disconnect();
     };
-  }, [roomId, store, userId]);
-  return store;
+  }, [pdfPainterInstanceController, roomId, userId]);
+
 };

@@ -5,7 +5,12 @@ import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useParticipantSocket } from "../_hooks/useParticipantSocket";
-import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
+import {
+  PainterInstanceGenerator,
+  PDFPainter,
+  usePDFPainterController,
+  usePDFPainterInstanceController,
+} from "@/PaintPDF/components";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -37,7 +42,19 @@ export default function ParticipantViewer({
     enabled: !!joinQuery.data,
   });
   const data = response?.data;
-  const store = useParticipantSocket(params.userId, params.sessionId);
+  const pdfPainterControllerHook = usePDFPainterController({
+    painterId: "Session123_File123",
+  });
+  const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
+    editorId: "Host",
+    pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+  });
+  const pdfPainterParticipantInstanceControllerHook =
+    usePDFPainterInstanceController({
+      editorId: "Participant",
+      pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+    });
+  const store = useParticipantSocket(params.userId, params.sessionId,pdfPainterHostInstanceControllerHook);
 
   if (isLoading || joinQuery.isLoading) {
     return <p>로딩...</p>;
@@ -66,9 +83,22 @@ export default function ParticipantViewer({
       <PDFPainter
         painterId={`${data.sessionId}_${pdfDocument.fileId}`}
         pdfDocumentURL={pdfDocument.url}
+        customPdfPainterControllerHook={pdfPainterControllerHook}
       >
-        <PainterInstanceGenerator instanceId={"Host"} readOnly={true} />
-        <PainterInstanceGenerator instanceId={"Participant"} readOnly={false} />
+        <PainterInstanceGenerator
+          instanceId={"Host"}
+          readOnly={true}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterHostInstanceControllerHook
+          }
+        />
+        <PainterInstanceGenerator
+          instanceId={"Participant"}
+          readOnly={false}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterParticipantInstanceControllerHook
+          }
+        />
       </PDFPainter>
     </div>
   );

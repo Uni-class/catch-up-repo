@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { createTLStore, defaultShapeUtils } from "tldraw";
 import { useBatchSocket } from "./useBatchSocket";
+import { PDFPainterInstanceControllerHook } from "@/PaintPDF/components";
 
-export const useHostSocket = (userId: number, roomId: number | string) => {
+export const useHostSocket = (
+  userId: number,
+  roomId: number | string,
+  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook
+) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { pushChanges } = useBatchSocket({ socket, userId, roomId });
+  const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
 
-  const [store] = useState(() => {
-    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
-    return store;
-  });
+  const editor = pdfPainterInstanceController.getEditor();
 
   useEffect(() => {
     setSocket(
@@ -22,6 +24,8 @@ export const useHostSocket = (userId: number, roomId: number | string) => {
 
   useEffect(() => {
     if (socket === null) return;
+    if (editor === null) return;
+    const { store } = editor;
 
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
@@ -39,6 +43,5 @@ export const useHostSocket = (userId: number, roomId: number | string) => {
     return () => {
       socket.disconnect();
     };
-  }, [pushChanges, roomId, socket, store, userId]);
-  return store;
+  }, [editor, pushChanges, roomId, socket, userId]);
 };

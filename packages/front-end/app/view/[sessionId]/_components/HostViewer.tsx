@@ -5,7 +5,12 @@ import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useHostSocket } from "../_hooks/useHostSocket";
-import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
+import {
+  PainterInstanceGenerator,
+  PDFPainter,
+  usePDFPainterController,
+  usePDFPainterInstanceController,
+} from "@/PaintPDF/components";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -30,7 +35,18 @@ export default function HostViewer({
   });
   const data = response?.data;
 
-  const store = useHostSocket(params.userId, params.sessionId);
+  const pdfPainterControllerHook = usePDFPainterController({
+    painterId: "Session123_File123",
+  });
+  const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
+    editorId: "Host",
+    pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+  });
+  const store = useHostSocket(
+    params.userId,
+    params.sessionId,
+    pdfPainterHostInstanceControllerHook
+  );
 
   if (isLoading) {
     return <p>로딩...</p>;
@@ -59,8 +75,15 @@ export default function HostViewer({
       <PDFPainter
         painterId={`${data.sessionId}_${pdfDocument.fileId}`}
         pdfDocumentURL={pdfDocument.url}
+        customPdfPainterControllerHook={pdfPainterControllerHook}
       >
-        <PainterInstanceGenerator instanceId={"Host"} readOnly={false} />
+        <PainterInstanceGenerator
+          instanceId={"Host"}
+          readOnly={false}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterHostInstanceControllerHook
+          }
+        />
       </PDFPainter>
     </div>
   );
