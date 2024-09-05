@@ -1,11 +1,11 @@
 import { memo, useEffect } from "react";
 import type { PDFPainterController } from "./types";
-import ToolPointerIcon from "@assets/icons/tool-pointer.svg";
-import ToolHandIcon from "@assets/icons/tool-hand.svg";
-import ToolEditIcon from "@assets/icons/tool-edit.svg";
-import ArrowLeftIcon from "@assets/icons/arrow-left.svg";
-import ArrowRightIcon from "@assets/icons/arrow-right.svg";
-import { PDFPainterControlBarButton } from "./PDFPainterControlBarButton.tsx";
+import ToolPointerIcon from "../../assets/icons/tool-pointer.svg";
+import ToolHandIcon from "../../assets/icons/tool-hand.svg";
+import ToolEditIcon from "../../assets/icons/tool-edit.svg";
+import ArrowLeftIcon from "../../assets/icons/arrow-left.svg";
+import ArrowRightIcon from "../../assets/icons/arrow-right.svg"
+import { PDFPainterControlBarButton } from "./PDFPainterControlBarButton";
 
 const PDFPainterControlBarComponent = ({ pdfPainterController }: { pdfPainterController: PDFPainterController }) => {
 	useEffect(() => {

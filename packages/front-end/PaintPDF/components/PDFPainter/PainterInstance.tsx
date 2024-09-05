@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { Painter } from "@components/Painter/Painter.tsx";
 import { Editor } from "tldraw";
-import { PDFPainterControllerHook, PDFPainterInstanceControllerHook } from "@components/PDFPainter/types";
-import { usePDFPainterInstanceController } from "@components/PDFPainter/hooks/usePDFPainterInstanceController.ts";
+import { PDFPainterControllerHook, PDFPainterInstanceControllerHook } from "./types";
+import { usePDFPainterInstanceController } from "./hooks/usePDFPainterInstanceController";
+import { Painter } from "../Painter";
 
 const PainterInstanceComponent = ({
 	instanceId,

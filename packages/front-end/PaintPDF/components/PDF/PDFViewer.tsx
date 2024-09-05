@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef } from "react";
 import { PDFRenderer } from "./PDFRenderer";
-import { usePDFViewerController } from "./hooks/usePDFViewerController.ts";
 import type { PDFViewerControllerHook } from "./types";
+import { usePDFViewerController } from "./hooks/usePDFViewerController";
 
 const PDFViewerComponent = ({ pdfDocumentURL, pdfViewerControllerHook }: { pdfDocumentURL: string; pdfViewerControllerHook?: PDFViewerControllerHook }) => {
 	const pdfRendererElement = useRef<HTMLDivElement | null>(null);

@@ -1,11 +1,11 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { Editor } from "tldraw";
-import { usePDFViewerController } from "@components/PDF";
+import { usePDFViewerController } from "../../PDF";
 
-import { ExternalAssetStore } from "@components/Painter/types";
+import { ExternalAssetStore } from "../../Painter/types";
 import { PaintMode, EditorSnapshot, PDFPainterController, PDFPainterControllerHook } from "../types";
 
-import CleanPainterSnapshot from "@assets/data/snapshot.json";
+import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
 
 export const usePDFPainterController = ({
 	painterId,

@@ -1,12 +1,10 @@
 import { useEffect, useRef, useCallback, memo, isValidElement, Children, ReactNode } from "react";
-import { PDFViewer } from "@components/PDF";
-import { usePDFPainterController } from "./hooks/usePDFPainterController.ts";
-import { PDFPainterControlBar } from "./PDFPainterControlBar.tsx";
-
 import { PDFRenderSize } from "../PDF/types";
-import { PDFPainterControllerHook } from "@components/PDFPainter/types";
-import { PainterInstance } from "@components/PDFPainter/PainterInstance.tsx";
-
+import { PDFPainterControllerHook } from "./types";
+import { usePDFPainterController } from "./hooks/usePDFPainterController";
+import { PDFViewer } from "../PDF/PDFViewer";
+import { PainterInstance } from "./PainterInstance";
+import { PDFPainterControlBar } from "./PDFPainterControlBar";
 const PDFPainterComponent = ({
 	painterId,
 	pdfDocumentURL,

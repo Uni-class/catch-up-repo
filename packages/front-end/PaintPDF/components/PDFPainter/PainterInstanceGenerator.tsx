@@ -1,5 +1,6 @@
 import { memo } from "react";
-import { PDFPainterInstanceControllerHook } from "@components/PDFPainter/types";
+import { PDFPainterInstanceControllerHook } from "./types";
+
 
 const PainterInstanceGeneratorComponent = ({
 	instanceId,

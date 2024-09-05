@@ -1,7 +1,7 @@
 import { Editor, TLEditorSnapshot, IdOf, TLRecord } from "tldraw";
 
 import { PDFDocument, PDFItemClickHandlerArguments, PDFPage, PDFViewerController } from "../../PDF/types";
-import { ExternalAssetStore } from "@components/Painter/types";
+import { ExternalAssetStore } from "../../Painter/types";
 
 export type PaintMode = "default" | "move" | "draw";
 
