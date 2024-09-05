@@ -1,13 +1,9 @@
 "use client";
 
-import "@/utils/pdfWorkerPolyfill";
-import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
-import { css } from "@/styled-system/css";
-import { Tldraw } from "tldraw";
 import { useHostSocket } from "../_hooks/useHostSocket";
 import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
 
