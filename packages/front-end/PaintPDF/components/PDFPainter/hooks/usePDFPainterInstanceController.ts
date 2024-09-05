@@ -44,21 +44,29 @@ export const usePDFPainterInstanceController = ({
 				}
 				return null;
 			},
-			setPaintElement: (elementId: PainterShapeId | null, elementData?: PainterShape) => {
+			addPaintElement: (elementData: PainterShape) => {
 				const editor = pdfPainterController.getEditor(editorId);
 				if (editor === null) {
 					return;
 				}
-				if (elementId === null) {
-					if (elementData) {
-						editor.store.put([elementData]);
-					}
-				} else if (editor.store.has(elementId)) {
-					if (elementData) {
-						editor.store.update(elementId, () => elementData);
-					} else {
-						editor.store.remove([elementId]);
-					}
+				editor.store.put([elementData]);
+			},
+			updatePaintElement: (elementId: PainterShapeId, elementData: PainterShape) => {
+				const editor = pdfPainterController.getEditor(editorId);
+				if (editor === null) {
+					return;
+				}
+				if (editor.store.has(elementId)) {
+					editor.store.update(elementId, () => elementData);
+				}
+			},
+			removePaintElement: (elementId: PainterShapeId) => {
+				const editor = pdfPainterController.getEditor(editorId);
+				if (editor === null) {
+					return;
+				}
+				if (editor.store.has(elementId)) {
+					editor.store.remove([elementId]);
 				}
 			},
 			updatePaintElementByGenerator: (elementId: PainterShapeId, elementGenerator: (previousElementData: PainterShape) => PainterShape) => {

@@ -1,11 +1,11 @@
 import { memo, useEffect } from "react";
 import type { PDFPainterController } from "./types";
-import ToolPointerIcon from "../../assets/icons/tool-pointer.svg";
-import ToolHandIcon from "../../assets/icons/tool-hand.svg";
-import ToolEditIcon from "../../assets/icons/tool-edit.svg";
-import ArrowLeftIcon from "../../assets/icons/arrow-left.svg";
-import ArrowRightIcon from "../../assets/icons/arrow-right.svg";
-import { PDFPainterControlBarButton } from "./PDFPainterControlBarButton";
+import ToolPointerIcon from "@/PaintPDF/assets/icons/tool-pointer.svg";
+import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
+import ToolEditIcon from "@/PaintPDF/assets/icons/tool-edit.svg";
+import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
+import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
+import { PDFPainterControlBarButton } from "@/PaintPDF/components";
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
@@ -14,7 +14,7 @@ const PDFPainterControlBarComponent = ({
 }) => {
   useEffect(() => {
     pdfPainterController.setDragModeEnabled(
-      pdfPainterController.getPaintMode() === "move"
+      pdfPainterController.getPaintMode() === "move",
     );
   }, [pdfPainterController]);
 
@@ -33,27 +33,27 @@ const PDFPainterControlBarComponent = ({
       <PDFPainterControlBarButton
         onClick={() => pdfPainterController.setPaintMode("default")}
         disabled={pdfPainterController.getPaintMode() === "default"}
-        icon={<ToolPointerIcon width={"1.6em"} height={"1.6em"} />}
-        alt={"기본"}
-      />
+      >
+        <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
+      </PDFPainterControlBarButton>
       <PDFPainterControlBarButton
         onClick={() => pdfPainterController.setPaintMode("move")}
         disabled={pdfPainterController.getPaintMode() === "move"}
-        icon={<ToolHandIcon width={"1.6em"} height={"1.6em"} />}
-        alt={"이동"}
-      />
+      >
+        <ToolHandIcon width={"1.6em"} height={"1.6em"} />
+      </PDFPainterControlBarButton>
       <PDFPainterControlBarButton
         onClick={() => pdfPainterController.setPaintMode("draw")}
         disabled={pdfPainterController.getPaintMode() === "draw"}
-        icon={<ToolEditIcon width={"1.6em"} height={"1.6em"} />}
-        alt={"그리기"}
-      />
+      >
+        <ToolEditIcon width={"1.6em"} height={"1.6em"} />
+      </PDFPainterControlBarButton>
       <PDFPainterControlBarButton
         onClick={pdfPainterController.moveToPreviousPage}
         disabled={!pdfPainterController.hasPreviousPage()}
-        icon={<ArrowLeftIcon width={"1.6em"} height={"1.6em"} />}
-        alt={"이전 페이지"}
-      />
+      >
+        <ArrowLeftIcon width={"1.6em"} height={"1.6em"} />
+      </PDFPainterControlBarButton>
       <div>
         {pdfPainterController.getPageIndex() + 1}/
         {pdfPainterController.getPageCount()}
@@ -64,9 +64,9 @@ const PDFPainterControlBarComponent = ({
       <PDFPainterControlBarButton
         onClick={pdfPainterController.moveToNextPage}
         disabled={!pdfPainterController.hasNextPage()}
-        icon={<ArrowRightIcon width={"1.6em"} height={"1.6em"} />}
-        alt={"다음 페이지"}
-      />
+      >
+        <ArrowRightIcon width={"1.6em"} height={"1.6em"} />
+      </PDFPainterControlBarButton>
     </div>
   );
 };

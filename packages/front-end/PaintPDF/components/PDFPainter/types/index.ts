@@ -38,7 +38,9 @@ export type PDFPainterInstanceController = {
 	setEditorSnapshot: (pageIndex: number, snapshot: EditorSnapshot) => void;
 	clearEditorSnapshot: (pageIndex: number) => void;
 	getPaintElement: (elementId: PainterShapeId) => PainterShape | null;
-	setPaintElement: (elementId: PainterShapeId, elementData?: PainterShape) => void;
+	addPaintElement: (elementData: PainterShape) => void;
+	updatePaintElement: (elementId: PainterShapeId, elementData: PainterShape) => void;
+	removePaintElement: (elementId: PainterShapeId) => void;
 	updatePaintElementByGenerator: (elementId: PainterShapeId, elementGenerator: (previousElementData: PainterShape) => PainterShape) => void;
 };
 
