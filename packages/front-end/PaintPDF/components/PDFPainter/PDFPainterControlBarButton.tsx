@@ -1,6 +1,6 @@
-import { memo } from "react";
+import { memo, ReactNode } from "react";
 
-const PDFPainterControlBarButtonComponent = ({ onClick, disabled, icon, alt }: { onClick?: () => void; disabled?: boolean; icon: string; alt: string }) => {
+const PDFPainterControlBarButtonComponent = ({ onClick, disabled, icon, alt }: { onClick?: () => void; disabled?: boolean; icon: ReactNode; alt: string }) => {
 	return (
 		<button
 			style={{
@@ -10,14 +10,7 @@ const PDFPainterControlBarButtonComponent = ({ onClick, disabled, icon, alt }: {
 			onClick={onClick}
 			disabled={disabled}
 		>
-			<img
-				style={{
-					width: "1.6em",
-					height: "1.6em",
-				}}
-				src={icon}
-				alt={alt}
-			/>
+			{icon}
 		</button>
 	);
 };

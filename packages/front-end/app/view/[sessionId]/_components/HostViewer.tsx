@@ -9,6 +9,7 @@ import { apiClient } from "@/utils/axios";
 import { css } from "@/styled-system/css";
 import { Tldraw } from "tldraw";
 import { useHostSocket } from "../_hooks/useHostSocket";
+import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -43,25 +44,41 @@ export default function HostViewer({
   }
 
   return data !== undefined ? (
+  
     <div
-      className={css({
-        width: "100%",
-        height: "100%",
-        overflowX: "hidden",
-      })}
-    >
-      <PDFViewer documentURL={data.fileList[0]?.url} />
-      <div
-        className={css({
-          width: "100%",
-          position: "absolute",
-          inset: 0,
-          zIndex: 50,
-        })}
-      >
-        <Tldraw store={store} />
-      </div>
-    </div>
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      width: "100vw",
+      height: "100vh",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <PDFPainter painterId={"Session123_File123"} pdfDocumentURL={data.fileList[0]?.url || ""}>
+      <PainterInstanceGenerator instanceId={"Host"} readOnly={true}  />
+      <PainterInstanceGenerator instanceId={"Guest"} readOnly={false} />
+    </PDFPainter>
+  </div>
+    // <div
+    //   className={css({
+    //     width: "100%",
+    //     height: "100%",
+    //     overflowX: "hidden",
+    //   })}
+    // >
+    //   <PDFViewer documentURL={data.fileList[0]?.url} />
+    //   <div
+    //     className={css({
+    //       width: "100%",
+    //       position: "absolute",
+    //       inset: 0,
+    //       zIndex: 50,
+    //     })}
+    //   >
+    //     <Tldraw store={store} />
+    //   </div>
+    // </div>
   ) : (
     <></>
   );
