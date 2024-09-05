@@ -1,13 +1,11 @@
 "use client";
 
-import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
-import { css } from "@/styled-system/css";
-import { Tldraw } from "tldraw";
 import { useParticipantSocket } from "../_hooks/useParticipantSocket";
+import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -16,7 +14,7 @@ interface SessionReturnType extends Session {
 export default function ParticipantViewer({
   params,
 }: {
-  params: { sessionId: string,userId:number };
+  params: { sessionId: string; userId: number };
 }) {
   // user/session/:sessionId/join
   const joinQuery = useQuery<AxiosResponse<any>>({
@@ -39,7 +37,7 @@ export default function ParticipantViewer({
     enabled: !!joinQuery.data,
   });
   const data = response?.data;
-  const store = useParticipantSocket(params.userId,params.sessionId);
+  const store = useParticipantSocket(params.userId, params.sessionId);
 
   if (isLoading || joinQuery.isLoading) {
     return <p>로딩...</p>;
@@ -48,20 +46,30 @@ export default function ParticipantViewer({
     return <p>unable to load session: {params.sessionId}</p>;
   }
 
-  return data !== undefined ? (
+  if (data === undefined) {
+    return null;
+  }
+
+  const pdfDocument = data.fileList[0];
+
+  return (
     <div
-      className={css({
-        width: "100%",
-        height: "100%",
-        overflowX: "hidden",
-      })}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100vw",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <PDFViewer documentURL={data.fileList[0]?.url} />
-      <div className={css({ width: "100%", position: "absolute", inset: 0 })}>
-        <Tldraw store={store} />
-      </div>
+      <PDFPainter
+        painterId={`${data.sessionId}_${pdfDocument.fileId}`}
+        pdfDocumentURL={pdfDocument.url}
+      >
+        <PainterInstanceGenerator instanceId={"Host"} readOnly={true} />
+        <PainterInstanceGenerator instanceId={"Participant"} readOnly={false} />
+      </PDFPainter>
     </div>
-  ) : (
-    <></>
   );
 }
