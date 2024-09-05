@@ -1,14 +1,11 @@
 "use client";
 
-import "@/utils/pdfWorkerPolyfill";
-import PDFViewer from "@/components/DocumentViewer/PDF/PDFViewer";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
-import { css } from "@/styled-system/css";
-import { Tldraw } from "tldraw";
 import { useHostSocket } from "../_hooks/useHostSocket";
+import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
 
 interface SessionReturnType extends Session {
   fileList: File[];
@@ -42,27 +39,29 @@ export default function HostViewer({
     return <p>unable to load session: {params.sessionId}</p>;
   }
 
-  return data !== undefined ? (
+  if (data === undefined) {
+    return null;
+  }
+
+  const pdfDocument = data.fileList[0];
+
+  return (
     <div
-      className={css({
-        width: "100%",
-        height: "100%",
-        overflowX: "hidden",
-      })}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100vw",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <PDFViewer documentURL={data.fileList[0]?.url} />
-      <div
-        className={css({
-          width: "100%",
-          position: "absolute",
-          inset: 0,
-          zIndex: 50,
-        })}
+      <PDFPainter
+        painterId={`${data.sessionId}_${pdfDocument.fileId}`}
+        pdfDocumentURL={pdfDocument.url}
       >
-        <Tldraw store={store} />
-      </div>
+        <PainterInstanceGenerator instanceId={"Host"} readOnly={false} />
+      </PDFPainter>
     </div>
-  ) : (
-    <></>
   );
 }
