@@ -8,7 +8,7 @@ type ElementType = {
   data: TLRecord | [TLRecord, TLRecord];
 };
 
-const INTERVAL_TIME = 50; // fps = 1000 / INTERVAL_TIME
+const INTERVAL_TIME = 100; // fps = 1000 / INTERVAL_TIME
 /**
  *    ## 가정
  *    - added -> updated -> removed는 순서가 보장
@@ -144,8 +144,8 @@ export const useBatchSocket = ({
 
   // process data & send at intervals
   useEffect(() => {
+    if (socket === null) return;
     const intervalId = setInterval(() => {
-      if (socket === null) return;
       const dataFormat = processBatchQueue();
       const messageBody = {
         index: 1,
