@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import { css } from "@/styled-system/css";
-import { useRef, useState } from "react";
+import { useRef, useState, ChangeEvent } from "react";
 import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,9 +15,7 @@ interface PropType {
 export default function UserProfileEdit({ data }: PropType) {
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
-  const [imageSrc, setImageSrc] = useState<string>(
-    data.profileUrl
-  );
+  const [imageSrc, setImageSrc] = useState<string>(data.profileUrl);
   const queryClient = useQueryClient();
   const formMutation = useMutation({
     mutationFn: async (body: FormData) =>
@@ -31,7 +29,7 @@ export default function UserProfileEdit({ data }: PropType) {
     },
   });
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();

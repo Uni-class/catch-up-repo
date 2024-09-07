@@ -5,32 +5,20 @@ import SidebarLink from "@/app/(sidebar-pages)/_components/Sidebar/SidebarLink";
 import Divider from "@/components/Divider";
 import SettingsIcon from "@/public/icons/settings.svg";
 import LogoutIcon from "@/public/icons/log-out.svg";
-import { User } from "@/schema/backend.schema";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { apiClient } from "@/utils/axios";
 import { Paragraph } from "@/components/Text";
 import { ProfileImage } from "@/components/ProfileImage";
+import { useAccount } from "@/hook/useAccount";
 
-export default function SidebarUserFetch() {
-  const { data: response, isLoading } = useQuery<AxiosResponse<User>>({
-    queryKey: ["user", "profile"],
-    queryFn: async () => await apiClient.get("/user/profile"),
-  });
-  if (isLoading) return <div>Loading...</div>;
-  const data = response?.data;
-  return data !== undefined && <SidebarUser data={data} />;
-}
+const AccountOptionsViewer = () => {
+  const account = useAccount();
 
-interface PropType {
-  data: User;
-}
-
-function SidebarUser({ data }: PropType) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!account) {
+      return;
+    }
     const handleClick = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -40,7 +28,11 @@ function SidebarUser({ data }: PropType) {
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, []);
+  }, [account]);
+
+  if (!account) {
+    return <div>Loading Skeleton UI</div>;
+  }
 
   return (
     <div
@@ -53,14 +45,14 @@ function SidebarUser({ data }: PropType) {
       <Paragraph variant="sub3">유저</Paragraph>
       <SidebarBaseElement active={isOpen} onClick={() => setIsOpen(!isOpen)}>
         <ProfileImage
-          src={data.profileUrl}
+          src={account.profileUrl}
           width={32}
           height={32}
           alt="프로필 사진"
           className={css({
             borderRadius: "50%",
-            width:"32px",
-            height:"32px",
+            width: "32px",
+            height: "32px",
           })}
         />
         <p
@@ -69,7 +61,7 @@ function SidebarUser({ data }: PropType) {
             alignSelf: "center",
           })}
         >
-          {data.nickname}
+          {account.nickname}
         </p>
       </SidebarBaseElement>
       {isOpen ? (
@@ -114,4 +106,6 @@ function SidebarUser({ data }: PropType) {
       ) : null}
     </div>
   );
-}
+};
+
+export default AccountOptionsViewer;
