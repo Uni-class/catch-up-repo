@@ -34,17 +34,17 @@ export const useParticipantSocket = (
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        if (pageIndex === message.index) {
-          pdfPainterInstanceController.addPaintElement(message.data);
-        }
+        pageIndex === message.index
+          ? pdfPainterInstanceController.addPaintElement(message.data)
+          : addDrawCache(pageIndex, message.data);
       }
     );
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
-        if (pageIndex === message.index) {
-          pdfPainterInstanceController.removePaintElement(message.data);
-        }
+        pageIndex === message.index
+          ? pdfPainterInstanceController.removePaintElement(message.data)
+          : removeDrawCache(pageIndex, message.data);
       }
     );
     socket.on(
@@ -59,6 +59,8 @@ export const useParticipantSocket = (
                 return integralRecord(record, update);
               }
             );
+          } else {
+            updateDrawCache(pageIndex, message.data);
           }
         });
       }
@@ -66,5 +68,13 @@ export const useParticipantSocket = (
     return () => {
       socket.disconnect();
     };
-  }, [pageIndex, pdfPainterInstanceController, roomId, userId]);
+  }, [
+    addDrawCache,
+    pageIndex,
+    pdfPainterInstanceController,
+    removeDrawCache,
+    roomId,
+    updateDrawCache,
+    userId,
+  ]);
 };
