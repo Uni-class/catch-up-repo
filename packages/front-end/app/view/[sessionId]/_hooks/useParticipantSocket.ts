@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import { RecordId, TLRecord } from "tldraw";
 import { integralRecord } from "../_utils/integralRecord";
 import {
@@ -16,14 +16,28 @@ export const useParticipantSocket = (
 ) => {
   const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
-  const { removeDrawCache, addDrawCache, updateDrawCache } =
+  const { removeDrawCache, addDrawCache, updateDrawCache, drawCacheRef } =
     useReceiveDrawCache();
+  const [socket, setSocket] = useState<Socket | null>(null);
   const pageIndex = pdfPainterController.getPageIndex();
+  const editor = pdfPainterInstanceController.getEditor();
 
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-      withCredentials: true,
-    });
+    setSocket(
+      io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
+        withCredentials: true,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    const pageDrawMap = drawCacheRef.current.get(pageIndex);
+    if (pageDrawMap === undefined || editor === null) return;
+    editor.store.put(Array.from(pageDrawMap.values()));
+  }, [drawCacheRef, pageIndex, editor]);
+
+  useEffect(() => {
+    if (socket === null) return;
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
@@ -74,6 +88,7 @@ export const useParticipantSocket = (
     pdfPainterInstanceController,
     removeDrawCache,
     roomId,
+    socket,
     updateDrawCache,
     userId,
   ]);

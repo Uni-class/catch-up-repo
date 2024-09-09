@@ -3,7 +3,6 @@ import { Editor, RecordId, TLRecord } from "tldraw";
 import { integralRecord } from "../_utils/integralRecord";
 
 export const useReceiveDrawCache = () => {
-  const tmp = new Map(new Map<RecordId<any>, TLRecord>());
   const drawCacheRef = useRef<Map<number, Map<RecordId<any>, TLRecord>>>(
     new Map()
   );
@@ -34,5 +33,5 @@ export const useReceiveDrawCache = () => {
     },
     []
   );
-  return { removeDrawCache, addDrawCache, updateDrawCache };
+  return { removeDrawCache, addDrawCache, updateDrawCache, drawCacheRef };
 };
