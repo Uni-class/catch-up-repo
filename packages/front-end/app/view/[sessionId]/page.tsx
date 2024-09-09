@@ -6,6 +6,10 @@ import HostViewer from "./_components/HostViewer";
 import { useQueries } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import ParticipantViewer from "./_components/ParticipantViewer";
+import { useAtom, useSetAtom } from "jotai";
+import { socketAtom } from "@/client/socketAtom";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 export default function Page({ params }: { params: { sessionId: string } }) {
   const [userQuery, sessionQuery] = useQueries({
@@ -25,6 +29,15 @@ export default function Page({ params }: { params: { sessionId: string } }) {
       },
     ],
   });
+  const [, setSocket] = useAtom(socketAtom);
+  useEffect(() => {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
+      withCredentials: true,
+    });
+    setSocket(newSocket);
+    return () => newSocket.disconnect();
+  }, [setSocket]);
+
   if (userQuery.isLoading || sessionQuery.isLoading) {
     return <h1>로딩...</h1>;
   }

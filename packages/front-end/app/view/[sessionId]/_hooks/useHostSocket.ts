@@ -5,6 +5,8 @@ import {
   PDFPainterControllerHook,
   PDFPainterInstanceControllerHook,
 } from "@/PaintPDF/components";
+import { socketAtom } from "@/client/socketAtom";
+import { useAtom } from "jotai";
 
 export const useHostSocket = (
   userId: number,
@@ -12,21 +14,13 @@ export const useHostSocket = (
   pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
   pdfPainterControllerHook: PDFPainterControllerHook
 ) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket] = useAtom(socketAtom);
   const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
   const pageIndex = pdfPainterController.getPageIndex();
   const { pushChanges } = useBatchSocket({ socket, userId, roomId, pageIndex });
 
   const editor = pdfPainterInstanceController.getEditor();
-
-  useEffect(() => {
-    setSocket(
-      io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-        withCredentials: true,
-      })
-    );
-  }, []);
 
   useEffect(() => {
     if (socket === null) return;

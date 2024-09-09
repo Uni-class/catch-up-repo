@@ -7,6 +7,8 @@ import {
   PDFPainterInstanceControllerHook,
 } from "@/PaintPDF/components";
 import { useReceiveDrawCache } from "./useReceiveDrawCache";
+import { socketAtom } from "@/client/socketAtom";
+import { useAtom } from "jotai";
 
 export const useParticipantSocket = (
   userId: number,
@@ -18,17 +20,9 @@ export const useParticipantSocket = (
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
   const { removeDrawCache, addDrawCache, updateDrawCache, drawCacheRef } =
     useReceiveDrawCache();
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
   const editor = pdfPainterInstanceController.getEditor();
-
-  useEffect(() => {
-    setSocket(
-      io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-        withCredentials: true,
-      })
-    );
-  }, []);
 
   useEffect(() => {
     const pageDrawMap = drawCacheRef.current.get(pageIndex);
@@ -49,6 +43,7 @@ export const useParticipantSocket = (
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
+        console.warn("ADDED");
         pageIndex === message.index
           ? pdfPainterInstanceController.addPaintElement(message.data)
           : addDrawCache(pageIndex, message.data);
@@ -57,6 +52,7 @@ export const useParticipantSocket = (
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
+        console.warn("REMOVE");
         pageIndex === message.index
           ? pdfPainterInstanceController.removePaintElement(message.data)
           : removeDrawCache(pageIndex, message.data);
@@ -65,6 +61,7 @@ export const useParticipantSocket = (
     socket.on(
       "getUpdatedDraw",
       (message: { data: TLRecord[]; index: number }) => {
+        console.warn("UPDATE");
         const updates = message.data;
         updates.forEach((update) => {
           if (pageIndex === message.index) {
