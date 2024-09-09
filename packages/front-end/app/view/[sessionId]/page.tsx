@@ -31,11 +31,13 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   });
   const [, setSocket] = useAtom(socketAtom);
   useEffect(() => {
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
       withCredentials: true,
     });
     setSocket(newSocket);
-    return () => newSocket.disconnect();
+    return () => {
+      newSocket.disconnect();
+    };
   }, [setSocket]);
 
   if (userQuery.isLoading || sessionQuery.isLoading) {
