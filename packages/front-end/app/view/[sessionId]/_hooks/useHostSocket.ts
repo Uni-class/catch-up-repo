@@ -9,7 +9,6 @@ import { socketAtom } from "@/client/socketAtom";
 import { useAtom } from "jotai";
 
 export const useHostSocket = (
-  userId: number,
   roomId: number | string,
   pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
   pdfPainterControllerHook: PDFPainterControllerHook
@@ -18,7 +17,7 @@ export const useHostSocket = (
   const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
   const pageIndex = pdfPainterController.getPageIndex();
-  const { pushChanges } = useBatchSocket({ socket, userId, roomId, pageIndex });
+  const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex });
 
   const editor = pdfPainterInstanceController.getEditor();
 
@@ -40,5 +39,5 @@ export const useHostSocket = (
       },
       { source: "user", scope: "document" }
     );
-  }, [editor, pushChanges, roomId, socket, userId]);
+  }, [editor, pushChanges, roomId, socket]);
 };

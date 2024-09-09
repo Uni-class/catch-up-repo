@@ -39,7 +39,6 @@ export default function ParticipantViewer(props: ViewerPropType) {
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
   useParticipantSocket(
-    userId,
     sessionId,
     pdfPainterHostInstanceControllerHook,
     pdfPainterControllerHook

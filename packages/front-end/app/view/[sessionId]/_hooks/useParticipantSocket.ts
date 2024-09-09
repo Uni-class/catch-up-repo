@@ -11,7 +11,6 @@ import { socketAtom } from "@/client/socketAtom";
 import { useAtom } from "jotai";
 
 export const useParticipantSocket = (
-  userId: number,
   roomId: number | string,
   pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
   pdfPainterControllerHook: PDFPainterControllerHook

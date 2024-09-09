@@ -28,12 +28,10 @@ const INTERVAL_TIME = 100; // fps = 1000 / INTERVAL_TIME
  */
 export const useBatchSocket = ({
   socket,
-  userId,
   roomId,
   pageIndex,
 }: {
   socket: Socket | null;
-  userId: number;
   roomId: number | string;
   pageIndex: number;
 }) => {
@@ -176,6 +174,6 @@ export const useBatchSocket = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [pageIndex, processBatchQueue, roomId, socket, userId]);
+  }, [pageIndex, processBatchQueue, roomId, socket]);
   return { queueRef, pushChanges };
 };
