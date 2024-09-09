@@ -40,6 +40,10 @@ export const useParticipantSocket = (
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
+  }, [roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
@@ -82,9 +86,7 @@ export const useParticipantSocket = (
     pageIndex,
     pdfPainterInstanceController,
     removeDrawCache,
-    roomId,
     socket,
     updateDrawCache,
-    userId,
   ]);
 };
