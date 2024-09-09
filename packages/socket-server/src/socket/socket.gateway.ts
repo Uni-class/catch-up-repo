@@ -59,7 +59,7 @@ export class SocketGateway
 
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
-      console.log(socket.id);
+      console.log({ socketId: socket.id }, 'afterInit');
     });
   }
 
@@ -68,6 +68,7 @@ export class SocketGateway
     if (!userId) client.disconnect(true);
     this.clientUserId[client.id] = userId;
     this.clients.add(client);
+    console.log({ clientId: client.id, userId }, 'handleConnection');
     return;
   }
 
@@ -83,8 +84,10 @@ export class SocketGateway
     }
     client.disconnect(true);
     this.clients.delete(client);
-    console.log('disconnected');
-    console.log(this.roomUsers, this.roomHost);
+    console.log(
+      { roomUsers: this.roomUsers, roomHost: this.roomHost },
+      'disconnect',
+    );
   }
 
   @SubscribeMessage('createRoom')
