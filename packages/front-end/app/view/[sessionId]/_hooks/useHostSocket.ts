@@ -40,8 +40,5 @@ export const useHostSocket = (
       },
       { source: "user", scope: "document" }
     );
-    return () => {
-      socket.disconnect();
-    };
   }, [editor, pushChanges, roomId, socket, userId]);
 };

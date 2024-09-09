@@ -87,7 +87,10 @@ export class SocketGateway
 
   async handleDisconnect(client: Socket): Promise<any> {
     const userId = await this.socketService.validateUser(client);
-    console.log('userID', userId, 'is disconnect');
+    console.log(
+      { roomUsers: this.roomUsers, roomHost: this.roomHost, userId },
+      'is disconnect',
+    );
     for (const roomId of client.rooms) {
       this.roomUsers[roomId].delete(userId);
       if (this.roomUsers[roomId].size === 0) delete this.roomUsers[roomId];
@@ -97,10 +100,6 @@ export class SocketGateway
     }
     client.disconnect(true);
     this.clients.delete(client);
-    console.log(
-      { roomUsers: this.roomUsers, roomHost: this.roomHost },
-      'disconnect',
-    );
   }
 
   @SubscribeMessage('createRoom')
@@ -127,6 +126,11 @@ export class SocketGateway
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
     });
+    console.log(
+      'createRoomInfo',
+      { roomHost: this.roomHost },
+      { roomUsers: this.roomUsers },
+    );
     this.debugActiveRooms('createRoom');
   }
 
@@ -136,9 +140,20 @@ export class SocketGateway
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId) return;
-    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (!userId || !roomId) {
+      console.log(`invalid roomId:${roomId} or userId:${userId} when joinRoom`);
+      return;
+    }
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) {
+      console.log(
+        `client rooms has roomId:${roomId},${[...client.rooms]} or roomUsers for roomId:${[...this.roomUsers[roomId]]} is invalid when joinRoom`,
+      );
+      return;
+    }
     if (!(await this.socketService.checkUserSession(userId, roomId))) {
+      console.log(
+        `check user session for userId:${userId} & roomId:${roomId} is invalid when joinRoom`,
+      );
       await this.handleDisconnect(client);
       return;
     }

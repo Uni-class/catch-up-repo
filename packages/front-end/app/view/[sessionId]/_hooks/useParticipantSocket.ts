@@ -77,9 +77,6 @@ export const useParticipantSocket = (
         });
       }
     );
-    return () => {
-      socket.disconnect();
-    };
   }, [
     addDrawCache,
     pageIndex,
