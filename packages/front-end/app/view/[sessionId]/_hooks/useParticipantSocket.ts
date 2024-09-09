@@ -6,6 +6,7 @@ import {
   PDFPainterControllerHook,
   PDFPainterInstanceControllerHook,
 } from "@/PaintPDF/components";
+import { useReceiveDrawCache } from "./useReceiveDrawCache";
 
 export const useParticipantSocket = (
   userId: number,
@@ -15,6 +16,8 @@ export const useParticipantSocket = (
 ) => {
   const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
+  const { removeDrawCache, addDrawCache, updateDrawCache } =
+    useReceiveDrawCache();
   const pageIndex = pdfPainterController.getPageIndex();
 
   useEffect(() => {
