@@ -25,8 +25,15 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     const pageDrawMap = drawCacheRef.current.get(pageIndex);
+    console.log({ drawCache: drawCacheRef.current, pageDrawMap, pageIndex });
     if (pageDrawMap === undefined || editor === null) return;
-    editor.store.put(Array.from(pageDrawMap.values()));
+    console.log(Array.from(pageDrawMap.values()));
+    editor.store.put(
+      Array.from(pageDrawMap.values()).filter((value) => {
+        const record = value as { type: string } & typeof value;
+        return record.type !== undefined;
+      })
+    );
     drawCacheRef.current.delete(pageIndex);
   }, [drawCacheRef, pageIndex, editor]);
 
@@ -49,7 +56,7 @@ export const useParticipantSocket = (
         console.warn("ADDED");
         pageIndex === message.index
           ? pdfPainterInstanceController.addPaintElement(message.data)
-          : addDrawCache(pageIndex, message.data);
+          : addDrawCache(message.index, message.data);
       }
     );
     socket.on(
@@ -58,7 +65,7 @@ export const useParticipantSocket = (
         console.warn("REMOVE");
         pageIndex === message.index
           ? pdfPainterInstanceController.removePaintElement(message.data)
-          : removeDrawCache(pageIndex, message.data);
+          : removeDrawCache(message.index, message.data);
       }
     );
     socket.on(
@@ -75,7 +82,7 @@ export const useParticipantSocket = (
               }
             );
           } else {
-            updateDrawCache(pageIndex, message.data);
+            updateDrawCache(message.index, message.data);
           }
         });
       }
