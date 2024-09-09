@@ -27,7 +27,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
     },
   });
   const pdfPainterControllerHook = usePDFPainterController({
-    painterId: `${sessionName}_${pdfDocument.fileId}`,
+    painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
   const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
     editorId: "Host",

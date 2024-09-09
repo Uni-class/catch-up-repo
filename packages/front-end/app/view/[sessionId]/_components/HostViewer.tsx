@@ -10,10 +10,10 @@ import {
 import { ViewerPropType } from "../_types/ViewerType";
 
 export default function HostViewer(props: ViewerPropType) {
-  const { sessionName, fileList, userId, sessionId } = props;
+  const { fileList, userId, sessionId } = props;
   const pdfDocument = fileList[0];
   const pdfPainterControllerHook = usePDFPainterController({
-    painterId: `${sessionName}_${pdfDocument.fileId}`,
+    painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
   const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
     editorId: "Host",
