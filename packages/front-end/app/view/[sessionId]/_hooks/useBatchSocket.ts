@@ -151,7 +151,6 @@ export const useBatchSocket = ({
       const dataFormat = processBatchQueue();
       const messageBody = {
         index: pageIndex,
-        userId: userId,
         roomId: roomId,
       };
       if (dataFormat.added.length > 0) {
