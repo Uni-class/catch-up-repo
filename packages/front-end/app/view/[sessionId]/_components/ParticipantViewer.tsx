@@ -38,7 +38,12 @@ export default function ParticipantViewer(props: ViewerPropType) {
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
-  useParticipantSocket(userId, sessionId, pdfPainterHostInstanceControllerHook);
+  useParticipantSocket(
+    userId,
+    sessionId,
+    pdfPainterHostInstanceControllerHook,
+    pdfPainterControllerHook
+  );
 
   if (joinQuery.isLoading) {
     return <p>로딩...</p>;

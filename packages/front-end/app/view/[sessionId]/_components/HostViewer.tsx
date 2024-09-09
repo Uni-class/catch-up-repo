@@ -19,7 +19,12 @@ export default function HostViewer(props: ViewerPropType) {
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
-  useHostSocket(userId, sessionId, pdfPainterHostInstanceControllerHook);
+  useHostSocket(
+    userId,
+    sessionId,
+    pdfPainterHostInstanceControllerHook,
+    pdfPainterControllerHook
+  );
 
   return (
     <div

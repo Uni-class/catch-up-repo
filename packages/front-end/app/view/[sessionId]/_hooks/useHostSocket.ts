@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useBatchSocket } from "./useBatchSocket";
-import { PDFPainterInstanceControllerHook } from "@/PaintPDF/components";
+import {
+  PDFPainterControllerHook,
+  PDFPainterInstanceControllerHook,
+} from "@/PaintPDF/components";
 
 export const useHostSocket = (
   userId: number,
   roomId: number | string,
-  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook
+  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
+  pdfPainterControllerHook: PDFPainterControllerHook
 ) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { pushChanges } = useBatchSocket({ socket, userId, roomId });
+  const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
+  const pageIndex = pdfPainterController.getPageIndex();
+  const { pushChanges } = useBatchSocket({ socket, userId, roomId, pageIndex });
 
   const editor = pdfPainterInstanceController.getEditor();
 

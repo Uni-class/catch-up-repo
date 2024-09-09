@@ -2,15 +2,20 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { RecordId, TLRecord } from "tldraw";
 import { integralRecord } from "../_utils/integralRecord";
-import { PDFPainterInstanceControllerHook } from "@/PaintPDF/components";
+import {
+  PDFPainterControllerHook,
+  PDFPainterInstanceControllerHook,
+} from "@/PaintPDF/components";
 
 export const useParticipantSocket = (
   userId: number,
   roomId: number | string,
-  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook
+  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
+  pdfPainterControllerHook: PDFPainterControllerHook
 ) => {
-
-  const {pdfPainterInstanceController} = pdfPainterInstanceControllerHook
+  const { pdfPainterController } = pdfPainterControllerHook;
+  const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
+  const pageIndex = pdfPainterController.getPageIndex();
 
   useEffect(() => {
     const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
@@ -26,13 +31,17 @@ export const useParticipantSocket = (
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        pdfPainterInstanceController.addPaintElement(message.data);
+        if (pageIndex === message.index) {
+          pdfPainterInstanceController.addPaintElement(message.data);
+        }
       }
     );
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
-        pdfPainterInstanceController.removePaintElement(message.data);
+        if (pageIndex === message.index) {
+          pdfPainterInstanceController.removePaintElement(message.data);
+        }
       }
     );
     socket.on(
@@ -40,15 +49,19 @@ export const useParticipantSocket = (
       (message: { data: TLRecord[]; index: number }) => {
         const updates = message.data;
         updates.forEach((update) => {
-          pdfPainterInstanceController.updatePaintElementByGenerator(update.id, (record) => {
-            return integralRecord(record, update);
-          })
+          if (pageIndex === message.index) {
+            pdfPainterInstanceController.updatePaintElementByGenerator(
+              update.id,
+              (record) => {
+                return integralRecord(record, update);
+              }
+            );
+          }
         });
       }
     );
     return () => {
       socket.disconnect();
     };
-  }, [pdfPainterInstanceController, roomId, userId]);
-
+  }, [pageIndex, pdfPainterInstanceController, roomId, userId]);
 };
