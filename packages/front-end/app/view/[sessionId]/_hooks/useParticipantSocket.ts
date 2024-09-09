@@ -34,6 +34,7 @@ export const useParticipantSocket = (
     const pageDrawMap = drawCacheRef.current.get(pageIndex);
     if (pageDrawMap === undefined || editor === null) return;
     editor.store.put(Array.from(pageDrawMap.values()));
+    drawCacheRef.current.delete(pageIndex);
   }, [drawCacheRef, pageIndex, editor]);
 
   useEffect(() => {
