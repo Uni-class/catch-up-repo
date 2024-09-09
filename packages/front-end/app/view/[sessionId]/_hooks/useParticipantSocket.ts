@@ -41,7 +41,7 @@ export const useParticipantSocket = (
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("joinRoom", { userId: userId, roomId: roomId });
+    socket.emit("joinRoom", { roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
