@@ -56,6 +56,19 @@ export class SocketGateway
     }
     return userId;
   }
+  private debugActiveRooms(prefix: string = '') {
+    const rooms = this.server.of('/').adapter.rooms;
+    const roomInfo = [];
+
+    rooms.forEach((clients, roomName) => {
+      // 소켓 ID와 동일한 방은 필터링하고, 실제 방만 확인
+      if (!this.server.sockets.sockets.get(roomName)) {
+        roomInfo.push({ roomName, clients: Array.from(clients) }); // key와 value 출력
+      }
+    });
+
+    console.log(prefix, 'debug active rooms:', roomInfo);
+  }
 
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
@@ -114,6 +127,7 @@ export class SocketGateway
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
     });
+    this.debugActiveRooms('createRoom');
   }
 
   @SubscribeMessage('joinRoom')
@@ -137,6 +151,7 @@ export class SocketGateway
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
     });
+    this.debugActiveRooms('joinRoom');
   }
 
   @SubscribeMessage('sendPageNumber')
