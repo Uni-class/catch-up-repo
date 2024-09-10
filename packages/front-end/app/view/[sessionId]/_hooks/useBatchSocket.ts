@@ -28,12 +28,12 @@ const INTERVAL_TIME = 100; // fps = 1000 / INTERVAL_TIME
  */
 export const useBatchSocket = ({
   socket,
-  userId,
   roomId,
+  pageIndex,
 }: {
   socket: Socket | null;
-  userId: number;
   roomId: number | string;
+  pageIndex: number;
 }) => {
   const queueRef = useRef<{
     [key in RecordId<any>]: ElementType[];
@@ -148,8 +148,7 @@ export const useBatchSocket = ({
     const intervalId = setInterval(() => {
       const dataFormat = processBatchQueue();
       const messageBody = {
-        index: 1,
-        userId: userId,
+        index: pageIndex,
         roomId: roomId,
       };
       if (dataFormat.added.length > 0) {
@@ -175,6 +174,6 @@ export const useBatchSocket = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [processBatchQueue, roomId, socket, userId]);
+  }, [pageIndex, processBatchQueue, roomId, socket]);
   return { queueRef, pushChanges };
 };

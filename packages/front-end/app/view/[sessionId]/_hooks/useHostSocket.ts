@@ -1,32 +1,35 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { createTLStore, defaultShapeUtils } from "tldraw";
 import { useBatchSocket } from "./useBatchSocket";
+import {
+  PDFPainterController,
+  PDFPainterControllerHook,
+  PDFPainterInstanceController,
+  PDFPainterInstanceControllerHook,
+} from "@/PaintPDF/components";
+import { socketAtom } from "@/client/socketAtom";
+import { useAtom } from "jotai";
 
-export const useHostSocket = (userId: number, roomId: number | string) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const { pushChanges } = useBatchSocket({ socket, userId, roomId });
+export const useHostSocket = (
+  roomId: number | string,
+  pdfPainterInstanceController: PDFPainterInstanceController,
+  pdfPainterController: PDFPainterController
+) => {
+  const [socket] = useAtom(socketAtom);
+  const pageIndex = pdfPainterController.getPageIndex();
+  const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex });
 
-  const [store] = useState(() => {
-    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
-    return store;
-  });
-
-  useEffect(() => {
-    setSocket(
-      io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-        withCredentials: true,
-      })
-    );
-  }, []);
+  const editor = pdfPainterInstanceController.getEditor();
 
   useEffect(() => {
     if (socket === null) return;
+    if (editor === null) return;
+    const { store } = editor;
 
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("createRoom", { userId: userId, roomId: roomId });
+    socket.emit("createRoom", { roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
@@ -36,9 +39,5 @@ export const useHostSocket = (userId: number, roomId: number | string) => {
       },
       { source: "user", scope: "document" }
     );
-    return () => {
-      socket.disconnect();
-    };
-  }, [pushChanges, roomId, socket, store, userId]);
-  return store;
+  }, [editor, pushChanges, roomId, socket]);
 };

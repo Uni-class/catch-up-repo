@@ -1,49 +1,29 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { Session, File } from "@/schema/backend.schema";
-import { apiClient } from "@/utils/axios";
 import { useHostSocket } from "../_hooks/useHostSocket";
-import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
+import {
+  PainterInstanceGenerator,
+  PDFPainter,
+  usePDFPainterController,
+  usePDFPainterInstanceController,
+} from "@/PaintPDF/components";
+import { ViewerPropType } from "../_types/ViewerType";
 
-interface SessionReturnType extends Session {
-  fileList: File[];
-}
-
-export default function HostViewer({
-  params,
-}: {
-  params: { sessionId: string; userId: number };
-}) {
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useQuery<AxiosResponse<SessionReturnType>>({
-    queryKey: ["session", params.sessionId],
-    queryFn: async () => {
-      return await apiClient.get(`/session`, {
-        params: { id: params.sessionId },
-      });
-    },
+export default function HostViewer(props: ViewerPropType) {
+  const { fileList, userId, sessionId } = props;
+  const pdfDocument = fileList[0];
+  const pdfPainterControllerHook = usePDFPainterController({
+    painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
-  const data = response?.data;
-
-  const store = useHostSocket(params.userId, params.sessionId);
-
-  if (isLoading) {
-    return <p>로딩...</p>;
-  }
-  if (isError || data?.fileList[0]?.url === undefined) {
-    return <p>unable to load session: {params.sessionId}</p>;
-  }
-
-  if (data === undefined) {
-    return null;
-  }
-
-  const pdfDocument = data.fileList[0];
+  const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
+    editorId: "Host",
+    pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+  });
+  useHostSocket(
+    sessionId,
+    pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
+    pdfPainterControllerHook.pdfPainterController
+  );
 
   return (
     <div
@@ -57,10 +37,17 @@ export default function HostViewer({
       }}
     >
       <PDFPainter
-        painterId={`${data.sessionId}_${pdfDocument.fileId}`}
+        painterId={`${sessionId}_${pdfDocument.fileId}`}
         pdfDocumentURL={pdfDocument.url}
+        customPdfPainterControllerHook={pdfPainterControllerHook}
       >
-        <PainterInstanceGenerator instanceId={"Host"} readOnly={false} />
+        <PainterInstanceGenerator
+          instanceId={"Host"}
+          readOnly={false}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterHostInstanceControllerHook
+          }
+        />
       </PDFPainter>
     </div>
   );

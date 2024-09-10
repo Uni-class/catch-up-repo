@@ -5,52 +5,51 @@ import { AxiosResponse } from "axios";
 import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useParticipantSocket } from "../_hooks/useParticipantSocket";
-import { PainterInstanceGenerator, PDFPainter } from "@/PaintPDF/components";
+import {
+  PainterInstanceGenerator,
+  PDFPainter,
+  usePDFPainterController,
+  usePDFPainterInstanceController,
+} from "@/PaintPDF/components";
+import { ViewerPropType } from "../_types/ViewerType";
 
 interface SessionReturnType extends Session {
   fileList: File[];
 }
 
-export default function ParticipantViewer({
-  params,
-}: {
-  params: { sessionId: string; userId: number };
-}) {
-  // user/session/:sessionId/join
+export default function ParticipantViewer(props: ViewerPropType) {
+  const { sessionName, fileList, userId, sessionId } = props;
+  const pdfDocument = fileList[0];
   const joinQuery = useQuery<AxiosResponse<any>>({
-    queryKey: ["user", "session", params.sessionId, "join"],
+    queryKey: ["user", "session", sessionId, "join"],
     queryFn: async () => {
-      return await apiClient.post(`/user/session/${params.sessionId}/join`);
+      return await apiClient.post(`/user/session/${sessionId}/join`);
     },
   });
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useQuery<AxiosResponse<SessionReturnType>>({
-    queryKey: ["session", params.sessionId],
-    queryFn: async () => {
-      return await apiClient.get(`/session`, {
-        params: { id: params.sessionId },
-      });
-    },
-    enabled: !!joinQuery.data,
+  const pdfPainterControllerHook = usePDFPainterController({
+    painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
-  const data = response?.data;
-  const store = useParticipantSocket(params.userId, params.sessionId);
+  const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
+    editorId: "Host",
+    pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+  });
+  const pdfPainterParticipantInstanceControllerHook =
+    usePDFPainterInstanceController({
+      editorId: "Participant",
+      pdfPainterController: pdfPainterControllerHook.pdfPainterController,
+    });
+  useParticipantSocket(
+    sessionId,
+    pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
+    pdfPainterControllerHook.pdfPainterController
+  );
 
-  if (isLoading || joinQuery.isLoading) {
+  if (joinQuery.isLoading) {
     return <p>로딩...</p>;
   }
-  if (joinQuery.isError || isError || data?.fileList[0]?.url === undefined) {
-    return <p>unable to load session: {params.sessionId}</p>;
+  if (joinQuery.isError) {
+    return <p>unable to load session: {sessionId}</p>;
   }
-
-  if (data === undefined) {
-    return null;
-  }
-
-  const pdfDocument = data.fileList[0];
 
   return (
     <div
@@ -64,11 +63,24 @@ export default function ParticipantViewer({
       }}
     >
       <PDFPainter
-        painterId={`${data.sessionId}_${pdfDocument.fileId}`}
+        painterId={`${sessionId}_${pdfDocument.fileId}`}
         pdfDocumentURL={pdfDocument.url}
+        customPdfPainterControllerHook={pdfPainterControllerHook}
       >
-        <PainterInstanceGenerator instanceId={"Host"} readOnly={true} />
-        <PainterInstanceGenerator instanceId={"Participant"} readOnly={false} />
+        <PainterInstanceGenerator
+          instanceId={"Host"}
+          readOnly={true}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterHostInstanceControllerHook
+          }
+        />
+        <PainterInstanceGenerator
+          instanceId={"Participant"}
+          readOnly={false}
+          customPdfPainterInstanceControllerHook={
+            pdfPainterParticipantInstanceControllerHook
+          }
+        />
       </PDFPainter>
     </div>
   );

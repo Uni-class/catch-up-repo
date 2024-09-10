@@ -1,38 +1,63 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { createTLStore, defaultShapeUtils, RecordId, TLRecord } from "tldraw";
+import { RecordId, TLRecord } from "tldraw";
+import {
+  PDFPainterController,
+  PDFPainterInstanceController,
+} from "@/PaintPDF/components";
+import { useReceiveDrawCache } from "./useReceiveDrawCache";
+import { socketAtom } from "@/client/socketAtom";
+import { useAtom } from "jotai";
 import { integralRecord } from "../_utils/integralRecord";
 
 export const useParticipantSocket = (
-  userId: number,
-  roomId: number | string
+  roomId: number | string,
+  pdfPainterInstanceController: PDFPainterInstanceController,
+  pdfPainterController: PDFPainterController
 ) => {
-  const [store] = useState(() => {
-    const store = createTLStore({ shapeUtils: [...defaultShapeUtils] });
-    return store;
-  });
+  const editor = pdfPainterInstanceController.getEditor();
+  const {
+    removeDrawCache,
+    addDrawCache,
+    updateDrawCache,
+    setEditorFromDrawCache,
+  } = useReceiveDrawCache(editor);
+  const [socket] = useAtom(socketAtom);
+  const pageIndex = pdfPainterController.getPageIndex();
+  // 다른 페이지 데이터 받으면 cache에 삽입됨
+  // useEffect는 일단 호출되므로 내 페이지가 0인 경우에도 작동 -> cache에 삽입데이터가 반영됨?
+  // 아 왜 pageIndex가 순간 message.index로 바뀌는거지?
+  useEffect(() => {
+    setEditorFromDrawCache(pageIndex);
+  }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-      withCredentials: true,
-    });
+    if (socket === null) return;
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-    socket.emit("joinRoom", { userId: userId, roomId: roomId });
+    socket.emit("joinRoom", { roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
+  }, [roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        store.put(message.data);
+        pageIndex === message.index
+          ? pdfPainterInstanceController.addPaintElement(message.data)
+          : addDrawCache(message.index, message.data);
       }
     );
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
-        store.remove(message.data);
+        pageIndex === message.index
+          ? pdfPainterInstanceController.removePaintElement(message.data)
+          : removeDrawCache(message.index, message.data);
       }
     );
     socket.on(
@@ -40,17 +65,30 @@ export const useParticipantSocket = (
       (message: { data: TLRecord[]; index: number }) => {
         const updates = message.data;
         updates.forEach((update) => {
-          //const original = store.get(update.id);
-          // console.log({integral:integralObject(store.get(update.id), update)});
-          store.update(update.id, (record) => {
-            return integralRecord(record, update);
-          });
+          if (pageIndex === message.index) {
+            pdfPainterInstanceController.updatePaintElementByGenerator(
+              update.id,
+              (record) => {
+                return integralRecord(record, update);
+              }
+            );
+          } else {
+            updateDrawCache(message.index, message.data);
+          }
         });
       }
     );
     return () => {
-      socket.disconnect();
+      socket.off("getAddedDraw");
+      socket.off("getRemovedDraw");
+      socket.off("getUpdatedDraw");
     };
-  }, [roomId, store, userId]);
-  return store;
+  }, [
+    addDrawCache,
+    pageIndex,
+    pdfPainterInstanceController,
+    removeDrawCache,
+    socket,
+    updateDrawCache,
+  ]);
 };

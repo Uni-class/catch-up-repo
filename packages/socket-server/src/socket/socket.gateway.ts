@@ -56,10 +56,23 @@ export class SocketGateway
     }
     return userId;
   }
+  private debugActiveRooms(prefix: string = '') {
+    const rooms = this.server.of('/').adapter.rooms;
+    const roomInfo = [];
+
+    rooms.forEach((clients, roomName) => {
+      // 소켓 ID와 동일한 방은 필터링하고, 실제 방만 확인
+      if (!this.server.sockets.sockets.get(roomName)) {
+        roomInfo.push({ roomName, clients: Array.from(clients) }); // key와 value 출력
+      }
+    });
+
+    console.log(prefix, 'debug active rooms:', roomInfo);
+  }
 
   async afterInit(server: Server) {
     server.on('connection', (socket: Socket) => {
-      console.log(socket.id);
+      console.log({ socketId: socket.id }, 'afterInit');
     });
   }
 
@@ -68,12 +81,16 @@ export class SocketGateway
     if (!userId) client.disconnect(true);
     this.clientUserId[client.id] = userId;
     this.clients.add(client);
+    console.log({ clientId: client.id, userId }, 'handleConnection');
     return;
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
     const userId = await this.socketService.validateUser(client);
-    console.log('userID', userId, 'is disconnect');
+    console.log(
+      { roomUsers: this.roomUsers, roomHost: this.roomHost, userId },
+      'is disconnect',
+    );
     for (const roomId of client.rooms) {
       this.roomUsers[roomId].delete(userId);
       if (this.roomUsers[roomId].size === 0) delete this.roomUsers[roomId];
@@ -83,8 +100,6 @@ export class SocketGateway
     }
     client.disconnect(true);
     this.clients.delete(client);
-    console.log('disconnected');
-    console.log(this.roomUsers, this.roomHost);
   }
 
   @SubscribeMessage('createRoom')
@@ -111,6 +126,12 @@ export class SocketGateway
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
     });
+    console.log(
+      'createRoomInfo',
+      { roomHost: this.roomHost },
+      { roomUsers: this.roomUsers },
+    );
+    this.debugActiveRooms('createRoom');
   }
 
   @SubscribeMessage('joinRoom')
@@ -119,9 +140,20 @@ export class SocketGateway
     @MessageBody() { roomId }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
-    if (!userId || !roomId) return;
-    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) return;
+    if (!userId || !roomId) {
+      console.log(`invalid roomId:${roomId} or userId:${userId} when joinRoom`);
+      return;
+    }
+    if (client.rooms.has(roomId) || !this.roomUsers[roomId]) {
+      console.log(
+        `client rooms has roomId:${roomId},${[...client.rooms]} or roomUsers for roomId:${[...this.roomUsers[roomId]]} is invalid when joinRoom`,
+      );
+      return;
+    }
     if (!(await this.socketService.checkUserSession(userId, roomId))) {
+      console.log(
+        `check user session for userId:${userId} & roomId:${roomId} is invalid when joinRoom`,
+      );
       await this.handleDisconnect(client);
       return;
     }
@@ -134,6 +166,7 @@ export class SocketGateway
       roomId,
       userList: Array.from(this.roomUsers[roomId]),
     });
+    this.debugActiveRooms('joinRoom');
   }
 
   @SubscribeMessage('sendPageNumber')

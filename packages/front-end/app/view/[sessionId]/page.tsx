@@ -6,6 +6,10 @@ import HostViewer from "./_components/HostViewer";
 import { useQueries } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import ParticipantViewer from "./_components/ParticipantViewer";
+import { useAtom, useSetAtom } from "jotai";
+import { socketAtom } from "@/client/socketAtom";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 export default function Page({ params }: { params: { sessionId: string } }) {
   const [userQuery, sessionQuery] = useQueries({
@@ -25,19 +29,30 @@ export default function Page({ params }: { params: { sessionId: string } }) {
       },
     ],
   });
+  const [, setSocket] = useAtom(socketAtom);
+  useEffect(() => {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
+      withCredentials: true,
+    });
+    setSocket(newSocket);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [setSocket]);
+
   if (userQuery.isLoading || sessionQuery.isLoading) {
     return <h1>로딩...</h1>;
   }
-  const userData = userQuery.data?.data;
-  const sessionData = sessionQuery.data?.data;
-  const userId = userData?.userId;
-  const isHost = userData?.userId === sessionData?.hostId;
-  if (userId === undefined) {
-    return <h1>로딩...</h1>;
+  if (userQuery.data === undefined || sessionQuery.data === undefined) {
+    return <></>;
   }
+  const userData = userQuery.data.data;
+  const sessionData = sessionQuery.data.data;
+  const userId = userData.userId;
+  const isHost = userData.userId === sessionData.hostId;
   return isHost ? (
-    <HostViewer params={{ ...params, userId: userId }} />
+    <HostViewer {...{ ...sessionData, userId: userId }} />
   ) : (
-    <ParticipantViewer params={{ ...params, userId: userId }} />
+    <ParticipantViewer {...{ ...sessionData, userId: userId }} />
   );
 }
