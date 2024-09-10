@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useCallback,
-  Suspense,
-} from "react";
+import { ReactNode, createContext, useContext, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { User } from "@/schema/backend.schema";
@@ -55,19 +49,17 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
   const data: User | null = response?.data || null;
 
   return (
-    <Suspense>
-      <AccountContext.Provider
-        value={{
-          updateAccount: () => {}, //need fix
-          logout: () => {}, //need fix
-          getLoginURL: getLoginURL,
-          goToLogin: goToLogin,
-          isLoading: isLoading,
-          account: data,
-        }}
-      >
-        {children}
-      </AccountContext.Provider>
-    </Suspense>
+    <AccountContext.Provider
+      value={{
+        updateAccount: () => {}, //need fix
+        logout: () => {}, //need fix
+        getLoginURL: getLoginURL,
+        goToLogin: goToLogin,
+        isLoading: isLoading,
+        account: data,
+      }}
+    >
+      {children}
+    </AccountContext.Provider>
   );
 };
