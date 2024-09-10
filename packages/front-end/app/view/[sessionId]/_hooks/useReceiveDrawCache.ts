@@ -43,7 +43,6 @@ export const useReceiveDrawCache = (editor: Editor | null) => {
   );
   const setEditorFromDrawCache = useCallback(
     (pageIndex: number) => {
-      console.error("setEditorFromCache",drawCacheRef.current,pageIndex)
       const pageDrawMap = drawCacheRef.current.get(pageIndex);
       if (pageDrawMap === undefined || editor === null) return;
       // editor관련 코드가 pageIndex를 순회하진 않음
@@ -52,7 +51,7 @@ export const useReceiveDrawCache = (editor: Editor | null) => {
           const record = value as { type: string | undefined } & typeof value;
           if (record.type === undefined) {
             const recordFromEditor = editor.store.get(value.id);
-            console.warn("WEIRD RECORD", {
+            console.warn("WEIRD RECORD! but don't worry. It will works well...maybe", {
               record: integralRecord(recordFromEditor, value),
             });
             return integralRecord(recordFromEditor, value);

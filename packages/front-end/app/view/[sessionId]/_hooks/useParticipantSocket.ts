@@ -42,13 +42,11 @@ export const useParticipantSocket = (
   }, [roomId, socket]);
 
   useEffect(() => {
-    console.error("pageIndex in useEffect", pageIndex);
     if (socket === null) return;
 
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        console.log(`current:${pageIndex},received:${message.index}`);
         pageIndex === message.index
           ? pdfPainterInstanceController.addPaintElement(message.data)
           : addDrawCache(message.index, message.data);
