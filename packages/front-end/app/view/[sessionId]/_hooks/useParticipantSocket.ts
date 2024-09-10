@@ -17,25 +17,21 @@ export const useParticipantSocket = (
 ) => {
   const { pdfPainterController } = pdfPainterControllerHook;
   const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
-  const { removeDrawCache, addDrawCache, updateDrawCache, drawCacheRef } =
-    useReceiveDrawCache();
+  const editor = pdfPainterInstanceController.getEditor();
+  const {
+    removeDrawCache,
+    addDrawCache,
+    updateDrawCache,
+    setEditorFromDrawCache,
+  } = useReceiveDrawCache(editor);
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
-  const editor = pdfPainterInstanceController.getEditor();
-
+  // 다른 페이지 데이터 받으면 cache에 삽입됨
+  // useEffect는 일단 호출되므로 내 페이지가 0인 경우에도 작동 -> cache에 삽입데이터가 반영됨?
+  // 아 왜 pageIndex가 순간 message.index로 바뀌는거지?
   useEffect(() => {
-    const pageDrawMap = drawCacheRef.current.get(pageIndex);
-    console.log({ drawCache: drawCacheRef.current, pageDrawMap, pageIndex });
-    if (pageDrawMap === undefined || editor === null) return;
-    console.log(Array.from(pageDrawMap.values()));
-    editor.store.put(
-      Array.from(pageDrawMap.values()).filter((value) => {
-        const record = value as { type: string } & typeof value;
-        return record.type !== undefined;
-      })
-    );
-    drawCacheRef.current.delete(pageIndex);
-  }, [drawCacheRef, pageIndex, editor]);
+    // setEditorFromDrawCache(pageIndex);
+  }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
     if (socket === null) return;
@@ -49,42 +45,44 @@ export const useParticipantSocket = (
   }, [roomId, socket]);
 
   useEffect(() => {
+    console.error("pageIndex in useEffect",pageIndex)
     if (socket === null) return;
     socket.on(
       "getAddedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        console.warn("ADDED");
-        pageIndex === message.index
-          ? pdfPainterInstanceController.addPaintElement(message.data)
-          : addDrawCache(message.index, message.data);
+        console.log(`current:${pageIndex},received:${message.index}`);
+        // pageIndex === message.index
+        //   ? pdfPainterInstanceController.addPaintElement(message.data)
+        //   : addDrawCache(message.index, message.data);
       }
     );
     socket.on(
       "getRemovedDraw",
       (message: { data: RecordId<any>[]; index: number }) => {
-        console.warn("REMOVE");
-        pageIndex === message.index
-          ? pdfPainterInstanceController.removePaintElement(message.data)
-          : removeDrawCache(message.index, message.data);
+        console.log(`current:${pageIndex},received:${message.index}`);
+        // pageIndex === message.index
+        //   ? pdfPainterInstanceController.removePaintElement(message.data)
+        //   : removeDrawCache(message.index, message.data);
       }
     );
     socket.on(
       "getUpdatedDraw",
       (message: { data: TLRecord[]; index: number }) => {
-        console.warn("UPDATE");
-        const updates = message.data;
-        updates.forEach((update) => {
-          if (pageIndex === message.index) {
-            pdfPainterInstanceController.updatePaintElementByGenerator(
-              update.id,
-              (record) => {
-                return integralRecord(record, update);
-              }
-            );
-          } else {
-            updateDrawCache(message.index, message.data);
-          }
-        });
+        console.log(`current:${pageIndex},received:${message.index}`);
+        // 처리 관련 로직이 페이지가 뛰는거에 영향을 주진 않음
+        // const updates = message.data;
+        // updates.forEach((update) => {
+        //   if (pageIndex === message.index) {
+        //     pdfPainterInstanceController.updatePaintElementByGenerator(
+        //       update.id,
+        //       (record) => {
+        //         return integralRecord(record, update);
+        //       }
+        //     );
+        //   } else {
+        //     updateDrawCache(message.index, message.data);
+        //   }
+        // });
       }
     );
   }, [

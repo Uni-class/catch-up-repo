@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import { Editor, RecordId, TLRecord } from "tldraw";
 import { integralRecord } from "../_utils/integralRecord";
 
-export const useReceiveDrawCache = () => {
+export const useReceiveDrawCache = (editor: Editor | null) => {
   const drawCacheRef = useRef<Map<number, Map<RecordId<any>, TLRecord>>>(
     new Map()
   );
@@ -34,13 +34,6 @@ export const useReceiveDrawCache = () => {
       initCachePageIndex(pageIndex);
       elements.forEach((element) => {
         const prevRecord = drawCacheRef.current.get(pageIndex)?.get(element.id);
-        if (prevRecord === undefined) {
-          console.log(
-            `${pageIndex} 페이지에서 이 그리기:${element.id} 처리 불가`,
-            drawCacheRef.current.get(pageIndex)?.get(element.id),
-            drawCacheRef.current.get(pageIndex)
-          );
-        }
         drawCacheRef.current
           .get(pageIndex)
           ?.set(element.id, integralRecord(prevRecord, element));
@@ -48,5 +41,37 @@ export const useReceiveDrawCache = () => {
     },
     []
   );
-  return { removeDrawCache, addDrawCache, updateDrawCache, drawCacheRef };
+  const setEditorFromDrawCache = useCallback(
+    (pageIndex: number) => {
+      console.error("setEditorFromCache",drawCacheRef.current,pageIndex)
+      const pageDrawMap = drawCacheRef.current.get(pageIndex);
+      if (pageDrawMap === undefined || editor === null) return;
+      // editor관련 코드가 pageIndex를 순회하진 않음
+      editor.store.put(
+        Array.from(pageDrawMap.values()).map((value) => {
+          const record = value as { type: string | undefined } & typeof value;
+          if (record.type === undefined) {
+            const recordFromEditor = editor.store.get(value.id);
+            console.warn("WEIRD RECORD", {
+              record: integralRecord(recordFromEditor, value),
+            });
+            return integralRecord(recordFromEditor, value);
+          } else {
+            return record;
+          }
+        })
+      );
+      drawCacheRef.current.delete(pageIndex);
+    },
+    [editor]
+  );
+
+  
+  return {
+    removeDrawCache,
+    addDrawCache,
+    updateDrawCache,
+    drawCacheRef,
+    setEditorFromDrawCache,
+  };
 };
