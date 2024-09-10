@@ -40,8 +40,8 @@ export default function ParticipantViewer(props: ViewerPropType) {
     });
   useParticipantSocket(
     sessionId,
-    pdfPainterHostInstanceControllerHook,
-    pdfPainterControllerHook
+    pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
+    pdfPainterControllerHook.pdfPainterController
   );
 
   if (joinQuery.isLoading) {

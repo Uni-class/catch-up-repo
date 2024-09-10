@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useBatchSocket } from "./useBatchSocket";
 import {
+  PDFPainterController,
   PDFPainterControllerHook,
+  PDFPainterInstanceController,
   PDFPainterInstanceControllerHook,
 } from "@/PaintPDF/components";
 import { socketAtom } from "@/client/socketAtom";
@@ -10,12 +12,10 @@ import { useAtom } from "jotai";
 
 export const useHostSocket = (
   roomId: number | string,
-  pdfPainterInstanceControllerHook: PDFPainterInstanceControllerHook,
-  pdfPainterControllerHook: PDFPainterControllerHook
+  pdfPainterInstanceController: PDFPainterInstanceController,
+  pdfPainterController: PDFPainterController
 ) => {
   const [socket] = useAtom(socketAtom);
-  const { pdfPainterController } = pdfPainterControllerHook;
-  const { pdfPainterInstanceController } = pdfPainterInstanceControllerHook;
   const pageIndex = pdfPainterController.getPageIndex();
   const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex });
 
