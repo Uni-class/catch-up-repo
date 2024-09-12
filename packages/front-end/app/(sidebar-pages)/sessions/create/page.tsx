@@ -7,9 +7,14 @@ import { css } from "@/styled-system/css";
 
 export default function Page() {
   return (
-    <div className={css({ display: "flex", flexDirection: "column",height:"100%" })}>
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      })}
+    >
       <Heading>세션 생성</Heading>
-      <Heading variant="sub5">세션을 만들기위한 정보 설정</Heading>
       <Divider />
       <div
         className={css({

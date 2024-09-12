@@ -21,7 +21,6 @@ export default function Page() {
       })}
     >
       <Heading>세션 접속하기</Heading>
-      <Heading variant="sub5">참여코드 입력해 세션 접속</Heading>
       <Divider />
       <div
         className={css({
@@ -63,8 +62,8 @@ export default function Page() {
                 minWidth: "120px",
               })}
               disabled={sessionId === ""}
-              onClick={()=>{
-                router.push(`/view/${sessionId}`)
+              onClick={() => {
+                router.push(`/view/${sessionId}`);
               }}
             >
               {"접속하기"}

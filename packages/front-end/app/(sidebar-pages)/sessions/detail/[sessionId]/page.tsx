@@ -51,9 +51,6 @@ export default function Page({ params }: PropType) {
       })}
     >
       <Heading>{isHost ? "세션 정보 & 수정" : "세션 정보"}</Heading>
-      <Heading variant="sub5">
-        {isHost ? "세션 시작시 수정 정보 반영" : "세션의 상세 정보"}
-      </Heading>
       <Divider />
       <div
         className={css({

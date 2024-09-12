@@ -16,7 +16,6 @@ export default function Page() {
       })}
     >
       <Heading>설정</Heading>
-      <Heading variant="sub5">내 정보와 기본 닉네임을 수정</Heading>
       <Divider />
       <div
         className={css({
