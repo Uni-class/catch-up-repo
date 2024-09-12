@@ -6,6 +6,7 @@ import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
+import LogoIcon from "@/public/logo.svg";
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
@@ -43,6 +44,7 @@ export default function Sidebar() {
             gap: "0.5em",
           })}
         >
+          <LogoIcon width={"3em"} height={"3em"} />
           <Heading variant="h4">{PROJECT_NAME}</Heading>
         </div>
       </div>
