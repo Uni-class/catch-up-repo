@@ -33,6 +33,7 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   useEffect(() => {
     const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
       withCredentials: true,
+      transports: ["websocket"],
     });
     setSocket(newSocket);
     return () => {
