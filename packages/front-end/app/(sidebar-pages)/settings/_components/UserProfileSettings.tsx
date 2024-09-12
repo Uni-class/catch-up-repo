@@ -9,6 +9,8 @@ import { Label } from "@/components/Label";
 import { ProfileImage } from "@/components/ProfileImage";
 import { useAccount } from "@/hook/useAccount";
 
+import EditIcon from "@/public/icons/edit.svg";
+
 const UserProfileSettings = () => {
   const account: User | null = useAccount();
 
@@ -56,54 +58,84 @@ const UserProfileSettings = () => {
         }
       }}
     >
+      <Label>프로필 수정</Label>
       <div
         className={css({
           display: "flex",
-          flexDirection: "column",
           gap: "1em",
         })}
       >
-        <Label htmlFor="profileImage">프로필 사진</Label>
-        <div className={css({ display: "flex", gap: "1.5rem" })}>
+        <div
+          className={css({
+            position: "relative",
+            width: "fit-content",
+            height: "fit-content",
+            cursor: "pointer",
+            gap: "1.5rem",
+            boxSizing: "content-box",
+            border: "0.2em solid #000000",
+            borderRadius: "1.5em",
+            overflow: "hidden",
+            _hover: {
+              opacity: 0.5,
+            },
+          })}
+          onClick={() => {
+            if (fileInputRef.current !== null) {
+              fileInputRef.current.click();
+            }
+          }}
+        >
           <ProfileImage
             src={imageSrc}
             alt="프로필 사진"
-            width={50}
-            height={50}
-            className={css({ borderRadius: "50%", height: "50px" })}
+            width={256}
+            height={256}
+            className={css({
+              width: "5em",
+              height: "5em",
+            })}
           />
+          <div
+            className={css({
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              padding: "0.3em",
+              width: "fit-content",
+              height: "fit-content",
+              color: "#ffffff",
+              backgroundColor: "#fa8c0f",
+              borderRadius: "1em 0 0 0",
+            })}
+          >
+            <EditIcon width={"1.5em"} />
+          </div>
           <input
             type="file"
             accept="image/*"
             ref={fileInputRef}
             name="profileImage"
-            id="profileImage"
             onChange={handleImageChange}
             hidden
           />
-          <Button
-            onClick={() => {
-              if (fileInputRef.current !== null) {
-                fileInputRef.current.click();
-              }
-            }}
+        </div>
+        <div>
+          <Label
             className={css({
-              backgroundColor: "green.600",
-              width: "200px",
-              height: "50px",
+              display: "block",
+              fontSize: "1em",
             })}
           >
-            수정하기
-          </Button>
+            닉네임
+          </Label>
+          <LineEdit
+            placeholder="사용할 닉네임을 입력하세요."
+            defaultValue={account?.nickname || ""}
+            name="nickname"
+            className={css({ flex: 1, height: "3em" })}
+          />
         </div>
-        <Label htmlFor="nickname">닉네임</Label>
-        <LineEdit
-          placeholder="닉네임을 입력해 주세요."
-          defaultValue={account?.nickname || ""}
-          name="nickname"
-          id="nickname"
-          className={css({ height: "50px" })}
-        />
       </div>
       <Button type="submit" className={css({ height: "50px" })}>
         저장하기
