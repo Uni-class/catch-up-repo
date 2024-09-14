@@ -17,6 +17,12 @@ export class BiMap<L = any, R = any> {
     this.leftToRight.set(left, right);
     this.rightToLeft.set(right, left);
   }
+  getLeftToRight(): Map<L, R> {
+    return this.leftToRight;
+  }
+  getRightToLeft(): Map<R, L> {
+    return this.rightToLeft;
+  }
   getByLeft(left: L): R | undefined {
     return this.leftToRight.get(left);
   }
