@@ -35,15 +35,15 @@ export class BiMap<L = any, R = any> {
   }
   deleteByLeft(left: L): void {
     const right = this.getByLeft(left);
+    this.leftToRight.delete(left);
     if (this.isOneToOne) {
-      this.leftToRight.delete(left);
       this.rightToLeft.delete(right);
     }
   }
   deleteByRight(right: R): void {
     const left = this.getByRight(right);
+    this.rightToLeft.delete(right);
     if (this.isOneToOne) {
-      this.rightToLeft.delete(right);
       this.leftToRight.delete(left);
     }
   }
