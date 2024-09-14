@@ -1,10 +1,10 @@
 import { BiMap } from './bi-map.class';
 
-describe('BiMap', () => {
+describe('OneToOne BiMap', () => {
   let biMap: BiMap<string, number>;
 
   beforeEach(() => {
-    biMap = new BiMap<string, number>();
+    biMap = new BiMap<string, number>({ isOneToOne: true });
   });
 
   it('should be accessible from both sides after set.', () => {
