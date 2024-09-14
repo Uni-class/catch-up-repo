@@ -34,4 +34,11 @@ export class BiMap<L = any, R = any> {
     this.rightToLeft.delete(right);
     this.leftToRight.delete(left);
   }
+
+  hasByLeft(left: L): boolean {
+    return this.leftToRight.has(left);
+  }
+  hasByRight(right: R): boolean {
+    return this.rightToLeft.has(right);
+  }
 }
