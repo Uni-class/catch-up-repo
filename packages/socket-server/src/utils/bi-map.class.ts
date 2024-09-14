@@ -5,7 +5,6 @@ export class BiMap<L = any, R = any> {
     this.leftToRight = new Map<L, R>();
     this.rightToLeft = new Map<R, L>();
   }
-
   set(left: L, right: R): void {
     const prevRight = this.getByLeft(left);
     const prevLeft = this.getByRight(right);
@@ -34,11 +33,20 @@ export class BiMap<L = any, R = any> {
     this.rightToLeft.delete(right);
     this.leftToRight.delete(left);
   }
-
   hasByLeft(left: L): boolean {
     return this.leftToRight.has(left);
   }
   hasByRight(right: R): boolean {
     return this.rightToLeft.has(right);
+  }
+  clear(): void {
+    this.leftToRight.clear();
+    this.rightToLeft.clear();
+  }
+  entries(): IterableIterator<[L, R]> {
+    return this.leftToRight.entries();
+  }
+  forEach(callbackfn: (value: R, key: L, map: Map<L, R>) => void): void {
+    this.leftToRight.forEach(callbackfn);
   }
 }
