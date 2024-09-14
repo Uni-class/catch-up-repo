@@ -7,46 +7,39 @@ describe('BiMap', () => {
     biMap = new BiMap<string, number>();
   });
 
-  it('should be accessible from both directions once set.', () => {
+  it('should be accessible from both sides after set.', () => {
     biMap.set('user1', 1);
     expect(biMap.getByLeft('user1')).toBe(1);
     expect(biMap.getByRight(1)).toBe('user1');
   });
 
-  it('should be maintained one-to-one matching after update.', () => {
+  it('should be maintained one-to-one matching after update the right.', () => {
     biMap.set('user1', 1);
     biMap.set('user1', 2);
     expect(biMap.getByLeft('user1')).toBe(2);
     expect(biMap.getByRight(2)).toBe('user1');
-    expect(biMap.getByRight(1)).toBe(undefined);
+    expect(biMap.hasByRight(1)).toBe(false);
   });
 
-  it('should overwrite the existing value for a key', () => {
+  it('should be maintained one-to-one matching after update the left.', () => {
     biMap.set('user1', 1);
-    biMap.set('user1', 2);
-    expect(biMap.getValue('user1')).toBe(2);
-    expect(biMap.getKey(2)).toBe('user1');
-    expect(biMap.getKey(1)).toBeUndefined();
+    biMap.set('user2', 1);
+    expect(biMap.getByLeft('user2')).toBe(1);
+    expect(biMap.getByRight(1)).toBe('user2');
+    expect(biMap.hasByLeft('user1')).toBe(false);
   });
 
-  it('should overwrite the existing key for a value', () => {
+  it('should be deleted from both sides by left', () => {
     biMap.set('user1', 1);
-    biMap.set('user2', 1); // Overwriting value 1
-    expect(biMap.getValue('user1')).toBeUndefined();
-    expect(biMap.getKey(1)).toBe('user2');
+    biMap.deleteByLeft('user1');
+    expect(biMap.hasByLeft('user1')).toBe(false);
+    expect(biMap.hasByRight(1)).toBe(false);
   });
 
-  it('should delete by key', () => {
+  it('should be deleted from both sides by right', () => {
     biMap.set('user1', 1);
-    biMap.deleteByKey('user1');
-    expect(biMap.getValue('user1')).toBeUndefined();
-    expect(biMap.getKey(1)).toBeUndefined();
-  });
-
-  it('should delete by value', () => {
-    biMap.set('user1', 1);
-    biMap.deleteByValue(1);
-    expect(biMap.getValue('user1')).toBeUndefined();
-    expect(biMap.getKey(1)).toBeUndefined();
+    biMap.deleteByRight(1);
+    expect(biMap.hasByLeft('user1')).toBe(false);
+    expect(biMap.hasByRight(1)).toBe(false);
   });
 });
