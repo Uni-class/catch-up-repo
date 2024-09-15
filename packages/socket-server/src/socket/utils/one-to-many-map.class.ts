@@ -5,9 +5,15 @@ export class OneToManyMap<O = any, M = any> {
     this.oneToMany = new Map<O, Set<M>>();
     this.manyToOne = new Map<M, O>();
   }
+  private cleanOneMemoryIfEmpty(o: O) {
+    if (this.oneToMany.get(o).size === 0) {
+      this.deleteByOne(o);
+    }
+  }
   private disconnectByMany(m: M) {
     const o = this.manyToOne.get(m);
     this.oneToMany.get(o).delete(m);
+    this.cleanOneMemoryIfEmpty(o);
   }
   set(o: O, m: M) {
     if (this.manyToOne.has(m)) {
@@ -33,14 +39,21 @@ export class OneToManyMap<O = any, M = any> {
   }
   deleteByMany(m: M) {
     const o = this.manyToOne.get(m);
-    this.oneToMany.get(o).delete(m);
     this.manyToOne.delete(m);
+    this.oneToMany.get(o).delete(m);
+    this.cleanOneMemoryIfEmpty(o);
   }
   deleteByOne(o: O) {
     this.oneToMany.get(o).forEach((m) => {
       this.manyToOne.delete(m);
     });
     this.oneToMany.delete(o);
+  }
+  hasOne(o: O) {
+    return this.oneToMany.has(o);
+  }
+  hasMany(m: M) {
+    return this.manyToOne.has(m);
   }
   clear() {
     this.oneToMany.clear();
