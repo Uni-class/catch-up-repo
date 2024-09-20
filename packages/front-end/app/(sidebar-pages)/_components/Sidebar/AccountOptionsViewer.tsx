@@ -42,7 +42,6 @@ const AccountOptionsViewer = () => {
         display: "inline-block",
       })}
     >
-      <Paragraph variant="sub3">유저</Paragraph>
       <SidebarBaseElement active={isOpen} onClick={() => setIsOpen(!isOpen)}>
         <ProfileImage
           src={account.profileUrl}
