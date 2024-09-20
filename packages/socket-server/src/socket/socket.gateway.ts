@@ -208,33 +208,33 @@ export class SocketGateway
   @SubscribeMessage('sendAddedDraw')
   async onSendAddedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getAddedDraw', { data, index });
+    this.server.to(roomId).emit('getAddedDraw', { fileId, data, index });
   }
 
   @SubscribeMessage('sendRemovedDraw')
   async onSendRemovedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getRemovedDraw', { data, index });
+    this.server.to(roomId).emit('getRemovedDraw', { fileId, data, index });
   }
 
   @SubscribeMessage('sendUpdatedDraw')
   async onSendUpdatedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getUpdatedDraw', { data, index });
+    this.server.to(roomId).emit('getUpdatedDraw', { fileId, data, index });
   }
 }
