@@ -1,6 +1,14 @@
 import { Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
-import { Dispatch, SetStateAction, useState, forwardRef, useImperativeHandle, useRef, useEffect } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useEffect,
+} from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "@/components/Button";
 import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
@@ -8,58 +16,63 @@ import PlusCircleIcon from "@/public/icons/plus-circle.svg";
 import PlusIcon from "@/public/icons/plus.svg";
 import RepeatIcon from "@/public/icons/repeat.svg";
 
-
-const FileUploader = forwardRef(({ selectedFiles, setSelectedFiles, accept, allowMultipleFiles = true, uploadFinishHandler }: {
-  selectedFiles: File[]
-  setSelectedFiles: Dispatch<SetStateAction<File[]>>
-  accept?: {
-    [name: string]: string[]
-  }
-  allowMultipleFiles?: boolean
-  uploadFinishHandler?: () => void
-}, ref) => {
-  const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
-    onDrop: (acceptedFiles, fileRejections, event) => {
-      if (allowMultipleFiles) {
-        setSelectedFiles([...selectedFiles, ...acceptedFiles]);
-      }
-      else {
-        setSelectedFiles(acceptedFiles.slice(0, 1));
-      }
+const FileUploader = forwardRef(
+  (
+    {
+      selectedFiles,
+      setSelectedFiles,
+      accept,
+      allowMultipleFiles = true,
+      uploadFinishHandler,
+    }: {
+      selectedFiles: File[];
+      setSelectedFiles: Dispatch<SetStateAction<File[]>>;
+      accept?: {
+        [name: string]: string[];
+      };
+      allowMultipleFiles?: boolean;
+      uploadFinishHandler?: () => void;
     },
-    accept: accept
-  });
-  const [uploadStarted, setUploadStarted] = useState(false);
-  const selectedFilesViewRef = useRef<{
-    uploadFiles: () => void;
-  }>();
+    ref,
+  ) => {
+    const [uploadStarted, setUploadStarted] = useState(false);
+    const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
+      onDrop: (acceptedFiles, fileRejections, event) => {
+        if (allowMultipleFiles) {
+          setSelectedFiles([...selectedFiles, ...acceptedFiles]);
+        } else {
+          setSelectedFiles(acceptedFiles.slice(0, 1));
+        }
+      },
+      accept: accept,
+      disabled: uploadStarted,
+    });
+    const selectedFilesViewRef = useRef<{
+      uploadFiles: () => void;
+    }>();
 
-  const upload = () => {
-    if (selectedFilesViewRef.current) {
-      setUploadStarted(true);
-      selectedFilesViewRef.current.uploadFiles();
-    }
-  };
+    const upload = () => {
+      if (selectedFilesViewRef.current) {
+        setUploadStarted(true);
+        selectedFilesViewRef.current.uploadFiles();
+      }
+    };
 
-  useImperativeHandle(ref, () => ({
-    upload
-  }));
+    useImperativeHandle(ref, () => ({
+      upload,
+    }));
 
-  return (
-    <div
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
-        gap: "0.5em",
-      })}
-    >
-      {
-        selectedFiles.length === 0 || uploadStarted
-          ?
-          null
-          :
+    return (
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          overflow: "hidden",
+          gap: "0.5em",
+        })}
+      >
+        {selectedFiles.length === 0 || uploadStarted ? null : (
           <Button
             className={css({
               display: "flex",
@@ -71,129 +84,131 @@ const FileUploader = forwardRef(({ selectedFiles, setSelectedFiles, accept, allo
             })}
             onClick={open}
           >
-            {
-              allowMultipleFiles
-                ?
-                <>
-                  <PlusIcon width={"1.5em"} />
-                  <p>파일 추가하기</p>
-                </>
-                :
-                <>
-                  <RepeatIcon width={"1.5em"} />
-                  <p>파일 변경하기</p>
-                </>
-            }
+            {allowMultipleFiles ? (
+              <>
+                <PlusIcon width={"1.5em"} />
+                <p>파일 추가하기</p>
+              </>
+            ) : (
+              <>
+                <RepeatIcon width={"1.5em"} />
+                <p>파일 변경하기</p>
+              </>
+            )}
           </Button>
-      }
-      <input {...getInputProps()} />
-      <div
-        {...getRootProps()}
-        className={css({
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          justifyContent: "center",
-          gap: "0.5em",
-          overflow: "hidden",
-        })}
-      >
-        <div className={css({
-          position: "relative",
-          width: "100%",
-          height: "100%",
-        })}>
+        )}
+        <input {...getInputProps()} />
+        <div
+          {...getRootProps()}
+          className={css({
+            display: "flex",
+            height: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            justifyContent: "center",
+            gap: "0.5em",
+            overflow: "hidden",
+          })}
+        >
           <div
             className={css({
-              padding: "0.2em",
+              position: "relative",
               width: "100%",
               height: "100%",
             })}
-            onClick={
-              (event) => {
-                if (selectedFiles.length !== 0)
-                  event.stopPropagation();
-              }
-            }
           >
-            <SelectedFilesView
-              ref={selectedFilesViewRef}
-              selectedFiles={selectedFiles}
-              setSelectedFiles={setSelectedFiles}
-              uploadFinishHandler={uploadFinishHandler}
-            />
+            <div
+              className={css({
+                padding: "0.2em",
+                width: "100%",
+                height: "100%",
+              })}
+              onClick={(event) => {
+                if (selectedFiles.length !== 0) event.stopPropagation();
+              }}
+            >
+              <SelectedFilesView
+                ref={selectedFilesViewRef}
+                selectedFiles={selectedFiles}
+                setSelectedFiles={setSelectedFiles}
+                uploadFinishHandler={uploadFinishHandler}
+              />
+            </div>
+            {selectedFiles.length === 0 || isDragActive ? (
+              <FileDropArea isDragActive={isDragActive} />
+            ) : null}
           </div>
-          {
-            selectedFiles.length === 0 || isDragActive
-              ?
-              <FileDropArea isDragActive={isDragActive}/>
-              :
-              null
-          }
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 FileUploader.displayName = "FileUploader";
 export default FileUploader;
 
+const SelectedFilesView = forwardRef(
+  (
+    {
+      selectedFiles,
+      setSelectedFiles,
+      uploadFinishHandler,
+    }: {
+      selectedFiles: File[];
+      setSelectedFiles: Dispatch<SetStateAction<File[]>>;
+      uploadFinishHandler?: () => void;
+    },
+    ref,
+  ) => {
+    const [status, setStatus] = useState<"ready" | "uploading" | "finished">(
+      "ready",
+    );
+    const [finishedCount, setFinishedCount] = useState(0);
+    const fileUploadPreviewRefs = useRef<
+      {
+        uploadFile: () => void;
+      }[]
+    >([]);
 
-
-const SelectedFilesView = forwardRef(({ selectedFiles, setSelectedFiles, uploadFinishHandler }: {
-  selectedFiles: File[]
-  setSelectedFiles: Dispatch<SetStateAction<File[]>>
-  uploadFinishHandler?: () => void
-}, ref) => {
-  const [status, setStatus] = useState<"ready" | "uploading" | "finished">("ready");
-  const [finishedCount, setFinishedCount] = useState(0);
-  const fileUploadPreviewRefs = useRef<{
-    uploadFile: () => void;
-  }[]>([]);
-
-  useEffect(() => {
-    if (status === "uploading" && finishedCount === selectedFiles.length) {
-      setStatus("finished");
-      if (uploadFinishHandler)
-        uploadFinishHandler();
-    }
-  }, [status, selectedFiles, uploadFinishHandler, finishedCount]);
-
-  const uploadFiles = () => {
-    setStatus("uploading");
-    fileUploadPreviewRefs.current.forEach(ref => {
-      if (ref && ref.uploadFile) {
-        ref.uploadFile();
+    useEffect(() => {
+      if (status === "uploading" && finishedCount === selectedFiles.length) {
+        setStatus("finished");
+        if (uploadFinishHandler) uploadFinishHandler();
       }
-    });
-  };
+    }, [status, selectedFiles, uploadFinishHandler, finishedCount]);
 
-  useImperativeHandle(ref, () => ({
-    uploadFiles
-  }));
+    const uploadFiles = () => {
+      setStatus("uploading");
+      fileUploadPreviewRefs.current.forEach((ref) => {
+        if (ref && ref.uploadFile) {
+          ref.uploadFile();
+        }
+      });
+    };
 
-  return (
-    <div
-      className={css({
-        width: "100%",
-        height: "100%",
-        overflowY: "auto",
-      })}
-    >
+    useImperativeHandle(ref, () => ({
+      uploadFiles,
+    }));
+
+    return (
       <div
         className={css({
-          display: "flex",
-          padding: "0.3em",
           width: "100%",
-          flexDirection: "column",
-          gap: "0.5em",
+          height: "100%",
+          overflowY: "auto",
         })}
-        onClick={(event) => event.stopPropagation()}
       >
-        {
-          selectedFiles.map((file, index) => {
+        <div
+          className={css({
+            display: "flex",
+            padding: "0.3em",
+            width: "100%",
+            flexDirection: "column",
+            gap: "0.5em",
+          })}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {selectedFiles.map((file, index) => {
             return (
               <FileUploadPreview
                 key={index}
@@ -201,26 +216,23 @@ const SelectedFilesView = forwardRef(({ selectedFiles, setSelectedFiles, uploadF
                   fileUploadPreviewRefs.current[index] = element;
                 }}
                 file={file}
-                removeButtonClickHandler={
-                  () => setSelectedFiles(selectedFiles.toSpliced(index, 1))
+                removeButtonClickHandler={() =>
+                  setSelectedFiles(selectedFiles.toSpliced(index, 1))
                 }
-                uploadResultHandler={
-                  (success: boolean) => {
-                    setFinishedCount((count) => count + 1);
-                  }
-                }
+                uploadResultHandler={(success: boolean) => {
+                  setFinishedCount((count) => count + 1);
+                }}
               />
             );
-          })
-        }
+          })}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 SelectedFilesView.displayName = "SelectedFilesView";
 
-
-function FileDropArea({isDragActive}: { isDragActive: boolean }) {
+function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
   return (
     <div
       className={css({
@@ -242,27 +254,25 @@ function FileDropArea({isDragActive}: { isDragActive: boolean }) {
         userSelect: "none",
       })}
     >
-      {
-        isDragActive
-          ?
-          <>
-            <PlusCircleIcon width={"3em"}/>
-            <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
-          </>
-          :
-          <>
-            <Paragraph variant="body2">이곳에 파일을 끌어오세요.</Paragraph>
-            <Paragraph variant="body3">또는</Paragraph>
-            <Button
-              className={css({
-                padding: "0.5em 0.8em",
-                width: "fit-content",
-              })}
-            >
-              파일 선택하기
-            </Button>
-          </>
-      }
+      {isDragActive ? (
+        <>
+          <PlusCircleIcon width={"3em"} />
+          <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
+        </>
+      ) : (
+        <>
+          <Paragraph variant="body2">이곳에 파일을 끌어오세요.</Paragraph>
+          <Paragraph variant="body3">또는</Paragraph>
+          <Button
+            className={css({
+              padding: "0.5em 0.8em",
+              width: "fit-content",
+            })}
+          >
+            파일 선택하기
+          </Button>
+        </>
+      )}
     </div>
   );
 }

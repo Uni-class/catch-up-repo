@@ -3,7 +3,6 @@ import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 import { Label } from "@/components/Label";
 import LineEdit from "@/components/LineEdit";
 import ModalContainer from "@/components/ModalContainer";
-import { Paragraph } from "@/components/Text";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
@@ -60,21 +59,34 @@ export default function SessionCreateForm() {
         onChange={handleInputChange}
         className={css({ height: "3em" })}
       />
-      <Label htmlFor="select file">강의 자료 선택</Label>
-      <Button
-        id="select file"
-        name="select file"
-        type="button"
-        onClick={handleFileButtonClick}
+      <Label htmlFor="select file">파일 선택</Label>
+      <div
         className={css({
-          height: "3em",
-          backgroundColor: "green.600",
+          display: "flex",
+          alignItems: "center",
+          gap: "1em",
         })}
       >
-        자료 선택
-      </Button>
-      <Label>현재 선택한 파일</Label>
-      <Paragraph>선택한 파일이 없습니다.</Paragraph>
+        <div>
+          {formDataRef.current.sessionFileIds.length === 0
+            ? "파일이 선택되지 않았습니다."
+            : formDataRef.current.sessionFileIds}
+        </div>
+        <Button
+          id="select file"
+          name="select file"
+          type="button"
+          onClick={handleFileButtonClick}
+          className={css({
+            height: "3em",
+            backgroundColor: "green.600",
+          })}
+        >
+          {formDataRef.current.sessionFileIds.length === 0
+            ? "파일 선택"
+            : "파일 변경"}
+        </Button>
+      </div>
       <Button type="submit" className={css({ height: "3em" })}>
         세션 시작
       </Button>
