@@ -22,7 +22,7 @@ import {
 
 import "tldraw/tldraw.css";
 import "./Painter.css";
-import { TLAsset } from "@tldraw/tlschema";
+import { TLAsset } from "tldraw";
 import { ExternalAssetStore, ExternalAssetURL } from "../Painter/types";
 
 const PainterComponent = ({
