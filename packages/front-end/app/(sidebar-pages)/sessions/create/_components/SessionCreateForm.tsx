@@ -42,7 +42,7 @@ export default function SessionCreateForm() {
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
+        gap: "2em",
         width: "100%",
         maxWidth: "50em",
       })}
@@ -51,41 +51,53 @@ export default function SessionCreateForm() {
         formMutation.mutate(formDataRef.current);
       }}
     >
-      <Label htmlFor="session title">세션 제목</Label>
-      <LineEdit
-        id="session title"
-        name="session title"
-        placeholder="세션 제목을 입력해주세요"
-        onChange={handleInputChange}
-        className={css({ height: "3em" })}
-      />
-      <Label htmlFor="select file">파일 선택</Label>
       <div
         className={css({
           display: "flex",
-          alignItems: "center",
-          gap: "1em",
+          flexDirection: "column",
         })}
       >
-        <div>
-          {formDataRef.current.sessionFileIds.length === 0
-            ? "파일이 선택되지 않았습니다."
-            : formDataRef.current.sessionFileIds}
-        </div>
-        <Button
-          id="select file"
-          name="select file"
-          type="button"
-          onClick={handleFileButtonClick}
+        <Label>세션 제목</Label>
+        <LineEdit
+          name="session title"
+          placeholder="세션 제목을 입력해주세요"
+          onChange={handleInputChange}
+          className={css({ height: "3em" })}
+        />
+      </div>
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+        })}
+      >
+        <Label>파일 선택</Label>
+        <div
           className={css({
-            height: "3em",
-            backgroundColor: "green.600",
+            display: "flex",
+            alignItems: "center",
+            gap: "1em",
           })}
         >
-          {formDataRef.current.sessionFileIds.length === 0
-            ? "파일 선택"
-            : "파일 변경"}
-        </Button>
+          <div>
+            {formDataRef.current.sessionFileIds.length === 0
+              ? "파일이 선택되지 않았습니다."
+              : formDataRef.current.sessionFileIds}
+          </div>
+          <Button
+            name="select file"
+            type="button"
+            onClick={handleFileButtonClick}
+            className={css({
+              height: "3em",
+              backgroundColor: "green.600",
+            })}
+          >
+            {formDataRef.current.sessionFileIds.length === 0
+              ? "파일 선택"
+              : "파일 변경"}
+          </Button>
+        </div>
       </div>
       <Button type="submit" className={css({ height: "3em" })}>
         세션 시작
