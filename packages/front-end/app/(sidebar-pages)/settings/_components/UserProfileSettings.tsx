@@ -47,7 +47,8 @@ const UserProfileSettings = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        width: "800px",
+        maxWidth: "50em",
+        width: "100%",
       })}
       ref={formRef}
       onSubmit={(e) => {
