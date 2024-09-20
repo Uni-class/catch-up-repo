@@ -13,9 +13,15 @@ import { SocketService } from './socket.service';
 import { UseFilters } from '@nestjs/common';
 import { WsExceptionFilter } from '../exception/ws-exception.filter';
 import dotenv from 'dotenv';
-import { BiMap, OneToManyMap } from 'relation-map';
+import { OneToManyMap } from 'relation-map';
 
 dotenv.config();
+
+interface RPPV {
+  [key: number]: {
+    [key: number]: OneToManyMap<number, number>;
+  };
+}
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -37,7 +43,7 @@ export class SocketGateway
   roomHost: { [key: string]: number } = {};
   roomHostSocket: { [key: string]: Socket } = {};
   clientUserId: { [key: string]: number } = {};
-  roomPageViewerCount: { [key: string]: number[] } = {};
+  roomPdfPageViewer: RPPV = {};
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
@@ -103,7 +109,7 @@ export class SocketGateway
   @SubscribeMessage('createRoom')
   async onCreateRoom(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId }: any,
+    @MessageBody() { roomId, fileIds }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
@@ -117,8 +123,15 @@ export class SocketGateway
     this.roomHostSocket[roomId] = client;
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
-    if (!this.roomPageViewerCount[roomId])
-      this.roomPageViewerCount[roomId] = new Array<number>(100);
+    if (!this.roomPdfPageViewer[roomId]) {
+      this.roomPdfPageViewer[roomId] = {};
+      for (const fileId of fileIds) {
+        this.roomPdfPageViewer[roomId][fileId] = new OneToManyMap<
+          number,
+          number
+        >();
+      }
+    }
     this.server.to(roomId).emit('hostExist', '1');
     this.server.to(roomId).emit('userList', {
       roomId,
@@ -170,17 +183,24 @@ export class SocketGateway
   @SubscribeMessage('sendPageNumber')
   async onSendPageNumber(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, beforeIndex, currentIndex }: any,
+    @MessageBody() { roomId, fileId, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId === this.roomHost[roomId]) {
-      this.server.to(roomId).emit('getPageNumber', { currentIndex, userId });
+      this.server.to(roomId).emit('getPageNumber', { index, userId });
     } else {
-      this.roomPageViewerCount[roomId][beforeIndex] -= 1;
-      this.roomPageViewerCount[roomId][currentIndex] += 1;
+      this.roomPdfPageViewer[roomId][fileId].deleteByMany(userId);
+      this.roomPdfPageViewer[roomId][fileId].set(index, userId);
+      const pdfPageCounts = {};
+      for (const key of this.roomPdfPageViewer[roomId][fileId]
+        .getOneToMany()
+        .keys()) {
+        pdfPageCounts[key] =
+          this.roomPdfPageViewer[roomId][fileId].getByOne(key).size;
+      }
       this.roomHostSocket[roomId].emit('getPageNumber', {
-        roomPageViewerCount: this.roomPageViewerCount[roomId],
+        roomPageViewerCount: pdfPageCounts,
       });
     }
   }
