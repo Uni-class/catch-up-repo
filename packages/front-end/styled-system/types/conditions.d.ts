@@ -182,6 +182,8 @@ export interface Conditions {
 	"_starting": string
 	/** `&:hover:not(:active)` */
 	"_hoverNotActive": string
+	/** `&:hover:not(:focus)` */
+	"_hoverNotFocus": string
 	/** `@media screen and (min-width: 40rem)` */
 	"sm": string
 	/** `@media screen and (min-width: 40rem) and (max-width: 47.9975rem)` */
