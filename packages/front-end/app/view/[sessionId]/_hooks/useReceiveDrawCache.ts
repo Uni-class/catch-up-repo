@@ -47,25 +47,37 @@ export const useReceiveDrawCache = (editor: Editor | null) => {
       if (pageDrawMap === undefined || editor === null) return;
       // editor관련 코드가 pageIndex를 순회하진 않음
       editor.store.put(
-        Array.from(pageDrawMap.values()).map((value) => {
-          const record = value as { type: string | undefined } & typeof value;
-          if (record.type === undefined) {
-            const recordFromEditor = editor.store.get(value.id);
-            console.warn("WEIRD RECORD! but don't worry. It will works well...maybe", {
-              record: integralRecord(recordFromEditor, value),
-            });
-            return integralRecord(recordFromEditor, value);
-          } else {
-            return record;
-          }
-        })
+        Array.from(pageDrawMap.values())
+          .map((value) => {
+            const record = value as { type: string | undefined } & typeof value;
+            if (record.type === undefined) {
+              const recordFromEditor = editor.store.get(value.id);
+              if (recordFromEditor !== undefined) {
+                console.warn(
+                  "WEIRD RECORD! but don't worry. It will works well...maybe",
+                  {
+                    record: integralRecord(recordFromEditor, value),
+                  }
+                );
+                return integralRecord(recordFromEditor, value);
+              } else {
+                console.error(
+                  "WEIRD RECORD! I can't find original from editor ID:",
+                  value.id
+                );
+                return null;
+              }
+            } else {
+              return record;
+            }
+          })
+          .filter((value) => value !== null)
       );
       drawCacheRef.current.delete(pageIndex);
     },
     [editor]
   );
 
-  
   return {
     removeDrawCache,
     addDrawCache,
