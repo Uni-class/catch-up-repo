@@ -17651,6 +17651,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"relation-map@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "relation-map@npm:1.0.3"
+  checksum: 10c0/3c589ef48e9ffe84cc79b83919256ac92d84d8e5749e39917cd54ad10f841520adcc27ac62db98c42e04247516608fd958db77edb0cdae2bb919e33df8bf0995
+  languageName: node
+  linkType: hard
+
 "renderkid@npm:^3.0.0":
   version: 3.0.0
   resolution: "renderkid@npm:3.0.0"
@@ -18424,6 +18431,7 @@ __metadata:
     prettier: "npm:^3.0.0"
     redis: "npm:^4.7.0"
     reflect-metadata: "npm:^0.2.0"
+    relation-map: "npm:^1.0.3"
     rxjs: "npm:^7.8.1"
     socket.io: "npm:^4.7.5"
     source-map-support: "npm:^0.5.21"
