@@ -6,11 +6,10 @@ import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
 import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
-import { styled } from "@/styled-system/jsx";
 import { apiClient } from "@/utils/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
-import { ChangeEvent, FormEvent, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 
 export default function SessionCreateForm() {
   const queryClient = useQueryClient();
@@ -32,7 +31,7 @@ export default function SessionCreateForm() {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File-Select" }
+      { overlayId: "File-Select" },
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,8 @@ export default function SessionCreateForm() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        width: "800px",
+        width: "100%",
+        maxWidth: "50em",
       })}
       onSubmit={(e) => {
         e.preventDefault();
@@ -58,7 +58,7 @@ export default function SessionCreateForm() {
         name="session title"
         placeholder="세션 제목을 입력해주세요"
         onChange={handleInputChange}
-        className={css({ height: "50px" })}
+        className={css({ height: "3em" })}
       />
       <Label htmlFor="select file">강의 자료 선택</Label>
       <Button
@@ -66,13 +66,16 @@ export default function SessionCreateForm() {
         name="select file"
         type="button"
         onClick={handleFileButtonClick}
-        className={css({ height: "50px", width: "200px",backgroundColor:"green.600" })}
+        className={css({
+          height: "3em",
+          backgroundColor: "green.600",
+        })}
       >
         자료 선택
       </Button>
       <Label>현재 선택한 파일</Label>
       <Paragraph>선택한 파일이 없습니다.</Paragraph>
-      <Button type="submit" className={css({ height: "50px" })}>
+      <Button type="submit" className={css({ height: "3em" })}>
         세션 시작
       </Button>
     </form>

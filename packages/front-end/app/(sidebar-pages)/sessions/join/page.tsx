@@ -32,7 +32,7 @@ export default function Page() {
       >
         <div
           className={css({
-            width: "800px",
+            flex: 1,
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
@@ -42,7 +42,7 @@ export default function Page() {
           <div
             className={css({
               display: "flex",
-              gap: "0.5em",
+              gap: "0.5rem",
             })}
           >
             <LineEdit
@@ -59,7 +59,6 @@ export default function Page() {
             <Button
               className={css({
                 height: "inherit",
-                minWidth: "120px",
               })}
               disabled={sessionId === ""}
               onClick={() => {

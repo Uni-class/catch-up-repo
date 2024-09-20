@@ -43,12 +43,10 @@ export default function Layout({
         height: "100%",
       })}
     >
-      <Suspense fallback={<h1>페이지 로딩...</h1>}>
-        <Sidebar />
-      </Suspense>
+      <Sidebar />
       <div
         className={css({
-          flexGrow: 1,
+          flex: 1,
           padding: "2em 1em",
         })}
       >
