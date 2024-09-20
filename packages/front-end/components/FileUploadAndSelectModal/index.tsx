@@ -72,8 +72,10 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
             state={e === tabState}
             disabled={status === "uploading"}
             onClick={() => {
-              setStatus("ready");
-              setSelectedFiles([]);
+              if (status === "finished") {
+                setStatus("ready");
+                setSelectedFiles([]);
+              }
               setTabState(e);
             }}
           />
@@ -86,6 +88,7 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
             display: "flex",
             flexDirection: "column",
             gap: "0.5em",
+            overflow: "auto",
           })}
         >
           <FileUploader
@@ -139,17 +142,12 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
             display: "flex",
             flexDirection: "column",
             gap: "0.5em",
+            overflow: "hidden",
           })}
         >
-          <div
-            className={css({
-              flex: 1,
-            })}
-          >
-            <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
-              <DriveFileUploadFetch />
-            </ErrorBoundary>
-          </div>
+          <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+            <DriveFileUploadFetch />
+          </ErrorBoundary>
           <div
             className={css({
               display: "flex",
