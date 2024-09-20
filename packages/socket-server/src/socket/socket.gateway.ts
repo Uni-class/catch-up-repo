@@ -13,6 +13,8 @@ import { SocketService } from './socket.service';
 import { UseFilters } from '@nestjs/common';
 import { WsExceptionFilter } from '../exception/ws-exception.filter';
 import dotenv from 'dotenv';
+import { BiMap, OneToManyMap } from 'relation-map';
+
 dotenv.config();
 
 @UseFilters(new WsExceptionFilter())
@@ -27,8 +29,6 @@ export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(private readonly socketService: SocketService) {}
-
-  private clients: Set<Socket> = new Set();
 
   @WebSocketServer()
   server: Server;
@@ -80,7 +80,6 @@ export class SocketGateway
     const userId: number = await this.socketService.validateUser(client);
     if (!userId) client.disconnect(true);
     this.clientUserId[client.id] = userId;
-    this.clients.add(client);
     console.log({ clientId: client.id, userId }, 'handleConnection');
     return;
   }
@@ -99,7 +98,6 @@ export class SocketGateway
       }
     }
     client.disconnect(true);
-    this.clients.delete(client);
   }
 
   @SubscribeMessage('createRoom')
