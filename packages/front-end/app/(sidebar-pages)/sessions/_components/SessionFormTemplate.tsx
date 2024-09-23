@@ -5,16 +5,24 @@ import LineEdit from "@/components/LineEdit";
 import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
 import { UseFormDataResultType } from "@/hook/useFormData";
+import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { SessionFormType } from "@/type/SessionFormType";
+import { UseMutationResult } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 import { overlay } from "overlay-kit";
 
 export function SessionFormTemplate({
   useFormDataResult,
-  onSubmit = () => {},
+  formMutation,
 }: {
   useFormDataResult: UseFormDataResultType<SessionFormType>;
-  onSubmit?: React.FormEventHandler<HTMLFormElement>;
+  formMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    Error,
+    CreateSessionDto,
+    unknown
+  >;
 }) {
   const { unControlledDataRef, controlledData } = useFormDataResult;
   const handleFileButtonClick = () => {
@@ -40,7 +48,15 @@ export function SessionFormTemplate({
         width: "100%",
         maxWidth: "50em",
       })}
-      onSubmit={onSubmit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        formMutation.mutate({
+          sessionName: unControlledDataRef.current.sessionName,
+          sessionFileIds: unControlledDataRef.current.sessionFiles.map(
+            (file) => file.fileId
+          ),
+        });
+      }}
     >
       <Label htmlFor="session title">세션 제목</Label>
       <LineEdit

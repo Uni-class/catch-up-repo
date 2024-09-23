@@ -44,15 +44,7 @@ export default function Page() {
         })}
       >
         <SessionFormTemplate
-          onSubmit={(e) => {
-            e.preventDefault();
-            formMutation.mutate({
-              sessionName: unControlledDataRef.current.sessionName,
-              sessionFileIds: unControlledDataRef.current.sessionFiles.map(
-                (file) => file.fileId
-              ),
-            });
-          }}
+          formMutation={formMutation}
           useFormDataResult={useFormDataResult}
         />
       </div>
