@@ -7,10 +7,13 @@ import { SessionFormTemplate } from "../_components/SessionFormTemplate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormData } from "@/hook/useFormData";
 import { SessionFormType } from "@/type/SessionFormType";
-import { CreateSessionDto } from "@/schema/backend.schema";
+import { CreateSessionDto, Session } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
+import { useRouter } from "@/hook/useRouter";
+import { AxiosResponse } from "axios";
 
 export default function Page() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const useFormDataResult = useFormData<SessionFormType>({
     sessionName: "",
@@ -20,8 +23,9 @@ export default function Page() {
   const formMutation = useMutation({
     mutationFn: async (body: CreateSessionDto) =>
       await apiClient.post("/session", body),
-    onSuccess: () => {
+    onSuccess: (data:AxiosResponse<Session>) => {
       queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
+      router.push(`/view/${data.data.sessionId}`)
     },
   });
   return (
