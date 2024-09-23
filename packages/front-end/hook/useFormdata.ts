@@ -1,6 +1,11 @@
 "use client";
-import { useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 
+export type UseFormDataResultType<T = object> = {
+  unControlledDataRef: MutableRefObject<T>;
+  controlledData: T;
+  setControlledData: (updated: Partial<T>) => void;
+};
 export const useFormData = <T = object>(initialData: T) => {
   const copiedInitialData = { ...initialData };
   const unControlledDataRef = useRef(copiedInitialData);

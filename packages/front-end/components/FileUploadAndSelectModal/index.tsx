@@ -1,11 +1,11 @@
 import { css, cx } from "@/styled-system/css";
 import { overlay } from "overlay-kit";
 import {
+  createContext,
   DetailedHTMLProps,
   HTMLAttributes,
   MutableRefObject,
   ReactNode,
-  useEffect,
   useState,
 } from "react";
 import { Heading } from "../Text";
@@ -13,29 +13,26 @@ import Button from "../Button";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { CreateSessionDto } from "@/schema/backend.schema";
-import { useAtom } from "jotai";
-import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import FileUploader from "@/components/FileUploader/FileUploader";
 import DriveFileUploadFetch from "./DriveFileSelect";
-
+import { UseFormDataResultType } from "@/hook/useFormdata";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
-interface PropType {
-  formDataRef: MutableRefObject<CreateSessionDto>;
+interface PropType<T> {
+  useFormDataResult: UseFormDataResultType<T>;
 }
 
-export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
-  const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
+export const FileFormDataContext = createContext({});
+
+export default function FileUploadAndSelectModal<T = any>({
+  useFormDataResult,
+}: PropType<T>) {
+  const [tabState, setTabState] = useState<TabDataType>("기존 업로드 파일");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { reset } = useQueryErrorResetBoundary();
-  const [_currentFormData, setCurrentFormData] = useAtom<
-    MutableRefObject<CreateSessionDto>
-  >(currentFormDataRefAtom);
-  useEffect(() => {
-    setCurrentFormData(formDataRef);
-  }, [formDataRef, setCurrentFormData]);
+
   return (
     <div
       className={css({

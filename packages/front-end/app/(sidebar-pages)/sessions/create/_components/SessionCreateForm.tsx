@@ -4,19 +4,24 @@ import { Label } from "@/components/Label";
 import LineEdit from "@/components/LineEdit";
 import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
-import { CreateSessionDto } from "@/schema/backend.schema";
+import { useFormData } from "@/hook/useFormdata";
+import { CreateSessionDto, File } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent } from "react";
 
 export default function SessionCreateForm() {
   const queryClient = useQueryClient();
-  const formDataRef = useRef<CreateSessionDto>({
-    sessionName: "",
-    sessionFileIds: [],
-  });
+  const { unControlledDataRef, controlledData, setControlledData } =
+    useFormData<{
+      sessionName: string;
+      sessionFiles: File[];
+    }>({
+      sessionName: "",
+      sessionFiles: [],
+    });
   const formMutation = useMutation({
     mutationFn: async (body: CreateSessionDto) =>
       await apiClient.post("/session", body),
@@ -31,11 +36,11 @@ export default function SessionCreateForm() {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File-Select" },
+      { overlayId: "File-Select" }
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    formDataRef.current.sessionName = e.target.value;
+    unControlledDataRef.current.sessionName = e.target.value;
   };
 
   return (
@@ -49,7 +54,12 @@ export default function SessionCreateForm() {
       })}
       onSubmit={(e) => {
         e.preventDefault();
-        formMutation.mutate(formDataRef.current);
+        formMutation.mutate({
+          sessionName: unControlledDataRef.current.sessionName,
+          sessionFileIds: unControlledDataRef.current.sessionFiles.map(
+            (file) => file.fileId
+          ),
+        });
       }}
     >
       <Label htmlFor="session title">세션 제목</Label>
