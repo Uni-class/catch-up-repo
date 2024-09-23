@@ -65,6 +65,7 @@ export function SessionFormTemplate({
         placeholder="세션 제목을 입력해주세요"
         onChange={handleInputChange}
         className={css({ height: "3em" })}
+        defaultValue={unControlledDataRef.current.sessionName}
       />
       <Label htmlFor="select file">강의 자료 선택</Label>
       <Button
