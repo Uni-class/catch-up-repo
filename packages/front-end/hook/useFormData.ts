@@ -9,7 +9,7 @@ export type UseFormDataResultType<T = object> = {
 export const useFormData = <T = object>(initialData: T) => {
   const copiedInitialData = { ...initialData };
   const unControlledDataRef = useRef(copiedInitialData);
-  
+
   const [controlledData, _setControlledData] = useState<T>(copiedInitialData);
   const setControlledData = (updated: Partial<T>) => {
     const copiedUpdated = { ...unControlledDataRef.current, ...updated };
