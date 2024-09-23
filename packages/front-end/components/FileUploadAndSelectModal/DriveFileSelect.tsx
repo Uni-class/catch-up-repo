@@ -49,7 +49,7 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
-  const { controlledData, setControlledData } = useContext(FileFormDataContext);
+  const { setControlledData } = useContext(FileFormDataContext);
   const handleRowButtonClick = () => {
     setControlledData({ sessionFiles: [file] });
     overlay.close("File-Select");
