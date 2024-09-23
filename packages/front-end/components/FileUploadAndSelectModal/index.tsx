@@ -4,7 +4,6 @@ import {
   createContext,
   DetailedHTMLProps,
   HTMLAttributes,
-  MutableRefObject,
   ReactNode,
   useState,
 } from "react";
@@ -12,23 +11,25 @@ import { Heading } from "../Text";
 import Button from "../Button";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
-import { CreateSessionDto } from "@/schema/backend.schema";
 import FileUploader from "@/components/FileUploader/FileUploader";
 import DriveFileUploadFetch from "./DriveFileSelect";
-import { UseFormDataResultType } from "@/hook/useFormdata";
+import { SessionFormType } from "@/type/SessionFormType";
+import { UseFormDataResultType } from "@/hook/useFormData";
 
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
-interface PropType<T> {
-  useFormDataResult: UseFormDataResultType<T>;
+interface PropType {
+  useFormDataResult: UseFormDataResultType<SessionFormType>;
 }
 
-export const FileFormDataContext = createContext({});
+export const FileFormDataContext = createContext<
+  UseFormDataResultType<SessionFormType>
+>({} as UseFormDataResultType<SessionFormType>);
 
-export default function FileUploadAndSelectModal<T = any>({
+export default function FileUploadAndSelectModal({
   useFormDataResult,
-}: PropType<T>) {
+}: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("기존 업로드 파일");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { reset } = useQueryErrorResetBoundary();
@@ -81,9 +82,11 @@ export default function FileUploadAndSelectModal<T = any>({
           setSelectedFiles={setSelectedFiles}
         />
       ) : (
-        <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
-          <DriveFileUploadFetch />
-        </ErrorBoundary>
+        <FileFormDataContext.Provider value={useFormDataResult}>
+          <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+            <DriveFileUploadFetch />
+          </ErrorBoundary>
+        </FileFormDataContext.Provider>
       )}
     </div>
   );

@@ -4,9 +4,10 @@ import { Label } from "@/components/Label";
 import LineEdit from "@/components/LineEdit";
 import ModalContainer from "@/components/ModalContainer";
 import { Paragraph } from "@/components/Text";
-import { useFormData } from "@/hook/useFormdata";
-import { CreateSessionDto, File } from "@/schema/backend.schema";
+import { useFormData } from "@/hook/useFormData";
+import { CreateSessionDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
+import { SessionFormType } from "@/type/SessionFormType";
 import { apiClient } from "@/utils/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
@@ -14,14 +15,12 @@ import { ChangeEvent } from "react";
 
 export default function SessionCreateForm() {
   const queryClient = useQueryClient();
-  const { unControlledDataRef, controlledData, setControlledData } =
-    useFormData<{
-      sessionName: string;
-      sessionFiles: File[];
-    }>({
+  const useFormDataResult =
+    useFormData<SessionFormType>({
       sessionName: "",
       sessionFiles: [],
     });
+  const {unControlledDataRef} = useFormDataResult
   const formMutation = useMutation({
     mutationFn: async (body: CreateSessionDto) =>
       await apiClient.post("/session", body),
@@ -33,7 +32,7 @@ export default function SessionCreateForm() {
     overlay.open(
       ({ isOpen, close }) => (
         <ModalContainer isOpen={isOpen} onClose={close}>
-          <FileUploadAndSelectModal formDataRef={formDataRef} />
+          <FileUploadAndSelectModal useFormDataResult={useFormDataResult} />
         </ModalContainer>
       ),
       { overlayId: "File-Select" }
