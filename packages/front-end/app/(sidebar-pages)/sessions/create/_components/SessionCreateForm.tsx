@@ -15,12 +15,11 @@ import { ChangeEvent } from "react";
 
 export default function SessionCreateForm() {
   const queryClient = useQueryClient();
-  const useFormDataResult =
-    useFormData<SessionFormType>({
-      sessionName: "",
-      sessionFiles: [],
-    });
-  const {unControlledDataRef} = useFormDataResult
+  const useFormDataResult = useFormData<SessionFormType>({
+    sessionName: "",
+    sessionFiles: [],
+  });
+  const { unControlledDataRef, controlledData } = useFormDataResult;
   const formMutation = useMutation({
     mutationFn: async (body: CreateSessionDto) =>
       await apiClient.post("/session", body),
@@ -83,7 +82,11 @@ export default function SessionCreateForm() {
         자료 선택
       </Button>
       <Label>현재 선택한 파일</Label>
-      <Paragraph>선택한 파일이 없습니다.</Paragraph>
+      <Paragraph>
+        {controlledData.sessionFiles.length > 0
+          ? controlledData.sessionFiles[0].name
+          : "현재 선택한 파일이 없습니다."}
+      </Paragraph>
       <Button type="submit" className={css({ height: "3em" })}>
         세션 시작
       </Button>
