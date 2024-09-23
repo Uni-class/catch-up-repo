@@ -2,10 +2,28 @@
 
 import { Heading } from "@/components/Text";
 import Divider from "@/components/Divider";
-import SessionCreateForm from "./_components/SessionCreateForm";
 import { css } from "@/styled-system/css";
+import { SessionFormTemplate } from "../_components/SessionFormTemplate";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useFormData } from "@/hook/useFormData";
+import { SessionFormType } from "@/type/SessionFormType";
+import { CreateSessionDto } from "@/schema/backend.schema";
+import { apiClient } from "@/utils/axios";
 
 export default function Page() {
+  const queryClient = useQueryClient();
+  const useFormDataResult = useFormData<SessionFormType>({
+    sessionName: "",
+    sessionFiles: [],
+  });
+  const { unControlledDataRef } = useFormDataResult;
+  const formMutation = useMutation({
+    mutationFn: async (body: CreateSessionDto) =>
+      await apiClient.post("/session", body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
+    },
+  });
   return (
     <div
       className={css({
@@ -25,7 +43,18 @@ export default function Page() {
           flexGrow: 1,
         })}
       >
-        <SessionCreateForm />
+        <SessionFormTemplate
+          onSubmit={(e) => {
+            e.preventDefault();
+            formMutation.mutate({
+              sessionName: unControlledDataRef.current.sessionName,
+              sessionFileIds: unControlledDataRef.current.sessionFiles.map(
+                (file) => file.fileId
+              ),
+            });
+          }}
+          useFormDataResult={useFormDataResult}
+        />
       </div>
     </div>
   );
