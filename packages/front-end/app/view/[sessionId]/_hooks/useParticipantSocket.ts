@@ -24,17 +24,23 @@ export const useParticipantSocket = (
   } = useReceiveDrawCache(editor);
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
-  
+
   useEffect(() => {
     setEditorFromDrawCache(pageIndex);
   }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
     if (socket === null) return;
-    socket.on("connect", () => {
+    if (socket.connected) {
       console.log("Connected to WebSocket server");
       socket.emit("joinRoom", { roomId: roomId });
-    });
+    } else {
+      socket.on("connect", () => {
+        console.log("Connected to WebSocket server");
+        socket.emit("joinRoom", { roomId: roomId });
+      });
+    }
+
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });

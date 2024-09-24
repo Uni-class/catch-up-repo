@@ -21,18 +21,22 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    console.log("connect UseEffect",socket)
-    socket.on("connect", () => {
+    if (socket.connected) {
       console.error("Connected to WebSocket server");
       socket.emit("createRoom", { roomId, fileIds: [fileId] });
-    });
+    } else {
+      socket.on("connect", () => {
+        console.error("Connected to WebSocket server");
+        socket.emit("createRoom", { roomId, fileIds: [fileId] });
+      });
+    }
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
-    // return () => {
-    //   socket.off("connect");
-    //   socket.off("userList");
-    // };
+    return () => {
+      socket.off("connect");
+      socket.off("userList");
+    };
   }, [fileId, roomId, socket]);
 
   useEffect(() => {
