@@ -24,9 +24,7 @@ export const useParticipantSocket = (
   } = useReceiveDrawCache(editor);
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
-  // 다른 페이지 데이터 받으면 cache에 삽입됨
-  // useEffect는 일단 호출되므로 내 페이지가 0인 경우에도 작동 -> cache에 삽입데이터가 반영됨?
-  // 아 왜 pageIndex가 순간 message.index로 바뀌는거지?
+  
   useEffect(() => {
     setEditorFromDrawCache(pageIndex);
   }, [pageIndex, setEditorFromDrawCache]);
