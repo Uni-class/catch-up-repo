@@ -13,13 +13,10 @@ import {
 } from "@/PaintPDF/components";
 import { ViewerPropType } from "../_types/ViewerType";
 
-interface SessionReturnType extends Session {
-  fileList: File[];
-}
-
 export default function ParticipantViewer(props: ViewerPropType) {
-  const { sessionName, fileList, userId, sessionId } = props;
+  const { fileList, sessionId } = props;
   const pdfDocument = fileList[0];
+  const fileId = fileList[0].fileId;
   const joinQuery = useQuery<AxiosResponse<any>>({
     queryKey: ["user", "session", sessionId, "join"],
     queryFn: async () => {
@@ -40,6 +37,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
     });
   useParticipantSocket(
     sessionId,
+    fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
     pdfPainterControllerHook.pdfPainterController
   );

@@ -9,12 +9,13 @@ import { useAtom } from "jotai";
 
 export const useHostSocket = (
   roomId: number | string,
+  fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController
 ) => {
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
-  const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex });
+  const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex,fileId });
 
   const editor = pdfPainterInstanceController.getEditor();
 
@@ -22,7 +23,7 @@ export const useHostSocket = (
     if (socket === null) return;
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
-      socket.emit("createRoom", { roomId: roomId });
+      socket.emit("createRoom", { roomId, fileId });
     });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
@@ -31,7 +32,7 @@ export const useHostSocket = (
       socket.off("connect");
       socket.off("userList");
     };
-  }, [roomId, socket]);
+  }, [fileId, roomId, socket]);
 
   useEffect(() => {
     if (socket === null) return;

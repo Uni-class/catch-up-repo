@@ -11,6 +11,7 @@ import { integralRecord } from "../_utils/integralRecord";
 
 export const useParticipantSocket = (
   roomId: number | string,
+  fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController
 ) => {
