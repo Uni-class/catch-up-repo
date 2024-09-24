@@ -28,8 +28,9 @@ export const useHostSocket = (
 
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
+      socket.off("createRoom")
+      socket.emit("createRoom", { roomId: roomId });
     });
-    socket.emit("createRoom", { roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
