@@ -30,6 +30,9 @@ export const useHostSocket = (
         socket.emit("createRoom", { roomId, fileIds: [fileId] });
       });
     }
+    socket.on("reconnect",()=>{
+      console.error("re")
+    })
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
@@ -38,6 +41,17 @@ export const useHostSocket = (
       socket.off("userList");
     };
   }, [fileId, roomId, socket]);
+
+  useEffect(()=>{
+    if (socket === null) return;
+    socket.on("getPageNumber",({roomPageViewCount})=>{
+      console.log(roomPageViewCount)
+    })
+    return () => {
+      socket.off("getPageNumber");
+    }
+  },[socket])
+  
 
   useEffect(() => {
     if (socket === null) return;

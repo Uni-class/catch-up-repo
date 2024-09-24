@@ -52,6 +52,11 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     if (socket === null) return;
+    socket.emit("sendPageNumber", { roomId, fileId, index: pageIndex });
+  }, [fileId, pageIndex, roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
 
     socket.on(
       "getAddedDraw",
