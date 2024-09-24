@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import { useEffect } from "react";
 import { useBatchSocket } from "./useBatchSocket";
 import {
   PDFPainterController,
-  PDFPainterControllerHook,
   PDFPainterInstanceController,
-  PDFPainterInstanceControllerHook,
 } from "@/PaintPDF/components";
 import { socketAtom } from "@/client/socketAtom";
 import { useAtom } from "jotai";
@@ -23,22 +20,29 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    if (editor === null) return;
-    const { store } = editor;
-
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
-      socket.off("createRoom")
       socket.emit("createRoom", { roomId: roomId });
     });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
+    return () => {
+      socket.off("connect");
+      socket.off("userList");
+    };
+  }, [roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    if (editor === null) return;
+    const { store } = editor;
+
     store.listen(
       ({ changes }) => {
         pushChanges(changes);
       },
       { source: "user", scope: "document" }
     );
-  }, [editor, pushChanges, roomId, socket]);
+  }, [editor, pushChanges, socket]);
 };

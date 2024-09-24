@@ -34,12 +34,15 @@ export const useParticipantSocket = (
     if (socket === null) return;
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
-      socket.off("joinRoom")
       socket.emit("joinRoom", { roomId: roomId });
     });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
-    })
+    });
+    return () => {
+      socket.off("connect");
+      socket.off("userList");
+    };
   }, [roomId, socket]);
 
   useEffect(() => {
