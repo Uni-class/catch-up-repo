@@ -44,8 +44,8 @@ export const useHostSocket = (
 
   useEffect(()=>{
     if (socket === null) return;
-    socket.on("getPageNumber",({roomPageViewCount})=>{
-      console.log(roomPageViewCount)
+    socket.on("getPageNumber",(data)=>{
+      console.log(data)
     })
     return () => {
       socket.off("getPageNumber");
