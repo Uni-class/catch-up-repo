@@ -30,7 +30,8 @@ export const useParticipantSocket = (
   }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
-    if (socket === null) return;
+    if (socket === null) return;   
+    socket.emit("joinRoom", { roomId });
     socket.on("initUser", () => {
       console.log("Connected to WebSocket server:", socket.id);
       socket.emit("joinRoom", { roomId });
