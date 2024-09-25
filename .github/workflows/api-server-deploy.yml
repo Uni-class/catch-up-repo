@@ -85,6 +85,8 @@ jobs:
           echo "ACCESS_TOKEN_MAX_AGE=${{ secrets.ACCESS_TOKEN_MAX_AGE }}" >> packages/api-server/.env
           echo "REFRESH_TOKEN_MAX_AGE=${{ secrets.REFRESH_TOKEN_MAX_AGE }}" >> packages/api-server/.env
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> packages/api-server/.env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> packages/api-server/.env
+
 
       - name: Check Directory
         run: |
