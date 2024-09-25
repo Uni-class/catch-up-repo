@@ -22,7 +22,7 @@ export class SocketService {
 
   async validateUser(socket: Socket): Promise<number> {
     try {
-      const cookies = socket.request.headers.cookie;
+      const cookies = socket.handshake.headers.cookie;
       if (!cookies) return 0;
       const cookieList = cookie.parse(cookies);
       const accessToken = cookieList['access_token'];
