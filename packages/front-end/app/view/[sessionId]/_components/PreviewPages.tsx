@@ -1,7 +1,12 @@
 import { PDFPainterController } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
-import { EventHandler, MouseEventHandler, useRef } from "react";
-import { Document, Page } from "react-pdf";
+import { MouseEventHandler, ReactNode, useRef } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+
+const options = {
+  cMapUrl: `//unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
+  cMapPacked: true,
+};
 
 export function PreviewPages({
   pdfDocumentURL,
@@ -12,7 +17,6 @@ export function PreviewPages({
 }) {
   const currentPageIndex = PDFPainterController.getPageIndex();
   const pageCount = PDFPainterController.getPageCount();
-  const loadRef = useRef<boolean>(false);
   return (
     <div
       className={css({
@@ -24,32 +28,29 @@ export function PreviewPages({
         overflow: "scroll",
         justifyContent: "center",
         bg: "gray.100",
-        padding:"1rem 0"
+        padding: "1rem 0",
       })}
     >
       <Document
         file={pdfDocumentURL}
-        onLoadSuccess={() => {
-          loadRef.current = true;
-        }}
         className={css({
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
           alignItems: "center",
         })}
+        options={options}
       >
-        {loadRef.current &&
-          Array.from(new Array(pageCount), (el, index) => (
-            <PageElement
-              key={`page-${index}`}
-              index={index}
-              onClick={() => {
-                PDFPainterController.setPageIndex(index);
-              }}
-              currentIndex={currentPageIndex}
-            />
-          ))}
+        {Array.from(new Array(pageCount), (el, index) => (
+          <PageElement
+            key={`page-${index}`}
+            index={index}
+            onClick={() => {
+              PDFPainterController.setPageIndex(index);
+            }}
+            currentIndex={currentPageIndex}
+          />
+        ))}
       </Document>
     </div>
   );
@@ -59,10 +60,14 @@ function PageElement({
   index,
   onClick,
   currentIndex,
+  isBadgeVisible = false,
+  badgeContent,
 }: {
   index: number;
   currentIndex: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  isBadgeVisible?: boolean;
+  badgeContent?: ReactNode;
 }) {
   return (
     <div>
@@ -83,18 +88,25 @@ function PageElement({
           renderAnnotationLayer={false}
           scale={0.1}
         />
-        <div
-          className={css({
-            position: "absolute",
-            right: "-0.75rem",
-            top: "-1rem",
-            borderRadius: "50%",
-            width: "2rem",
-            height: "2rem",
-            border: "1px solid black",
-            backgroundColor: "white",
-          })}
-        />
+        {isBadgeVisible && (
+          <div
+            className={css({
+              position: "absolute",
+              right: "-0.75rem",
+              top: "-1rem",
+              borderRadius: "50%",
+              width: "2rem",
+              height: "2rem",
+              border: "2px solid black",
+              backgroundColor: "white",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            })}
+          >
+            {badgeContent}
+          </div>
+        )}
       </div>
       <p className={css({ textAlign: "center" })}>{index + 1}</p>
     </div>
