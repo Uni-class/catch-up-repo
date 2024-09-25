@@ -38,13 +38,23 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    socket.on("getPageNumber", (data) => {
+    socket.emit("sendHostPageNumber", { roomId, fileId, index: pageIndex });
+  }, [fileId, pageIndex, roomId, socket]);
+
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.on("getPartiPageNumber", (data) => {
       console.log(data);
     });
     return () => {
-      socket.off("getPageNumber");
+      socket.off("getPartiPageNumber");
     };
   }, [socket]);
+
+  useEffect(()=>{
+
+  },[])
 
   useEffect(() => {
     if (socket === null) return;
