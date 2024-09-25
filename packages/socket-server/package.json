@@ -46,6 +46,7 @@
     "relation-map": "^1.0.3",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
+    "socket.io-adapter": "^2.5.5",
     "typeorm": "^0.3.20",
     "typeorm-naming-strategies": "^4.1.0"
   },
