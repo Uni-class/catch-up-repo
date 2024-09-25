@@ -8,6 +8,7 @@ export const CookieOptions = async (
   httpOnly: boolean;
   domain: string;
   maxAge: number;
+  secure: boolean;
 }> => {
   return {
     sameSite: 'lax',
@@ -19,5 +20,6 @@ export const CookieOptions = async (
         : type === 'refreshToken'
           ? configService.get<number>('REFRESH_TOKEN_MAX_AGE')
           : 0,
+    secure: configService.get<string>('NODE_ENV') === 'production',
   };
 };
