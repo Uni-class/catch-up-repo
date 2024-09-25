@@ -31,22 +31,17 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    if (socket.connected) {
-      console.log("Connected to WebSocket server");
-      socket.emit("joinRoom", { roomId: roomId });
-    } else {
-      socket.on("connect", () => {
-        console.log("Connected to WebSocket server");
-        socket.emit("joinRoom", { roomId: roomId });
-      });
-    }
-
+    socket.on("initUser", () => {
+      console.log("Connected to WebSocket server:", socket.id);
+      socket.emit("joinRoom", { roomId });
+    });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
     return () => {
       socket.off("connect");
       socket.off("userList");
+      socket.off("initUser");
     };
   }, [roomId, socket]);
 

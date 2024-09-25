@@ -21,37 +21,29 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    if (socket.connected) {
-      console.error("Connected to WebSocket server");
+    socket.on("initUser", () => {
+      console.log("Connected to WebSocket server:", socket.id);
       socket.emit("createRoom", { roomId, fileIds: [fileId] });
-    } else {
-      socket.on("connect", () => {
-        console.error("Connected to WebSocket server");
-        socket.emit("createRoom", { roomId, fileIds: [fileId] });
-      });
-    }
-    socket.on("reconnect",()=>{
-      console.error("re")
-    })
+    });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
     return () => {
       socket.off("connect");
       socket.off("userList");
+      socket.off("initUser");
     };
   }, [fileId, roomId, socket]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (socket === null) return;
-    socket.on("getPageNumber",(data)=>{
-      console.log(data)
-    })
+    socket.on("getPageNumber", (data) => {
+      console.log(data);
+    });
     return () => {
       socket.off("getPageNumber");
-    }
-  },[socket])
-  
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;
