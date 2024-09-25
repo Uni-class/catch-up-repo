@@ -40,6 +40,8 @@ export default function HostViewer(props: ViewerPropType) {
       <PreviewPages
         pdfDocumentURL={pdfDocument.url}
         PDFPainterController={pdfPainterControllerHook.pdfPainterController}
+        getBadgeVisible={(index) => index + 1 === 1}
+        getBadgeContent={() => <>1</>}
       />
       <div
         className={css({

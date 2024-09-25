@@ -11,9 +11,13 @@ const options = {
 export function PreviewPages({
   pdfDocumentURL,
   PDFPainterController,
+  getBadgeContent,
+  getBadgeVisible,
 }: {
   pdfDocumentURL: string;
   PDFPainterController: PDFPainterController;
+  getBadgeVisible: (index: number) => boolean;
+  getBadgeContent: () => ReactNode;
 }) {
   const currentPageIndex = PDFPainterController.getPageIndex();
   const pageCount = PDFPainterController.getPageCount();
@@ -49,6 +53,8 @@ export function PreviewPages({
               PDFPainterController.setPageIndex(index);
             }}
             currentIndex={currentPageIndex}
+            isBadgeVisible={getBadgeVisible(index)}
+            badgeContent={getBadgeContent()}
           />
         ))}
       </Document>
