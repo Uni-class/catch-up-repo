@@ -49,7 +49,6 @@ export const useHostSocket = (
     socket.on(
       "getPartiPageNumber",
       (data: { roomPageViewerCount: { [key in number]: number } }) => {
-        console.log(data);
         setRoomPageViewerCount({ ...data.roomPageViewerCount });
       }
     );

@@ -57,7 +57,6 @@ export const useParticipantSocket = (
     socket.on(
       "getHostPageNumber",
       (data: { fileId: number; index: number; userId: number }) => {
-        console.log(data);
         setHostIndex(data.index);
       }
     );
