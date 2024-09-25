@@ -21,6 +21,7 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
+    socket.emit("createRoom", { roomId, fileIds: [fileId] });
     socket.on("initUser", () => {
       console.log("Connected to WebSocket server:", socket.id);
       socket.emit("createRoom", { roomId, fileIds: [fileId] });
