@@ -17,7 +17,7 @@ export function PreviewPages({
   pdfDocumentURL: string;
   PDFPainterController: PDFPainterController;
   getBadgeVisible: (index: number) => boolean;
-  getBadgeContent: () => ReactNode;
+  getBadgeContent: (index?: number) => ReactNode;
 }) {
   const currentPageIndex = PDFPainterController.getPageIndex();
   const pageCount = PDFPainterController.getPageCount();

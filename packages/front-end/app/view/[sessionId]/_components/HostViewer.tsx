@@ -47,7 +47,8 @@ export default function HostViewer(props: ViewerPropType) {
         className={css({
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1,
+          width:`calc(100% - 13rem)`,
+          height:"100%",
           display: "flex",
         })}
       >
