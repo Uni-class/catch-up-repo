@@ -30,10 +30,12 @@ export const useBatchSocket = ({
   socket,
   roomId,
   pageIndex,
+  fileId,
 }: {
   socket: Socket | null;
   roomId: number | string;
   pageIndex: number;
+  fileId: number;
 }) => {
   const queueRef = useRef<{
     [key in RecordId<any>]: ElementType[];
@@ -149,7 +151,8 @@ export const useBatchSocket = ({
       const dataFormat = processBatchQueue();
       const messageBody = {
         index: pageIndex,
-        roomId: roomId,
+        roomId,
+        fileId,
       };
       if (dataFormat.added.length > 0) {
         socket.emit("sendAddedDraw", {
@@ -174,6 +177,6 @@ export const useBatchSocket = ({
     return () => {
       clearInterval(intervalId);
     };
-  }, [pageIndex, processBatchQueue, roomId, socket]);
+  }, [fileId, pageIndex, processBatchQueue, roomId, socket]);
   return { queueRef, pushChanges };
 };
