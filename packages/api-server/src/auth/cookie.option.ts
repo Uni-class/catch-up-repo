@@ -10,6 +10,8 @@ export const CookieOptions = async (
   maxAge: number;
   secure: boolean;
 }> => {
+  const secure = configService.get<string>('NODE_ENV') === 'production';
+  console.log({ secure });
   return {
     sameSite: 'lax',
     httpOnly: true,
