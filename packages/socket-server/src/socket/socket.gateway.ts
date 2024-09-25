@@ -181,29 +181,40 @@ export class SocketGateway
     this.debugActiveRooms('joinRoom');
   }
 
-  @SubscribeMessage('sendPageNumber')
-  async onSendPageNumber(
+  @SubscribeMessage('sendHostPageNumber')
+  async onSendHostPageNumber(
     @ConnectedSocket() client: Socket,
     @MessageBody() { roomId, fileId, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId === this.roomHost[roomId]) {
-      this.server.to(roomId).emit('getPageNumber', { index, userId });
-    } else {
-      this.roomPdfPageViewer[roomId][fileId].deleteByMany(userId);
-      this.roomPdfPageViewer[roomId][fileId].set(index, userId);
-      const pdfPageCounts = {};
-      for (const key of this.roomPdfPageViewer[roomId][fileId]
-        .getOneToMany()
-        .keys()) {
-        pdfPageCounts[key] =
-          this.roomPdfPageViewer[roomId][fileId].getByOne(key).size;
-      }
-      this.roomHostSocket[roomId].emit('getPageNumber', {
-        roomPageViewerCount: pdfPageCounts,
-      });
+      this.server
+        .to(roomId)
+        .emit('getHostPageNumber', { fileId, index, userId });
     }
+  }
+
+  @SubscribeMessage('sendPartiPageNumber')
+  async onSendPartiPageNumber(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { roomId, fileId, index }: any,
+  ): Promise<any> {
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId || !client.rooms.has(roomId)) return;
+
+    this.roomPdfPageViewer[roomId][fileId].deleteByMany(userId);
+    this.roomPdfPageViewer[roomId][fileId].set(index, userId);
+    const pdfPageCounts = {};
+    for (const key of this.roomPdfPageViewer[roomId][fileId]
+      .getOneToMany()
+      .keys()) {
+      pdfPageCounts[key] =
+        this.roomPdfPageViewer[roomId][fileId].getByOne(key).size;
+    }
+    this.roomHostSocket[roomId].emit('getPartiPageNumber', {
+      roomPageViewerCount: pdfPageCounts,
+    });
   }
 
   @SubscribeMessage('sendAddedDraw')
