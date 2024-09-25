@@ -48,8 +48,18 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("sendPageNumber", { roomId, fileId, index: pageIndex });
+    socket.emit("sendPartiPageNumber", { roomId, fileId, index: pageIndex });
   }, [fileId, pageIndex, roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.on("getHostPageNumber", (data) => {
+      console.log(data);
+    });
+    return () => {
+      socket.off("getHostPageNumber");
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;
