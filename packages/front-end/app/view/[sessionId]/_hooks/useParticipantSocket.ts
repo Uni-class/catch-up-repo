@@ -24,13 +24,14 @@ export const useParticipantSocket = (
   } = useReceiveDrawCache(editor);
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
+  const [hostIndex, setHostIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setEditorFromDrawCache(pageIndex);
   }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
-    if (socket === null) return;   
+    if (socket === null) return;
     socket.emit("joinRoom", { roomId });
     socket.on("initUser", () => {
       console.log("Connected to WebSocket server:", socket.id);
@@ -53,9 +54,12 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    socket.on("getHostPageNumber", (data) => {
-      console.log(data);
-    });
+    socket.on(
+      "getHostPageNumber",
+      (data: { fileId: number; index: number; userId: number }) => {
+        setHostIndex(data.index);
+      }
+    );
     return () => {
       socket.off("getHostPageNumber");
     };
@@ -111,4 +115,5 @@ export const useParticipantSocket = (
     socket,
     updateDrawCache,
   ]);
+  return {hostIndex}
 };

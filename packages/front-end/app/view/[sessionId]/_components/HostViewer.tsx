@@ -22,7 +22,7 @@ export default function HostViewer(props: ViewerPropType) {
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
-  useHostSocket(
+  const { roomPageViewerCount } = useHostSocket(
     sessionId,
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
@@ -40,15 +40,17 @@ export default function HostViewer(props: ViewerPropType) {
       <PreviewPages
         pdfDocumentURL={pdfDocument.url}
         PDFPainterController={pdfPainterControllerHook.pdfPainterController}
-        getBadgeVisible={(index) => index + 1 === 1}
-        getBadgeContent={() => <>1</>}
+        getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
+        getBadgeContent={(index) => {
+          return <>{index !== undefined && roomPageViewerCount[index]}</>;
+        }}
       />
       <div
         className={css({
           justifyContent: "center",
           alignItems: "center",
-          width:`calc(100% - 13rem)`,
-          height:"100%",
+          width: `calc(100% - 13rem)`,
+          height: "100%",
           display: "flex",
         })}
       >

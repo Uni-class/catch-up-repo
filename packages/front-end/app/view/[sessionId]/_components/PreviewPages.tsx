@@ -54,7 +54,7 @@ export function PreviewPages({
             }}
             currentIndex={currentPageIndex}
             isBadgeVisible={getBadgeVisible(index)}
-            badgeContent={getBadgeContent()}
+            badgeContent={getBadgeVisible(index) && getBadgeContent(index)}
           />
         ))}
       </Document>

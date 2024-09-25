@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { Session, File } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useParticipantSocket } from "../_hooks/useParticipantSocket";
 import {
@@ -35,7 +34,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
-  useParticipantSocket(
+  const { hostIndex } = useParticipantSocket(
     sessionId,
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
