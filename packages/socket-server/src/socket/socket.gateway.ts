@@ -87,6 +87,7 @@ export class SocketGateway
     if (!userId) client.disconnect(true);
     this.clientUserId[client.id] = userId;
     console.log({ clientId: client.id, userId }, 'handleConnection');
+    client.emit('initUser');
     return;
   }
 
