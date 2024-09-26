@@ -7,6 +7,7 @@ RUN yarn set version stable
 COPY package*.json ./
 COPY .env ./
 RUN yarn install
+
 COPY . .
 
 RUN yarn build
