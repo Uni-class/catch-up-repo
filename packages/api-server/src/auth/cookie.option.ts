@@ -10,6 +10,7 @@ export const CookieOptions = async (
   maxAge: number;
   secure: boolean;
 }> => {
+  console.log(configService.get<string>('COOKIE_DOMAIN'));
   return {
     sameSite: 'lax',
     httpOnly: true,
