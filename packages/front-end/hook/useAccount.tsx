@@ -10,6 +10,7 @@ import { useRouter } from "@/hook/useRouter";
 const AccountContext = createContext<{
   updateAccount: () => void;
   logout: () => void;
+  getContinueString: () => string;
   getLoginURL: () => string;
   goToLogin: () => void;
   isLoading: boolean;
@@ -17,6 +18,7 @@ const AccountContext = createContext<{
 }>({
   updateAccount: () => {},
   logout: () => {},
+  getContinueString: () => "",
   getLoginURL: () => "",
   goToLogin: () => {},
   isLoading: true,
@@ -38,9 +40,16 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
   });
   const router = useRouter();
 
-  const getLoginURL = useCallback(() => {
-    return `/login?url=${encodeURIComponent(`${router.pathname}?${router.query.toString()}`)}`; //need fix
+  const getContinueString = useCallback(() => {
+    const currentURL = router.getURL();
+    return `${currentURL.pathname}${currentURL.search}`;
   }, [router]);
+
+  const getLoginURL = useCallback(() => {
+    const newURL = new URL("/login", router.getURL());
+    newURL.searchParams.set("continue", getContinueString());
+    return newURL.href;
+  }, [router, getContinueString]);
 
   const goToLogin = useCallback(() => {
     router.push(getLoginURL());
@@ -53,6 +62,7 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
       value={{
         updateAccount: () => {}, //need fix
         logout: () => {}, //need fix
+        getContinueString: getContinueString,
         getLoginURL: getLoginURL,
         goToLogin: goToLogin,
         isLoading: isLoading,

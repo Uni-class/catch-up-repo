@@ -9,8 +9,8 @@ import {
 export interface RouterInstance extends AppRouterInstance {
   pathname: string;
   query: ReadonlyURLSearchParams;
-  queryObj:Record<string,string>;
-  getURLString: (pathname: string, queryObj:Record<string,string>) => string;
+  queryObj: Record<string, string>;
+  getURL: () => URL;
 }
 
 export const useRouter = (): RouterInstance => {
@@ -18,21 +18,15 @@ export const useRouter = (): RouterInstance => {
   const query = useSearchParams();
   const pathname = usePathname();
   const queryObj = Object.fromEntries(query);
-  const getURLString = (
-    pathname: string,
-    queryObj:Record<string,string>
-  ) => {
-    const url = new URL(pathname, window.location.href);
-    Object.keys(queryObj).forEach((key) => {
-      url.searchParams.append(key, queryObj[key]);
-    });
-    return `${url.pathname}${url.search}`;
-  };
+  const getURL = () =>
+    typeof window === "undefined"
+      ? new URL("", "https://catchup.tools/")
+      : new URL(window.location.href);
   return {
     ...router,
     query,
     pathname,
     queryObj,
-    getURLString,
+    getURL,
   };
 };
