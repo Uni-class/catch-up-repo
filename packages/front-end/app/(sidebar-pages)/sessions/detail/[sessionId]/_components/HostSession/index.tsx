@@ -39,7 +39,7 @@ export default function HostSession({ sessionData }: PropType) {
           <FileUploadAndSelectModal formDataRef={formDataRef} />
         </ModalContainer>
       ),
-      { overlayId: "File-Select" }
+      { overlayId: "File-Select" },
     );
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ export default function HostSession({ sessionData }: PropType) {
         onChange={handleInputChange}
         className={css({ height: "50px" })}
       />
-      <Label htmlFor="select file">강의 자료 선택</Label>
+      <Label htmlFor="select file">파일 선택</Label>
       <Button
         id="select file"
         name="select file"

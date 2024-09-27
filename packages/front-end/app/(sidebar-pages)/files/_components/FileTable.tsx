@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import SelectableTable from "@/components/SelectableTable";
 import { overlay } from "overlay-kit";
 import ModalContainer from "@/components/ModalContainer";
-import FileUploadModal from "@/app/(sidebar-pages)/files/_components/FileUploadModal";
+import FileUploadModal from "@/components/FileUploader/FileUploadModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 
@@ -17,7 +17,7 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File-Upload" }
+    { overlayId: "File-Upload" },
   );
 };
 
@@ -89,11 +89,11 @@ export function FileTable({
       Promise.all(
         selectedItems.map(async (e) => {
           await apiClient.delete(`/file/${e}`);
-        })
+        }),
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "files"] });
-      queryClient.refetchQueries({queryKey:["user","files"]})
+      queryClient.refetchQueries({ queryKey: ["user", "files"] });
     },
     onError: (e) => {
       console.error(e);

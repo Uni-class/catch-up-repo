@@ -16,7 +16,7 @@ import { overlay } from "overlay-kit";
 import { useAtom } from "jotai";
 import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import { MutableRefObject } from "react";
-
+import { css } from "@/styled-system/css";
 
 export default function DriveFileUploadFetch() {
   const { data: fileRes, isLoading } = useQuery<AxiosResponse<File[]>>({
@@ -28,7 +28,17 @@ export default function DriveFileUploadFetch() {
     return <h1>로딩...</h1>;
   }
   const data = fileRes?.data;
-  return data !== undefined && <DriveFileUpload data={data} />;
+  if (!data) return;
+  return (
+    <div
+      className={css({
+        height: "100%",
+        overflowY: "auto",
+      })}
+    >
+      <DriveFileUpload data={data} />
+    </div>
+  );
 }
 
 export function DriveFileUpload({ data }: { data: File[] }) {
@@ -51,8 +61,9 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
-  const [currentFormDataRef] =
-    useAtom<MutableRefObject<CreateSessionDto>>(currentFormDataRefAtom);
+  const [currentFormDataRef] = useAtom<MutableRefObject<CreateSessionDto>>(
+    currentFormDataRefAtom,
+  );
   const handleRowButtonClick = () => {
     currentFormDataRef.current.sessionFileIds = [file.fileId];
     overlay.close("File-Select");

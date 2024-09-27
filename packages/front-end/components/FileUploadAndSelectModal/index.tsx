@@ -3,9 +3,11 @@ import { overlay } from "overlay-kit";
 import {
   DetailedHTMLProps,
   HTMLAttributes,
+  MouseEventHandler,
   MutableRefObject,
   ReactNode,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { Heading } from "../Text";
@@ -18,7 +20,6 @@ import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
 import FileUploader from "@/components/FileUploader/FileUploader";
 import DriveFileUploadFetch from "./DriveFileSelect";
 
-
 type TabDataType = "내 컴퓨터" | "기존 업로드 파일";
 const tabData: TabDataType[] = ["내 컴퓨터", "기존 업로드 파일"];
 
@@ -29,6 +30,12 @@ interface PropType {
 export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   const [tabState, setTabState] = useState<TabDataType>("내 컴퓨터");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [status, setStatus] = useState<"ready" | "uploading" | "finished">(
+    "ready",
+  );
+  const fileUploaderRef = useRef<{
+    upload: () => void;
+  }>();
   const { reset } = useQueryErrorResetBoundary();
   const [_currentFormData, setCurrentFormData] = useAtom<
     MutableRefObject<CreateSessionDto>
@@ -39,8 +46,9 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
   return (
     <div
       className={css({
-        width: "700px",
-        height: "500px",
+        width: "80vw",
+        maxWidth: "60em",
+        height: "80vh",
         backgroundColor: "#fff",
         borderRadius: "1rem",
         padding: "1em",
@@ -55,13 +63,6 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
         })}
       >
         <Heading>파일 선택</Heading>
-        <Button
-          onClick={() => {
-            overlay.close("File-Select");
-          }}
-        >
-          X
-        </Button>
       </div>
       <TabContainer>
         {tabData.map((e) => (
@@ -69,24 +70,104 @@ export default function FileUploadAndSelectModal({ formDataRef }: PropType) {
             key={e}
             text={e}
             state={e === tabState}
+            disabled={status === "uploading"}
             onClick={() => {
+              if (status === "finished") {
+                setStatus("ready");
+                setSelectedFiles([]);
+              }
               setTabState(e);
             }}
           />
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <FileUploader
-          accept={{
-            "application/pdf": [".pdf"],
-          }}
-          selectedFiles={selectedFiles}
-          setSelectedFiles={setSelectedFiles}
-        />
+        <div
+          className={css({
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5em",
+            overflow: "auto",
+          })}
+        >
+          <FileUploader
+            ref={fileUploaderRef}
+            accept={{
+              "application/pdf": [".pdf"],
+            }}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            uploadFinishHandler={() => setStatus("finished")}
+          />
+          <div
+            className={css({
+              display: "flex",
+              gap: "0.5em",
+              justifyContent: "right",
+            })}
+          >
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              disabled={selectedFiles.length === 0 || status !== "ready"}
+              onClick={() => {
+                if (fileUploaderRef.current) {
+                  setStatus("uploading");
+                  fileUploaderRef.current.upload();
+                }
+              }}
+            >
+              업로드
+            </Button>
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              preset={"secondary"}
+              disabled={status === "uploading"}
+              onClick={() => {
+                overlay.close("File-Select");
+              }}
+            >
+              취소
+            </Button>
+          </div>
+        </div>
       ) : (
-        <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
-          <DriveFileUploadFetch />
-        </ErrorBoundary>
+        <div
+          className={css({
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5em",
+            overflow: "hidden",
+          })}
+        >
+          <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+            <DriveFileUploadFetch />
+          </ErrorBoundary>
+          <div
+            className={css({
+              display: "flex",
+              gap: "0.5em",
+              justifyContent: "right",
+            })}
+          >
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              preset={"secondary"}
+              onClick={() => {
+                overlay.close("File-Select");
+              }}
+            >
+              취소
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -100,6 +181,8 @@ interface TabPropType
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   state: boolean;
   text: string;
+  disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 const selectStyle = css({
@@ -112,7 +195,7 @@ const unSelectStyle = css({
   borderBottomColor: "gray.100",
 });
 
-function Tab({ state, text, ...attr }: TabPropType) {
+function Tab({ state, text, disabled = false, onClick, ...attr }: TabPropType) {
   return (
     <div
       className={cx(
@@ -122,8 +205,19 @@ function Tab({ state, text, ...attr }: TabPropType) {
           transition: "border-bottom-color 0.3s, color 0.3s",
           cursor: "pointer",
         }),
-        state ? selectStyle : unSelectStyle
+        state ? selectStyle : unSelectStyle,
+        disabled
+          ? css({
+              color: "gray.400",
+              borderBottomColor: "gray.100",
+              cursor: "not-allowed",
+            })
+          : null,
       )}
+      onClick={(event) => {
+        if (disabled || !onClick) return;
+        onClick(event);
+      }}
       {...attr}
     >
       {text}
