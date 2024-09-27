@@ -133,7 +133,7 @@ export default function FileUploadAndSelectModal({
               >
                 취소
               </Button>
-            </div>{" "}
+            </div>
           </div>
         ) : (
           <div
