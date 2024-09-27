@@ -128,7 +128,7 @@ export default function FileUploadAndSelectModal({
                 preset={"secondary"}
                 disabled={status === "uploading"}
                 onClick={() => {
-                  overlay.close("File-Select");
+                  overlay.close(`File-Select-${useFormDataResult.idRef.current}`);
                 }}
               >
                 취소

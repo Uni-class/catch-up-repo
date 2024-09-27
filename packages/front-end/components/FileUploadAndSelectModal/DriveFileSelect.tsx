@@ -60,10 +60,10 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
-  const { setControlledData } = useContext(FileFormDataContext);
+  const { setControlledData, idRef } = useContext(FileFormDataContext);
   const handleRowButtonClick = () => {
     setControlledData({ sessionFiles: [file] });
-    overlay.close("File-Select");
+    overlay.close(`File-Select-${idRef.current}`);
   };
   return (
     <TableRow>
