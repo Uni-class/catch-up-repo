@@ -5,9 +5,7 @@ import {
   DetailedHTMLProps,
   HTMLAttributes,
   MouseEventHandler,
-  MutableRefObject,
   ReactNode,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -45,134 +43,135 @@ export default function FileUploadAndSelectModal({
   const { reset } = useQueryErrorResetBoundary();
 
   return (
-    <div
-      className={css({
-        width: "80vw",
-        maxWidth: "60em",
-        height: "80vh",
-        backgroundColor: "#fff",
-        borderRadius: "1rem",
-        padding: "1em",
-        display: "flex",
-        flexDirection: "column",
-      })}
-    >
+    <FileFormDataContext.Provider value={useFormDataResult}>
       <div
         className={css({
+          width: "80vw",
+          maxWidth: "60em",
+          height: "80vh",
+          backgroundColor: "#fff",
+          borderRadius: "1rem",
+          padding: "1em",
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: "column",
         })}
       >
-        <Heading>파일 선택</Heading>
-      </div>
-      <TabContainer>
-        {tabData.map((e) => (
-          <Tab
-            key={e}
-            text={e}
-            state={e === tabState}
-            disabled={status === "uploading"}
-            onClick={() => {
-              if (status === "finished") {
-                setStatus("ready");
-                setSelectedFiles([]);
-              }
-              setTabState(e);
-            }}
-          />
-        ))}
-      </TabContainer>
-      {tabState === "내 컴퓨터" ? (
         <div
           className={css({
-            height: "100%",
             display: "flex",
-            flexDirection: "column",
-            gap: "0.5em",
-            overflow: "auto",
+            justifyContent: "space-between",
           })}
         >
-          <FileUploader
-            accept={{
-              "application/pdf": [".pdf"],
-            }}
-            selectedFiles={selectedFiles}
-            setSelectedFiles={setSelectedFiles}
-            uploadFinishHandler={() => setStatus("finished")}
-            ref={fileUploaderRef}
-          />
-          <div
-            className={css({
-              display: "flex",
-              gap: "0.5em",
-              justifyContent: "right",
-            })}
-          >
-            <Button
-              className={css({
-                padding: "0.5em 1em",
-              })}
-              disabled={selectedFiles.length === 0 || status !== "ready"}
-              onClick={() => {
-                if (fileUploaderRef.current) {
-                  setStatus("uploading");
-                  fileUploaderRef.current.upload();
-                }
-              }}
-            >
-              업로드
-            </Button>
-            <Button
-              className={css({
-                padding: "0.5em 1em",
-              })}
-              preset={"secondary"}
+          <Heading>파일 선택</Heading>
+        </div>
+        <TabContainer>
+          {tabData.map((e) => (
+            <Tab
+              key={e}
+              text={e}
+              state={e === tabState}
               disabled={status === "uploading"}
               onClick={() => {
-                overlay.close("File-Select");
+                if (status === "finished") {
+                  setStatus("ready");
+                  setSelectedFiles([]);
+                }
+                setTabState(e);
               }}
+            />
+          ))}
+        </TabContainer>
+        {tabState === "내 컴퓨터" ? (
+          <div
+            className={css({
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5em",
+              overflow: "auto",
+            })}
+          >
+            <FileUploader
+              accept={{
+                "application/pdf": [".pdf"],
+              }}
+              selectedFiles={selectedFiles}
+              setSelectedFiles={setSelectedFiles}
+              uploadFinishHandler={() => setStatus("finished")}
+              ref={fileUploaderRef}
+            />
+            <div
+              className={css({
+                display: "flex",
+                gap: "0.5em",
+                justifyContent: "right",
+              })}
             >
-              취소
-            </Button>
-          </div>{" "}
-        </div>
-      ) : (
-        <div
-          className={css({
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5em",
-            overflow: "hidden",
-          })}
-        >
-          <FileFormDataContext.Provider value={useFormDataResult}>
+              <Button
+                className={css({
+                  padding: "0.5em 1em",
+                })}
+                disabled={selectedFiles.length === 0 || status !== "ready"}
+                onClick={() => {
+                  if (fileUploaderRef.current) {
+                    setStatus("uploading");
+                    fileUploaderRef.current.upload();
+                  }
+                }}
+              >
+                업로드
+              </Button>
+              <Button
+                className={css({
+                  padding: "0.5em 1em",
+                })}
+                preset={"secondary"}
+                disabled={status === "uploading"}
+                onClick={() => {
+                  overlay.close("File-Select");
+                }}
+              >
+                취소
+              </Button>
+            </div>{" "}
+          </div>
+        ) : (
+          <div
+            className={css({
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5em",
+              overflow: "hidden",
+            })}
+          >
             <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
               <DriveFileUploadFetch />
             </ErrorBoundary>
-          </FileFormDataContext.Provider>
-          <div
-            className={css({
-              display: "flex",
-              gap: "0.5em",
-              justifyContent: "right",
-            })}
-          >
-            <Button
+
+            <div
               className={css({
-                padding: "0.5em 1em",
+                display: "flex",
+                gap: "0.5em",
+                justifyContent: "right",
               })}
-              preset={"secondary"}
-              onClick={() => {
-                overlay.close("File-Select");
-              }}
             >
-              취소
-            </Button>
+              <Button
+                className={css({
+                  padding: "0.5em 1em",
+                })}
+                preset={"secondary"}
+                onClick={() => {
+                  overlay.close("File-Select");
+                }}
+              >
+                취소
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </FileFormDataContext.Provider>
   );
 }
 
