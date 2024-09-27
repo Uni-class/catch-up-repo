@@ -58,19 +58,19 @@ export function SessionFormTemplate({
         });
       }}
     >
-      <Label htmlFor="session title">세션 제목</Label>
+      <Label htmlFor="session-title">세션 제목</Label>
       <LineEdit
-        id="session title"
-        name="session title"
+        id="session-title"
+        name="session-title"
         placeholder="세션 제목을 입력해주세요"
         onChange={handleInputChange}
         className={css({ height: "3em" })}
         defaultValue={unControlledDataRef.current.sessionName}
       />
-      <Label htmlFor="select file">강의 자료 선택</Label>
+      <Label htmlFor="select-file">강의 자료 선택</Label>
       <Button
-        id="select file"
-        name="select file"
+        id="select-file"
+        name="select-file"
         type="button"
         onClick={handleFileButtonClick}
         className={css({
