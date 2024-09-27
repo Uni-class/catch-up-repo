@@ -77,7 +77,7 @@ jobs:
           echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> packages/api-server/.env
           echo "CORS_ORIGIN_SITE=${{ secrets.CORS_ORIGIN_SITE }}" >> packages/api-server/.env
           echo "CLIENT_DOMAIN=${{ secrets.CLIENT_DOMAIN }}" >> packages/api-server/.env
-          echo "COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}" >> Packages/api-server/.env
+          echo "COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}" >> packages/api-server/.env
           echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> packages/api-server/.env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> packages/api-server/.env
           echo "S3_REGION=${{ secrets.S3_REGION }}" >> packages/api-server/.env
