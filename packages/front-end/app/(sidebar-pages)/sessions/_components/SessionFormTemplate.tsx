@@ -44,7 +44,7 @@ export function SessionFormTemplate({
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
+        gap: "2em",
         width: "100%",
         maxWidth: "50em",
       })}

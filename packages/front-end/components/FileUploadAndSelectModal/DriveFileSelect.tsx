@@ -15,6 +15,7 @@ import { formatDate } from "date-fns";
 import { overlay } from "overlay-kit";
 import { FileFormDataContext } from ".";
 import { useContext } from "react";
+import { css } from "@/styled-system/css";
 
 export default function DriveFileUploadFetch() {
   const { data: fileRes, isLoading } = useQuery<AxiosResponse<File[]>>({
@@ -26,7 +27,17 @@ export default function DriveFileUploadFetch() {
     return <h1>로딩...</h1>;
   }
   const data = fileRes?.data;
-  return data !== undefined && <DriveFileUpload data={data} />;
+  if (!data) return;
+  return (
+    <div
+      className={css({
+        height: "100%",
+        overflowY: "auto",
+      })}
+    >
+      <DriveFileUpload data={data} />
+    </div>
+  );
 }
 
 export function DriveFileUpload({ data }: { data: File[] }) {

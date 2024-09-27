@@ -1,9 +1,17 @@
 "use client";
 
-
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
-import {ReactNode, useEffect, useState, Children, isValidElement, cloneElement, ReactElement, useCallback} from "react";
+import {
+  ReactNode,
+  useEffect,
+  useState,
+  Children,
+  isValidElement,
+  cloneElement,
+  ReactElement,
+  useCallback,
+} from "react";
 
 interface PropType {
   children: ReactNode;
@@ -16,14 +24,12 @@ export default function ModalContainer({
   onClose,
   isOpen = false,
 }: PropType) {
-
   const [closingBlocked, setClosingBlocked] = useState(false);
   const router = useRouter();
 
   const closeWindow = useCallback(() => {
-    if (isOpen && !closingBlocked && onClose)
-      onClose();
-  },[closingBlocked, isOpen, onClose]);
+    if (isOpen && !closingBlocked && onClose) onClose();
+  }, [closingBlocked, isOpen, onClose]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -65,16 +71,14 @@ export default function ModalContainer({
               e.stopPropagation();
             }}
           >
-            {
-              Children.map(children, (child) => {
-                if (isValidElement(child)) {
-                  return cloneElement(child as ReactElement, {
-                    setClosingBlocked
-                  });
-                }
-                return child;
-              })
-            }
+            {Children.map(children, (child) => {
+              if (isValidElement(child)) {
+                return cloneElement(child as ReactElement, {
+                  setClosingBlocked,
+                });
+              }
+              return child;
+            })}
           </div>
         </dialog>
       )}

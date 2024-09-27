@@ -13,7 +13,15 @@ import { SocketService } from './socket.service';
 import { UseFilters } from '@nestjs/common';
 import { WsExceptionFilter } from '../exception/ws-exception.filter';
 import dotenv from 'dotenv';
+import { OneToManyMap } from 'relation-map';
+
 dotenv.config();
+
+interface RPPV {
+  [key: number]: {
+    [key: number]: OneToManyMap<number, number>;
+  };
+}
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -28,8 +36,6 @@ export class SocketGateway
 {
   constructor(private readonly socketService: SocketService) {}
 
-  private clients: Set<Socket> = new Set();
-
   @WebSocketServer()
   server: Server;
 
@@ -37,7 +43,7 @@ export class SocketGateway
   roomHost: { [key: string]: number } = {};
   roomHostSocket: { [key: string]: Socket } = {};
   clientUserId: { [key: string]: number } = {};
-  roomPageViewerCount: { [key: string]: number[] } = {};
+  roomPdfPageViewer: RPPV = {};
 
   private async isValidEvent(client: any, roomId: any) {
     const userId: number = await this.socketService.validateUser(client);
@@ -80,8 +86,8 @@ export class SocketGateway
     const userId: number = await this.socketService.validateUser(client);
     if (!userId) client.disconnect(true);
     this.clientUserId[client.id] = userId;
-    this.clients.add(client);
     console.log({ clientId: client.id, userId }, 'handleConnection');
+    client.emit('initUser');
     return;
   }
 
@@ -99,13 +105,12 @@ export class SocketGateway
       }
     }
     client.disconnect(true);
-    this.clients.delete(client);
   }
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId }: any,
+    @MessageBody() { roomId, fileIds }: any,
   ): Promise<any> {
     const userId: number = await this.socketService.validateUser(client);
     if (!userId || !roomId) return;
@@ -119,8 +124,15 @@ export class SocketGateway
     this.roomHostSocket[roomId] = client;
     if (!this.roomUsers[roomId]) this.roomUsers[roomId] = new Set();
     this.roomUsers[roomId].add(userId);
-    if (!this.roomPageViewerCount[roomId])
-      this.roomPageViewerCount[roomId] = new Array<number>(100);
+    if (!this.roomPdfPageViewer[roomId]) {
+      this.roomPdfPageViewer[roomId] = {};
+      for (const fileId of fileIds) {
+        this.roomPdfPageViewer[roomId][fileId] = new OneToManyMap<
+          number,
+          number
+        >();
+      }
+    }
     this.server.to(roomId).emit('hostExist', '1');
     this.server.to(roomId).emit('userList', {
       roomId,
@@ -169,54 +181,72 @@ export class SocketGateway
     this.debugActiveRooms('joinRoom');
   }
 
-  @SubscribeMessage('sendPageNumber')
-  async onSendPageNumber(
+  @SubscribeMessage('sendHostPageNumber')
+  async onSendHostPageNumber(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, beforeIndex, currentIndex }: any,
+    @MessageBody() { roomId, fileId, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId === this.roomHost[roomId]) {
-      this.server.to(roomId).emit('getPageNumber', { currentIndex, userId });
-    } else {
-      this.roomPageViewerCount[roomId][beforeIndex] -= 1;
-      this.roomPageViewerCount[roomId][currentIndex] += 1;
-      this.roomHostSocket[roomId].emit('getPageNumber', {
-        roomPageViewerCount: this.roomPageViewerCount[roomId],
-      });
+      this.server
+        .to(roomId)
+        .emit('getHostPageNumber', { fileId, index, userId });
     }
+  }
+
+  @SubscribeMessage('sendPartiPageNumber')
+  async onSendPartiPageNumber(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { roomId, fileId, index }: any,
+  ): Promise<any> {
+    const userId = await this.isValidEvent(client, roomId);
+    if (!userId || !client.rooms.has(roomId)) return;
+
+    this.roomPdfPageViewer[roomId][fileId].deleteByMany(userId);
+    this.roomPdfPageViewer[roomId][fileId].set(index, userId);
+    const pdfPageCounts = {};
+    for (const key of this.roomPdfPageViewer[roomId][fileId]
+      .getOneToMany()
+      .keys()) {
+      pdfPageCounts[key] =
+        this.roomPdfPageViewer[roomId][fileId].getByOne(key).size;
+    }
+    this.roomHostSocket[roomId].emit('getPartiPageNumber', {
+      roomPageViewerCount: pdfPageCounts,
+    });
   }
 
   @SubscribeMessage('sendAddedDraw')
   async onSendAddedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getAddedDraw', { data, index });
+    this.server.to(roomId).emit('getAddedDraw', { fileId, data, index });
   }
 
   @SubscribeMessage('sendRemovedDraw')
   async onSendRemovedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getRemovedDraw', { data, index });
+    this.server.to(roomId).emit('getRemovedDraw', { fileId, data, index });
   }
 
   @SubscribeMessage('sendUpdatedDraw')
   async onSendUpdatedDraw(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { roomId, data, index }: any,
+    @MessageBody() { roomId, fileId, data, index }: any,
   ): Promise<any> {
     const userId = await this.isValidEvent(client, roomId);
     if (!userId) return;
     if (userId !== this.roomHost[roomId]) return;
-    this.server.to(roomId).emit('getUpdatedDraw', { data, index });
+    this.server.to(roomId).emit('getUpdatedDraw', { fileId, data, index });
   }
 }

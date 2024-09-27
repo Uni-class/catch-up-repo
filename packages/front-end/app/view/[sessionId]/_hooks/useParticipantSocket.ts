@@ -11,6 +11,7 @@ import { integralRecord } from "../_utils/integralRecord";
 
 export const useParticipantSocket = (
   roomId: number | string,
+  fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController
 ) => {
@@ -23,23 +24,42 @@ export const useParticipantSocket = (
   } = useReceiveDrawCache(editor);
   const [socket] = useAtom(socketAtom);
   const pageIndex = pdfPainterController.getPageIndex();
-  // 다른 페이지 데이터 받으면 cache에 삽입됨
-  // useEffect는 일단 호출되므로 내 페이지가 0인 경우에도 작동 -> cache에 삽입데이터가 반영됨?
-  // 아 왜 pageIndex가 순간 message.index로 바뀌는거지?
+
   useEffect(() => {
     setEditorFromDrawCache(pageIndex);
   }, [pageIndex, setEditorFromDrawCache]);
 
   useEffect(() => {
-    if (socket === null) return;
-    socket.on("connect", () => {
-      console.log("Connected to WebSocket server");
+    if (socket === null) return;   
+    socket.emit("joinRoom", { roomId });
+    socket.on("initUser", () => {
+      console.log("Connected to WebSocket server:", socket.id);
+      socket.emit("joinRoom", { roomId });
     });
-    socket.emit("joinRoom", { roomId: roomId });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
+    return () => {
+      socket.off("connect");
+      socket.off("userList");
+      socket.off("initUser");
+    };
   }, [roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.emit("sendPartiPageNumber", { roomId, fileId, index: pageIndex });
+  }, [fileId, pageIndex, roomId, socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.on("getHostPageNumber", (data) => {
+      console.log(data);
+    });
+    return () => {
+      socket.off("getHostPageNumber");
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;

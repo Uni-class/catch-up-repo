@@ -1,0 +1,165 @@
+.restore-defaults {
+  font-family: initial; /* 기본 폰트 */
+  line-height: normal;
+  text-align: initial;
+  color: initial;
+  background-color: initial;
+  margin: 0; /* 기본 여백 설정 */
+  padding: 1.5rem; /* 기본 패딩 설정 */
+}
+
+.restore-defaults h1,
+.restore-defaults h2,
+.restore-defaults h3,
+.restore-defaults h4,
+.restore-defaults h5,
+.restore-defaults h6 {
+  font-size: initial;
+  font-weight: bold;
+  margin: initial; /* 기본 여백 복원 */
+  padding: initial; /* 기본 패딩 복원 */
+  line-height: initial;
+}
+
+.restore-defaults h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.restore-defaults h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+.restore-defaults h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+.restore-defaults h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+.restore-defaults h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0;
+}
+.restore-defaults h6 {
+  font-size: 0.67em;
+  margin: 2.33em 0;
+}
+
+.restore-defaults p {
+  margin: 1em 0; /* 기본 문단 여백 복원 */
+}
+
+.restore-defaults ul,
+.restore-defaults ol {
+  list-style: initial;
+  margin: 1em 0; /* 기본 리스트 여백 복원 */
+  padding-left: 40px; /* 기본 리스트 패딩 복원 */
+}
+
+.restore-defaults li {
+  margin: 0.5em 0; /* 리스트 항목 기본 여백 복원 */
+}
+
+.restore-defaults a {
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.restore-defaults a:visited {
+  color: #551a8b; /* 방문한 링크 색상 */
+}
+
+.restore-defaults a:hover {
+  color: #0000ee; /* 호버된 링크 색상 */
+  text-decoration: underline; /* 밑줄 유지 */
+}
+
+.restore-defaults a:active {
+  color: #bf00ff; 
+}
+
+.restore-defaults button,
+.restore-defaults input,
+.restore-defaults select,
+.restore-defaults textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0; /* 기본 폼 요소 여백 복원 */
+  padding: 0; /* 기본 폼 요소 패딩 복원 */
+  border: initial;
+  background-color: initial;
+  box-sizing: border-box; /* 박스 크기 조절 */
+}
+
+.restore-defaults button {
+  display: inline-block;
+  padding: 2px 6px;
+  border-width: 1px;
+  border-style: outset;
+  border-color: buttonface;
+  background-color: buttonface;
+  color: initial;
+  text-align: center;
+}
+
+.restore-defaults input[type="text"],
+.restore-defaults input[type="password"],
+.restore-defaults input[type="email"],
+.restore-defaults input[type="url"],
+.restore-defaults input[type="number"],
+.restore-defaults input[type="tel"],
+.restore-defaults input[type="search"],
+.restore-defaults input[type="date"],
+.restore-defaults input[type="month"],
+.restore-defaults input[type="week"],
+.restore-defaults input[type="time"],
+.restore-defaults input[type="datetime"],
+.restore-defaults input[type="datetime-local"],
+.restore-defaults input[type="color"],
+.restore-defaults select,
+.restore-defaults textarea {
+  padding: 2px;
+  border: 1px solid #ccc; /* 기본 테두리 */
+  box-sizing: border-box; /* 박스 크기 조절 */
+}
+
+.restore-defaults table {
+  border-collapse: collapse;
+  border-spacing: 0; /* 테이블 기본 스타일 */
+}
+
+.restore-defaults th,
+.restore-defaults td {
+  padding: 8px;
+  border: 1px solid #ddd; /* 테이블 셀 기본 테두리 */
+  text-align: left; /* 텍스트 기본 정렬 */
+}
+
+.restore-defaults caption {
+  padding: 4px;
+  font-weight: bold;
+}
+
+.restore-defaults hr {
+  border: 1px solid #ccc;
+  border-width: 1px 0 0 0;
+  margin: 1em 0;
+}
+
+.restore-defaults blockquote {
+  margin: 1em 40px;
+  padding: 0.5em 10px;
+  border-left: 5px solid #ccc;
+}
+
+.restore-defaults pre {
+  display: block;
+  padding: 10px;
+  margin: 1em 0;
+  overflow: auto;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+}
