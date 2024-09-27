@@ -37,7 +37,7 @@ export default function FileUploadAndSelectModal({
   const [tabState, setTabState] = useState<TabDataType>("기존 업로드 파일");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<"ready" | "uploading" | "finished">(
-    "ready",
+    "ready"
   );
   const fileUploaderRef = useRef<{
     upload: () => void;
@@ -83,19 +83,94 @@ export default function FileUploadAndSelectModal({
         ))}
       </TabContainer>
       {tabState === "내 컴퓨터" ? (
-        <FileUploader
-          accept={{
-            "application/pdf": [".pdf"],
-          }}
-          selectedFiles={selectedFiles}
-          setSelectedFiles={setSelectedFiles}
-        />
+        <div
+          className={css({
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5em",
+            overflow: "auto",
+          })}
+        >
+          <FileUploader
+            accept={{
+              "application/pdf": [".pdf"],
+            }}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            uploadFinishHandler={() => setStatus("finished")}
+            ref={fileUploaderRef}
+          />
+          <div
+            className={css({
+              display: "flex",
+              gap: "0.5em",
+              justifyContent: "right",
+            })}
+          >
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              disabled={selectedFiles.length === 0 || status !== "ready"}
+              onClick={() => {
+                if (fileUploaderRef.current) {
+                  setStatus("uploading");
+                  fileUploaderRef.current.upload();
+                }
+              }}
+            >
+              업로드
+            </Button>
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              preset={"secondary"}
+              disabled={status === "uploading"}
+              onClick={() => {
+                overlay.close("File-Select");
+              }}
+            >
+              취소
+            </Button>
+          </div>{" "}
+        </div>
       ) : (
-        <FileFormDataContext.Provider value={useFormDataResult}>
-          <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
-            <DriveFileUploadFetch />
-          </ErrorBoundary>
-        </FileFormDataContext.Provider>
+        <div
+          className={css({
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5em",
+            overflow: "hidden",
+          })}
+        >
+          <FileFormDataContext.Provider value={useFormDataResult}>
+            <ErrorBoundary fallback={<h1>에러</h1>} onReset={reset}>
+              <DriveFileUploadFetch />
+            </ErrorBoundary>
+          </FileFormDataContext.Provider>
+          <div
+            className={css({
+              display: "flex",
+              gap: "0.5em",
+              justifyContent: "right",
+            })}
+          >
+            <Button
+              className={css({
+                padding: "0.5em 1em",
+              })}
+              preset={"secondary"}
+              onClick={() => {
+                overlay.close("File-Select");
+              }}
+            >
+              취소
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -140,7 +215,7 @@ function Tab({ state, text, disabled = false, onClick, ...attr }: TabPropType) {
               borderBottomColor: "gray.100",
               cursor: "not-allowed",
             })
-          : null,
+          : null
       )}
       onClick={(event) => {
         if (disabled || !onClick) return;
