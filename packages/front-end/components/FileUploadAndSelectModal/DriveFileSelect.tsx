@@ -9,13 +9,12 @@ import {
 import { apiClient } from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { CreateSessionDto, File } from "@/schema/backend.schema";
+import { File } from "@/schema/backend.schema";
 import Button from "@/components/Button";
 import { formatDate } from "date-fns";
 import { overlay } from "overlay-kit";
-import { useAtom } from "jotai";
-import { currentFormDataRefAtom } from "@/client/FileSelectAtom";
-import { MutableRefObject } from "react";
+import { FileFormDataContext } from ".";
+import { useContext } from "react";
 import { css } from "@/styled-system/css";
 
 export default function DriveFileUploadFetch() {
@@ -61,12 +60,10 @@ export function DriveFileUpload({ data }: { data: File[] }) {
 }
 
 function Row({ file }: { file: File }) {
-  const [currentFormDataRef] = useAtom<MutableRefObject<CreateSessionDto>>(
-    currentFormDataRefAtom,
-  );
+  const { setControlledData, idRef } = useContext(FileFormDataContext);
   const handleRowButtonClick = () => {
-    currentFormDataRef.current.sessionFileIds = [file.fileId];
-    overlay.close("File-Select");
+    setControlledData({ sessionFiles: [file] });
+    overlay.close(`File-Select-${idRef.current}`);
   };
   return (
     <TableRow>
