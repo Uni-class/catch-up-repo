@@ -10,7 +10,7 @@ export default function Page() {
         <Link href={"/login"}>Login</Link>
       </div>
       <div>
-        <Link href={"/dashboard"}>Dashboard</Link>
+        <Link href={"/dashboard"} prefetch={false}>Dashboard</Link>
       </div>
     </main>
   );

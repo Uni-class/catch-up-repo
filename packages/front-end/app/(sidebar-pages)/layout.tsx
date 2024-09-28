@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, Suspense } from "react";
+import { ReactNode, Suspense, useEffect } from "react";
 import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
 import { useAccountController } from "@/hook/useAccount";
@@ -9,6 +9,10 @@ export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const accountController = useAccountController();
+
+  if (accountController.isError) {
+    accountController.goToLogin();
+  }
 
   if (accountController.isLoading) {
     return (
@@ -30,10 +34,6 @@ export default function Layout({
         </div>
       </div>
     );
-  }
-
-  if (accountController.isError) {
-    accountController.goToLogin();
   }
 
   return (

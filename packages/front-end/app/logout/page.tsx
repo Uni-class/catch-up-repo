@@ -12,7 +12,7 @@ export default function Page() {
   const logoutMutate = useMutation({
     mutationFn: async () => await apiClient.post("/auth/logout"),
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.clear();
       router.push("/");
     },
     onError: (error) => {
