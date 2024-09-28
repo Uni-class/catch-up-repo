@@ -6,10 +6,11 @@ import HostViewer from "./_components/HostViewer";
 import { useQueries } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import ParticipantViewer from "./_components/ParticipantViewer";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, } from "jotai";
 import { socketAtom } from "@/client/socketAtom";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
+
 
 export default function Page({ params }: { params: { sessionId: string } }) {
   const [userQuery, sessionQuery] = useQueries({
@@ -17,7 +18,7 @@ export default function Page({ params }: { params: { sessionId: string } }) {
       {
         queryKey: ["user", "profile"],
         queryFn: async () => await apiClient.get<User>("/user/profile"),
-        throwOnError: true,
+        throwOnError:true,
       },
       {
         queryKey: ["session", params.sessionId],
@@ -44,6 +45,7 @@ export default function Page({ params }: { params: { sessionId: string } }) {
   if (userQuery.isLoading || sessionQuery.isLoading) {
     return <h1>로딩...</h1>;
   }
+
   if (userQuery.data === undefined || sessionQuery.data === undefined) {
     return <></>;
   }

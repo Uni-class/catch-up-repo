@@ -3,8 +3,14 @@
 import { css } from "@/styled-system/css";
 import LoginButton from "./_components/LoginButton";
 import { PROJECT_NAME } from "@/const/config";
+import { useAccountController } from "@/hook/useAccount";
 
 export default function Page() {
+  const accountController = useAccountController();
+  if (accountController.account) {
+    accountController.goToDashboard();
+  }
+
   return (
     <div
       className={css({
