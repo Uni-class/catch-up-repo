@@ -4,16 +4,12 @@ import { css } from "@/styled-system/css";
 import LoginButton from "./_components/LoginButton";
 import { PROJECT_NAME } from "@/const/config";
 import { useAccountController } from "@/hook/useAccount";
-import { useEffect } from "react";
 
 export default function Page() {
   const accountController = useAccountController();
-  useEffect(()=>{
-    console.log(accountController)
-      if (accountController.account) {
+  if (accountController.account) {
     accountController.goToDashboard();
   }
-  },[accountController])
 
   return (
     <div
