@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBatchSocket } from "./useBatchSocket";
 import {
   PDFPainterController,
@@ -14,6 +14,9 @@ export const useHostSocket = (
   pdfPainterController: PDFPainterController
 ) => {
   const [socket] = useAtom(socketAtom);
+  const [roomPageViewerCount, setRoomPageViewerCount] = useState<{
+    [key in number]: number;
+  }>({});
   const pageIndex = pdfPainterController.getPageIndex();
   const { pushChanges } = useBatchSocket({ socket, roomId, pageIndex, fileId });
 
@@ -41,20 +44,18 @@ export const useHostSocket = (
     socket.emit("sendHostPageNumber", { roomId, fileId, index: pageIndex });
   }, [fileId, pageIndex, roomId, socket]);
 
-
   useEffect(() => {
     if (socket === null) return;
-    socket.on("getPartiPageNumber", (data) => {
-      console.log(data);
-    });
+    socket.on(
+      "getPartiPageNumber",
+      (data: { roomPageViewerCount: { [key in number]: number } }) => {
+        setRoomPageViewerCount({ ...data.roomPageViewerCount });
+      }
+    );
     return () => {
       socket.off("getPartiPageNumber");
     };
   }, [socket]);
-
-  useEffect(()=>{
-
-  },[])
 
   useEffect(() => {
     if (socket === null) return;
@@ -68,4 +69,6 @@ export const useHostSocket = (
       { source: "user", scope: "document" }
     );
   }, [editor, pushChanges, socket]);
+
+  return {roomPageViewerCount};
 };
