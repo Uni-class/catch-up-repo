@@ -13,6 +13,7 @@ const AccountContext = createContext<{
   logout: () => void;
   getLoginURL: () => string;
   goToLogin: () => void;
+  goToDashboard: () => void;
   isLoading: boolean;
   account: User | null;
   isError: null | boolean;
@@ -21,6 +22,7 @@ const AccountContext = createContext<{
   logout: () => {},
   getLoginURL: () => "",
   goToLogin: () => {},
+  goToDashboard: () => {},
   isLoading: true,
   account: null,
   isError: false,
@@ -53,6 +55,10 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
     router.push(getLoginURL());
   }, [router, getLoginURL]);
 
+  const goToDashboard = useCallback(() => {
+    router.push("/dashboard");
+  }, [router]);
+
   const data: User | null = response?.data || null;
 
   return (
@@ -62,6 +68,7 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
         logout: () => {}, //need fix
         getLoginURL: getLoginURL,
         goToLogin: goToLogin,
+        goToDashboard: goToDashboard,
         isLoading: isLoading,
         account: data,
         isError: isError,
