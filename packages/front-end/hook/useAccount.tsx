@@ -55,28 +55,6 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
 
   const data: User | null = response?.data || null;
 
-  if (isLoading) {
-    return (
-      <div
-        className={css({
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        })}
-      >
-        <div
-          className={css({
-            fontSize: "2em",
-          })}
-        >
-          User Profile Loading Skeleton UI
-        </div>
-      </div>
-    );
-  }
-
   return (
     <AccountContext.Provider
       value={{
