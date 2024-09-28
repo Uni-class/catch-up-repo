@@ -10,29 +10,8 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   const accountController = useAccountController();
 
-  if (!accountController.account) {
-    if (!accountController.isLoading) {
-      accountController.goToLogin();
-    }
-    return (
-      <div
-        className={css({
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        })}
-      >
-        <div
-          className={css({
-            fontSize: "2em",
-          })}
-        >
-          App Loading Skeleton UI
-        </div>
-      </div>
-    ); //need fix
+  if (accountController.isError) {
+    accountController.goToLogin();
   }
 
   return (

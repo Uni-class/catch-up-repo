@@ -6,6 +6,7 @@ import { AxiosResponse } from "axios";
 import { User } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useRouter } from "@/hook/useRouter";
+import { css } from "@/styled-system/css";
 
 const AccountContext = createContext<{
   updateAccount: () => void;
@@ -14,6 +15,7 @@ const AccountContext = createContext<{
   goToLogin: () => void;
   isLoading: boolean;
   account: User | null;
+  isError: null | boolean;
 }>({
   updateAccount: () => {},
   logout: () => {},
@@ -21,6 +23,7 @@ const AccountContext = createContext<{
   goToLogin: () => {},
   isLoading: true,
   account: null,
+  isError: false,
 });
 
 export const useAccount = () => {
@@ -32,7 +35,11 @@ export const useAccountController = () => {
 };
 
 export const AccountProvider = ({ children }: { children: ReactNode }) => {
-  const { data: response, isLoading } = useQuery<AxiosResponse<User>>({
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useQuery<AxiosResponse<User>>({
     queryKey: ["user", "profile"],
     queryFn: async () => await apiClient.get("/user/profile"),
   });
@@ -48,6 +55,28 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
 
   const data: User | null = response?.data || null;
 
+  if (isLoading) {
+    return (
+      <div
+        className={css({
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        })}
+      >
+        <div
+          className={css({
+            fontSize: "2em",
+          })}
+        >
+          User Profile Loading Skeleton UI
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AccountContext.Provider
       value={{
@@ -57,6 +86,7 @@ export const AccountProvider = ({ children }: { children: ReactNode }) => {
         goToLogin: goToLogin,
         isLoading: isLoading,
         account: data,
+        isError: isError,
       }}
     >
       {children}
