@@ -107,7 +107,7 @@ export function SessionFormTemplate({
           자료 선택
         </Button>
       </ControlContainer>
-      <ControlContainer labelText="현재 선택한 파일">
+      <ControlContainer labelText="현재 선택한 파일" height="auto">
         <Paragraph>
           {controlledData.sessionFiles.length > 0
             ? controlledData.sessionFiles[0].name
@@ -127,7 +127,7 @@ function ControlContainer({
   htmlFor,
   errorText,
   isError,
-  height,
+  height="135px",
 }: {
   children?: ReactNode;
   labelText?: string;
