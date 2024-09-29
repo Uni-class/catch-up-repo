@@ -1,4 +1,4 @@
-import './globals.css';
+import "./globals.css";
 import Provider from "@/provider";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
@@ -12,19 +12,22 @@ export const metadata: Metadata = {
   description: "CatchUP WebPage",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-
+export default function RootLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
       <body className={inter.className}>
-      <Provider>
-        <div className={css({
-          width: "100vw",
-          height: "100vh",
-        })}>
-          {children}
-        </div>
-      </Provider>
+        <Provider>
+          <div
+            className={css({
+              width: "100%",
+              height: "100vh",
+            })}
+          >
+            {children}
+          </div>
+        </Provider>
       </body>
     </html>
   );
