@@ -60,7 +60,6 @@ export const useParticipantSocket = (
       (data: { fileId: number; index: number; userId: number }) => {
         setHostIndex(data.index);
         if (pdfPainterController.getPaintMode() === "default" && isChaseMode) {
-          console.log("This is chase mode")
           pdfPainterController.setPageIndex(data.index);
         }
       }
