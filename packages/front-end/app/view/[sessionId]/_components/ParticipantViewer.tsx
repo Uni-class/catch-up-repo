@@ -113,7 +113,6 @@ export default function ParticipantViewer(props: ViewerPropType) {
                 className={css({ margin: "0.25rem" })}
                 checked={isChaseMode}
                 onChange={(e) => {
-                  console.log("hello")
                   setIsChaseMode(e.target.checked);
                 }}
               />
