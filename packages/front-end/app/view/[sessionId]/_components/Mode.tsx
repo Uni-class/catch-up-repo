@@ -47,14 +47,12 @@ export function ModeContainer({
       }
     };
 
-    // 키보드 이벤트 리스너 등록
     window.addEventListener("keydown", handleEscKey);
 
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
       window.removeEventListener("keydown", handleEscKey);
     };
-  }, []);
+  }, [setVisible]);
   return (
     <div
       className={css({
