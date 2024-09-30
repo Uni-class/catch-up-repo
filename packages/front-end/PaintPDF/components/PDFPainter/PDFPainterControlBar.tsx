@@ -7,6 +7,7 @@ import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
 import { PDFPainterControlBarButton } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
+import { ModeContainer } from "@/app/view/[sessionId]/_components/Mode";
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
@@ -82,25 +83,10 @@ const PDFPainterControlBarComponent = ({
           <p>{showToolTip ? "닫기" : "모드"}</p>
         </PDFPainterControlBarButton>
         {showToolTip && (
-          <div
-            className={css({
-              position: "absolute",
-              bottom: "100%",
-              left:0,
-              backgroundColor: "#fff",
-              border: "2px solid black",
-              borderRadius: "0.5rem",
-              padding: "1rem",
-              color:"#000",
-              whiteSpace: "normal",
-              zIndex:1000,
-              width:"15rem"
-            })}
-          >
+          <ModeContainer setVisible={setShowToolTip}>
             {modeComponent}
-          </div>
+          </ModeContainer>
         )}
-        
       </div>
     </div>
   );

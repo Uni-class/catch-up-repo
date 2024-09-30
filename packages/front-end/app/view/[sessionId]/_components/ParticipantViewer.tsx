@@ -15,6 +15,7 @@ import { ViewerPropType } from "../_types/ViewerType";
 import { css } from "@/styled-system/css";
 import { PreviewPages } from "./PreviewPages";
 import { useState } from "react";
+import { ModeControl } from "./Mode";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -106,18 +107,22 @@ export default function ParticipantViewer(props: ViewerPropType) {
         pdfPainterController={pdfPainterControllerHook.pdfPainterController}
         modeComponent={
           <>
-            <div>
-              <input
-                type="checkbox"
-                id="chase-host"
-                className={css({ margin: "0.25rem" })}
-                checked={isChaseMode}
-                onChange={(e) => {
-                  setIsChaseMode(e.target.checked);
-                }}
-              />
-              <label htmlFor="chase-host">호스트 시점 따라가기</label>
-            </div>
+            <ModeControl
+              labelText="호스트 시점 따라가기"
+              id="chase-host"
+              checked={isChaseMode}
+              onChange={(e) => {
+                setIsChaseMode(e.target.checked);
+              }}
+            />
+            <ModeControl
+              labelText="내 필기 가리기"
+              id="hide-host-draw"
+            />
+            <ModeControl
+              labelText="호스트 필기 가리기"
+              id="hide-my-draw"
+            />
           </>
         }
       />
