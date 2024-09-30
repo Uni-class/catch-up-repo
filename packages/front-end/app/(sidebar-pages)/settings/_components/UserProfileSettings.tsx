@@ -39,8 +39,11 @@ const UserProfileSettings = () => {
         setImageSrc(reader.result as string);
       };
       reader.onerror = () => {
-        console.error(reader.error);
+        if (reader.error) {
+          setError(reader.error.message);
+        }
       };
+
       reader.readAsDataURL(file);
     }
   };
@@ -149,17 +152,17 @@ const UserProfileSettings = () => {
           />
         </div>
       </div>
-      
-        <p
-          className={css({
-            height: "1rem",
-            fontSize: "1rem",
-            color: "red.500",
-          })}
-        >
-          {error && error}
-        </p>
-      
+
+      <p
+        className={css({
+          height: "1rem",
+          fontSize: "1rem",
+          color: "red.500",
+        })}
+      >
+        {error && error}
+      </p>
+
       <Button type="submit" className={css({ height: "50px" })}>
         저장하기
       </Button>
