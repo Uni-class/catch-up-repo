@@ -11,6 +11,10 @@ import { useRouter } from "@/hook/useRouter";
 
 export default function Page() {
   const [sessionId, setSessionId] = useState("");
+  const [status, setStatus] = useState<{
+    status: "notice" | "error";
+    text: string;
+  } | null>(null);
   const router = useRouter();
   return (
     <div
@@ -50,7 +54,7 @@ export default function Page() {
                 flexGrow: 1,
                 height: "inherit",
               })}
-              placeholder="세션 아이디를 입력해 주세요."
+              placeholder="세션 코드를 입력해 주세요."
               value={sessionId}
               onChange={(event) => setSessionId(event.target.value)}
               name="session-code"
@@ -60,14 +64,30 @@ export default function Page() {
               className={css({
                 height: "inherit",
               })}
-              disabled={sessionId === ""}
+              disabled={sessionId.trim() === ""}
               onClick={() => {
+                if (sessionId.trim() === "") {
+                  setStatus({
+                    status: "error",
+                    text: "세션 코드를 입력해주세요.",
+                  });
+                  return;
+                }
+                setStatus({ status: "notice", text: "세션을 로딩중입니다." });
                 router.push(`/view/${sessionId}`);
               }}
             >
               {"접속하기"}
             </Button>
           </div>
+          <p
+            className={css({
+              height: "1rem",
+              color: status?.status === "error" ? "red.500" : "green",
+            })}
+          >
+            {status?.text}
+          </p>
         </div>
       </div>
     </div>
