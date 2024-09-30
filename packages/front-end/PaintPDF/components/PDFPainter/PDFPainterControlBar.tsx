@@ -25,7 +25,7 @@ const PDFPainterControlBarComponent = ({
 
   return (
     <div
-      style={{
+      className={css({
         display: "flex",
         padding: "1em",
         color: "#ffffff",
@@ -34,7 +34,7 @@ const PDFPainterControlBarComponent = ({
         alignItems: "center",
         gap: "1em",
         height: "4em",
-      }}
+      })}
     >
       <PDFPainterControlBarButton
         onClick={() => pdfPainterController.setPaintMode("default")}
@@ -86,15 +86,21 @@ const PDFPainterControlBarComponent = ({
             className={css({
               position: "absolute",
               bottom: "100%",
+              left:0,
               backgroundColor: "#fff",
               border: "2px solid black",
               borderRadius: "0.5rem",
               padding: "1rem",
+              color:"#000",
+              whiteSpace: "normal",
+              zIndex:1000,
+              width:"15rem"
             })}
           >
             {modeComponent}
           </div>
         )}
+        
       </div>
     </div>
   );
