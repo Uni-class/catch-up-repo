@@ -15,7 +15,8 @@ const PDFPainterControlBarButtonComponent = ({
         padding: "0.4em 0.8em",
         userSelect: "none",
         color: "#000000",
-        backgroundColor: "#ffffff",
+        backgroundColor: disabled? "#d8d8d8" : "#ffffff",
+        cursor:disabled? "default":"pointer",
       }}
       onClick={onClick}
       disabled={disabled}
