@@ -14,6 +14,7 @@ import {
 import { ViewerPropType } from "../_types/ViewerType";
 import { css } from "@/styled-system/css";
 import { PreviewPages } from "./PreviewPages";
+import { useState } from "react";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -25,6 +26,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       return await apiClient.post(`/user/session/${sessionId}/join`);
     },
   });
+  const [isChaseMode, setIsChaseMode] = useState(false);
   const pdfPainterControllerHook = usePDFPainterController({
     painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
@@ -41,7 +43,8 @@ export default function ParticipantViewer(props: ViewerPropType) {
     sessionId,
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterControllerHook.pdfPainterController
+    pdfPainterControllerHook.pdfPainterController,
+    isChaseMode
   );
 
   if (joinQuery.isLoading) {
@@ -104,7 +107,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
         modeComponent={
           <>
             <div>
-              <input type="checkbox" id="chase-host" />
+              <input
+                type="checkbox"
+                id="chase-host"
+                className={css({ margin: "0.25rem" })}
+                checked={isChaseMode}
+                onChange={(e) => {
+                  setIsChaseMode(e.target.checked);
+                }}
+              />
               <label htmlFor="chase-host">호스트 시점 따라가기</label>
             </div>
           </>

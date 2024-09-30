@@ -13,7 +13,8 @@ export const useParticipantSocket = (
   roomId: number | string,
   fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
-  pdfPainterController: PDFPainterController
+  pdfPainterController: PDFPainterController,
+  isChaseMode: boolean
 ) => {
   const editor = pdfPainterInstanceController.getEditor();
   const {
@@ -58,6 +59,9 @@ export const useParticipantSocket = (
       "getHostPageNumber",
       (data: { fileId: number; index: number; userId: number }) => {
         setHostIndex(data.index);
+        if (pdfPainterController.getPaintMode() === "default" && isChaseMode) {
+          pdfPainterController.setPageIndex(data.index);
+        }
       }
     );
     return () => {
@@ -115,5 +119,5 @@ export const useParticipantSocket = (
     socket,
     updateDrawCache,
   ]);
-  return {hostIndex}
+  return { hostIndex };
 };
