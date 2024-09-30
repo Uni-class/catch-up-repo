@@ -81,9 +81,14 @@ export default function HostViewer(props: ViewerPropType) {
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-host-draw"
-              checked={isHideMyDraw}
+              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+                "Host"
+              )}
               onChange={(e) => {
-                setIsHideMyDraw(e.target.checked);
+                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                  "Host",
+                  e.target.checked
+                );
               }}
             />
           </>

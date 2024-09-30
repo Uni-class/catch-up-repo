@@ -276,14 +276,15 @@ export const usePDFPainterController = ({
 
   const getInstanceHidden = useCallback(
     (editorId: string) => {
+      console.log(isInstanceHidden)
       return !!isInstanceHidden[editorId];
     },
     [isInstanceHidden]
   );
 
   const setInstanceHidden = useCallback(
-    (editorId: string, isHidden: boolean = !isInstanceHidden) => {
-      setIsInstanceHidden({ ...isInstanceHidden, editorId: isHidden });
+    (editorId: string, isHidden: boolean) => {
+      setIsInstanceHidden({ ...isInstanceHidden, [editorId]: isHidden });
     },
     [isInstanceHidden]
   );
@@ -304,9 +305,20 @@ export const usePDFPainterController = ({
       setEditorSnapshot: setEditorSnapshot,
       clearEditorSnapshot: clearEditorSnapshot,
       getInstanceHidden,
-      setInstanceHidden
+      setInstanceHidden,
     };
-  }, [pdfViewerController, registerEditor, unregisterEditor, getEditor, getEditorSnapshot, setEditorSnapshot, clearEditorSnapshot, getInstanceHidden, setInstanceHidden, paintMode]);
+  }, [
+    pdfViewerController,
+    registerEditor,
+    unregisterEditor,
+    getEditor,
+    getEditorSnapshot,
+    setEditorSnapshot,
+    clearEditorSnapshot,
+    getInstanceHidden,
+    setInstanceHidden,
+    paintMode,
+  ]);
 
   return {
     pdfPainterController: pdfPainterController,

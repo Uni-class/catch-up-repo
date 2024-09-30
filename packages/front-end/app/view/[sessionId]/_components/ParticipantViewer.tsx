@@ -116,12 +116,30 @@ export default function ParticipantViewer(props: ViewerPropType) {
               }}
             />
             <ModeControl
-              labelText="내 필기 가리기"
+              labelText="호스트 필기 가리기"
               id="hide-host-draw"
+              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+                "Host"
+              )}
+              onChange={(e) => {
+                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                  "Host",
+                  e.target.checked
+                );
+              }}
             />
             <ModeControl
-              labelText="호스트 필기 가리기"
+              labelText="내 필기 가리기"
               id="hide-my-draw"
+              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+                "Participant"
+              )}
+              onChange={(e) => {
+                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                  "Participant",
+                  e.target.checked
+                );
+              }}
             />
           </>
         }
