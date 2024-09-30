@@ -20,6 +20,8 @@ export type PDFPainterController = {
 	getEditorSnapshot: (editorId: string, pageIndex: number) => EditorSnapshot | null;
 	setEditorSnapshot: (editorId: string, pageIndex: number, snapshot: EditorSnapshot) => void;
 	clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
+	getInstanceHidden: (editorId:string) => boolean;
+	setInstanceHidden:(editorId:string,isHidden:boolean) => void;
 } & PDFViewerController;
 
 export type PDFPainterControllerHook = {

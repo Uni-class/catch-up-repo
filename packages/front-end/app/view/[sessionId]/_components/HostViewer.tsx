@@ -11,6 +11,8 @@ import {
 import { ViewerPropType } from "../_types/ViewerType";
 import { PreviewPages } from "./PreviewPages";
 import { css } from "@/styled-system/css";
+import { ModeControl } from "./Mode";
+import { useState } from "react";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -19,6 +21,7 @@ export default function HostViewer(props: ViewerPropType) {
   const pdfPainterControllerHook = usePDFPainterController({
     painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
+  const [isHideMyDraw, setIsHideMyDraw] = useState(false);
   const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
@@ -73,6 +76,18 @@ export default function HostViewer(props: ViewerPropType) {
       </div>
       <PDFPainterControlBar
         pdfPainterController={pdfPainterControllerHook.pdfPainterController}
+        modeComponent={
+          <>
+            <ModeControl
+              labelText="내 필기 가리기"
+              id="hide-host-draw"
+              checked={isHideMyDraw}
+              onChange={(e) => {
+                setIsHideMyDraw(e.target.checked);
+              }}
+            />
+          </>
+        }
       />
     </>
   );

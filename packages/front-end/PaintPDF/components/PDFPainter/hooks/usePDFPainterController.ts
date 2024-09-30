@@ -30,6 +30,10 @@ export const usePDFPainterController = ({
 
   const [paintMode, setPaintMode] = useState<PaintMode>("default");
 
+  const [isInstanceHidden, setIsInstanceHidden] = useState<{
+    [key: string]: boolean;
+  }>({});
+
   const editors = useRef<{ [editorId: string]: Editor }>({});
 
   const currentPageId = useRef<number | null>(null);
@@ -270,6 +274,20 @@ export const usePDFPainterController = ({
     [loadEditorSnapshot, clearEditorSnapshotFromStorage]
   );
 
+  const getInstanceHidden = useCallback(
+    (editorId: string) => {
+      return !!isInstanceHidden[editorId];
+    },
+    [isInstanceHidden]
+  );
+
+  const setInstanceHidden = useCallback(
+    (editorId: string, isHidden: boolean = !isInstanceHidden) => {
+      setIsInstanceHidden({ ...isInstanceHidden, editorId: isHidden });
+    },
+    [isInstanceHidden]
+  );
+
   const pdfPainterController: PDFPainterController = useMemo(() => {
     return {
       ...pdfViewerController,
@@ -285,17 +303,10 @@ export const usePDFPainterController = ({
       getEditorSnapshot: getEditorSnapshot,
       setEditorSnapshot: setEditorSnapshot,
       clearEditorSnapshot: clearEditorSnapshot,
+      getInstanceHidden,
+      setInstanceHidden
     };
-  }, [
-    pdfViewerController,
-    paintMode,
-    registerEditor,
-    unregisterEditor,
-    getEditor,
-    getEditorSnapshot,
-    setEditorSnapshot,
-    clearEditorSnapshot,
-  ]);
+  }, [pdfViewerController, registerEditor, unregisterEditor, getEditor, getEditorSnapshot, setEditorSnapshot, clearEditorSnapshot, getInstanceHidden, setInstanceHidden, paintMode]);
 
   return {
     pdfPainterController: pdfPainterController,
