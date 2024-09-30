@@ -18,6 +18,16 @@ export default defineConfig({
       tokens: {
         ...theme,
       },
+      keyframes: {
+        placeholderLoading: {
+          "0%": {
+            backgroundPosition: "200%",
+          },
+          "100%": {
+            backgroundPosition: "-200%",
+          },
+        },
+      },
     },
   },
 
