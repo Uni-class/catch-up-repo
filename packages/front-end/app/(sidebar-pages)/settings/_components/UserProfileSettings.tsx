@@ -17,6 +17,7 @@ const UserProfileSettings = () => {
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
   const [imageSrc, setImageSrc] = useState<string>(account?.profileUrl || "");
+  const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const formMutation = useMutation({
     mutationFn: async (body: FormData) =>
@@ -26,7 +27,7 @@ const UserProfileSettings = () => {
       queryClient.refetchQueries({ queryKey: ["user", "profile"] });
     },
     onError: (e) => {
-      console.error(e);
+      setError(`프로필 저장 실패: ${e.message}`);
     },
   });
 
@@ -36,6 +37,9 @@ const UserProfileSettings = () => {
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result as string);
+      };
+      reader.onerror = () => {
+        console.error(reader.error);
       };
       reader.readAsDataURL(file);
     }
@@ -55,6 +59,11 @@ const UserProfileSettings = () => {
         e.preventDefault();
         if (formRef.current) {
           const formData = new FormData(formRef.current);
+          const nickname = formData.get("nickname") as string;
+          if (nickname.trim() === "") {
+            setError("닉네임을 입력해주세요.");
+            return;
+          }
           formMutation.mutate(formData);
         }
       }}
@@ -127,6 +136,7 @@ const UserProfileSettings = () => {
               display: "block",
               fontSize: "1em",
             })}
+            htmlFor="nickname"
           >
             닉네임
           </Label>
@@ -135,9 +145,21 @@ const UserProfileSettings = () => {
             defaultValue={account?.nickname || ""}
             name="nickname"
             className={css({ flex: 1, height: "3em" })}
+            id="nickname"
           />
         </div>
       </div>
+      
+        <p
+          className={css({
+            height: "1rem",
+            fontSize: "1rem",
+            color: "red.500",
+          })}
+        >
+          {error && error}
+        </p>
+      
       <Button type="submit" className={css({ height: "50px" })}>
         저장하기
       </Button>
