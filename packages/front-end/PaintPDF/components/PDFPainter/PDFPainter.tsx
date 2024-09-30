@@ -128,7 +128,6 @@ const PDFPainterComponent = ({
 					})}
 				</div>
 			</div>
-			<PDFPainterControlBar pdfPainterController={pdfPainterController} />
 		</div>
 	);
 };

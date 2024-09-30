@@ -4,6 +4,7 @@ import { useHostSocket } from "../_hooks/useHostSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
+  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
@@ -30,44 +31,49 @@ export default function HostViewer(props: ViewerPropType) {
   );
 
   return (
-    <div
-      className={css({
-        display: "flex",
-        width: "100vw",
-        height: "100vh",
-      })}
-    >
-      <PreviewPages
-        pdfDocumentURL={pdfDocument.url}
-        PDFPainterController={pdfPainterControllerHook.pdfPainterController}
-        getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
-        getBadgeContent={(index) => {
-          return <>{index !== undefined && roomPageViewerCount[index]}</>;
-        }}
-      />
+    <>
       <div
         className={css({
-          justifyContent: "center",
-          alignItems: "center",
-          width: `calc(100% - 13rem)`,
-          height: "100%",
           display: "flex",
+          width: "100vw",
+          height: "calc(100vh - 3.6em)",
         })}
       >
-        <PDFPainter
-          painterId={`${sessionId}_${pdfDocument.fileId}`}
+        <PreviewPages
           pdfDocumentURL={pdfDocument.url}
-          customPdfPainterControllerHook={pdfPainterControllerHook}
+          PDFPainterController={pdfPainterControllerHook.pdfPainterController}
+          getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
+          getBadgeContent={(index) => {
+            return <>{index !== undefined && roomPageViewerCount[index]}</>;
+          }}
+        />
+        <div
+          className={css({
+            justifyContent: "center",
+            alignItems: "center",
+            width: `calc(100% - 13rem)`,
+            height: "100%",
+            display: "flex",
+          })}
         >
-          <PainterInstanceGenerator
-            instanceId={"Host"}
-            readOnly={false}
-            customPdfPainterInstanceControllerHook={
-              pdfPainterHostInstanceControllerHook
-            }
-          />
-        </PDFPainter>
+          <PDFPainter
+            painterId={`${sessionId}_${pdfDocument.fileId}`}
+            pdfDocumentURL={pdfDocument.url}
+            customPdfPainterControllerHook={pdfPainterControllerHook}
+          >
+            <PainterInstanceGenerator
+              instanceId={"Host"}
+              readOnly={false}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterHostInstanceControllerHook
+              }
+            />
+          </PDFPainter>
+        </div>
       </div>
-    </div>
+      <PDFPainterControlBar
+        pdfPainterController={pdfPainterControllerHook.pdfPainterController}
+      />
+    </>
   );
 }
