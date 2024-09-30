@@ -28,6 +28,7 @@ const PDFPainterControlBarComponent = ({
         justifyContent: "center",
         alignItems: "center",
         gap: "1em",
+        height:"4em",
       }}
     >
       <PDFPainterControlBarButton

@@ -36,7 +36,7 @@ export default function HostViewer(props: ViewerPropType) {
         className={css({
           display: "flex",
           width: "100vw",
-          height: "calc(100vh - 3.6em)",
+          height: "calc(100vh - 4em)",
         })}
       >
         <PreviewPages
