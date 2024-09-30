@@ -276,7 +276,6 @@ export const usePDFPainterController = ({
 
   const getInstanceHidden = useCallback(
     (editorId: string) => {
-      console.log(isInstanceHidden)
       return !!isInstanceHidden[editorId];
     },
     [isInstanceHidden]
