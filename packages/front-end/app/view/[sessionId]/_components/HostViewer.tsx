@@ -12,7 +12,6 @@ import { ViewerPropType } from "../_types/ViewerType";
 import { PreviewPages } from "./PreviewPages";
 import { css } from "@/styled-system/css";
 import { ModeControl } from "./Mode";
-import { useState } from "react";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -21,16 +20,17 @@ export default function HostViewer(props: ViewerPropType) {
   const pdfPainterControllerHook = usePDFPainterController({
     painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
-  const [isHideMyDraw, setIsHideMyDraw] = useState(false);
   const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
+  const { pdfPainterController } = pdfPainterControllerHook;
+  const { pdfPainterInstanceController } = pdfPainterHostInstanceControllerHook;
   const { roomPageViewerCount } = useHostSocket(
     sessionId,
     fileId,
-    pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterControllerHook.pdfPainterController
+    pdfPainterInstanceController,
+    pdfPainterController
   );
 
   return (
@@ -44,7 +44,7 @@ export default function HostViewer(props: ViewerPropType) {
       >
         <PreviewPages
           pdfDocumentURL={pdfDocument.url}
-          PDFPainterController={pdfPainterControllerHook.pdfPainterController}
+          PDFPainterController={pdfPainterController}
           getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
           getBadgeContent={(index) => {
             return <>{index !== undefined && roomPageViewerCount[index]}</>;
@@ -75,17 +75,17 @@ export default function HostViewer(props: ViewerPropType) {
         </div>
       </div>
       <PDFPainterControlBar
-        pdfPainterController={pdfPainterControllerHook.pdfPainterController}
+        pdfPainterController={pdfPainterController}
         modeComponent={
           <>
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-host-draw"
-              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+              checked={pdfPainterController.getInstanceHidden(
                 "Host"
               )}
               onChange={(e) => {
-                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                pdfPainterController.setInstanceHidden(
                   "Host",
                   e.target.checked
                 );

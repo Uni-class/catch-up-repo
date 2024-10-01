@@ -40,6 +40,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
+  const {pdfPainterController} = pdfPainterControllerHook
   const { hostIndex } = useParticipantSocket(
     sessionId,
     fileId,
@@ -66,7 +67,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       >
         <PreviewPages
           pdfDocumentURL={pdfDocument.url}
-          PDFPainterController={pdfPainterControllerHook.pdfPainterController}
+          PDFPainterController={pdfPainterController}
           getBadgeVisible={(index) => index === hostIndex}
           getBadgeContent={(index) => {
             return <>{index !== undefined && hostIndex !== null && "!"}</>;
@@ -104,7 +105,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
         </div>
       </div>
       <PDFPainterControlBar
-        pdfPainterController={pdfPainterControllerHook.pdfPainterController}
+        pdfPainterController={pdfPainterController}
         modeComponent={
           <>
             <ModeControl
@@ -118,11 +119,11 @@ export default function ParticipantViewer(props: ViewerPropType) {
             <ModeControl
               labelText="호스트 필기 가리기"
               id="hide-host-draw"
-              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+              checked={pdfPainterController.getInstanceHidden(
                 "Host"
               )}
               onChange={(e) => {
-                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                pdfPainterController.setInstanceHidden(
                   "Host",
                   e.target.checked
                 );
@@ -131,11 +132,11 @@ export default function ParticipantViewer(props: ViewerPropType) {
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-my-draw"
-              checked={pdfPainterControllerHook.pdfPainterController.getInstanceHidden(
+              checked={pdfPainterController.getInstanceHidden(
                 "Participant"
               )}
               onChange={(e) => {
-                pdfPainterControllerHook.pdfPainterController.setInstanceHidden(
+                pdfPainterController.setInstanceHidden(
                   "Participant",
                   e.target.checked
                 );
