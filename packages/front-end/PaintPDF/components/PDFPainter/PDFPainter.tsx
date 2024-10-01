@@ -82,10 +82,13 @@ const PDFPainterComponent = ({
   }, [updateDisplaySize]);
 
   const isInstanceHidden = useCallback(
-    (instanceId:string) => {
+    (instanceId: string) => {
       return (
         pdfPainterController.getInstanceHidden(instanceId) &&
-        !(pdfPainterController.getPaintMode() === "draw")
+        !(
+          pdfPainterController.getPaintMode() === "draw" &&
+          pdfPainterController.isIdEnsureVisibleWhileDraw(instanceId)
+        )
       );
     },
     [pdfPainterController]
@@ -144,7 +147,9 @@ const PDFPainterComponent = ({
                       pdfPainterController.getPaintMode() === "draw"
                         ? "unset"
                         : "none",
-                    visibility: isInstanceHidden(element.props.instanceId) ? "hidden" : undefined
+                    visibility: isInstanceHidden(element.props.instanceId)
+                      ? "hidden"
+                      : undefined,
                   }}
                 >
                   <PainterInstance

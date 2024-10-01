@@ -12,6 +12,7 @@ import { ViewerPropType } from "../_types/ViewerType";
 import { PreviewPages } from "./PreviewPages";
 import { css } from "@/styled-system/css";
 import { ModeControl } from "./Mode";
+import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -32,6 +33,7 @@ export default function HostViewer(props: ViewerPropType) {
     pdfPainterInstanceController,
     pdfPainterController
   );
+  useEnsureVisibleWhileDraw("Host",pdfPainterController)
 
   return (
     <>

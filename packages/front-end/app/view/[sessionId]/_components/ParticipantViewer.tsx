@@ -16,6 +16,7 @@ import { css } from "@/styled-system/css";
 import { PreviewPages } from "./PreviewPages";
 import { useState } from "react";
 import { ModeControl } from "./Mode";
+import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -48,6 +49,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
     pdfPainterControllerHook.pdfPainterController,
     isChaseMode
   );
+  useEnsureVisibleWhileDraw("Participant",pdfPainterController)
 
   if (joinQuery.isLoading) {
     return <p>로딩...</p>;
