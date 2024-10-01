@@ -288,6 +288,20 @@ export const usePDFPainterController = ({
     [isInstanceHidden]
   );
 
+  const ensureVisibleWhileDrawRef = useRef<Set<string>>(new Set());
+
+  const isIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    return ensureVisibleWhileDrawRef.current.has(editorId);
+  }, []);
+
+  const addIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    ensureVisibleWhileDrawRef.current.add(editorId);
+  }, []);
+
+  const deleteIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    ensureVisibleWhileDrawRef.current.delete(editorId);
+  }, []);
+
   const pdfPainterController: PDFPainterController = useMemo(() => {
     return {
       ...pdfViewerController,
@@ -305,6 +319,9 @@ export const usePDFPainterController = ({
       clearEditorSnapshot: clearEditorSnapshot,
       getInstanceHidden,
       setInstanceHidden,
+      isIdEnsureVisibleWhileDraw,
+      addIdEnsureVisibleWhileDraw,
+      deleteIdEnsureVisibleWhileDraw,
     };
   }, [
     pdfViewerController,
@@ -316,6 +333,9 @@ export const usePDFPainterController = ({
     clearEditorSnapshot,
     getInstanceHidden,
     setInstanceHidden,
+    isIdEnsureVisibleWhileDraw,
+    addIdEnsureVisibleWhileDraw,
+    deleteIdEnsureVisibleWhileDraw,
     paintMode,
   ]);
 
