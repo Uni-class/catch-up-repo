@@ -7,12 +7,16 @@ import { useParticipantSocket } from "../_hooks/useParticipantSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
+  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { ViewerPropType } from "../_types/ViewerType";
 import { css } from "@/styled-system/css";
 import { PreviewPages } from "./PreviewPages";
+import { useState } from "react";
+import { ModeControl } from "./Mode";
+import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -24,6 +28,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       return await apiClient.post(`/user/session/${sessionId}/join`);
     },
   });
+  const [isChaseMode, setIsChaseMode] = useState(false);
   const pdfPainterControllerHook = usePDFPainterController({
     painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
@@ -36,12 +41,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
+  const {pdfPainterController} = pdfPainterControllerHook
   const { hostIndex } = useParticipantSocket(
     sessionId,
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterControllerHook.pdfPainterController
+    pdfPainterControllerHook.pdfPainterController,
+    isChaseMode
   );
+  useEnsureVisibleWhileDraw("Participant",pdfPainterController)
 
   if (joinQuery.isLoading) {
     return <p>로딩...</p>;
@@ -51,51 +59,94 @@ export default function ParticipantViewer(props: ViewerPropType) {
   }
 
   return (
-    <div
-      className={css({
-        display: "flex",
-        width: "100vw",
-        height: "100vh",
-      })}
-    >
-      <PreviewPages
-        pdfDocumentURL={pdfDocument.url}
-        PDFPainterController={pdfPainterControllerHook.pdfPainterController}
-        getBadgeVisible={(index) => index === hostIndex}
-        getBadgeContent={(index) => {
-          return <>{index !== undefined && hostIndex !== null && "!"}</>;
-        }}
-      />
+    <>
       <div
         className={css({
-          justifyContent: "center",
-          alignItems: "center",
-          width: `calc(100% - 13rem)`,
-          height: "100%",
           display: "flex",
+          width: "100vw",
+          height: "calc(100vh - 4em)",
         })}
       >
-        <PDFPainter
-          painterId={`${sessionId}_${pdfDocument.fileId}`}
+        <PreviewPages
           pdfDocumentURL={pdfDocument.url}
-          customPdfPainterControllerHook={pdfPainterControllerHook}
+          PDFPainterController={pdfPainterController}
+          getBadgeVisible={(index) => index === hostIndex}
+          getBadgeContent={(index) => {
+            return <>{index !== undefined && hostIndex !== null && "!"}</>;
+          }}
+        />
+        <div
+          className={css({
+            justifyContent: "center",
+            alignItems: "center",
+            width: `calc(100% - 13rem)`,
+            height: "100%",
+            display: "flex",
+          })}
         >
-          <PainterInstanceGenerator
-            instanceId={"Host"}
-            readOnly={true}
-            customPdfPainterInstanceControllerHook={
-              pdfPainterHostInstanceControllerHook
-            }
-          />
-          <PainterInstanceGenerator
-            instanceId={"Participant"}
-            readOnly={false}
-            customPdfPainterInstanceControllerHook={
-              pdfPainterParticipantInstanceControllerHook
-            }
-          />
-        </PDFPainter>
+          <PDFPainter
+            painterId={`${sessionId}_${pdfDocument.fileId}`}
+            pdfDocumentURL={pdfDocument.url}
+            customPdfPainterControllerHook={pdfPainterControllerHook}
+          >
+            <PainterInstanceGenerator
+              instanceId={"Host"}
+              readOnly={true}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterHostInstanceControllerHook
+              }
+            />
+            <PainterInstanceGenerator
+              instanceId={"Participant"}
+              readOnly={false}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterParticipantInstanceControllerHook
+              }
+            />
+          </PDFPainter>
+        </div>
       </div>
-    </div>
+      <PDFPainterControlBar
+        pdfPainterController={pdfPainterController}
+        modeComponent={
+          <>
+            <ModeControl
+              labelText="호스트 시점 따라가기"
+              id="chase-host"
+              checked={isChaseMode}
+              onChange={(e) => {
+                setIsChaseMode(e.target.checked);
+              }}
+            />
+            <ModeControl
+              labelText="호스트 필기 가리기"
+              id="hide-host-draw"
+              checked={pdfPainterController.getInstanceHidden(
+                "Host"
+              )}
+              onChange={(e) => {
+                pdfPainterController.setInstanceHidden(
+                  "Host",
+                  e.target.checked
+                );
+              }}
+            />
+            <ModeControl
+              labelText="내 필기 가리기"
+              id="hide-my-draw"
+              checked={pdfPainterController.getInstanceHidden(
+                "Participant"
+              )}
+              onChange={(e) => {
+                pdfPainterController.setInstanceHidden(
+                  "Participant",
+                  e.target.checked
+                );
+              }}
+            />
+          </>
+        }
+      />
+    </>
   );
 }

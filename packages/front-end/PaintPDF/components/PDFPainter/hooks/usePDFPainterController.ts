@@ -30,6 +30,10 @@ export const usePDFPainterController = ({
 
   const [paintMode, setPaintMode] = useState<PaintMode>("default");
 
+  const [isInstanceHidden, setIsInstanceHidden] = useState<{
+    [key: string]: boolean;
+  }>({});
+
   const editors = useRef<{ [editorId: string]: Editor }>({});
 
   const currentPageId = useRef<number | null>(null);
@@ -270,6 +274,34 @@ export const usePDFPainterController = ({
     [loadEditorSnapshot, clearEditorSnapshotFromStorage]
   );
 
+  const getInstanceHidden = useCallback(
+    (editorId: string) => {
+      return !!isInstanceHidden[editorId];
+    },
+    [isInstanceHidden]
+  );
+
+  const setInstanceHidden = useCallback(
+    (editorId: string, isHidden: boolean) => {
+      setIsInstanceHidden({ ...isInstanceHidden, [editorId]: isHidden });
+    },
+    [isInstanceHidden]
+  );
+
+  const ensureVisibleWhileDrawRef = useRef<Set<string>>(new Set());
+
+  const isIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    return ensureVisibleWhileDrawRef.current.has(editorId);
+  }, []);
+
+  const addIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    ensureVisibleWhileDrawRef.current.add(editorId);
+  }, []);
+
+  const deleteIdEnsureVisibleWhileDraw = useCallback((editorId: string) => {
+    ensureVisibleWhileDrawRef.current.delete(editorId);
+  }, []);
+
   const pdfPainterController: PDFPainterController = useMemo(() => {
     return {
       ...pdfViewerController,
@@ -285,16 +317,26 @@ export const usePDFPainterController = ({
       getEditorSnapshot: getEditorSnapshot,
       setEditorSnapshot: setEditorSnapshot,
       clearEditorSnapshot: clearEditorSnapshot,
+      getInstanceHidden,
+      setInstanceHidden,
+      isIdEnsureVisibleWhileDraw,
+      addIdEnsureVisibleWhileDraw,
+      deleteIdEnsureVisibleWhileDraw,
     };
   }, [
     pdfViewerController,
-    paintMode,
     registerEditor,
     unregisterEditor,
     getEditor,
     getEditorSnapshot,
     setEditorSnapshot,
     clearEditorSnapshot,
+    getInstanceHidden,
+    setInstanceHidden,
+    isIdEnsureVisibleWhileDraw,
+    addIdEnsureVisibleWhileDraw,
+    deleteIdEnsureVisibleWhileDraw,
+    paintMode,
   ]);
 
   return {

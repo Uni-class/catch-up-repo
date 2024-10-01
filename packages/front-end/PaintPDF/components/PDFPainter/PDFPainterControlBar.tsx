@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, ReactNode, useEffect, useState } from "react";
 import type { PDFPainterController } from "./types";
 import ToolPointerIcon from "@/PaintPDF/assets/icons/tool-pointer.svg";
 import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
@@ -6,21 +6,27 @@ import ToolEditIcon from "@/PaintPDF/assets/icons/tool-edit.svg";
 import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
 import { PDFPainterControlBarButton } from "@/PaintPDF/components";
+import { css } from "@/styled-system/css";
+import { ModeContainer } from "@/app/view/[sessionId]/_components/Mode";
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
+  modeComponent,
 }: {
   pdfPainterController: PDFPainterController;
+  modeComponent?: ReactNode;
 }) => {
   useEffect(() => {
     pdfPainterController.setDragModeEnabled(
-      pdfPainterController.getPaintMode() === "move",
+      pdfPainterController.getPaintMode() === "move"
     );
   }, [pdfPainterController]);
 
+  const [showToolTip, setShowToolTip] = useState(false);
+
   return (
     <div
-      style={{
+      className={css({
         display: "flex",
         padding: "1em",
         color: "#ffffff",
@@ -28,7 +34,8 @@ const PDFPainterControlBarComponent = ({
         justifyContent: "center",
         alignItems: "center",
         gap: "1em",
-      }}
+        height: "4em",
+      })}
     >
       <PDFPainterControlBarButton
         onClick={() => pdfPainterController.setPaintMode("default")}
@@ -67,6 +74,20 @@ const PDFPainterControlBarComponent = ({
       >
         <ArrowRightIcon width={"1.6em"} height={"1.6em"} />
       </PDFPainterControlBarButton>
+      <div className={css({ position: "relative" })}>
+        <PDFPainterControlBarButton
+          onClick={() => {
+            setShowToolTip(!showToolTip);
+          }}
+        >
+          <p>{showToolTip ? "닫기" : "모드"}</p>
+        </PDFPainterControlBarButton>
+        {showToolTip && (
+          <ModeContainer setVisible={setShowToolTip}>
+            {modeComponent}
+          </ModeContainer>
+        )}
+      </div>
     </div>
   );
 };

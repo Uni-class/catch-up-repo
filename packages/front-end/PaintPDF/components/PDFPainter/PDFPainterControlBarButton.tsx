@@ -1,30 +1,20 @@
-import { memo, ReactNode } from "react";
+import { styled } from "@/styled-system/jsx";
+import { memo } from "react";
 
-const PDFPainterControlBarButtonComponent = ({
-  onClick,
-  disabled,
-  children,
-}: {
-  onClick?: () => void;
-  disabled?: boolean;
-  children: ReactNode;
-}) => {
-  return (
-    <button
-      style={{
-        padding: "0.4em 0.8em",
-        userSelect: "none",
-        color: "#000000",
-        backgroundColor: "#ffffff",
-      }}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  );
-};
+const PDFPainterControlBarButtonComponent = styled("button", {
+  base: {
+    padding: "0.4em 0.8em",
+    userSelect: "none",
+    color: "#000000",
+    backgroundColor: "#ffffff",
+    cursor: "pointer",
+    _disabled: {
+      backgroundColor: "#d8d8d8",
+      cursor: "default",
+    },
+  },
+});
 
 export const PDFPainterControlBarButton = memo(
-  PDFPainterControlBarButtonComponent,
+  PDFPainterControlBarButtonComponent
 );

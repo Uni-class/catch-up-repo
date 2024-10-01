@@ -4,12 +4,15 @@ import { useHostSocket } from "../_hooks/useHostSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
+  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { ViewerPropType } from "../_types/ViewerType";
 import { PreviewPages } from "./PreviewPages";
 import { css } from "@/styled-system/css";
+import { ModeControl } from "./Mode";
+import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -22,52 +25,77 @@ export default function HostViewer(props: ViewerPropType) {
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
+  const { pdfPainterController } = pdfPainterControllerHook;
+  const { pdfPainterInstanceController } = pdfPainterHostInstanceControllerHook;
   const { roomPageViewerCount } = useHostSocket(
     sessionId,
     fileId,
-    pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterControllerHook.pdfPainterController
+    pdfPainterInstanceController,
+    pdfPainterController
   );
+  useEnsureVisibleWhileDraw("Host",pdfPainterController)
 
   return (
-    <div
-      className={css({
-        display: "flex",
-        width: "100vw",
-        height: "100vh",
-      })}
-    >
-      <PreviewPages
-        pdfDocumentURL={pdfDocument.url}
-        PDFPainterController={pdfPainterControllerHook.pdfPainterController}
-        getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
-        getBadgeContent={(index) => {
-          return <>{index !== undefined && roomPageViewerCount[index]}</>;
-        }}
-      />
+    <>
       <div
         className={css({
-          justifyContent: "center",
-          alignItems: "center",
-          width: `calc(100% - 13rem)`,
-          height: "100%",
           display: "flex",
+          width: "100vw",
+          height: "calc(100vh - 4em)",
         })}
       >
-        <PDFPainter
-          painterId={`${sessionId}_${pdfDocument.fileId}`}
+        <PreviewPages
           pdfDocumentURL={pdfDocument.url}
-          customPdfPainterControllerHook={pdfPainterControllerHook}
+          PDFPainterController={pdfPainterController}
+          getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
+          getBadgeContent={(index) => {
+            return <>{index !== undefined && roomPageViewerCount[index]}</>;
+          }}
+        />
+        <div
+          className={css({
+            justifyContent: "center",
+            alignItems: "center",
+            width: `calc(100% - 13rem)`,
+            height: "100%",
+            display: "flex",
+          })}
         >
-          <PainterInstanceGenerator
-            instanceId={"Host"}
-            readOnly={false}
-            customPdfPainterInstanceControllerHook={
-              pdfPainterHostInstanceControllerHook
-            }
-          />
-        </PDFPainter>
+          <PDFPainter
+            painterId={`${sessionId}_${pdfDocument.fileId}`}
+            pdfDocumentURL={pdfDocument.url}
+            customPdfPainterControllerHook={pdfPainterControllerHook}
+          >
+            <PainterInstanceGenerator
+              instanceId={"Host"}
+              readOnly={false}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterHostInstanceControllerHook
+              }
+            />
+          </PDFPainter>
+        </div>
       </div>
-    </div>
+      <PDFPainterControlBar
+        pdfPainterController={pdfPainterController}
+        modeComponent={
+          <>
+            <ModeControl
+              labelText="내 필기 가리기"
+              id="hide-host-draw"
+              checked={pdfPainterController.getInstanceHidden(
+                "Host"
+              )}
+              onChange={(e) => {
+                pdfPainterController.setInstanceHidden(
+                  "Host",
+                  e.target.checked
+                );
+              }}
+            />
+          </>
+        }
+      />
+    </>
   );
 }

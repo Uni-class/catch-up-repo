@@ -2,6 +2,7 @@ import { Editor, TLEditorSnapshot, IdOf, TLRecord } from "tldraw";
 
 import { PDFDocument, PDFItemClickHandlerArguments, PDFPage, PDFViewerController } from "../../PDF/types";
 import { ExternalAssetStore } from "../../Painter/types";
+import { lcov } from "node:test/reporters";
 
 export type PaintMode = "default" | "move" | "draw";
 
@@ -20,6 +21,11 @@ export type PDFPainterController = {
 	getEditorSnapshot: (editorId: string, pageIndex: number) => EditorSnapshot | null;
 	setEditorSnapshot: (editorId: string, pageIndex: number, snapshot: EditorSnapshot) => void;
 	clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
+	getInstanceHidden: (editorId:string) => boolean;
+	setInstanceHidden:(editorId:string,isHidden:boolean) => void;
+	isIdEnsureVisibleWhileDraw:(editorId: string) => boolean;
+	addIdEnsureVisibleWhileDraw:(editorId: string) => void;
+	deleteIdEnsureVisibleWhileDraw:(editorId: string) => void;
 } & PDFViewerController;
 
 export type PDFPainterControllerHook = {
