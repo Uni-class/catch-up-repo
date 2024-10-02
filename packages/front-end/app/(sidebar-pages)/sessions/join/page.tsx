@@ -10,7 +10,7 @@ import { Label } from "@/components/Label";
 import { useRouter } from "@/hook/useRouter";
 
 export default function Page() {
-  const [sessionId, setSessionId] = useState("");
+  const [sessionCode, setSessionCode] = useState("");
   const [status, setStatus] = useState<{
     status: "notice" | "error";
     text: string;
@@ -55,8 +55,8 @@ export default function Page() {
                 height: "inherit",
               })}
               placeholder="세션 코드를 입력해 주세요."
-              value={sessionId}
-              onChange={(event) => setSessionId(event.target.value)}
+              value={sessionCode}
+              onChange={(event) => setSessionCode(event.target.value)}
               name="session-code"
               id="session-code"
             />
@@ -64,9 +64,9 @@ export default function Page() {
               className={css({
                 height: "inherit",
               })}
-              disabled={sessionId.trim() === ""}
+              disabled={sessionCode.trim() === ""}
               onClick={() => {
-                if (sessionId.trim() === "") {
+                if (sessionCode.trim() === "") {
                   setStatus({
                     status: "error",
                     text: "세션 코드를 입력해주세요.",
@@ -74,7 +74,9 @@ export default function Page() {
                   return;
                 }
                 setStatus({ status: "notice", text: "세션을 로딩중입니다." });
-                router.push(`/view/${sessionId}`);
+                router.push(
+                  router.getURLString("/view", { code: `${sessionCode}` })
+                );
               }}
             >
               {"접속하기"}
