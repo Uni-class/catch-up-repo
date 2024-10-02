@@ -102,15 +102,22 @@ export class SessionsService {
     return code.slice(7, 13);
   }
 
-  async getSessionByCode(sessionCode: string): Promise<SessionResponseDto> {
-    const session: Session = await this.sessionRepository.findOneBy({
-      sessionCode,
+  async findOneByCode(sessionCode: string): Promise<Session> {
+    return await this.sessionRepository.findOne({
+      where: { sessionCode },
+      relations: ['sessionFiles'],
     });
+  }
+
+  async getSessionByCode(sessionCode: string): Promise<SessionResponseDto> {
+    const session: Session = await this.findOneByCode(sessionCode);
+
     if (!session) {
       throw new BadRequestException(
         `Session with Code: ${sessionCode} does not exist or you do not have permission to access it.`,
       );
     }
+
     const sessionFiles: SessionFile[] = session.sessionFiles;
     const fileList: File[] = await this.getFileListBySessionFiles(sessionFiles);
     return new SessionResponseDto(session, fileList);
