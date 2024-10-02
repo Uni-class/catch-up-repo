@@ -40,7 +40,7 @@ export default function Page() {
         queryKey: ["session", apiQueryParam],
         queryFn: async () =>
           await apiClient.get<SessionResponseDto>(`/session`, {
-            params: { id: apiQueryParam },
+            params: apiQueryParam ,
           }),
         throwOnError: true,
       },
