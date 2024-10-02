@@ -22,7 +22,7 @@ export default function HostSession({ sessionData }: PropType) {
       await apiClient.patch(`/session/${sessionData.sessionId}`, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
-      router.push(`/view?id=${sessionData.sessionId}`);
+      router.push(router.getURLString("/view",{id:`${sessionData.sessionId}`}))
     },
   });
 

@@ -28,9 +28,14 @@ export default function ParticipantSession({ sessionData }: PropType) {
       {sessionData.fileList.map((file) => (
         <Paragraph key={file.fileId}>{file.name}</Paragraph>
       ))}
-      <Button className={css({ height: "50px" })}           onClick={() => {
-            router.push(`/view/${sessionData.sessionId}`);
-          }}>
+      <Button
+        className={css({ height: "50px" })}
+        onClick={() => {
+          router.push(
+            router.getURLString("/view", { id: `${sessionData.sessionId}` })
+          );
+        }}
+      >
         세션 참여
       </Button>
     </div>
