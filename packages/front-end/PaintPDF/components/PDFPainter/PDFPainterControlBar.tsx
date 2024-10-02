@@ -7,7 +7,7 @@ import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
 import { PDFPainterControlBarButton } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
-import { ModeContainer } from "@/app/view/[sessionId]/_components/Mode";
+import { ModeContainer } from "@/app/view/_components/Mode";
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
