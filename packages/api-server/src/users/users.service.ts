@@ -81,11 +81,19 @@ export class UsersService {
   }
 
   async getSessionsByHost(userId: number): Promise<Session[]> {
-    const sessions = await this.sessionRepository.find({
-      where: { hostId: userId },
+    const userSessions = await this.userSessionRepository.find({
+      where: { userId },
       order: { createdAt: 'DESC' },
-      take: 10,
     });
+
+    console.log(userSessions);
+
+    const sessions = (
+      await Promise.all(userSessions.map((userSession) => userSession.session))
+    )
+      .filter((session) => session.hostId === userId)
+      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+
     return sessions;
   }
 
