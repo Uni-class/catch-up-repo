@@ -35,7 +35,7 @@ export default function FileUploadAndSelectModal({
   const [tabState, setTabState] = useState<TabDataType>("기존 업로드 파일");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<"ready" | "uploading" | "finished">(
-    "ready"
+    "ready",
   );
   const fileUploaderRef = useRef<{
     upload: () => void;
@@ -128,7 +128,9 @@ export default function FileUploadAndSelectModal({
                 preset={"secondary"}
                 disabled={status === "uploading"}
                 onClick={() => {
-                  overlay.close(`File-Select-${useFormDataResult.idRef.current}`);
+                  overlay.close(
+                    `File-Select-${useFormDataResult.idRef.current}`,
+                  );
                 }}
               >
                 취소
@@ -162,7 +164,9 @@ export default function FileUploadAndSelectModal({
                 })}
                 preset={"secondary"}
                 onClick={() => {
-                  overlay.close("File-Select");
+                  overlay.close(
+                    `File-Select-${useFormDataResult.idRef.current}`,
+                  );
                 }}
               >
                 취소
@@ -214,7 +218,7 @@ function Tab({ state, text, disabled = false, onClick, ...attr }: TabPropType) {
               borderBottomColor: "gray.100",
               cursor: "not-allowed",
             })
-          : null
+          : null,
       )}
       onClick={(event) => {
         if (disabled || !onClick) return;
