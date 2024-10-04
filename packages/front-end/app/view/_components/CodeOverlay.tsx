@@ -97,7 +97,8 @@ export function CodeOverlay({ code }: { code: string }) {
       <Heading variant="h1">{code}</Heading>
       <Paragraph variant="sub1">또는</Paragraph>
       <Button onClick={()=>{
-        const currentURL = router
+        const currentURL = router.getCurrentURL()
+        copyToClipboard(currentURL);
       }}>링크 복사</Button>
     </div>
   );

@@ -27,7 +27,13 @@ export const useRouter = (): RouterInstance => {
     return `${url.pathname}${url.search}`;
   };
   const getCurrentURL = () => {
-    return query.toString() ? `${pathname}?${query.toString()}` : pathname;
+    const protocol =
+      typeof window !== "undefined" ? window.location.protocol : "https";
+    const host =
+      typeof window !== "undefined" ? window.location.host : "catchup.tools";
+    return query.toString()
+      ? `${protocol}//${host}${pathname}?${query.toString()}`
+      : pathname;
   };
   return {
     ...router,
