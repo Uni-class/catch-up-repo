@@ -17,6 +17,7 @@ import { PreviewPages } from "./PreviewPages";
 import { useState } from "react";
 import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
+import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -41,7 +42,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
-  const {pdfPainterController} = pdfPainterControllerHook
+  const { pdfPainterController } = pdfPainterControllerHook;
   const { hostIndex } = useParticipantSocket(
     sessionId,
     fileId,
@@ -49,7 +50,8 @@ export default function ParticipantViewer(props: ViewerPropType) {
     pdfPainterControllerHook.pdfPainterController,
     isChaseMode
   );
-  useEnsureVisibleWhileDraw("Participant",pdfPainterController)
+  useEnsureVisibleWhileDraw("Participant", pdfPainterController);
+  const [showCodeOverlay, setShowCodeOverlay] = useState(false);
 
   if (joinQuery.isLoading) {
     return <p>로딩...</p>;
@@ -82,6 +84,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
             width: `calc(100% - 13rem)`,
             height: "100%",
             display: "flex",
+            position: "relative",
           })}
         >
           <PDFPainter
@@ -104,10 +107,17 @@ export default function ParticipantViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
+          {showCodeOverlay && (
+            <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
+              <CodeOverlay code={"1234"} />
+            </CodeOverlayContainer>
+          )}
         </div>
       </div>
       <PDFPainterControlBar
         pdfPainterController={pdfPainterController}
+        showCodeOverlay={showCodeOverlay}
+        setShowCodeOverlay={setShowCodeOverlay}
         modeComponent={
           <>
             <ModeControl
@@ -121,9 +131,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
             <ModeControl
               labelText="호스트 필기 가리기"
               id="hide-host-draw"
-              checked={pdfPainterController.getInstanceHidden(
-                "Host"
-              )}
+              checked={pdfPainterController.getInstanceHidden("Host")}
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Host",
@@ -134,9 +142,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-my-draw"
-              checked={pdfPainterController.getInstanceHidden(
-                "Participant"
-              )}
+              checked={pdfPainterController.getInstanceHidden("Participant")}
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Participant",
