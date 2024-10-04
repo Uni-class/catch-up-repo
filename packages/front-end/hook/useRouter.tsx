@@ -11,6 +11,7 @@ export interface RouterInstance extends AppRouterInstance {
   query: ReadonlyURLSearchParams;
   queryObj: Record<string, string>;
   getURLString: (pathname: string, queryObj: Record<string, string>) => string;
+  getCurrentURL: () => string;
 }
 
 export const useRouter = (): RouterInstance => {
@@ -18,15 +19,15 @@ export const useRouter = (): RouterInstance => {
   const query = useSearchParams();
   const pathname = usePathname();
   const queryObj = Object.fromEntries(query);
-  const getURLString = (
-    pathname: string,
-    queryObj: Record<string, string>
-  ) => {
+  const getURLString = (pathname: string, queryObj: Record<string, string>) => {
     const url = new URL(pathname, window.location.href);
     Object.keys(queryObj).forEach((key) => {
       url.searchParams.append(key, queryObj[key]);
     });
     return `${url.pathname}${url.search}`;
+  };
+  const getCurrentURL = () => {
+    return query.toString() ? `${pathname}?${query.toString()}` : pathname;
   };
   return {
     ...router,
@@ -34,5 +35,6 @@ export const useRouter = (): RouterInstance => {
     pathname,
     queryObj,
     getURLString,
+    getCurrentURL,
   };
 };
