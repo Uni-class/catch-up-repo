@@ -6,25 +6,41 @@ import HostViewer from "./_components/HostViewer";
 import { useQueries } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import ParticipantViewer from "./_components/ParticipantViewer";
-import { useAtom, } from "jotai";
+import { useAtom } from "jotai";
 import { socketAtom } from "@/client/socketAtom";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
+import { useRouter } from "@/hook/useRouter";
 
+const getAPIQueryParam = (obj: {
+  id?: number;
+  code?: string;
+}): { id: number } | { code: string } => {
+  if (obj.id !== undefined) {
+    return { id: obj.id };
+  }
+  if (obj.code !== undefined) {
+    return { code: obj.code };
+  }
+  throw new Error("You must specify id or code.");
+};
+export default function Page() {
+  const router = useRouter();
+  const queryObj = router.queryObj as unknown as { id?: number; code?: string };
+  const apiQueryParam = getAPIQueryParam(queryObj);
 
-export default function Page({ params }: { params: { sessionId: string } }) {
   const [userQuery, sessionQuery] = useQueries({
     queries: [
       {
         queryKey: ["user", "profile"],
         queryFn: async () => await apiClient.get<User>("/user/profile"),
-        throwOnError:true,
+        throwOnError: true,
       },
       {
-        queryKey: ["session", params.sessionId],
+        queryKey: ["session", apiQueryParam],
         queryFn: async () =>
           await apiClient.get<SessionResponseDto>(`/session`, {
-            params: { id: params.sessionId },
+            params: apiQueryParam ,
           }),
         throwOnError: true,
       },

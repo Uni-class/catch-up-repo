@@ -25,7 +25,7 @@ export default function Page() {
       await apiClient.post("/session", body),
     onSuccess: (data:AxiosResponse<Session>) => {
       queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
-      router.push(`/view/${data.data.sessionId}`)
+      router.push(router.getURLString("/view",{id:`${data.data.sessionId}`}))
     },
   });
   return (

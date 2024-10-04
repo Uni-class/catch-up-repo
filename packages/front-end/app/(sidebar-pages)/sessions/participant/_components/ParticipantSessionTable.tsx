@@ -171,7 +171,7 @@ export function ParticipantSessionTable({
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                href={`/view/${item.sessionId}`}
+                href={{pathname:"/view",query:{id:item.sessionId}}}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

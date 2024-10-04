@@ -9,8 +9,8 @@ import {
 export interface RouterInstance extends AppRouterInstance {
   pathname: string;
   query: ReadonlyURLSearchParams;
-  queryObj:Record<string,string>;
-  getURLString: (pathname: string, queryObj:Record<string,string>) => string;
+  queryObj: Record<string, string>;
+  getURLString: (pathname: string, queryObj: Record<string, string>) => string;
 }
 
 export const useRouter = (): RouterInstance => {
@@ -20,7 +20,7 @@ export const useRouter = (): RouterInstance => {
   const queryObj = Object.fromEntries(query);
   const getURLString = (
     pathname: string,
-    queryObj:Record<string,string>
+    queryObj: Record<string, string>
   ) => {
     const url = new URL(pathname, window.location.href);
     Object.keys(queryObj).forEach((key) => {
