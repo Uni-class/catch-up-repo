@@ -73,12 +73,12 @@ export function CodeOverlayContainer({
 }
 
 export function CodeOverlay({ code }: { code: string }) {
-    const router = useRouter();
+  const router = useRouter();
   const copyToClipboard = (text: string) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        console.log("링크가 클립보드에 복사되었습니다!");
+        console.log("링크가 클립보드에 복사되었습니다!", text);
       })
       .catch((err) => {
         console.error("복사에 실패했습니다. 다시 시도해주세요.", err);
@@ -96,10 +96,14 @@ export function CodeOverlay({ code }: { code: string }) {
       <Paragraph variant="sub1">세션 코드</Paragraph>
       <Heading variant="h1">{code}</Heading>
       <Paragraph variant="sub1">또는</Paragraph>
-      <Button onClick={()=>{
-        const currentURL = router.getCurrentURL()
-        copyToClipboard(currentURL);
-      }}>링크 복사</Button>
+      <Button
+        onClick={() => {
+          const currentURL = router.getCurrentURL();
+          copyToClipboard(currentURL);
+        }}
+      >
+        링크 복사
+      </Button>
     </div>
   );
 }

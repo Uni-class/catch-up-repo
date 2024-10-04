@@ -5,6 +5,7 @@ import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
 import ToolEditIcon from "@/PaintPDF/assets/icons/tool-edit.svg";
 import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
+import CloseIcon from "@/PaintPDF/assets/icons/close.svg";
 import ShareIcon from "@/PaintPDF/assets/icons/share.svg";
 import { PDFPainterControlBarButton } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
@@ -14,7 +15,7 @@ const PDFPainterControlBarComponent = ({
   pdfPainterController,
   modeComponent,
   showCodeOverlay,
-  setShowCodeOverlay
+  setShowCodeOverlay,
 }: {
   pdfPainterController: PDFPainterController;
   modeComponent?: ReactNode;
@@ -100,7 +101,11 @@ const PDFPainterControlBarComponent = ({
             setShowCodeOverlay(!showCodeOverlay);
           }}
         >
-          <ShareIcon width={"1.6em"} height={"1.6em"} />
+          {showCodeOverlay ? (
+            <CloseIcon width={"1.6em"} height={"1.6em"}></CloseIcon>
+          ) : (
+            <ShareIcon width={"1.6em"} height={"1.6em"} />
+          )}
         </PDFPainterControlBarButton>
         <div className={css({ position: "relative" })}>
           <PDFPainterControlBarButton
