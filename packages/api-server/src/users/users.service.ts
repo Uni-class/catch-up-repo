@@ -1,11 +1,8 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
-import { MongoClient, ServerApiVersion } from 'mongodb';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -197,16 +194,24 @@ export class UsersService {
     return files;
   }
 
-  async deletdeleteRefreshToken(userId: number) {
+  async deleteRefreshToken(userId: number) {
     return await this.userRepository.update(userId, { refreshToken: '' });
   }
 
-  async getFileNotes(userId: number, sessionId: number, fileId: number) {
-    const note = this.noteModel.find({
-      userId,
-      sessionId,
-      fileId,
-    });
+  async getFileNotes(
+    userId: number,
+    sessionId: number,
+    fileId: number,
+    pageNumber: number,
+  ) {
+    const note = this.noteModel
+      .find({
+        userId,
+        sessionId,
+        fileId,
+        pageNumber,
+      })
+      .exec();
     return note;
   }
 
@@ -214,14 +219,27 @@ export class UsersService {
     userId: number,
     sessionId: number,
     fileId: number,
+    pageNumber: number,
     data: any,
   ) {
-    const note = new this.noteModel({
+    const note = await this.noteModel.find({
       userId,
       sessionId,
       fileId,
+      pageNumber,
+    });
+
+    const newNote = new this.noteModel({
+      userId,
+      sessionId,
+      fileId,
+      pageNumber,
       data,
     });
-    return note.save();
+
+    if (note.length)
+      await this.noteModel.deleteOne({ userId, sessionId, fileId, pageNumber });
+
+    return await newNote.save();
   }
 }

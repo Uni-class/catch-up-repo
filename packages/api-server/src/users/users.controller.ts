@@ -188,31 +188,39 @@ export class UsersController {
     return files;
   }
 
-  @Get('session/:sessionId/file/:fileId/note')
+  @Get('session/:sessionId/file/:fileId/note/:pageNumber')
   @ApiOkResponse({ type: Object })
   @UseGuards(JwtGuard)
   async getFileNotes(
     @UserId(ParseIntPipe) userId: number,
     @Param('sessionId') sessionId: number,
     @Param('fileId') fileId: number,
+    @Param('pageNumber') pageNumber: number,
   ) {
-    const notes = this.usersService.getFileNotes(userId, sessionId, fileId);
+    const notes = this.usersService.getFileNotes(
+      userId,
+      sessionId,
+      fileId,
+      pageNumber,
+    );
     return notes;
   }
 
-  @Post('session/:sessionId/file/:fileId/note')
+  @Post('session/:sessionId/file/:fileId/note/:pageNumber')
   @ApiOkResponse({ type: Object })
   @UseGuards(JwtGuard)
   async postFileNotes(
     @UserId(ParseIntPipe) userId: number,
     @Param('sessionId') sessionId: number,
     @Param('fileId') fileId: number,
+    @Param('pageNumber') pageNumber: number,
     @Body() data: any,
   ) {
-    const notes = this.usersService.saveFileNotes(
+    const notes = await this.usersService.saveFileNotes(
       userId,
       sessionId,
       fileId,
+      pageNumber,
       data,
     );
     return notes;
