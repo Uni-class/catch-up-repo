@@ -18,6 +18,7 @@ import { useState } from "react";
 import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
+import { usePostDraw } from "../_hooks/usePostDraw";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -52,6 +53,12 @@ export default function ParticipantViewer(props: ViewerPropType) {
   );
   useEnsureVisibleWhileDraw("Participant", pdfPainterController);
   const [showCodeOverlay, setShowCodeOverlay] = useState(false);
+  usePostDraw(
+    sessionId,
+    fileId,
+    pdfPainterParticipantInstanceControllerHook.pdfPainterInstanceController,
+    pdfPainterController
+  );
 
   if (joinQuery.isLoading) {
     return <p>로딩...</p>;

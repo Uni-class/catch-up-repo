@@ -1,5 +1,13 @@
 import { openDB } from "idb";
 
+export interface NoteType {
+  sessionId: number;
+  fileId: number;
+  instanceId: string;
+  pageIndex: number;
+  notes: unknown;
+}
+
 const ids = ["sessionId", "fileId", "instanceId", "pageIndex"];
 export const initDB = async () => {
   return await openDB("Catchup-DB", 1, {
@@ -24,13 +32,14 @@ export const saveNoteDB = async (
   const db = await initDB();
   const tx = db.transaction("notes", "readwrite");
   const store = tx.objectStore("notes");
-  await store.put({
+  const data: NoteType = {
     sessionId,
     fileId,
     pageIndex,
     instanceId,
     notes,
-  });
+  };
+  await store.put(data);
   await tx.done;
 };
 
@@ -39,10 +48,15 @@ export const getPageNoteDB = async (
   fileId: number,
   pageIndex: number,
   instanceId: string
-) => {
+): Promise<null | unknown> => {
   const db = await initDB();
   const tx = db.transaction("notes", "readonly");
   const store = tx.objectStore("notes");
-  const data = await store.get([sessionId, fileId, instanceId, pageIndex]);
+  const data = (await store.get([
+    sessionId,
+    fileId,
+    instanceId,
+    pageIndex,
+  ])) as NoteType;
   return data ? data.notes : null;
 };

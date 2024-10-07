@@ -15,6 +15,7 @@ import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
+import { usePostDraw } from "../_hooks/usePostDraw";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -37,6 +38,12 @@ export default function HostViewer(props: ViewerPropType) {
   );
   useEnsureVisibleWhileDraw("Host", pdfPainterController);
   const [showCodeOverlay, setShowCodeOverlay] = useState(false);
+  usePostDraw(
+    sessionId,
+    fileId,
+    pdfPainterInstanceController,
+    pdfPainterController
+  );
 
   return (
     <>
