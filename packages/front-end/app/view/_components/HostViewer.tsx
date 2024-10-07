@@ -13,6 +13,8 @@ import { PreviewPages } from "./PreviewPages";
 import { css } from "@/styled-system/css";
 import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
+import { useState } from "react";
+import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -33,7 +35,8 @@ export default function HostViewer(props: ViewerPropType) {
     pdfPainterInstanceController,
     pdfPainterController
   );
-  useEnsureVisibleWhileDraw("Host",pdfPainterController)
+  useEnsureVisibleWhileDraw("Host", pdfPainterController);
+  const [showCodeOverlay, setShowCodeOverlay] = useState(false);
 
   return (
     <>
@@ -59,6 +62,7 @@ export default function HostViewer(props: ViewerPropType) {
             width: `calc(100% - 13rem)`,
             height: "100%",
             display: "flex",
+            position: "relative",
           })}
         >
           <PDFPainter
@@ -74,18 +78,23 @@ export default function HostViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
+          {showCodeOverlay && (
+            <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
+              <CodeOverlay code={"1234"} />
+            </CodeOverlayContainer>
+          )}
         </div>
       </div>
       <PDFPainterControlBar
         pdfPainterController={pdfPainterController}
+        showCodeOverlay={showCodeOverlay}
+        setShowCodeOverlay={setShowCodeOverlay}
         modeComponent={
           <>
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-host-draw"
-              checked={pdfPainterController.getInstanceHidden(
-                "Host"
-              )}
+              checked={pdfPainterController.getInstanceHidden("Host")}
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Host",

@@ -3,6 +3,7 @@ import QueryClientProvider from "./query-client-provider";
 import JotaiProvider from "./jotai-provider";
 import OverlayProvider from "./OverlayProvider";
 import { AccountProvider } from "@/hook/useAccount";
+import ToastProvider from "./toast-provider";
 
 interface PropType {
   children: ReactNode;
@@ -14,7 +15,9 @@ export default function Provider({ children }: PropType) {
       <JotaiProvider>
         <OverlayProvider>
           <Suspense fallback={null}>
-            <AccountProvider>{children}</AccountProvider>
+            <AccountProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </AccountProvider>
           </Suspense>
         </OverlayProvider>
       </JotaiProvider>
