@@ -86,7 +86,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async deleteRefreshTokenOfUser(userId: number) {
-    return await this.userService.deletdeleteRefreshToken(userId);
+    return await this.userService.deleteRefreshToken(userId);
   }
 
   async getRefreshTokenFromHeader(req: Request) {
