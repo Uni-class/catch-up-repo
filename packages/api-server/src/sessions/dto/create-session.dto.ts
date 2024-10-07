@@ -13,10 +13,11 @@ export class CreateSessionDto {
   @IsString()
   sessionName: string;
 
+  @IsOptional()
+  @IsNumber()
   hostId: number;
 
   @ApiProperty({ type: [Number] })
-  @IsOptional()
   @IsArray()
   @IsNumber({}, { each: true })
   sessionFileIds: number[];

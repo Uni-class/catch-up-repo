@@ -14,6 +14,7 @@ import { File } from '../files/entities/file.entity';
 import { SessionStatusResponseDto } from './dto/session-status-response.dto';
 import bcrypt from 'bcrypt';
 import { SessionResponseDto } from './dto/session.response.dto';
+import { session } from 'passport';
 
 @Injectable()
 export class SessionsService {
@@ -23,8 +24,18 @@ export class SessionsService {
     private readonly sessionRepository: Repository<Session>,
   ) {}
   async create(createSessionDto: CreateSessionDto) {
-    const newUser = this.sessionRepository.create(createSessionDto);
-    return await this.sessionRepository.save(newUser);
+    const newSession = this.sessionRepository.create(createSessionDto);
+    const sessionCode: string = await this.makeSessionCode(
+      newSession.sessionId,
+    );
+    newSession.sessionCode = sessionCode;
+    await this.sessionRepository.update(
+      { sessionId: newSession.sessionId },
+      {
+        sessionCode,
+      },
+    );
+    return newSession;
   }
 
   async findOne(id: number) {
