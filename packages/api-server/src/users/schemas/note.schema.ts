@@ -14,6 +14,9 @@ export class Note extends Document {
   @Prop()
   fileId: number;
 
+  @Prop()
+  pageNumber: number;
+
   @Prop({ type: Object })
   data: any;
 }
