@@ -35,7 +35,6 @@ export class Session {
 
   @ApiProperty()
   @IsString()
-  @Exclude()
   @Column()
   sessionCode: string;
 

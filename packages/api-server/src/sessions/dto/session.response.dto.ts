@@ -13,6 +13,9 @@ export class SessionResponseDto {
   hostId: number;
 
   @ApiProperty()
+  sessionCode: string;
+
+  @ApiProperty()
   createdAt: string;
 
   @ApiProperty({ type: [File] })
@@ -23,6 +26,7 @@ export class SessionResponseDto {
     this.sessionName = session.sessionName;
     this.hostId = session.hostId;
     this.createdAt = session.createdAt;
+    this.sessionCode = session.sessionCode;
     this.fileList = fileList;
   }
 }

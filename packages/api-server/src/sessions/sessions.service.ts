@@ -130,6 +130,7 @@ export class SessionsService {
 
   async getSessionByid(id: number): Promise<SessionResponseDto> {
     const session: Session = await this.getSessionAsUser(id, null);
+    console.log(session.sessionCode);
     const sessionFiles: SessionFile[] = session.sessionFiles;
     const fileList: File[] = await this.getFileListBySessionFiles(sessionFiles);
     return new SessionResponseDto(session, fileList);
