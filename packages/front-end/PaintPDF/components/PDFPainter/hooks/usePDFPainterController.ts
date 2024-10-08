@@ -167,9 +167,6 @@ export const usePDFPainterController = ({
         return;
       }
       const snapshotId = getSnapshotId(editorId, pageIndex);
-      console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Save snapshot: ${snapshotId}`
-      );
       try {
         editor.selectNone();
         setEditorSnapshotToStorage(editorId, pageIndex, editor.getSnapshot());
