@@ -38,6 +38,11 @@ export const useParticipantSocket = (
       console.log("Connected to WebSocket server:", socket.id);
       socket.emit("joinRoom", { roomId });
     });
+    socket.on("hostExist", (flag: "1" | "0") => {
+      if (flag === "1") {
+        socket.emit("joinRoom", { roomId });
+      }
+    });
     socket.on("userList", (userList: any) => {
       console.log({ userList });
     });
