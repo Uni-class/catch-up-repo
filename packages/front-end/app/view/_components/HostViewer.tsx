@@ -87,7 +87,7 @@ export default function HostViewer(props: ViewerPropType) {
           </PDFPainter>
           {showCodeOverlay && (
             <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
-              <CodeOverlay code={"1234"} />
+              <CodeOverlay code={props.sessionCode}  />
             </CodeOverlayContainer>
           )}
         </div>
