@@ -71,6 +71,7 @@ export interface SessionResponseDto {
   hostId: number;
   createdAt: string;
   fileList: File[];
+  sessionCode: string;
 }
 
 export interface UpdateSessionDto {
