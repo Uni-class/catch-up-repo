@@ -36,9 +36,11 @@ export function ModeControl({
 export function ModeContainer({
   setVisible,
   children,
+  title="모드 설정"
 }: {
   setVisible: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
+  title?: string;
 }) {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -78,7 +80,7 @@ export function ModeContainer({
         })}
       >
         <p>
-          모드 설정
+          {title}
         </p>
         <button
           onClick={() => {
