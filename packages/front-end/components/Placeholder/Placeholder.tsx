@@ -1,14 +1,14 @@
 import { css, cx } from "@/styled-system/css";
-import { memo } from "react";
+import { memo, CSSProperties } from "react";
 
 interface PlaceholderProps {
   type?: "box" | "circle" | "text";
-  width?: number | string;
-  height?: number | string;
+  width?: CSSProperties["width"];
+  height?: CSSProperties["height"];
   lineCount?: number;
-  lineHeight?: number | string;
-  lineGap?: number | string;
-  borderRadius?: number | string;
+  lineHeight?: CSSProperties["lineHeight"];
+  lineGap?: CSSProperties["gap"];
+  borderRadius?: CSSProperties["borderRadius"];
 }
 
 const Placeholder = ({

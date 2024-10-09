@@ -1,12 +1,12 @@
 import { css, cx } from "@/styled-system/css";
-import { ReactNode, memo } from "react";
+import { ReactNode, memo, CSSProperties } from "react";
 
 interface PlaceholderLayoutProps {
   type?: "vertical" | "horizontal";
-  padding?: number | string;
-  width?: number | string;
-  height?: number | string;
-  gap?: number | string;
+  padding?: CSSProperties["padding"];
+  width?: CSSProperties["width"];
+  height?: CSSProperties["height"];
+  gap?: CSSProperties["gap"];
   children: ReactNode;
 }
 
