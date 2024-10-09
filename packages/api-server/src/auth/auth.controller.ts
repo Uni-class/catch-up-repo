@@ -151,7 +151,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: `Refresh token is not user's!` })
   @HttpCode(HttpStatus.CREATED)
   @Get('token-refresh')
-  async tokenRefresh(@Req() req: Request, @Res() res): Promise<any> {
+  async tokenRefresh(@Req() req: Request, @Res() res: Response): Promise<any> {
     const refreshToken = await this.authService.getRefreshTokenFromHeader(req);
     const payload = req.user as JwtPayload;
     const user: User = await this.authService.tokenValidateUser(payload);
@@ -161,6 +161,8 @@ export class AuthController {
         .json({ msg: `This refresh token is not user's token` });
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
+    console.log(req.cookies.access_token);
+    console.log(newAccessToken);
     return res
       .cookie(
         'access_token',
