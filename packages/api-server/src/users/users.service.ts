@@ -242,4 +242,25 @@ export class UsersService {
 
     return await newNote.save();
   }
+
+  async getHostFileNotes(
+    userId: number,
+    sessionId: number,
+    fileId: number,
+    pageNumber: number,
+  ) {
+    if (!(await this.userSessionRepository.findOneBy({ sessionId, userId }))) {
+      throw new BadRequestException("You didn't joined this session.");
+    }
+    const hostId = (await this.sessionRepository.findOneBy({ sessionId }))
+      ?.hostId;
+    return await this.noteModel
+      .find({
+        userId: hostId,
+        sessionId,
+        fileId,
+        pageNumber,
+      })
+      .exec();
+  }
 }
