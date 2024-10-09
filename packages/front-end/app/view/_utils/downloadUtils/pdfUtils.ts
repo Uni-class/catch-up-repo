@@ -27,10 +27,13 @@ export const drawPNGOnPDFPage = async (
   mergeDoc: PDFDocument,
   mergePage: PDFPage,
   index: number,
-  getPageDrawCallback: (index: number) => Promise<PNGType[]>
+  getPageDrawCallback: (index: number) => Promise<PNGType[] | null>
 ) => {
   const { width, height } = mergePage.getSize();
   const encodedPNGs = await getPageDrawCallback(index);
+  if (encodedPNGs === null) {
+    return;
+  }
   const drawPromises = encodedPNGs.map(async (encodedPNG) => {
     if (encodedPNG === null) return;
     const pngImage = await mergeDoc.embedPng(encodedPNG);

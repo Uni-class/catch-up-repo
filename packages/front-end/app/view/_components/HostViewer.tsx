@@ -17,6 +17,7 @@ import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 import { usePostDraw } from "../_hooks/usePostDraw";
 import Button from "@/components/Button";
+import { HostViewerDownload } from "./Download";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -45,7 +46,6 @@ export default function HostViewer(props: ViewerPropType) {
     pdfPainterInstanceController,
     pdfPainterController
   );
-
 
   return (
     <>
@@ -109,19 +109,13 @@ export default function HostViewer(props: ViewerPropType) {
           />
         }
         downloadComponent={
-          <>
-            <ModeControl labelText="내 필기 포함" id="host-draw" />
-            <Button
-              className={css({
-                width: "100%",
-                height: "2rem",
-                padding: "0.25rem",
-                marginTop: "0.25rem",
-              })}
-            >
-              다운로드
-            </Button>
-          </>
+          <HostViewerDownload
+            sessionId={sessionId}
+            fileId={fileId}
+            fileName={pdfDocument.name}
+            pdfPainterController={pdfPainterController}
+            src={pdfDocument.url}
+          />
         }
       />
     </>

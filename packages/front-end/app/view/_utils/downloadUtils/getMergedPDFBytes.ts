@@ -8,7 +8,7 @@ import {
 
 export const getMergedPDFBytes = async (
   src: string | URL,
-  getPageDrawCallback: (index: number) => Promise<PNGType[]>,
+  getPageDrawCallback: (index: number) => Promise<(PNGType | null)[]>,
   cMapUrl?: string | undefined
 ): Promise<Uint8Array> => {
   const originalDocProxy = await getPDFDocumentProxy(src, cMapUrl);

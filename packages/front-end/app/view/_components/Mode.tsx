@@ -3,6 +3,7 @@ import {
   DetailedHTMLProps,
   Dispatch,
   InputHTMLAttributes,
+  LegacyRef,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -10,23 +11,22 @@ import {
 
 export function ModeControl({
   labelText,
+  checkboxRef,
   ...attr
 }: DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
-> & { labelText: string }) {
+> & { labelText: string; checkboxRef?: LegacyRef<HTMLInputElement> }) {
   return (
     <div>
       <input
         type="checkbox"
-        onChange={() => {
-          alert("아직 미구현된 기능입니다.");
-        }}
         {...attr}
         className={cx(
           css({ margin: "0.5rem 0.25rem 0.5rem 0" }),
           attr.className
         )}
+        ref={checkboxRef}
       />
       <label htmlFor={attr.id}>{labelText}</label>
     </div>
@@ -36,7 +36,7 @@ export function ModeControl({
 export function ModeContainer({
   setVisible,
   children,
-  title="모드 설정"
+  title = "모드 설정",
 }: {
   setVisible: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
@@ -79,9 +79,7 @@ export function ModeContainer({
           padding: "0.5rem 0",
         })}
       >
-        <p>
-          {title}
-        </p>
+        <p>{title}</p>
         <button
           onClick={() => {
             setVisible(false);
