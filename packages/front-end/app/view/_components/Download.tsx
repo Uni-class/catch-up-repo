@@ -1,19 +1,7 @@
 import Button from "@/components/Button";
 import { ModeControl } from "./Mode";
 import { css } from "@/styled-system/css";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  convertBlobToUint8Array,
-  exportTldrawEditorAsBlob,
-  setTempEditor,
-} from "../_utils/downloadUtils/convertUtils";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Editor, Tldraw, useEditor } from "tldraw";
 import { PDFPainterController } from "@/PaintPDF/components";
 import { getMergedPDFBytes } from "../_utils/downloadUtils/getMergedPDFBytes";
@@ -21,6 +9,7 @@ import { downloadPDF } from "../_utils/downloadUtils/downloadUtils";
 import { toast } from "react-toastify";
 import { getSelfDrawFromServer } from "../_utils/downloadUtils/apiUtils";
 import { pageEachDrawCallback } from "../_utils/downloadUtils/drawUtils";
+import { getPdfPageSize } from "../_utils/downloadUtils/pdfUtils";
 
 interface PropType {
   fileName: string;
@@ -51,12 +40,12 @@ export function HostViewerDownload({
 }: PropType) {
   const [editorState, setEditorState] = useState<null | Editor>(null);
   const hostDrawControlRef = useRef<null | HTMLInputElement>(null);
-  const handleButtonClick = useCallback(async () => {
+  const handleButtonClick = async () => {
     if (editorState === null || hostDrawControlRef.current === null) {
       return;
     }
     toast("서버로부터 필기를 받아오고 있습니다.");
-    const { width, height } = pdfPainterController.getRenderOptions();
+
     const snapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
           pdfPainterController.getPageCount(),
@@ -65,18 +54,19 @@ export function HostViewerDownload({
         )
       : [];
     toast("pdf 문서를 만들고 있습니다.");
+    const pdfSizes = await getPdfPageSize(src);
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
       await pageEachDrawCallback({
         index,
         editor: editorState,
         checked: hostDrawControlRef.current?.checked,
-        width,
-        height,
+        width: pdfSizes[index].width,
+        height: pdfSizes[index].height,
         snapshots: snapshotsFromServer,
       }),
     ]);
     downloadPDF(pdfBytes, fileName);
-  }, [editorState]);
+  };
   return (
     <>
       <ModeControl

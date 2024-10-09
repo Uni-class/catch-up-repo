@@ -1,4 +1,4 @@
-import { Box, Editor, exportToBlob, RecordId, TLEditorSnapshot } from "tldraw";
+import { Box, Editor, exportToBlob } from "tldraw";
 
 
 export const exportTldrawEditorAsBlob = async (
@@ -10,7 +10,6 @@ export const exportTldrawEditorAsBlob = async (
     return null;
   }
   const ids = Array.from(editor.getCurrentPageShapeIds().values());
-  
   if (ids.length === 0) {
     return null;
   }
@@ -22,6 +21,7 @@ export const exportTldrawEditorAsBlob = async (
     opts: {
       padding: 0,
       bounds: bounds,
+      background: false,
     },
   });
 };

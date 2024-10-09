@@ -4,30 +4,32 @@ import {
   exportTldrawEditorAsBlob,
 } from "./convertUtils";
 import { EditorSnapshot } from "@/PaintPDF/components";
-import CleanPainterSnapshot from "@/PaintPDF/assets/data/snapshot.json"
+import CleanPainterSnapshot from "@/PaintPDF/assets/data/snapshot.json";
 
 export const setTempEditor = (
   editor: Editor | null,
-  snapshots: TLEditorSnapshot | null
+  snapshot: TLEditorSnapshot | null
 ) => {
   if (editor === null) {
     console.error("editor is null.");
     return false;
   }
-  if (snapshots === null) {
+  if (snapshot === null) {
     // Error while server req & res
     return false;
   }
-  const records = snapshots.document.store;
+  const records = snapshot.document.store;
   if (Object.keys(records).length <= 2) {
     // If it is empty, it has only two IDs:"document:document & page:page".
     return false;
   }
   editor.loadSnapshot(CleanPainterSnapshot as unknown as EditorSnapshot);
   editor.store.put(
-    Object.values(records).filter((e) => {
-      e.id !== "document:document" || e.id !== "page:page";
-    })
+    Object.values(records)
+      .filter(
+        (record) => record.typeName !== "document" && record.typeName !== "page"
+      )
+      .map((record) => ({ ...record, meta: {} }))
   );
   return true;
 };
