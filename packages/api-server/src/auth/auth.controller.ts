@@ -164,8 +164,7 @@ export class AuthController {
         .json({ msg: `This refresh token is not user's token` });
     }
     const newAccessToken = await this.authService.generateAccessToken(user);
-    console.log(req.cookies.access_token);
-    console.log(newAccessToken);
+
     return res
       .cookie(
         'access_token',
