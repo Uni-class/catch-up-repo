@@ -16,6 +16,7 @@ import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 import { usePostDraw } from "../_hooks/usePostDraw";
+import Button from "@/components/Button";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -87,7 +88,7 @@ export default function HostViewer(props: ViewerPropType) {
           </PDFPainter>
           {showCodeOverlay && (
             <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
-              <CodeOverlay code={props.sessionCode}  />
+              <CodeOverlay code={props.sessionCode} />
             </CodeOverlayContainer>
           )}
         </div>
@@ -97,18 +98,28 @@ export default function HostViewer(props: ViewerPropType) {
         showCodeOverlay={showCodeOverlay}
         setShowCodeOverlay={setShowCodeOverlay}
         modeComponent={
+          <ModeControl
+            labelText="내 필기 가리기"
+            id="hide-host-draw"
+            checked={pdfPainterController.getInstanceHidden("Host")}
+            onChange={(e) => {
+              pdfPainterController.setInstanceHidden("Host", e.target.checked);
+            }}
+          />
+        }
+        downloadComponent={
           <>
-            <ModeControl
-              labelText="내 필기 가리기"
-              id="hide-host-draw"
-              checked={pdfPainterController.getInstanceHidden("Host")}
-              onChange={(e) => {
-                pdfPainterController.setInstanceHidden(
-                  "Host",
-                  e.target.checked
-                );
-              }}
-            />
+            <ModeControl labelText="내 필기 포함" id="host-draw" />
+            <Button
+              className={css({
+                width: "100%",
+                height: "2rem",
+                padding: "0.25rem",
+                marginTop: "0.25rem",
+              })}
+            >
+              다운로드
+            </Button>
           </>
         }
       />

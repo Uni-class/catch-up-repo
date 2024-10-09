@@ -19,6 +19,7 @@ import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 import { usePostDraw } from "../_hooks/usePostDraw";
+import Button from "@/components/Button";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -157,6 +158,22 @@ export default function ParticipantViewer(props: ViewerPropType) {
                 );
               }}
             />
+          </>
+        }
+        downloadComponent={
+          <>
+            <ModeControl labelText="내 필기 포함" id="parti-draw" />
+            <ModeControl labelText="호스트 필기 포함" id="host-draw" />
+            <Button
+              className={css({
+                width: "100%",
+                height: "2rem",
+                padding: "0.25rem",
+                marginTop: "0.25rem",
+              })}
+            >
+              다운로드
+            </Button>
           </>
         }
       />
