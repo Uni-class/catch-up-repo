@@ -44,6 +44,9 @@ export const pageEachDrawCallback = async ({
 }) => {
   if (checked) {
     const snapshot = responses[index];
+    if (!snapshot) {
+      return null;
+    }
     const flag = setTempEditor(editor, snapshot.note);
     if (!flag) {
       return null;

@@ -5,14 +5,15 @@ import { TLEditorSnapshot } from "tldraw";
 export const getSelfDrawFromServer = async (
   pageCount: number,
   sessionId: number,
-  fileId: number
+  fileId: number,
+  isHost?: boolean,
 ) => {
   const promises = [];
   for (let i = 0; i < pageCount; i++) {
     promises.push(
       apiClient.get<
         { data: { note: TLEditorSnapshot; width: number; height: number } }[]
-      >(`/user/session/${sessionId}/file/${fileId}/note/${i}`)
+      >(`/user/session/${sessionId}/file/${fileId}/${!!isHost? "host-note" : "note"}/${i}`)
     );
   }
   const results = await Promise.allSettled(promises);
@@ -38,3 +39,4 @@ export const getSelfDrawFromServer = async (
   });
   return finalResult;
 };
+
