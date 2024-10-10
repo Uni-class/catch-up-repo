@@ -9,7 +9,6 @@ import { downloadPDF } from "../_utils/downloadUtils/downloadUtils";
 import { toast } from "react-toastify";
 import { getSelfDrawFromServer } from "../_utils/downloadUtils/apiUtils";
 import { pageEachDrawCallback } from "../_utils/downloadUtils/drawUtils";
-import { getPdfPageSize } from "../_utils/downloadUtils/pdfUtils";
 
 interface PropType {
   fileName: string;
@@ -54,14 +53,15 @@ export function HostViewerDownload({
         )
       : [];
     toast("pdf 문서를 만들고 있습니다.");
-    const pdfSizes = await getPdfPageSize(src);
+    const width = pdfPainterController.getPage()?.originalWidth
+    const height = pdfPainterController.getPage()?.originalHeight
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
       await pageEachDrawCallback({
         index,
         editor: editorState,
         checked: hostDrawControlRef.current?.checked,
-        width: pdfSizes[index].width,
-        height: pdfSizes[index].height,
+        width: width || 0,
+        height: height || 0,
         snapshots: snapshotsFromServer,
       }),
     ]);
