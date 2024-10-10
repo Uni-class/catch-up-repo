@@ -5,7 +5,7 @@ import {
 import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
 
-const intervalTime = (1000 * 60 * 1) / 2;
+const intervalTime = (1000 * 60 * 1) / 6;
 export const usePostDraw = (
   sessionId: number,
   fileId: number,
@@ -34,11 +34,11 @@ export const usePostDraw = (
         tempPageSet.add(index);
       });
       tempPageSet.forEach((index) => {
-        const note = pdfPainterInstanceController.getEditorSnapshot(index);
+        const note =
+          pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
         if (note === null) {
           return;
         }
-        console.log({note,index},"Send To server!");
         apiClient.post(
           `/user/session/${sessionId}/file/${fileId}/note/${index}`,
           note
