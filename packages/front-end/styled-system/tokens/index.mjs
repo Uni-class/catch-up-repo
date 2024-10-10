@@ -1751,6 +1751,18 @@ const tokens = {
     "value": "#b39200",
     "variable": "var(--colors-kakao-dark)"
   },
+  "colors.primary": {
+    "value": "#022D9C",
+    "variable": "var(--colors-primary)"
+  },
+  "colors.secondary": {
+    "value": "#AFFD06",
+    "variable": "var(--colors-secondary)"
+  },
+  "colors.tertiary": {
+    "value": "#ABBDF5",
+    "variable": "var(--colors-tertiary)"
+  },
   "breakpoints.sm": {
     "value": "640px",
     "variable": "var(--breakpoints-sm)"

@@ -62,8 +62,8 @@ export const theme: Tokens = {
         },
       },
     },
-    primary: { value: "022D9C" },
-    secondary: { value: "AFFD06" },
-    tertiary: { value: "ABBDF5" },
+    primary: { value: "#022D9C" },
+    secondary: { value: "#AFFD06" },
+    tertiary: { value: "#ABBDF5" },
   },
 };
