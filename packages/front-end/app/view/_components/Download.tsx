@@ -79,18 +79,27 @@ export function HostViewerDownload({
       </Button>
       <div
         className={css({
+          position: "relative",
+          overflow: "hidden",
           visibility: "hidden",
-          position: "absolute",
-          zIndex: -1000,
-          top: 0,
-          left: 0,
-          width: "5000px",
-          height: "5000px",
         })}
       >
-        <Tldraw>
-          <EditorSetter setEditorState={setEditorState} />
-        </Tldraw>
+        <div
+          className={css({
+            visibility: "hidden",
+            position: "absolute",
+            zIndex: -1000,
+            top: 0,
+            left: 0,
+            width: "5000px",
+            height: "5000px",
+            overflow: "hidden",
+          })}
+        >
+          <Tldraw>
+            <EditorSetter setEditorState={setEditorState} />
+          </Tldraw>
+        </div>
       </div>
     </>
   );
@@ -170,18 +179,25 @@ export function ParticipantViewerDownload({
       </Button>
       <div
         className={css({
-            visibility: "hidden",
+          position: "relative",
+          overflow: "hidden",
+          visibility: "hidden",
+        })}
+      >
+        <div
+          className={css({
             position: "absolute",
             zIndex: -1000,
             top: 0,
             left: 0,
             width: "5000px",
             height: "5000px",
-        })}
-      >
-        <Tldraw>
-          <EditorSetter setEditorState={setEditorState} />
-        </Tldraw>
+          })}
+        >
+          <Tldraw>
+            <EditorSetter setEditorState={setEditorState} />
+          </Tldraw>
+        </div>
       </div>
     </>
   );
