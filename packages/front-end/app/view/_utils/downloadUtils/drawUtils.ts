@@ -1,4 +1,4 @@
-import { Editor, TLEditorSnapshot } from "tldraw";
+import { Editor, TLEditorSnapshot,SerializedStore, TLRecord } from "tldraw";
 import {
   convertBlobToUint8Array,
   exportTldrawEditorAsBlob,
@@ -23,39 +23,32 @@ export const setTempEditor = (
     // If it is empty, it has only two IDs:"document:document & page:page".
     return false;
   }
-  editor.loadSnapshot(CleanPainterSnapshot as unknown as EditorSnapshot);
-  editor.store.put(
-    Object.values(records)
-      .filter(
-        (record) => record.typeName !== "document" && record.typeName !== "page"
-      )
-      .map((record) => ({ ...record, meta: {} }))
-  );
+  Object.keys(snapshot.document.store).forEach((_key)=>{
+    const key = _key as keyof SerializedStore<TLRecord>
+    snapshot.document.store[key].meta = {};
+  })
+  editor.loadSnapshot(snapshot);
   return true;
 };
 
 export const pageEachDrawCallback = async ({
   index,
   checked,
-  width,
-  height,
   editor,
-  snapshots,
+  responses,
 }: {
   index: number;
   checked: boolean | undefined;
-  width: number;
-  height: number;
   editor: Editor | null;
-  snapshots: (TLEditorSnapshot | null)[];
+  responses: {note:(TLEditorSnapshot | null),width:number,height:number}[];
 }) => {
   if (checked) {
-    const snapshot = snapshots[index];
-    const flag = setTempEditor(editor, snapshot);
+    const snapshot = responses[index];
+    const flag = setTempEditor(editor, snapshot.note);
     if (!flag) {
       return null;
     }
-    const blob = await exportTldrawEditorAsBlob(editor, [0, 0, width, height]);
+    const blob = await exportTldrawEditorAsBlob(editor, [0, 0, snapshot.width, snapshot.height]);
     if (blob === null) {
       return null;
     }

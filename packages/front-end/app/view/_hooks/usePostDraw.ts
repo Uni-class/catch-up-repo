@@ -5,7 +5,7 @@ import {
 import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
 
-const intervalTime = (1000 * 60 * 1) / 6;
+const intervalTime = (1000 * 60 * 1) / 3;
 export const usePostDraw = (
   sessionId: number,
   fileId: number,
@@ -29,6 +29,8 @@ export const usePostDraw = (
 
   useEffect(() => {
     const sendPostRequest = async () => {
+      const width = pdfPainterController.getPage()?.originalWidth;
+      const height = pdfPainterController.getPage()?.originalHeight;
       const tempPageSet = new Set<number>();
       changedPageIndexRef.current.forEach((index) => {
         tempPageSet.add(index);
@@ -36,12 +38,12 @@ export const usePostDraw = (
       tempPageSet.forEach((index) => {
         const note =
           pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
-        if (note === null) {
+        if (note === null || width === undefined || height === undefined) {
           return;
         }
         apiClient.post(
           `/user/session/${sessionId}/file/${fileId}/note/${index}`,
-          note
+          { note: note, width, height }
         );
         changedPageIndexRef.current.delete(index);
       });

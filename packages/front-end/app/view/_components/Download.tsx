@@ -38,13 +38,11 @@ export function HostViewerDownload({
   fileName,
 }: PropType) {
   const [editorState, setEditorState] = useState<null | Editor>(null);
-  const currentToastIdRef = useRef<null | ToastID>(null);
   const hostDrawControlRef = useRef<null | HTMLInputElement>(null);
   const handleButtonClick = async () => {
     if (editorState === null || hostDrawControlRef.current === null) {
       return;
     }
-    currentToastIdRef.current = toast("서버로부터 필기를 받아오고 있습니다.");
     const snapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
           pdfPainterController.getPageCount(),
@@ -52,21 +50,14 @@ export function HostViewerDownload({
           fileId
         )
       : [];
-    toast.dismiss(currentToastIdRef.current);
-    currentToastIdRef.current = toast("pdf 문서를 만들고 있습니다.");
-    const width = pdfPainterController.getPage()?.originalWidth
-    const height = pdfPainterController.getPage()?.originalHeight
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
       await pageEachDrawCallback({
         index,
         editor: editorState,
         checked: hostDrawControlRef.current?.checked,
-        width: width || 0,
-        height: height || 0,
-        snapshots: snapshotsFromServer,
+        responses: snapshotsFromServer,
       }),
     ]);
-    toast.dismiss(currentToastIdRef.current);
     downloadPDF(pdfBytes, fileName);
   };
   return (
