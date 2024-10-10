@@ -6,7 +6,7 @@ import { Editor, Tldraw, useEditor } from "tldraw";
 import { PDFPainterController } from "@/PaintPDF/components";
 import { getMergedPDFBytes } from "../_utils/downloadUtils/getMergedPDFBytes";
 import { downloadPDF } from "../_utils/downloadUtils/downloadUtils";
-import { toast } from "react-toastify";
+import { toast, Id as ToastID } from "react-toastify";
 import { getSelfDrawFromServer } from "../_utils/downloadUtils/apiUtils";
 import { pageEachDrawCallback } from "../_utils/downloadUtils/drawUtils";
 
@@ -38,13 +38,13 @@ export function HostViewerDownload({
   fileName,
 }: PropType) {
   const [editorState, setEditorState] = useState<null | Editor>(null);
+  const currentToastIdRef = useRef<null | ToastID>(null);
   const hostDrawControlRef = useRef<null | HTMLInputElement>(null);
   const handleButtonClick = async () => {
     if (editorState === null || hostDrawControlRef.current === null) {
       return;
     }
-    toast("서버로부터 필기를 받아오고 있습니다.");
-
+    currentToastIdRef.current = toast("서버로부터 필기를 받아오고 있습니다.");
     const snapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
           pdfPainterController.getPageCount(),
@@ -52,7 +52,8 @@ export function HostViewerDownload({
           fileId
         )
       : [];
-    toast("pdf 문서를 만들고 있습니다.");
+    toast.dismiss(currentToastIdRef.current);
+    currentToastIdRef.current = toast("pdf 문서를 만들고 있습니다.");
     const width = pdfPainterController.getPage()?.originalWidth
     const height = pdfPainterController.getPage()?.originalHeight
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
@@ -65,6 +66,7 @@ export function HostViewerDownload({
         snapshots: snapshotsFromServer,
       }),
     ]);
+    toast.dismiss(currentToastIdRef.current);
     downloadPDF(pdfBytes, fileName);
   };
   return (

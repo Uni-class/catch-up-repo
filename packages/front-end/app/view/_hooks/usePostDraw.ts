@@ -29,19 +29,20 @@ export const usePostDraw = (
 
   useEffect(() => {
     const sendPostRequest = async () => {
-      const sendCompleteIndex: number[] = [];
+      const tempPageSet = new Set<number>();
       changedPageIndexRef.current.forEach((index) => {
+        tempPageSet.add(index);
+      });
+      tempPageSet.forEach((index) => {
         const note = pdfPainterInstanceController.getEditorSnapshot(index);
         if (note === null) {
           return;
         }
+        console.log({note,index},"Send To server!");
         apiClient.post(
           `/user/session/${sessionId}/file/${fileId}/note/${index}`,
           note
         );
-        sendCompleteIndex.push(index);
-      });
-      sendCompleteIndex.forEach((index) => {
         changedPageIndexRef.current.delete(index);
       });
     };
