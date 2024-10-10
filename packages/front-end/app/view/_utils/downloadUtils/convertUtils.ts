@@ -14,16 +14,23 @@ export const exportTldrawEditorAsBlob = async (
     return null;
   }
   const bounds = new Box(...boxOpts);
-  return await exportToBlob({
-    editor,
-    ids,
-    format: "png",
-    opts: {
-      padding: 0,
-      bounds: bounds,
-      background: false,
-    },
-  });
+  try{
+    return await exportToBlob({
+      editor,
+      ids,
+      format: "png",
+      opts: {
+        padding: 0,
+        bounds: bounds,
+        background: false,
+      },
+    });
+  }
+  catch (e) {
+    console.error(e);
+    console.log({editor,ids})
+    return null;
+  }
 };
 
 export const convertBlobToUint8Array = async (blob: Blob) => {

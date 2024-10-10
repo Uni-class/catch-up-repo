@@ -79,7 +79,7 @@ export function HostViewerDownload({
       </Button>
       <div
         className={css({
-          visibility: "hideen",
+          visibility: "hidden",
           position: "absolute",
           zIndex: -1000,
           top: 0,
@@ -170,7 +170,7 @@ export function ParticipantViewerDownload({
       </Button>
       <div
         className={css({
-            visibility: "hideen",
+            visibility: "hidden",
             position: "absolute",
             zIndex: -1000,
             top: 0,
