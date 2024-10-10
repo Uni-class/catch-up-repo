@@ -204,7 +204,7 @@ export class UsersService {
     fileId: number,
     pageNumber: number,
   ) {
-    const note = this.noteModel
+    const note = await this.noteModel
       .find({
         userId,
         sessionId,
