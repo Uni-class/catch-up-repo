@@ -7,6 +7,8 @@ import LinkButton from "@/components/LinkButton";
 import Link from "next/link";
 import { useAccountController } from "@/hook/useAccount";
 import { ProfileImage } from "@/components/ProfileImage";
+import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
+import Placeholder from "@/components/Placeholder/Placeholder";
 
 const NavBar = () => {
   const accountController = useAccountController();
@@ -86,17 +88,10 @@ const NavBar = () => {
             </p>
           </div>
         ) : accountController.isLoading ? (
-          <div
-            className={css({
-              display: "flex",
-              padding: "0 0.8em",
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            })}
-          >
-            User Profile Loading Skeleton UI
-          </div>
+          <PlaceholderLayout height={"100%"} padding={"0 0.8em"} gap={"0.6em"}>
+            <Placeholder type={"circle"} width={"32px"} height={"32px"} />
+            <Placeholder type={"text"} width={"6em"} />
+          </PlaceholderLayout>
         ) : (
           <LinkButton
             className={css({
