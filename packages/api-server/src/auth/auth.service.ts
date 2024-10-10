@@ -81,8 +81,8 @@ export class AuthService implements OnModuleInit {
     });
   }
 
-  async tokenValidateUser(payload: JwtPayload) {
-    return await this.userService.findOneById(payload.id);
+  async tokenValidateUser(userId: number) {
+    return await this.userService.findOneById(userId);
   }
 
   async deleteRefreshTokenOfUser(userId: number) {

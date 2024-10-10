@@ -225,4 +225,20 @@ export class UsersController {
     );
     return notes;
   }
+  @Get('session/:sessionId/file/:fileId/host-note/:pageNumber')
+  @ApiOkResponse({ type: Object })
+  @UseGuards(JwtGuard)
+  async getHostFileNotes(
+    @UserId(ParseIntPipe) userId: number,
+    @Param('sessionId') sessionId: number,
+    @Param('fileId') fileId: number,
+    @Param('pageNumber') pageNumber: number,
+  ) {
+    return await this.usersService.getHostFileNotes(
+      userId,
+      sessionId,
+      fileId,
+      pageNumber,
+    );
+  }
 }

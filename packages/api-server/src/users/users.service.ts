@@ -204,7 +204,7 @@ export class UsersService {
     fileId: number,
     pageNumber: number,
   ) {
-    const note = this.noteModel
+    const note = await this.noteModel
       .find({
         userId,
         sessionId,
@@ -241,5 +241,26 @@ export class UsersService {
       await this.noteModel.deleteOne({ userId, sessionId, fileId, pageNumber });
 
     return await newNote.save();
+  }
+
+  async getHostFileNotes(
+    userId: number,
+    sessionId: number,
+    fileId: number,
+    pageNumber: number,
+  ) {
+    if (!(await this.userSessionRepository.findOneBy({ sessionId, userId }))) {
+      throw new BadRequestException("You didn't joined this session.");
+    }
+    const hostId = (await this.sessionRepository.findOneBy({ sessionId }))
+      ?.hostId;
+    return await this.noteModel
+      .find({
+        userId: hostId,
+        sessionId,
+        fileId,
+        pageNumber,
+      })
+      .exec();
   }
 }
