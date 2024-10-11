@@ -16,6 +16,8 @@ import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 import { usePostDraw } from "../_hooks/usePostDraw";
+import Button from "@/components/Button";
+import { HostViewerDownload } from "./Download";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -87,7 +89,7 @@ export default function HostViewer(props: ViewerPropType) {
           </PDFPainter>
           {showCodeOverlay && (
             <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
-              <CodeOverlay code={props.sessionCode}  />
+              <CodeOverlay code={props.sessionCode} />
             </CodeOverlayContainer>
           )}
         </div>
@@ -97,19 +99,23 @@ export default function HostViewer(props: ViewerPropType) {
         showCodeOverlay={showCodeOverlay}
         setShowCodeOverlay={setShowCodeOverlay}
         modeComponent={
-          <>
-            <ModeControl
-              labelText="내 필기 가리기"
-              id="hide-host-draw"
-              checked={pdfPainterController.getInstanceHidden("Host")}
-              onChange={(e) => {
-                pdfPainterController.setInstanceHidden(
-                  "Host",
-                  e.target.checked
-                );
-              }}
-            />
-          </>
+          <ModeControl
+            labelText="내 필기 가리기"
+            id="hide-host-draw"
+            checked={pdfPainterController.getInstanceHidden("Host")}
+            onChange={(e) => {
+              pdfPainterController.setInstanceHidden("Host", e.target.checked);
+            }}
+          />
+        }
+        downloadComponent={
+          <HostViewerDownload
+            sessionId={sessionId}
+            fileId={fileId}
+            fileName={pdfDocument.name}
+            pdfPainterController={pdfPainterController}
+            src={pdfDocument.url}
+          />
         }
       />
     </>

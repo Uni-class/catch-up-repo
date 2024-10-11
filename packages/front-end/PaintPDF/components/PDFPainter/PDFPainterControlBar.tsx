@@ -14,11 +14,13 @@ import { ModeContainer } from "@/app/view/_components/Mode";
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
   modeComponent,
+  downloadComponent,
   showCodeOverlay,
   setShowCodeOverlay,
 }: {
   pdfPainterController: PDFPainterController;
   modeComponent?: ReactNode;
+  downloadComponent?: ReactNode;
   showCodeOverlay: boolean;
   setShowCodeOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -28,7 +30,8 @@ const PDFPainterControlBarComponent = ({
     );
   }, [pdfPainterController]);
 
-  const [showToolTip, setShowToolTip] = useState(false);
+  const [showModeToolTip, setShowModeToolTip] = useState(false);
+  const [showDownloadToolTip, setShowDownloadToolTip] = useState(false);
 
   return (
     <div
@@ -110,14 +113,29 @@ const PDFPainterControlBarComponent = ({
         <div className={css({ position: "relative" })}>
           <PDFPainterControlBarButton
             onClick={() => {
-              setShowToolTip(!showToolTip);
+              setShowModeToolTip(!showModeToolTip);
             }}
           >
-            <p>{showToolTip ? "닫기" : "모드"}</p>
+            <p>{showModeToolTip ? "닫기" : "모드"}</p>
           </PDFPainterControlBarButton>
-          {showToolTip && (
-            <ModeContainer setVisible={setShowToolTip}>
+          {showModeToolTip && (
+            <ModeContainer setVisible={setShowModeToolTip}>
               {modeComponent}
+            </ModeContainer>
+          )}
+        </div>
+        <div className={css({ position: "relative" })}>
+          <PDFPainterControlBarButton
+            onClick={() => {
+              setShowDownloadToolTip(!showDownloadToolTip);
+            }}
+            className={css({ width: "6em" })}
+          >
+            <p>{showDownloadToolTip ? "닫기" : "다운로드"}</p>
+          </PDFPainterControlBarButton>
+          {showDownloadToolTip && (
+            <ModeContainer setVisible={setShowDownloadToolTip} title="다운로드 옵션">
+              {downloadComponent}
             </ModeContainer>
           )}
         </div>

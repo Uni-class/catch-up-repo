@@ -11,6 +11,12 @@ const PDFPainterControlBarButtonComponent = styled("button", {
     _disabled: {
       backgroundColor: "#d8d8d8",
       cursor: "default",
+      _hover: {
+        backgroundColor: "#d8d8d8",
+      },
+    },
+    _hover: {
+      bg: "gray.100",
     },
   },
 });
