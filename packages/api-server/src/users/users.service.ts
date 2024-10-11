@@ -83,8 +83,6 @@ export class UsersService {
       order: { createdAt: 'DESC' },
     });
 
-    console.log(userSessions);
-
     const sessions = (
       await Promise.all(userSessions.map((userSession) => userSession.session))
     )
