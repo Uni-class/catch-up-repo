@@ -111,6 +111,7 @@ function PageElement({
         <Page
           loading={
             <PlaceholderLayout
+              padding={"0.3em"}
               height={height}
               type={"vertical"}
               gap={"0.5em"}
