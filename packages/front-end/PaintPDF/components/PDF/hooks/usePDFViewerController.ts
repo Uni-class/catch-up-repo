@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useTransition,
-} from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import type {
   PDFDocument,
   PDFPage,
@@ -27,22 +21,21 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
   });
   const [dragModeEnabled, setDragModeEnabled] = useState(false);
   const [itemClickEnabled, setItemClickEnabled] = useState(true);
-  const [isPending, startTransition] = useTransition();
 
   const setPageIndex = useCallback((newPageIndex: number) => {
-	setRawPageIndex((pageIndex: number) => {
+    setRawPageIndex((pageIndex: number) => {
       if (pageIndex === newPageIndex) {
         return pageIndex;
-	  }
-	  setRawRenderOptions((prev) => {
-		return {
-			width: prev.width,
-			height: prev.height,
-			baseX: 0,
-			baseY: 0,
-			scale: 1,
-		};
-	});
+      }
+      setRawRenderOptions((prev) => {
+        return {
+          width: prev.width,
+          height: prev.height,
+          baseX: 0,
+          baseY: 0,
+          scale: 1,
+        };
+      });
       return newPageIndex;
     });
   }, []);
@@ -53,7 +46,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
       const newBaseX = Math.max(Math.min(width * (1 - 1 / newScale), baseX), 0);
       const newBaseY = Math.max(
         Math.min(height * (1 - 1 / newScale), baseY),
-        0
+        0,
       );
       const newRenderOptions = {
         width: width,
@@ -77,7 +70,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         }
       });
     },
-    []
+    [],
   );
 
   const pdfViewerController = useMemo(() => {
@@ -160,18 +153,18 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         const { width, height, baseX, baseY, scale } = renderOptions;
         const newScale = Math.max(
           Math.min(Number((scale * (1 + scaleDelta)).toFixed(2)), 10),
-          1
+          1,
         );
         if (scale === newScale) {
           return;
         }
         const pdfDocumentOffsetX = Math.max(
           Math.min(Math.round(baseX + offsetX / scale), Math.floor(width)),
-          0
+          0,
         );
         const pdfDocumentOffsetY = Math.max(
           Math.min(Math.round(baseY + offsetY / scale), Math.floor(height)),
-          0
+          0,
         );
         const scaledBaseX = pdfDocumentOffsetX - offsetX / newScale;
         const scaledBaseY = pdfDocumentOffsetY - offsetY / newScale;
@@ -229,7 +222,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
           break;
       }
     },
-    [pdfViewerController]
+    [pdfViewerController],
   );
 
   useEffect(() => {
@@ -251,7 +244,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         });
       }
     },
-    [dragModeEnabled, pdfViewerController]
+    [dragModeEnabled, pdfViewerController],
   );
 
   const wheelEventHandler = useCallback(
@@ -264,10 +257,10 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         event.currentTarget as HTMLDivElement
       ).getBoundingClientRect();
       const offsetX = Math.round(
-        event.offsetX + targetRect.left - currentTargetRect.left
+        event.offsetX + targetRect.left - currentTargetRect.left,
       );
       const offsetY = Math.round(
-        event.offsetY + targetRect.top - currentTargetRect.top
+        event.offsetY + targetRect.top - currentTargetRect.top,
       );
       const wheelDelta =
         event.deltaX + event.deltaY + event.deltaZ > 0 ? -1 : 1;
@@ -278,7 +271,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         scaleDelta: wheelDelta * scaleRatio,
       });
     },
-    [pdfViewerController]
+    [pdfViewerController],
   );
 
   const itemClickHandler = useCallback(
@@ -288,7 +281,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         setPageIndex(pageIndex);
       }
     },
-    [itemClickEnabled, setPageIndex]
+    [itemClickEnabled, setPageIndex],
   );
 
   return {
