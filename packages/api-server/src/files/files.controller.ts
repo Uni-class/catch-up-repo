@@ -28,7 +28,8 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
 import { File } from './entities/file.entity';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { UpdateResult } from 'typeorm';
+import { Multer } from 'multer-utf8';
 
 @ApiTags('file')
 @ApiBearerAuth()
@@ -62,7 +63,7 @@ export class FilesController {
         validators: [new FileTypeValidator({ fileType: 'pdf' })],
       }),
     )
-    files: Express.Multer.File[],
+    files: Multer.File[],
   ): Promise<FileUploadResponseDto> {
     return await this.filesService.uploadFile(userId, files);
   }
@@ -90,7 +91,7 @@ export class FilesController {
         validators: [new FileTypeValidator({ fileType: 'pdf' })],
       }),
     )
-    file: Express.Multer.File,
+    file: Multer.File,
   ): Promise<FileUploadResponseDto> {
     return await this.filesService.uploadFile(userId, [file]);
   }
