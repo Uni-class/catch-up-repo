@@ -28,7 +28,7 @@ export type PDFPainterController = {
   ) => EditorSnapshot | null;
   getEditorSnapshotFromStorage: (
     editorId: string,
-    pageIndex: number
+    pageIndex: number,
   ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
@@ -61,6 +61,7 @@ export type PDFPainterControllerHook = {
 export type PDFPainterInstanceController = {
   getEditor: () => Editor | null;
   getEditorSnapshot: (pageIndex: number) => EditorSnapshot | null;
+  getEditorSnapshotFromStorage: (pageIndex: number) => EditorSnapshot | null;
   setEditorSnapshot: (pageIndex: number, snapshot: EditorSnapshot) => void;
   clearEditorSnapshot: (pageIndex: number) => void;
   getPaintElement: (elementId: PainterShapeId) => PainterShape | null;
