@@ -52,6 +52,7 @@ export class SessionsController {
       await this.filesService.getFileAsUser(fileId, userId);
     }
     const session = await this.sessionsService.create(createSessionDto);
+    console.log(session);
     const user = await this.usersService.findOneById(userId);
     await this.usersService.postUserSession({
       userId: userId,
