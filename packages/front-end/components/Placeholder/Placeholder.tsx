@@ -8,6 +8,7 @@ interface PlaceholderProps {
   lineCount?: number;
   lineHeight?: CSSProperties["lineHeight"];
   lineGap?: CSSProperties["gap"];
+  justifyContent?: CSSProperties["justifyContent"];
   borderRadius?: CSSProperties["borderRadius"];
 }
 
@@ -18,6 +19,7 @@ const Placeholder = ({
   lineCount = 1,
   lineHeight = "1em",
   lineGap = "1em",
+  justifyContent = "space-between",
   borderRadius = "0.2em",
 }: PlaceholderProps) => {
   if (type === "text") {
@@ -25,10 +27,15 @@ const Placeholder = ({
       <div
         className={css({
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
           alignItems: "center",
         })}
-        style={{ gap: lineGap }}
+        style={{
+          width: width,
+          height: height,
+          justifyContent: justifyContent,
+          gap: lineGap,
+        }}
       >
         {Array.from({ length: lineCount }, (_, index) => (
           <div

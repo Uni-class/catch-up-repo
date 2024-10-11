@@ -1,7 +1,9 @@
 import { PDFPainterController } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
-import { MouseEventHandler, ReactNode, useRef } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import Placeholder from "@/components/Placeholder/Placeholder";
+import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
 
 const options = {
   cMapUrl: `//unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
@@ -37,6 +39,20 @@ export function PreviewPages({
     >
       <Document
         file={pdfDocumentURL}
+        loading={
+          <PlaceholderLayout
+            width={160}
+            type={"vertical"}
+            gap={"1em"}
+            alignItems={"flex-start"}
+          >
+            <Placeholder width={160} height={90} type={"box"} />
+            <Placeholder width={160} height={90} type={"box"} />
+            <Placeholder width={160} height={90} type={"box"} />
+            <Placeholder width={160} height={90} type={"box"} />
+            <Placeholder width={160} height={90} type={"box"} />
+          </PlaceholderLayout>
+        }
         className={css({
           display: "flex",
           flexDirection: "column",
@@ -48,6 +64,8 @@ export function PreviewPages({
         {Array.from(new Array(pageCount), (el, index) => (
           <PageElement
             key={`page-${index}`}
+            width={160}
+            height={90}
             index={index}
             onClick={() => {
               PDFPainterController.setPageIndex(index);
@@ -63,12 +81,16 @@ export function PreviewPages({
 }
 
 function PageElement({
+  width,
+  height,
   index,
   onClick,
   currentIndex,
   isBadgeVisible = false,
   badgeContent,
 }: {
+  width: number;
+  height: number;
   index: number;
   currentIndex: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
@@ -87,12 +109,35 @@ function PageElement({
         })}
       >
         <Page
+          loading={
+            <PlaceholderLayout
+              height={height}
+              type={"vertical"}
+              gap={"0.5em"}
+              alignItems={"flex-start"}
+            >
+              <Placeholder
+                width={width / 2}
+                type={"text"}
+                lineCount={1}
+                lineHeight={"1em"}
+                lineGap={0}
+              />
+              <Placeholder
+                width={width}
+                height={"100%"}
+                type={"text"}
+                lineCount={4}
+                lineHeight={"0.7em"}
+                lineGap={0}
+              />
+            </PlaceholderLayout>
+          }
           pageNumber={index + 1}
-          width={1600}
-          height={900}
+          width={width}
+          height={height}
           renderTextLayer={false}
           renderAnnotationLayer={false}
-          scale={0.1}
         />
         {isBadgeVisible && (
           <div
