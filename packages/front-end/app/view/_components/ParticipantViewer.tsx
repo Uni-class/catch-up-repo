@@ -19,6 +19,8 @@ import { ModeControl } from "./Mode";
 import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
 import { usePostDraw } from "../_hooks/usePostDraw";
+import Button from "@/components/Button";
+import { ParticipantViewerDownload } from "./Download";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -158,6 +160,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
               }}
             />
           </>
+        }
+        downloadComponent={
+          <ParticipantViewerDownload
+            sessionId={sessionId}
+            fileId={fileId}
+            fileName={pdfDocument.name}
+            pdfPainterController={pdfPainterController}
+            src={pdfDocument.url}
+          />
         }
       />
     </>

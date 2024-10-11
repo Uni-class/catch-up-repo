@@ -26,6 +26,10 @@ export type PDFPainterController = {
     editorId: string,
     pageIndex: number,
   ) => EditorSnapshot | null;
+  getEditorSnapshotFromStorage: (
+    editorId: string,
+    pageIndex: number
+  ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
     pageIndex: number,

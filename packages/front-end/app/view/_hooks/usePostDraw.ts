@@ -5,7 +5,7 @@ import {
 import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
 
-const intervalTime = (1000 * 60 * 1) / 2;
+const intervalTime = (1000 * 60 * 1) / 3;
 export const usePostDraw = (
   sessionId: number,
   fileId: number,
@@ -29,19 +29,22 @@ export const usePostDraw = (
 
   useEffect(() => {
     const sendPostRequest = async () => {
-      const sendCompleteIndex: number[] = [];
+      const width = pdfPainterController.getPage()?.originalWidth;
+      const height = pdfPainterController.getPage()?.originalHeight;
+      const tempPageSet = new Set<number>();
       changedPageIndexRef.current.forEach((index) => {
-        const note = pdfPainterInstanceController.getEditorSnapshot(index);
-        if (note === null) {
+        tempPageSet.add(index);
+      });
+      tempPageSet.forEach((index) => {
+        const note =
+          pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
+        if (note === null || width === undefined || height === undefined) {
           return;
         }
         apiClient.post(
           `/user/session/${sessionId}/file/${fileId}/note/${index}`,
-          note
+          { note: note, width, height }
         );
-        sendCompleteIndex.push(index);
-      });
-      sendCompleteIndex.forEach((index) => {
         changedPageIndexRef.current.delete(index);
       });
     };
