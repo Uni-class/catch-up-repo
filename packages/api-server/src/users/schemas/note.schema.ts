@@ -1,22 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema({ minimize: false })
 export class Note extends Document {
-  @Prop()
+  @Prop({ require: true, type: Number })
   userId: number;
 
-  @Prop()
+  @Prop({ require: true, type: Number })
   sessionId: number;
 
-  @Prop()
+  @Prop({ require: true, type: Number })
   fileId: number;
 
-  @Prop()
+  @Prop({ require: true, type: Number })
   pageNumber: number;
 
-  @Prop({ type: Object })
-  data: any;
+  @Prop({ require: true, type: Object, default: {} })
+  data: object;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);
