@@ -7,6 +7,8 @@ interface PlaceholderLayoutProps {
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
   gap?: CSSProperties["gap"];
+  justifyContent?: CSSProperties["justifyContent"];
+  alignItems?: CSSProperties["alignItems"];
   children: ReactNode;
 }
 
@@ -16,6 +18,8 @@ const PlaceholderLayout = ({
   width,
   height,
   gap = "0.2em",
+  justifyContent = "center",
+  alignItems = "center",
   children,
 }: PlaceholderLayoutProps) => {
   return (
@@ -23,17 +27,17 @@ const PlaceholderLayout = ({
       className={cx(
         css({
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }),
         type === "vertical"
-          ? css({ flexDirection: "row" })
-          : css({ flexDirection: "column" }),
+          ? css({ flexDirection: "column" })
+          : css({ flexDirection: "row" }),
       )}
       style={{
         padding: padding,
         width: width,
         height: height,
+        justifyContent: justifyContent,
+        alignItems: alignItems,
         gap: gap,
       }}
     >
