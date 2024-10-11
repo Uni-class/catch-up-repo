@@ -24,7 +24,9 @@ export class SessionsService {
     private readonly sessionRepository: Repository<Session>,
   ) {}
   async create(createSessionDto: CreateSessionDto) {
-    const newSession = this.sessionRepository.create(createSessionDto);
+    const newSession = await this.sessionRepository.save(
+      this.sessionRepository.create(createSessionDto),
+    );
     const sessionCode: string = await this.makeSessionCode(
       newSession.sessionId,
     );
