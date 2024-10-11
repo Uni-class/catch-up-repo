@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 export default function Feature() {
   return (
-    <div
+    <section
       className={css({
         padding: "0 10rem",
         width: "100%",
@@ -19,7 +19,14 @@ export default function Feature() {
           padding: "2.3rem 3.3rem 5rem 3.3rem",
         })}
       >
-        <h2 className={css({ textAlign: "center", marginBottom: "3rem" })}>
+        <h2
+          className={css({
+            textAlign: "center",
+            marginBottom: "3rem",
+            fontSize: "1.6rem",
+            fontWeight: "bold",
+          })}
+        >
           캐치업 핵심 기능
         </h2>
         <div
@@ -27,6 +34,7 @@ export default function Feature() {
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
+            gap: "3rem 0",
           })}
         >
           {featureData.map((feature, index) => (
@@ -39,7 +47,7 @@ export default function Feature() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -62,10 +70,10 @@ const featureData: Omit<ElementPropType, "index">[] = [
           boxSizing: "border-box",
           padding: "0 3rem",
           width: "100%",
-          marginBottom: "-1.3rem",
-          marginTop: "1.3rem",
           position: "absolute",
           right: 0,
+          bottom: 0,
+          transform: "translateY(50%)",
         })}
       />
     ),
@@ -128,6 +136,7 @@ const featureData: Omit<ElementPropType, "index">[] = [
           justifyContent: "center",
           width: "100%",
           height: "4rem",
+          marginTop: "13px",
         })}
       >
         <div
@@ -148,7 +157,7 @@ const featureData: Omit<ElementPropType, "index">[] = [
             height={36}
             alt="icon"
           />
-        </div>{" "}
+        </div>
       </div>
     ),
   },
@@ -161,14 +170,28 @@ function FeatureElement({ index, text, footer }: ElementPropType) {
         borderRadius: "30px",
         backgroundColor: "#F4F4F4",
         width: "266px",
-        height: "169px",
-        padding: "1.6rem 2.5rem",
+        height: "191px",
+        padding: "1.6rem 2.5rem 2.625rem 2.5rem",
         textAlign: "center",
         position: "relative",
       })}
     >
-      <p className={css({ color: "primary" })}>{`핵심기능 0${index}`}</p>
-      <p className={css({ marginTop: "0.875rem" })}>{text}</p>
+      <p
+        className={css({
+          color: "primary",
+          fontSize: "0.83rem",
+          fontWeight: "bold",
+        })}
+      >{`핵심기능 0${index}`}</p>
+      <p
+        className={css({
+          marginTop: "0.875rem",
+          fontSize: "1.25rem",
+          fontWeight: "bold",
+        })}
+      >
+        {text}
+      </p>
       {footer}
     </div>
   );

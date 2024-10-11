@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Banner from "./_components/Banner";
 import Feature from "./_components/Feature";
+import AdditionalFeature from "./_components/AdditionalFeature";
 
 export default function Page() {
   return (
@@ -26,6 +27,7 @@ export default function Page() {
         <NavBar />
         <Banner />
         <Feature/>
+        <AdditionalFeature/>
       </div>
       <Footer />
     </>
