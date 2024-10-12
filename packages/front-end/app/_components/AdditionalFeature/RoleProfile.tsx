@@ -22,6 +22,7 @@ export default function RoleProfile({
         display: "flex",
         flexDirection: flexDirection,
         alignItems: "center",
+        marginBottom:"3.4rem",
       })}
     >
       <div className={css({ position: "relative" })}>

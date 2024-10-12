@@ -6,7 +6,7 @@ export default function AdditionalFeature() {
   return (
     <section
       className={css({
-        padding: "0 4.54rem",
+        padding: "0 12.9rem", // 4.54rem
         width: "100%",
         boxSizing: "border-box",
         marginTop: "4.54rem",

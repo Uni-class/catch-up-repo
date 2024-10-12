@@ -8,6 +8,7 @@ import Link from "next/link";
 import Banner from "./_components/Banner";
 import Feature from "./_components/Feature";
 import AdditionalFeature from "./_components/AdditionalFeature";
+import Recommend from "./_components/Recommend";
 
 export default function Page() {
   return (
@@ -28,6 +29,7 @@ export default function Page() {
         <Banner />
         <Feature/>
         <AdditionalFeature/>
+        <Recommend/>
       </div>
       <Footer />
     </>
