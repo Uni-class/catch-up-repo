@@ -21,9 +21,10 @@ const FooterGroup = ({
       <div
         className={css({
           width: "100%",
-          padding: "0.5em",
+          padding: "0.5em 0",
           fontSize: "1.1em",
           fontWeight: "bold",
+          color: "secondary",
         })}
       >
         {name}
