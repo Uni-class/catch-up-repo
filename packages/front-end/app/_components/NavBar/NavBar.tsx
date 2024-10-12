@@ -1,7 +1,8 @@
-import { ProfileImage } from "@/components/ProfileImage";
 import { css } from "@/styled-system/css";
 import Image from "next/image";
 import Link from "next/link";
+import { Profile } from "./Profile";
+import { Suspense } from "react";
 
 const navData: { href: URL | string; text: string }[] = [
   { href: "/", text: "도움말" },
@@ -16,7 +17,7 @@ const NavBar = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        width:"100%"
+        width: "100%",
       })}
     >
       <Image
@@ -47,7 +48,9 @@ const NavBar = () => {
           </Link>
         ))}
       </nav>
-      <ProfileImage alt="profile" src="" width={25} height={25}/>
+      <Suspense>
+        <Profile />
+      </Suspense>
     </div>
   );
 };
