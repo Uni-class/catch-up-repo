@@ -11,6 +11,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { File } from './entities/file.entity';
 import { ConfigService } from '@nestjs/config';
 import { FileUploadResponseDto } from './dto/file-upload.response.dto';
+import { Multer } from 'multer-utf8';
 
 @Injectable()
 export class FilesService {
@@ -58,7 +59,7 @@ export class FilesService {
 
   async uploadFile(
     userId: number,
-    files: Express.Multer.File[],
+    files: Multer.File[],
   ): Promise<FileUploadResponseDto> {
     if (!files) throw new BadRequestException(`File not exists`);
     for (const file of files) {
@@ -69,10 +70,8 @@ export class FilesService {
     return new FileUploadResponseDto(true);
   }
 
-  async s3Upload(userId: number, file: Express.Multer.File) {
-    const fileName: string = Buffer.from(file.originalname, 'latin1')
-      .toString('utf8')
-      .normalize('NFC');
+  async s3Upload(userId: number, file: Multer.File) {
+    const fileName: string = file.originalname.normalize('NFC');
     const key: string = `${Date.now().toString()}-${fileName}`;
     const param = {
       Key: key,

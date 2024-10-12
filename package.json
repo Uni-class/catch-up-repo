@@ -18,5 +18,8 @@
   "devDependencies": {
     "typescript": "^5.5.3"
   },
-  "packageManager": "yarn@4.3.1"
+  "packageManager": "yarn@4.3.1",
+  "dependencies": {
+    "multer-utf8": "^1.4.5-lts.11"
+  }
 }
