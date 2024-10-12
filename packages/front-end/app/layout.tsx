@@ -17,8 +17,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="ko">
-      <body className={`${inter.className} ${pretendard.className}`}>
+    <html lang="ko" className={`${pretendard.variable}`}>
+      <body className={`${inter.className}`}>
         <Provider>
           <div
             className={css({
