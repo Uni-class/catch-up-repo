@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { css } from "@/styled-system/css";
+import { pretendard } from "./_utils/localfont";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +18,13 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${pretendard.className}`}>
         <Provider>
           <div
             className={css({
               width: "100%",
               height: "100vh",
-              overflow:"scroll",
+              overflow: "scroll",
             })}
           >
             {children}
