@@ -3,8 +3,8 @@ import Provider from "@/provider";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { css } from "@/styled-system/css";
-import { pretendard } from "./_utils/localfont";
+import { css, cx } from "@/styled-system/css";
+import { pretendard } from "./_utils/localFont";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className={`${inter.className}`}>
+      <body className={css({ fontFamily: "Pretendard" })}>
         <Provider>
           <div
             className={css({

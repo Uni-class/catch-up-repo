@@ -66,4 +66,7 @@ export const theme: Tokens = {
     secondary: { value: "#AFFD06" },
     tertiary: { value: "#ABBDF5" },
   },
+  fonts: {
+    Pretendard: { value: "var(--font-pretendard), sans-serif" },
+  },
 };

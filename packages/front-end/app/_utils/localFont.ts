@@ -28,4 +28,5 @@ export const pretendard = localFont({
     },
   ],
   display: "swap",
+  variable: '--font-pretendard'
 });
