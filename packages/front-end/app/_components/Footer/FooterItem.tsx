@@ -15,12 +15,12 @@ const FooterItem = ({
     <div
       className={css({
         display: "flex",
-        height: "100%",
+       
         alignItems: "center",
         cursor: "pointer",
         borderRadius: "0.2em",
         _hoverNotActive: {
-          backgroundColor: "#ffffff80",
+          color: "secondary",
         },
       })}
     >
@@ -28,7 +28,7 @@ const FooterItem = ({
         className={css({
           width: "100%",
           height: "100%",
-          padding: "0.8em 1em",
+          padding: "0.8em 0",
         })}
         href={href}
         target={target}

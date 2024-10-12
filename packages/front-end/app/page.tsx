@@ -19,7 +19,7 @@ export default function Page() {
 
           bg: "primary",
           color: "#fff",
-          padding: "1rem 1.25rem",
+          padding: "1rem 1.25rem 6.3rem 1.25rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
