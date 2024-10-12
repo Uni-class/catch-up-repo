@@ -47,6 +47,7 @@ export default function RoleProfile({
           padding: "1.46rem 0.95rem",
           boxSizing: "border-box",
           flexGrow: 1,
+          boxShadow: "10px 15px 5px rgba(0, 0, 0, 0.1)",
         })}
       >
         {textData.map((e, i) => (

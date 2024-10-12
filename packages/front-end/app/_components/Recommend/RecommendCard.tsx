@@ -72,6 +72,7 @@ const CardContainer = styled("div", {
     alignItems: "flex-end",
     gridColumn: 1,
     transform: "translateY(-30%)",
+    boxShadow: "5px 20px 5px rgba(0, 0, 0, 0.1)",
   },
   variants: {
     right: {
