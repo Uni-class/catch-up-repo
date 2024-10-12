@@ -2,7 +2,7 @@ import { css, cx } from "@/styled-system/css";
 import { ReactNode, memo, CSSProperties } from "react";
 
 interface PlaceholderLayoutProps {
-  type?: "vertical" | "horizontal";
+  type?: "horizontal" | "vertical";
   padding?: CSSProperties["padding"];
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
@@ -13,7 +13,7 @@ interface PlaceholderLayoutProps {
 }
 
 const PlaceholderLayout = ({
-  type = "vertical",
+  type = "horizontal",
   padding,
   width,
   height,
@@ -28,9 +28,9 @@ const PlaceholderLayout = ({
         css({
           display: "flex",
         }),
-        type === "vertical"
-          ? css({ flexDirection: "column" })
-          : css({ flexDirection: "row" }),
+        type === "horizontal"
+          ? css({ flexDirection: "row" })
+          : css({ flexDirection: "column" }),
       )}
       style={{
         padding: padding,
