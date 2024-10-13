@@ -1,41 +1,48 @@
-"use client";
-
 import { css } from "@/styled-system/css";
 import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
 import Divider from "@/components/Divider";
-import { Heading } from "@/components/Text";
-import LogoIcon from "@/public/logo-horizontal-white.svg";
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
 import ExternalLinkIcon from "@/public/icons/external-link.svg";
 import DatabaseIcon from "@/public/icons/database.svg";
-import { PROJECT_NAME } from "@/const/config";
 import AccountOptionsViewer from "./AccountOptionsViewer";
+import { TopLogo } from "./TopLogo";
 
 export default function Sidebar() {
   return (
     <div
       className={css({
-        width: "12.625rem",
+        width: "15.15rem",
         height: "100%",
         borderRight: "1px solid",
         borderColor: "gray.200",
         bg: "primary.light",
+        color: "white",
       })}
     >
-      <div
-        className={css({
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "4.16rem",
-        })}
+      <TopLogo />
+      <SidebarGroup
+        name="Sessions"
+        icon={<CastIcon width={"0.8125rem"} height={"0.8125rem"} />}
       >
-        <LogoIcon width={"7.08rem"} height={"1.35rem"} />
-      </div>
+        <SidebarLink href="/sessions/participant">내가 참가한 세션</SidebarLink>
+        <SidebarLink href="/sessions/host">내가 주최한 세션</SidebarLink>
+        <SidebarLink href="/sessions/create">세션 생성하기</SidebarLink>
+        <SidebarLink href="/sessions/join">세션 접속하기</SidebarLink>
+      </SidebarGroup>
+      <SidebarGroup
+        name="Drive"
+        icon={<DatabaseIcon width={"0.8125rem"} height={"0.8125rem"} />}
+      >
+        <SidebarLink href="/files">강의 자료</SidebarLink>
+      </SidebarGroup>
+    </div>
+  );
+}
+/*
       <SidebarGroup
         name="메뉴"
         className={css({
@@ -75,6 +82,4 @@ export default function Sidebar() {
       </SidebarGroup>
       <Divider />
       <AccountOptionsViewer />
-    </div>
-  );
-}
+*/
