@@ -6,7 +6,7 @@ import SidebarLink from "./SidebarLink";
 import SidebarDirectory from "./SidebarDirectory";
 import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
-import LogoIcon from "@/public/logo.svg";
+import LogoIcon from "@/public/logo-horizontal-white.svg";
 import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
@@ -19,36 +19,23 @@ export default function Sidebar() {
   return (
     <div
       className={css({
-        display: "flex",
-        padding: "0.5em",
-        width: "14em",
+        width: "12.625rem",
         height: "100%",
         borderRight: "1px solid",
         borderColor: "gray.200",
-        flexDirection: "column",
+        bg: "primary.light",
       })}
     >
       <div
         className={css({
           display: "flex",
-          margin: "1em 0",
-          flexDirection: "column",
-          gap: "1em",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "4.16rem",
         })}
       >
-        <div
-          className={css({
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5em",
-          })}
-        >
-          <LogoIcon width={"3em"} height={"3em"} />
-          <Heading variant="h4">{PROJECT_NAME}</Heading>
-        </div>
+        <LogoIcon width={"7.08rem"} height={"1.35rem"} />
       </div>
-      <Divider />
       <SidebarGroup
         name="메뉴"
         className={css({

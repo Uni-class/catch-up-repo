@@ -17,7 +17,7 @@ export default function Page() {
         className={css({
           width: "100%",
 
-          bg: "primary",
+          bg: "primary.light",
           color: "#fff",
           padding: "1rem 1.25rem 6.3rem 1.25rem",
           display: "flex",
