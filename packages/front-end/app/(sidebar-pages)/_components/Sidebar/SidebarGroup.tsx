@@ -28,7 +28,7 @@ export default function SidebarGroup({
           display: "flex",
           alignItems: "center",
           border: "1px solid",
-          borderColor: "primary.dark",
+          borderColor: "primary",
         })}
       >
         <div

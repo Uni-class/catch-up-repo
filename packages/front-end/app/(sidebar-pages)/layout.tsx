@@ -4,6 +4,7 @@ import { ReactNode, Suspense, useEffect } from "react";
 import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
 import { useAccountController } from "@/hook/useAccount";
+import Header from "./_components/Header";
 
 export default function Layout({
   children,
@@ -48,9 +49,10 @@ export default function Layout({
       <div
         className={css({
           flex: 1,
-          padding: "2em 1em",
+          padding: "0 1em",
         })}
       >
+        <Header/>
         {children}
       </div>
     </div>

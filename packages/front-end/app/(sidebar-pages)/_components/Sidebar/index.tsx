@@ -1,14 +1,8 @@
 import { css } from "@/styled-system/css";
 import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
-import SidebarDirectory from "./SidebarDirectory";
-import Divider from "@/components/Divider";
-import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
-import PlusCircleIcon from "@/public/icons/plus-circle.svg";
-import ExternalLinkIcon from "@/public/icons/external-link.svg";
 import DatabaseIcon from "@/public/icons/database.svg";
-import AccountOptionsViewer from "./AccountOptionsViewer";
 import { TopLogo } from "./TopLogo";
 
 export default function Sidebar() {
