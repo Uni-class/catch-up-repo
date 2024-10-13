@@ -1,4 +1,5 @@
 import { css } from "@/styled-system/css";
+import { HeaderAccount } from "./HeaderAccuont";
 
 export default function Header() {
   return (
@@ -22,7 +23,7 @@ export default function Header() {
           강의 환경 동기화를 위한 솔루션 캐치업
         </p>
       </div>
-      <div></div>
+      <HeaderAccount/>
     </div>
   );
 }

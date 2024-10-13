@@ -49,7 +49,6 @@ export default function Layout({
       <div
         className={css({
           flex: 1,
-          padding: "0 1em",
         })}
       >
         <Header/>
