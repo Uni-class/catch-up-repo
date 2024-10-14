@@ -62,6 +62,7 @@ export default function Layout({
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
+            overflow:"scroll"
           })}
         >
           <NavTitle />
@@ -69,7 +70,7 @@ export default function Layout({
             className={css({
               bg: "#fff",
               borderRadius: "0.5rem",
-              flexGrow: 1,
+              flex: 1,
               overflowY: "scroll",
               padding:"1.208rem 1.6875rem 1.41rem 1.6875rem"
             })}

@@ -23,7 +23,6 @@ export default function RootLayout({
             className={css({
               width: "100%",
               height: "100vh",
-              overflow:"scroll",
             })}
           >
             {children}
