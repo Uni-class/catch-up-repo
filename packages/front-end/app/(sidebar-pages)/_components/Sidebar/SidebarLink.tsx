@@ -1,17 +1,41 @@
+"use client";
 import { useRouter } from "@/hook/useRouter";
-import SidebarBaseElement from "@/app/(sidebar-pages)/_components/Sidebar/SidebarBaseElement";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { forwardRef } from "react";
+import { LinkPropsReal } from "@/type/PropTypes/LinkPropType";
+import { css, cx } from "@/styled-system/css";
 
+const SidebarLink = forwardRef<HTMLAnchorElement, LinkPropsReal>(
+  function SidebarLink(props, ref) {
+    const { pathname } = useRouter();
 
-export default function SidebarLink({children, href, target, onClick}: {children?: ReactNode, href?: string, target?: string, onClick?: () => void}) {
-  const { queryObj,pathname } = useRouter();
+    return (
+      <li
+        className={css({
+          fontWeight: "medium",
+          fontSize: "1rem",
+          color: pathname === props.href ? "secondary" : "white",
+          padding: "0.696rem 0",
+          paddingLeft: "3.285rem",
+        })}
+      >
+        <Link
+          {...props}
+          ref={ref}
+          className={cx(
+            css({
+              _hover: {
+                color: "tertiary",
+              },
+            }),
+            props.className
+          )}
+        >
+          {props.children}
+        </Link>
+      </li>
+    );
+  }
+);
 
-  return (
-    <Link href={{pathname: href, query: queryObj}} target={target} onClick={onClick}>
-      <SidebarBaseElement active={pathname === href}>
-        {children}
-      </SidebarBaseElement>
-    </Link>
-  );
-}
+export default SidebarLink;

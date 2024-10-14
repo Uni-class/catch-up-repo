@@ -62,11 +62,22 @@ export const theme: Tokens = {
         },
       },
     },
-    primary: { value: "#022D9C" },
+    primary: {
+      value: "#022D9C",
+      light: { value: "#0039C8" },
+      mid: { value: "#0136B9" },
+      dark: { value: "#022B92" },
+    },
     secondary: { value: "#AFFD06" },
     tertiary: { value: "#ABBDF5" },
+    gray: {
+      light: { value: "#0039C8" },
+      mid: { value: "#BBBDD5" },
+      dark: { value: "#787976" },
+    },
   },
   fonts: {
     Pretendard: { value: "var(--font-pretendard), sans-serif" },
   },
 };
+// 0136B9

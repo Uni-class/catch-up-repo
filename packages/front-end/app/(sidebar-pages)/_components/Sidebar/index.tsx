@@ -1,93 +1,64 @@
-"use client";
-
 import { css } from "@/styled-system/css";
 import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup";
 import SidebarLink from "./SidebarLink";
-import SidebarDirectory from "./SidebarDirectory";
-import Divider from "@/components/Divider";
-import { Heading } from "@/components/Text";
-import LogoIcon from "@/public/logo.svg";
-import LayoutIcon from "@/public/icons/layout.svg";
 import CastIcon from "@/public/icons/cast.svg";
-import PlusCircleIcon from "@/public/icons/plus-circle.svg";
-import ExternalLinkIcon from "@/public/icons/external-link.svg";
 import DatabaseIcon from "@/public/icons/database.svg";
-import { PROJECT_NAME } from "@/const/config";
-import AccountOptionsViewer from "./AccountOptionsViewer";
+import SettingsIcon from "@/public/icons/settings.svg";
+import { TopLogo } from "./TopLogo";
+import { routeTitle } from "@/const/routeTitle";
 
+const sessionsHrefs: string[] = [
+  "/sessions/participant",
+  "/sessions/host",
+  "/sessions/create",
+  "/sessions/join",
+];
+const driveHrefs: string[] = ["/files"];
+const settingsHrefs: string[] = ["/settings"];
 export default function Sidebar() {
   return (
-    <div
+    <aside
       className={css({
-        display: "flex",
-        padding: "0.5em",
-        width: "14em",
+        width: "15.15rem",
         height: "100%",
         borderRight: "1px solid",
         borderColor: "gray.200",
-        flexDirection: "column",
+        bg: "primary.light",
+        color: "white",
+        float: "left",
       })}
     >
-      <div
-        className={css({
-          display: "flex",
-          margin: "1em 0",
-          flexDirection: "column",
-          gap: "1em",
-        })}
-      >
-        <div
-          className={css({
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5em",
-          })}
-        >
-          <LogoIcon width={"3em"} height={"3em"} />
-          <Heading variant="h4">{PROJECT_NAME}</Heading>
-        </div>
-      </div>
-      <Divider />
+      <TopLogo />
       <SidebarGroup
-        name="메뉴"
-        className={css({
-          height: "100%",
-        })}
+        name="Sessions"
+        icon={<CastIcon width={"0.8125rem"} height={"0.8125rem"} />}
       >
-        <SidebarLink href="/dashboard">
-          <LayoutIcon width={"1.2em"} />
-          대시보드
-        </SidebarLink>
-        <SidebarDirectory
-          display={
-            <>
-              <CastIcon width={"1.2em"} />
-              세션
-            </>
-          }
-          href="/sessions"
-        >
-          <SidebarLink href="/sessions/participant">
-            내가 참가한 세션
+        {sessionsHrefs.map((e, i) => (
+          <SidebarLink href={e} key={i}>
+            {routeTitle[e].name}
           </SidebarLink>
-          <SidebarLink href="/sessions/host">내가 주최한 세션</SidebarLink>
-          <SidebarLink href="/sessions/create">
-            <PlusCircleIcon width={"1.2em"} />
-            세션 생성하기
-          </SidebarLink>
-          <SidebarLink href="/sessions/join">
-            <ExternalLinkIcon width={"1.2em"} />
-            세션 접속하기
-          </SidebarLink>
-        </SidebarDirectory>
-        <SidebarLink href="/files">
-          <DatabaseIcon width={"1.2em"} />
-          드라이브
-        </SidebarLink>
+        ))}
       </SidebarGroup>
-      <Divider />
-      <AccountOptionsViewer />
-    </div>
+      <SidebarGroup
+        name="Drive"
+        icon={<DatabaseIcon width={"0.8125rem"} height={"0.8125rem"} />}
+      >
+        {driveHrefs.map((e, i) => (
+          <SidebarLink href={e} key={i}>
+            {routeTitle[e].name}
+          </SidebarLink>
+        ))}
+      </SidebarGroup>
+      <SidebarGroup
+        name="Settings"
+        icon={<SettingsIcon width={"0.8125rem"} height={"0.8125rem"} />}
+      >
+        {settingsHrefs.map((e, i) => (
+          <SidebarLink href={e} key={i}>
+            {routeTitle[e].name}
+          </SidebarLink>
+        ))}
+      </SidebarGroup>
+    </aside>
   );
 }
