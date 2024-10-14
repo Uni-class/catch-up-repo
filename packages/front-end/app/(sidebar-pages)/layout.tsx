@@ -71,6 +71,7 @@ export default function Layout({
               borderRadius: "0.5rem",
               flexGrow: 1,
               overflowY: "scroll",
+              padding:"1.208rem 1.6875rem 1.41rem 1.6875rem"
             })}
           >
             {children}
@@ -80,3 +81,5 @@ export default function Layout({
     </div>
   );
 }
+// 29 40.5 34 40.5
+// 1.208 1.6875 1.41 1.6875
