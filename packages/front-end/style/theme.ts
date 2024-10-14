@@ -76,5 +76,8 @@ export const theme: Tokens = {
       dark: { value: "#787976" },
     },
   },
+  fonts: {
+    Pretendard: { value: "var(--font-pretendard), sans-serif" },
+  },
 };
 // 0136B9

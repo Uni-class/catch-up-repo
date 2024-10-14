@@ -171,18 +171,6 @@ const tokens = {
     "value": "2",
     "variable": "var(--line-heights-loose)"
   },
-  "fonts.sans": {
-    "value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
-    "variable": "var(--fonts-sans)"
-  },
-  "fonts.serif": {
-    "value": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
-    "variable": "var(--fonts-serif)"
-  },
-  "fonts.mono": {
-    "value": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
-    "variable": "var(--fonts-mono)"
-  },
   "letterSpacings.tighter": {
     "value": "-0.05em",
     "variable": "var(--letter-spacings-tighter)"
@@ -1786,6 +1774,21 @@ const tokens = {
   "colors.gray.dark": {
     "value": "#787976",
     "variable": "var(--colors-gray-dark)"
+  "fonts.sans": {
+    "value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+    "variable": "var(--fonts-sans)"
+  },
+  "fonts.serif": {
+    "value": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+    "variable": "var(--fonts-serif)"
+  },
+  "fonts.mono": {
+    "value": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
+    "variable": "var(--fonts-mono)"
+  },
+  "fonts.Pretendard": {
+    "value": "var(--font-pretendard), sans-serif",
+    "variable": "var(--fonts--pretendard)"
   },
   "breakpoints.sm": {
     "value": "640px",
