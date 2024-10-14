@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useRouter } from "@/hook/useRouter";
 import Link from "next/link";
 import { forwardRef } from "react";
@@ -11,21 +11,26 @@ const SidebarLink = forwardRef<HTMLAnchorElement, LinkPropsReal>(
 
     return (
       <li
-        className={cx(
-          css({
-            fontWeight: "medium",
-            fontSize: "1rem",
-            color: pathname === props.href ? "secondary" : "white",
-            padding: "0.696rem 0",
-            paddingLeft: "3.285rem",
-            _hover: {
-              color: "tertiary",
-            },
-          }),
-          props.className
-        )}
+        className={css({
+          fontWeight: "medium",
+          fontSize: "1rem",
+          color: pathname === props.href ? "secondary" : "white",
+          padding: "0.696rem 0",
+          paddingLeft: "3.285rem",
+        })}
       >
-        <Link {...props} ref={ref}>
+        <Link
+          {...props}
+          ref={ref}
+          className={cx(
+            css({
+              _hover: {
+                color: "tertiary",
+              },
+            }),
+            props.className
+          )}
+        >
           {props.children}
         </Link>
       </li>

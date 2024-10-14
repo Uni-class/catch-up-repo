@@ -3,6 +3,7 @@ import SidebarGroup from "@/app/(sidebar-pages)/_components/Sidebar/SidebarGroup
 import SidebarLink from "./SidebarLink";
 import CastIcon from "@/public/icons/cast.svg";
 import DatabaseIcon from "@/public/icons/database.svg";
+import SettingsIcon from "@/public/icons/settings.svg";
 import { TopLogo } from "./TopLogo";
 import { routeTitle } from "@/const/routeTitle";
 
@@ -13,6 +14,7 @@ const sessionsHrefs: string[] = [
   "/sessions/join",
 ];
 const driveHrefs: string[] = ["/files"];
+const settingsHrefs: string[] = ["/settings"];
 export default function Sidebar() {
   return (
     <aside
@@ -42,6 +44,16 @@ export default function Sidebar() {
         icon={<DatabaseIcon width={"0.8125rem"} height={"0.8125rem"} />}
       >
         {driveHrefs.map((e, i) => (
+          <SidebarLink href={e} key={i}>
+            {routeTitle[e].name}
+          </SidebarLink>
+        ))}
+      </SidebarGroup>
+      <SidebarGroup
+        name="Settings"
+        icon={<SettingsIcon width={"0.8125rem"} height={"0.8125rem"} />}
+      >
+        {settingsHrefs.map((e, i) => (
           <SidebarLink href={e} key={i}>
             {routeTitle[e].name}
           </SidebarLink>

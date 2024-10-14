@@ -5,6 +5,7 @@ import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
 import { useAccountController } from "@/hook/useAccount";
 import Header from "./_components/Header";
+import NavTitle from "./_components/NavTitle";
 
 export default function Layout({
   children,
@@ -63,8 +64,14 @@ export default function Layout({
             flexGrow: 1,
           })}
         >
+          <NavTitle />
           <main
-            className={css({ bg: "#fff", borderRadius: "0.5rem", flexGrow: 1 })}
+            className={css({
+              bg: "#fff",
+              borderRadius: "0.5rem",
+              flexGrow: 1,
+              overflowY: "scroll",
+            })}
           >
             {children}
           </main>
