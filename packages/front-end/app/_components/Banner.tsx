@@ -23,15 +23,7 @@ export default function Banner() {
         <h2 className={css({ fontSize: "1.4rem", fontWeight: "semibold" })}>
           강의 환경 동기화를 위한 솔루션
         </h2>
-        <BannerLinkButton href="/sessions/create">세션 생성</BannerLinkButton>
-        <BannerLinkButton
-          href="/sessions/join"
-          className={css({
-            marginLeft: "1rem",
-          })}
-        >
-          세션 접속
-        </BannerLinkButton>
+        <BannerLinkButton href="/sessions/host">Dashboard</BannerLinkButton>
       </div>
       <Image
         src="/banner-image.png"
@@ -52,13 +44,13 @@ export default function Banner() {
 
 const BannerLinkButton = styled(Link, {
   base: {
-    fontSize: "1rem",
+    fontSize: "1.6rem",
     color: "black",
     bg: "secondary",
-    padding: "0.5rem 0.83rem",
-    display: "inline-block",
-    fontWeight: "bold",
-    margin: "1.46rem 0",
-    borderRadius: "0.33rem",
+    padding: "1rem 1.25rem",
+    display:"inline-block",
+    fontWeight:"bold",
+    margin:"1.46rem 0",
+    borderRadius:"0.5rem"
   },
 });
