@@ -3,7 +3,7 @@ import { HeaderAccount } from "./HeaderAccuont";
 
 export default function Header() {
   return (
-    <div
+    <header
       className={css({
         height: "4.16rem",
         bg: "white",
@@ -24,6 +24,6 @@ export default function Header() {
         </p>
       </div>
       <HeaderAccount/>
-    </div>
+    </header>
   );
 }

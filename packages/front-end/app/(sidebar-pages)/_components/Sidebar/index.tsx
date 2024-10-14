@@ -7,7 +7,7 @@ import { TopLogo } from "./TopLogo";
 
 export default function Sidebar() {
   return (
-    <div
+    <aside
       className={css({
         width: "15.15rem",
         height: "100%",
@@ -15,6 +15,7 @@ export default function Sidebar() {
         borderColor: "gray.200",
         bg: "primary.light",
         color: "white",
+        float: "left",
       })}
     >
       <TopLogo />
@@ -33,7 +34,7 @@ export default function Sidebar() {
       >
         <SidebarLink href="/files">강의 자료</SidebarLink>
       </SidebarGroup>
-    </div>
+    </aside>
   );
 }
 /*

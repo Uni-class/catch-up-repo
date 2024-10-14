@@ -49,10 +49,26 @@ export default function Layout({
       <div
         className={css({
           flex: 1,
+          bg: "#F5F7FA",
+          display: "flex",
+          flexDirection: "column",
         })}
       >
-        <Header/>
-        {children}
+        <Header />
+        <div
+          className={css({
+            padding: "0 2.625rem 3.96rem 2.625rem",
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+          })}
+        >
+          <main
+            className={css({ bg: "#fff", borderRadius: "0.5rem", flexGrow: 1 })}
+          >
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   );
