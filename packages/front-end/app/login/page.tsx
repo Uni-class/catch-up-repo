@@ -2,8 +2,9 @@
 
 import { css } from "@/styled-system/css";
 import LoginButton from "./_components/LoginButton";
-import { PROJECT_NAME } from "@/const/config";
 import { useAccountController } from "@/hook/useAccount";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   const accountController = useAccountController();
@@ -15,64 +16,66 @@ export default function Page() {
     <div
       className={css({
         display: "flex",
-        paddingBottom: "3em",
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "#ff8f79",
+        width: "100%",
+        height: "100%",
+        bg: "primary",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        color:"white",
       })}
     >
       <div
         className={css({
-          display: "flex",
-          padding: "2em 0",
-          width: "25em",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "1em",
+          width: "35rem",
+          borderRadius: "4rem",
+          padding: "5rem 2.5rem",
+          backgroundColor: "#FFFFFF1A",
         })}
       >
         <div
           className={css({
-            color: "#ffffff",
-            fontSize: "4.5em",
-            fontWeight: "bold",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1em",
           })}
         >
-          {PROJECT_NAME}
+          <Image
+            src="/logo-horizontal-white.svg"
+            width={173}
+            height={33}
+            alt="Logo"
+            className={css({
+              width: "10.8125rem",
+              height: "2.0625rem",
+            })}
+          />
+          <div
+            className={css({
+              color: "#ffffff",
+              fontSize: "1.25em",
+              fontWeight: "bold",
+            })}
+          >
+            로그인 / 회원가입
+          </div>
         </div>
         <div
           className={css({
-            color: "#ffffff",
-            fontSize: "1.5em",
-            fontWeight: "bold",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1em",
+            margin: "2rem 0",
           })}
         >
-          로그인 / 회원가입
+          <LoginButton providerEnum="GOOGLE" />
+          <LoginButton providerEnum="NAVER" />
+          <LoginButton providerEnum="KAKAO" />
         </div>
-        <hr
-          className={css({
-            margin: "1em 0",
-            width: "100%",
-            borderWidth: "0.15em",
-            borderRadius: "1em",
-            borderColor: "#ffffff",
-          })}
-        />
-      </div>
-      <div
-        className={css({
-          display: "flex",
-          width: "25em",
-          flexDirection: "column",
-          gap: "1em",
-        })}
-      >
-        <LoginButton providerEnum="GOOGLE" />
-        <LoginButton providerEnum="NAVER" />
-        <LoginButton providerEnum="KAKAO" />
+        <div className={css({width:"100%",color:"tertiary",display:"flex",justifyContent:"center"})}>
+          <Link href="/">홈페이지로</Link>
+        </div>
       </div>
     </div>
   );
