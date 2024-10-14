@@ -18,7 +18,7 @@ export default function Page() {
         display: "flex",
         width: "100%",
         height: "100%",
-        bg: "primary",
+        bg: "primary.light",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
