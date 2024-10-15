@@ -11,7 +11,7 @@ import {
 import { ViewerPropType } from "../../_types/ViewerType";
 import { PreviewPages } from "../Common/PreviewPages";
 import { css } from "@/styled-system/css";
-import { ModeControl } from "../Common/Mode";
+import { ModeContainer, ModeControl } from "../Common/Mode";
 import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
 import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
@@ -50,11 +50,33 @@ export default function HostViewer(props: ViewerPropType) {
 
   return (
     <>
-      <Header pdfPainterController={pdfPainterController} codeRender={
-        <CodeOverlayContainer>
-          <CodeOverlay code={props.sessionCode} />
-        </CodeOverlayContainer>
-      } downloadRender={<></>} modeRender={<></>} />
+      <Header
+        pdfPainterController={pdfPainterController}
+        codeRender={
+          <CodeOverlayContainer>
+            <CodeOverlay code={props.sessionCode} />
+          </CodeOverlayContainer>
+        }
+        modeRender={
+          <ModeControl
+            labelText="내 필기 가리기"
+            id="hide-host-draw"
+            checked={pdfPainterController.getInstanceHidden("Host")}
+            onChange={(e) => {
+              pdfPainterController.setInstanceHidden("Host", e.target.checked);
+            }}
+          />
+        }
+        downloadRender={
+          <HostViewerDownload
+            src={pdfDocument.url}
+            pdfPainterController={pdfPainterController}
+            fileId={fileId}
+            sessionId={sessionId}
+            fileName={pdfDocument.name}
+          />
+        }
+      />
       <div
         className={css({
           display: "flex",

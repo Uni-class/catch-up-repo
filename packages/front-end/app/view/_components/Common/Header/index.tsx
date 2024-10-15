@@ -9,15 +9,15 @@ import DownloadIcon from "@/public/icons/download.svg";
 import SettingsIcon from "@/public/icons/settings.svg";
 import ShareIcon from "@/public/icons/share.svg";
 import { HeaderTooltipButton } from "./HeaderToolTipButton";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { overlay } from "overlay-kit";
+import { ModeContainer } from "../Mode";
 
 interface PropType {
   pdfPainterController: PDFPainterController;
   downloadRender: ReactNode;
   modeRender: ReactNode;
   codeRender: ReactNode;
-
 }
 
 /**
@@ -29,7 +29,14 @@ interface PropType {
  *   - 모드는 내필기 가리기, 호스트필기 가리기, 자동추적
  *   - 다룬로드는 내필기, 호스트필기 선택
  */
-export function Header({ pdfPainterController, codeRender, downloadRender, modeRender }: PropType) {
+export function Header({
+  pdfPainterController,
+  codeRender,
+  downloadRender,
+  modeRender,
+}: PropType) {
+  const [isModeOpen, setIsModeOpen] = useState(false);
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   return (
     <header
       className={css({
@@ -71,16 +78,44 @@ export function Header({ pdfPainterController, codeRender, downloadRender, modeR
           <BrushIcon width={"1em"} height={"1em"} />
         </HeaderControlButton>
       </div>
-      <div className={css({ display: "flex", alignItems: "center", gap: "1.54rem", })}>
-        <HeaderTooltipButton text={"공유"} startIcon={<ShareIcon width={"1rem"} height={"1rem"} />} onClick={() => {
-          overlay.open(() => codeRender, { overlayId: "code-overlay" })
-        }} />
-        <HeaderTooltipButton text={"모드"} startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />} onClick={() => {
-          overlay.open(() => modeRender, { overlayId: "mode-tooltip" })
-        }} />
-        <HeaderTooltipButton text={"다운로드"} startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />} onClick={() => {
-          overlay.open(() => downloadRender, { overlayId: "download-tooltip" })
-        }} />
+      <div
+        className={css({
+          display: "flex",
+          alignItems: "center",
+          gap: "1.54rem",
+        })}
+      >
+        <HeaderTooltipButton
+          text={"공유"}
+          startIcon={<ShareIcon width={"1rem"} height={"1rem"} />}
+          onClick={() => {
+            overlay.open(() => codeRender, { overlayId: "code-overlay" });
+          }}
+        />
+        <HeaderTooltipButton
+          text={"모드"}
+          startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />}
+          onClick={() => {
+            setIsModeOpen(!isModeOpen);
+          }}
+          tooltip={isModeOpen && (
+            <ModeContainer setVisible={setIsModeOpen}>{modeRender}</ModeContainer>
+          )}
+        />
+        <HeaderTooltipButton
+          text={"다운로드"}
+          startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />}
+          onClick={() => {
+            setIsDownloadOpen(!isDownloadOpen);
+          }}
+          tooltip={
+            isDownloadOpen && (
+              <ModeContainer setVisible={setIsDownloadOpen}>
+                {downloadRender}
+              </ModeContainer>
+            )
+          }
+        />
       </div>
     </header>
   );

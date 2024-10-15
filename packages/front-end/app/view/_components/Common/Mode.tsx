@@ -59,7 +59,7 @@ export function ModeContainer({
     <div
       className={css({
         position: "absolute",
-        bottom: "110%",
+        top: "110%",
         right: "10%",
         backgroundColor: "#fff",
         border: "2px solid black",

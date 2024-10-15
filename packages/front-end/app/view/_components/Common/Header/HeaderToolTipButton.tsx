@@ -8,19 +8,34 @@ interface PropType
     > {
     startIcon?: ReactNode;
     text: string;
+    tooltip?: ReactNode;
 }
 
-export function HeaderTooltipButton({ startIcon, text, ...attr }: PropType) {
+export function HeaderTooltipButton({ tooltip, startIcon, text, ...attr }: PropType) {
     return (
-        <button {...attr} className={cx(css({
-            display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.83rem",color:"#fff",
-            cursor:"pointer",
-            _hover:{
-                color:"primary.50"
-            }
-        }), attr.className)}>
-            {startIcon}
-            <p>{text}</p>
-        </button>
+        <div className={css({ position: "relative" })}>
+            <button
+                {...attr}
+                className={cx(
+                    css({
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                        fontSize: "0.83rem",
+                        color: "#fff",
+                        cursor: "pointer",
+                        position: "relative",
+                        _hover: {
+                            color: "primary.50",
+                        },
+                    }),
+                    attr.className
+                )}
+            >
+                {startIcon}
+                <p>{text}</p>
+            </button>
+            {tooltip}
+        </div>
     );
 }
