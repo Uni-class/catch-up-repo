@@ -20,6 +20,7 @@ import Button from "@/components/Button";
 import { HostViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PageControl } from "../Common/PageControl";
+import UsersIcon from "@/public/icons/users.svg";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -88,9 +89,33 @@ export default function HostViewer(props: ViewerPropType) {
         <PreviewPages
           pdfDocumentURL={pdfDocument.url}
           PDFPainterController={pdfPainterController}
-          getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
+          getBadgeVisible={
+            (index) => roomPageViewerCount.hasOwnProperty(index)
+          }
           getBadgeContent={(index) => {
-            return <>{index !== undefined && roomPageViewerCount[index]}</>;
+            return (
+              <div
+                className={css({
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  minWidth:"3.25rem",
+                  height:"1.5rem",
+                  fontSize:"0.8rem",
+                  display:"flex",
+                  color:"black",
+                  bg:"secondary",
+                  justifyContent:"space-around",
+                  borderLeftRadius:"0.75rem",
+                  borderRightRadius:"0.75rem",
+                  alignItems:"center",
+                  padding:"0 0.25rem"
+                })}
+              >
+                <UsersIcon width="1em" height="1em"/>
+                {index !== undefined && roomPageViewerCount[index]}
+              </div>
+            );
           }}
         />
         <div
@@ -101,7 +126,7 @@ export default function HostViewer(props: ViewerPropType) {
             height: "100%",
             display: "flex",
             position: "relative",
-            flexDirection:"column",
+            flexDirection: "column",
             bg: "#F5F7FA",
           })}
         >
@@ -118,7 +143,7 @@ export default function HostViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
-          <PageControl pdfPainterController={pdfPainterController}/>
+          <PageControl pdfPainterController={pdfPainterController} />
         </div>
       </div>
     </>
