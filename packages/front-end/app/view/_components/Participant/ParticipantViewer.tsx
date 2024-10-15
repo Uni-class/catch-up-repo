@@ -21,6 +21,9 @@ import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
 import { usePostDraw } from "../../_hooks/usePostDraw";
 import Button from "@/components/Button";
 import { ParticipantViewerDownload } from "../Common/Download";
+import { Header } from "../Common/Header";
+import { PageControl } from "../Common/PageControl";
+import HostIcon from "@/public/icons/host.svg";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -71,63 +74,14 @@ export default function ParticipantViewer(props: ViewerPropType) {
 
   return (
     <>
-      <div
-        className={css({
-          display: "flex",
-          width: "100vw",
-          height: "calc(100vh - 4em)",
-        })}
-      >
-        <PreviewPages
-          pdfDocumentURL={pdfDocument.url}
-          PDFPainterController={pdfPainterController}
-          getBadgeVisible={(index) => index === hostIndex}
-          getBadgeContent={(index) => {
-            return <>{index !== undefined && hostIndex !== null && "!"}</>;
-          }}
-        />
-        <div
-          className={css({
-            justifyContent: "center",
-            alignItems: "center",
-            width: `calc(100% - 13rem)`,
-            height: "100%",
-            display: "flex",
-            position: "relative",
-          })}
-        >
-          <PDFPainter
-            painterId={`${sessionId}_${pdfDocument.fileId}`}
-            pdfDocumentURL={pdfDocument.url}
-            customPdfPainterControllerHook={pdfPainterControllerHook}
-          >
-            <PainterInstanceGenerator
-              instanceId={"Host"}
-              readOnly={true}
-              customPdfPainterInstanceControllerHook={
-                pdfPainterHostInstanceControllerHook
-              }
-            />
-            <PainterInstanceGenerator
-              instanceId={"Participant"}
-              readOnly={false}
-              customPdfPainterInstanceControllerHook={
-                pdfPainterParticipantInstanceControllerHook
-              }
-            />
-          </PDFPainter>
-          {showCodeOverlay && (
-            <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
-              <CodeOverlay code={props.sessionCode} />
-            </CodeOverlayContainer>
-          )}
-        </div>
-      </div>
-      <PDFPainterControlBar
+      <Header
         pdfPainterController={pdfPainterController}
-        showCodeOverlay={showCodeOverlay}
-        setShowCodeOverlay={setShowCodeOverlay}
-        modeComponent={
+        codeRender={
+          <CodeOverlayContainer>
+            <CodeOverlay code={props.sessionCode} />
+          </CodeOverlayContainer>
+        }
+        modeRender={
           <>
             <ModeControl
               labelText="호스트 시점 따라가기"
@@ -161,16 +115,87 @@ export default function ParticipantViewer(props: ViewerPropType) {
             />
           </>
         }
-        downloadComponent={
+        downloadRender={
           <ParticipantViewerDownload
-            sessionId={sessionId}
-            fileId={fileId}
-            fileName={pdfDocument.name}
-            pdfPainterController={pdfPainterController}
             src={pdfDocument.url}
+            pdfPainterController={pdfPainterController}
+            fileId={fileId}
+            sessionId={sessionId}
+            fileName={pdfDocument.name}
           />
         }
       />
+      <div
+        className={css({
+          display: "flex",
+          width: "100vw",
+          height: "calc(100vh - 4.2rem)",
+        })}
+      >
+        <PreviewPages
+          pdfDocumentURL={pdfDocument.url}
+          PDFPainterController={pdfPainterController}
+          getBadgeVisible={
+            (index) => index === hostIndex
+          }
+          getBadgeContent={(index) =>
+            index !== undefined &&
+            hostIndex !== null && 
+            (
+              <div
+                className={css({
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  fontSize: "0.9rem",
+                  borderRadius: "50%",
+                  bg: "primary.300",
+                  width:"2rem",
+                  height:"2rem",
+                  display:"flex",
+                  alignItems:"center",
+                  justifyContent:"center",
+                })}
+              >
+                <HostIcon width="1em" height="1em" />
+              </div>
+            )
+          }
+        />
+        <div
+          className={css({
+            justifyContent: "center",
+            alignItems: "center",
+            width: `calc(100% - 13rem)`,
+            height: "100%",
+            display: "flex",
+            position: "relative",
+            flexDirection: "column",
+          })}
+        >
+          <PDFPainter
+            painterId={`${sessionId}_${pdfDocument.fileId}`}
+            pdfDocumentURL={pdfDocument.url}
+            customPdfPainterControllerHook={pdfPainterControllerHook}
+          >
+            <PainterInstanceGenerator
+              instanceId={"Host"}
+              readOnly={true}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterHostInstanceControllerHook
+              }
+            />
+            <PainterInstanceGenerator
+              instanceId={"Participant"}
+              readOnly={false}
+              customPdfPainterInstanceControllerHook={
+                pdfPainterParticipantInstanceControllerHook
+              }
+            />
+          </PDFPainter>
+          <PageControl pdfPainterController={pdfPainterController} />
+        </div>
+      </div>
     </>
   );
 }
