@@ -71,15 +71,16 @@ export function PageControl({ pdfPainterController }: PropType) {
           className={css({
             bg: "white",
             color: "black",
-            width: "7rem",
+            width: "6rem",
             paddingLeft: "0.5rem",
-            border:"1px solid",
-            _hover:{
-                borderColor:"primary.100"
+            border: "1px solid",
+              borderRadius: "0.35rem 0 0 0.35rem",
+            _hover: {
+              borderColor: "primary.100",
             },
-            _focus:{
-                borderColor:"primary.500"
-            }
+            _focus: {
+              borderColor: "primary.500",
+            },
           })}
           placeholder="페이지 입력"
           ref={inputRef}
@@ -88,16 +89,21 @@ export function PageControl({ pdfPainterController }: PropType) {
         <button
           className={css({
             cursor: "pointer",
-            width: "3rem",
+            width: "4rem",
             bg: "primary.500",
             color: "white",
+            borderRadius:"0 0.35rem 0.35rem 0",
             _hover: {
               bg: "primary.200",
             },
           })}
           onClick={() => {
             if (inputRef.current === null) return;
-            const number = Number(inputRef.current.value);
+            const value = inputRef.current.value;
+            if (value.trim() === "") {
+              return;
+            }
+            const number = Number(value);
             if (Number.isNaN(number)) {
               toast("숫자를 입력해주세요.", { type: "error" });
               return;
@@ -108,7 +114,7 @@ export function PageControl({ pdfPainterController }: PropType) {
               });
               return;
             }
-            pdfPainterController.setPageIndex(number);
+            pdfPainterController.setPageIndex(number - 1);
           }}
         >
           이동
@@ -128,9 +134,10 @@ const PageButton = styled("button", {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    border: "1px solid",
+    borderColor:"gray.400",
     _hover: {
-      border: "1px solid",
-      borderColor: "gray.400",
+      borderColor: "black",
     },
   },
 });

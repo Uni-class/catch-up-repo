@@ -103,9 +103,12 @@ function PageElement({
         onClick={onClick}
         className={css({
           cursor: "pointer",
-          border: currentIndex === index ? "2px solid white" : "",
-          outline: currentIndex === index ? "3px solid black" : "",
+          border: currentIndex === index ?  "2px solid" : "",
+          borderColor:  "white",
+          outline: currentIndex === index ? "3px solid" : "",
+          outlineColor: "primary.500",
           position: "relative",
+          borderRadius:"0.3rem",
         })}
       >
         <Page

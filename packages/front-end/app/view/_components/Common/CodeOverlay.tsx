@@ -101,16 +101,17 @@ export function CodeOverlay({ code }: { code: string }) {
       })}
     >
       <Paragraph variant="sub1">세션 코드</Paragraph>
-      <Heading
-        variant="h1"
+      <h1
         onClick={() => {
           copyToClipboard(code, "코드");
         }}
         className={css({
           cursor:"pointer",
           transition: "opacity 0.3s ease",
+          fontSize: "10rem",
+          fontWeight:"bold",
           "&:hover":{
-            opacity:0.7
+            opacity:0.7,
           }
         })}
       >
@@ -130,7 +131,7 @@ export function CodeOverlay({ code }: { code: string }) {
             })}
           />
         </span>
-      </Heading>
+      </h1>
       <Paragraph variant="sub1">또는</Paragraph>
       <Button
         onClick={() => {
