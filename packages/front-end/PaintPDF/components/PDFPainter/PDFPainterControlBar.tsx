@@ -9,7 +9,7 @@ import CloseIcon from "@/PaintPDF/assets/icons/close.svg";
 import ShareIcon from "@/PaintPDF/assets/icons/share.svg";
 import { PDFPainterControlBarButton } from "@/PaintPDF/components";
 import { css } from "@/styled-system/css";
-import { ModeContainer } from "@/app/view/_components/Mode";
+import { ModeContainer } from "@/app/view/_components/Common/Mode";
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,

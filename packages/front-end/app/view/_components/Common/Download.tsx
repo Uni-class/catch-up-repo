@@ -4,10 +4,10 @@ import { css } from "@/styled-system/css";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Editor, Tldraw, useEditor } from "tldraw";
 import { PDFPainterController } from "@/PaintPDF/components";
-import { getMergedPDFBytes } from "../_utils/downloadUtils/getMergedPDFBytes";
-import { downloadPDF } from "../_utils/downloadUtils/downloadUtils";
-import { getSelfDrawFromServer } from "../_utils/downloadUtils/apiUtils";
-import { pageEachDrawCallback } from "../_utils/downloadUtils/drawUtils";
+import { getMergedPDFBytes } from "../../_utils/downloadUtils/getMergedPDFBytes";
+import { downloadPDF } from "../../_utils/downloadUtils/downloadUtils";
+import { getSelfDrawFromServer } from "../../_utils/downloadUtils/apiUtils";
+import { pageEachDrawCallback } from "../../_utils/downloadUtils/drawUtils";
 
 interface PropType {
   fileName: string;

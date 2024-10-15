@@ -1695,6 +1695,22 @@ const tokens = {
     "value": "#b39200",
     "variable": "var(--colors-kakao-dark)"
   },
+  "colors.primary.50": {
+    "value": "#ABBDF5",
+    "variable": "var(--colors-primary-50)"
+  },
+  "colors.primary.100": {
+    "value": "#2653D4",
+    "variable": "var(--colors-primary-100)"
+  },
+  "colors.primary.200": {
+    "value": "#0039C8",
+    "variable": "var(--colors-primary-200)"
+  },
+  "colors.primary.300": {
+    "value": "##0136B9",
+    "variable": "var(--colors-primary-300)"
+  },
   "colors.primary.light": {
     "value": "#0039C8",
     "variable": "var(--colors-primary-light)"

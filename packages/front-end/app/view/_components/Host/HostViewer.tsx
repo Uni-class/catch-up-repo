@@ -1,6 +1,6 @@
 "use client";
 
-import { useHostSocket } from "../_hooks/useHostSocket";
+import { useHostSocket } from "../../_hooks/useHostSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
@@ -8,16 +8,17 @@ import {
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
-import { ViewerPropType } from "../_types/ViewerType";
-import { PreviewPages } from "./PreviewPages";
+import { ViewerPropType } from "../../_types/ViewerType";
+import { PreviewPages } from "../Common/PreviewPages";
 import { css } from "@/styled-system/css";
-import { ModeControl } from "./Mode";
-import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
+import { ModeControl } from "../Common/Mode";
+import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
 import { useState } from "react";
-import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
-import { usePostDraw } from "../_hooks/usePostDraw";
+import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
+import { usePostDraw } from "../../_hooks/usePostDraw";
 import Button from "@/components/Button";
-import { HostViewerDownload } from "./Download";
+import { HostViewerDownload } from "../Common/Download";
+import { Header } from "../Common/Header";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -49,6 +50,7 @@ export default function HostViewer(props: ViewerPropType) {
 
   return (
     <>
+    <Header/>
       <div
         className={css({
           display: "flex",

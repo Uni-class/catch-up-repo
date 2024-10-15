@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { apiClient } from "@/utils/axios";
-import { useParticipantSocket } from "../_hooks/useParticipantSocket";
+import { useParticipantSocket } from "../../_hooks/useParticipantSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
@@ -11,16 +11,16 @@ import {
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
-import { ViewerPropType } from "../_types/ViewerType";
+import { ViewerPropType } from "../../_types/ViewerType";
 import { css } from "@/styled-system/css";
-import { PreviewPages } from "./PreviewPages";
+import { PreviewPages } from "../Common/PreviewPages";
 import { useState } from "react";
-import { ModeControl } from "./Mode";
-import { useEnsureVisibleWhileDraw } from "../_hooks/useEnsureVisibleWhileDraw";
-import { CodeOverlay, CodeOverlayContainer } from "./CodeOverlay";
-import { usePostDraw } from "../_hooks/usePostDraw";
+import { ModeControl } from "../Common/Mode";
+import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
+import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
+import { usePostDraw } from "../../_hooks/usePostDraw";
 import Button from "@/components/Button";
-import { ParticipantViewerDownload } from "./Download";
+import { ParticipantViewerDownload } from "../Common/Download";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
