@@ -19,6 +19,7 @@ import { usePostDraw } from "../../_hooks/usePostDraw";
 import Button from "@/components/Button";
 import { HostViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
+import { PageControl } from "../Common/PageControl";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -81,7 +82,7 @@ export default function HostViewer(props: ViewerPropType) {
         className={css({
           display: "flex",
           width: "100vw",
-          height: "calc(100vh - 4em)",
+          height: "calc(100vh - 4.2rem)",
         })}
       >
         <PreviewPages
@@ -100,6 +101,8 @@ export default function HostViewer(props: ViewerPropType) {
             height: "100%",
             display: "flex",
             position: "relative",
+            flexDirection:"column",
+            bg: "#F5F7FA",
           })}
         >
           <PDFPainter
@@ -115,32 +118,9 @@ export default function HostViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
+          <PageControl pdfPainterController={pdfPainterController}/>
         </div>
       </div>
-      {/* <PDFPainterControlBar
-        pdfPainterController={pdfPainterController}
-        showCodeOverlay={showCodeOverlay}
-        setShowCodeOverlay={setShowCodeOverlay}
-        modeComponent={
-          <ModeControl
-            labelText="내 필기 가리기"
-            id="hide-host-draw"
-            checked={pdfPainterController.getInstanceHidden("Host")}
-            onChange={(e) => {
-              pdfPainterController.setInstanceHidden("Host", e.target.checked);
-            }}
-          />
-        }
-        downloadComponent={
-          <HostViewerDownload
-            sessionId={sessionId}
-            fileId={fileId}
-            fileName={pdfDocument.name}
-            pdfPainterController={pdfPainterController}
-            src={pdfDocument.url}
-          />
-        }
-      /> */}
     </>
   );
 }
