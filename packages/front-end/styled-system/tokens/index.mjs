@@ -1708,8 +1708,16 @@ const tokens = {
     "variable": "var(--colors-primary-200)"
   },
   "colors.primary.300": {
-    "value": "##0136B9",
+    "value": "#0136B9",
     "variable": "var(--colors-primary-300)"
+  },
+  "colors.primary.400": {
+    "value": "#022B92",
+    "variable": "var(--colors-primary-400)"
+  },
+  "colors.primary.500": {
+    "value": "#022D9C",
+    "variable": "var(--colors-primary-500)"
   },
   "colors.primary.light": {
     "value": "#0039C8",

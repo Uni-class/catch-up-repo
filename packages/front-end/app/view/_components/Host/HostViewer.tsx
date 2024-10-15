@@ -50,7 +50,7 @@ export default function HostViewer(props: ViewerPropType) {
 
   return (
     <>
-    <Header/>
+    <Header pdfPainterController={pdfPainterController}/>
       <div
         className={css({
           display: "flex",
