@@ -40,7 +40,7 @@ export default function HostViewer(props: ViewerPropType) {
     pdfPainterController
   );
   useEnsureVisibleWhileDraw("Host", pdfPainterController);
-  const [showCodeOverlay, setShowCodeOverlay] = useState(false);
+
   usePostDraw(
     sessionId,
     fileId,
@@ -50,7 +50,11 @@ export default function HostViewer(props: ViewerPropType) {
 
   return (
     <>
-    <Header pdfPainterController={pdfPainterController}/>
+      <Header pdfPainterController={pdfPainterController} codeRender={
+        <CodeOverlayContainer>
+          <CodeOverlay code={props.sessionCode} />
+        </CodeOverlayContainer>
+      } downloadRender={<></>} modeRender={<></>} />
       <div
         className={css({
           display: "flex",
@@ -89,14 +93,9 @@ export default function HostViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
-          {showCodeOverlay && (
-            <CodeOverlayContainer setShowCodeOverlay={setShowCodeOverlay}>
-              <CodeOverlay code={props.sessionCode} />
-            </CodeOverlayContainer>
-          )}
         </div>
       </div>
-      <PDFPainterControlBar
+      {/* <PDFPainterControlBar
         pdfPainterController={pdfPainterController}
         showCodeOverlay={showCodeOverlay}
         setShowCodeOverlay={setShowCodeOverlay}
@@ -119,7 +118,7 @@ export default function HostViewer(props: ViewerPropType) {
             src={pdfDocument.url}
           />
         }
-      />
+      /> */}
     </>
   );
 }

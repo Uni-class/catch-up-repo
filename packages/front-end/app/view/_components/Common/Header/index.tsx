@@ -9,9 +9,15 @@ import DownloadIcon from "@/public/icons/download.svg";
 import SettingsIcon from "@/public/icons/settings.svg";
 import ShareIcon from "@/public/icons/share.svg";
 import { HeaderTooltipButton } from "./HeaderToolTipButton";
+import { ReactNode } from "react";
+import { overlay } from "overlay-kit";
 
 interface PropType {
   pdfPainterController: PDFPainterController;
+  downloadRender: ReactNode;
+  modeRender: ReactNode;
+  codeRender: ReactNode;
+
 }
 
 /**
@@ -23,7 +29,7 @@ interface PropType {
  *   - 모드는 내필기 가리기, 호스트필기 가리기, 자동추적
  *   - 다룬로드는 내필기, 호스트필기 선택
  */
-export function Header({ pdfPainterController }: PropType) {
+export function Header({ pdfPainterController, codeRender, downloadRender, modeRender }: PropType) {
   return (
     <header
       className={css({
@@ -66,9 +72,15 @@ export function Header({ pdfPainterController }: PropType) {
         </HeaderControlButton>
       </div>
       <div className={css({ display: "flex", alignItems: "center", gap: "1.54rem", })}>
-        <HeaderTooltipButton text={"공유"} startIcon={<ShareIcon width={"1rem"} height={"1rem"} />} />
-        <HeaderTooltipButton text={"모드"} startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />} />
-        <HeaderTooltipButton text={"다운로드"} startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />} />
+        <HeaderTooltipButton text={"공유"} startIcon={<ShareIcon width={"1rem"} height={"1rem"} />} onClick={() => {
+          overlay.open(() => codeRender, { overlayId: "code-overlay" })
+        }} />
+        <HeaderTooltipButton text={"모드"} startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />} onClick={() => {
+          overlay.open(() => modeRender, { overlayId: "mode-tooltip" })
+        }} />
+        <HeaderTooltipButton text={"다운로드"} startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />} onClick={() => {
+          overlay.open(() => downloadRender, { overlayId: "download-tooltip" })
+        }} />
       </div>
     </header>
   );

@@ -3,20 +3,21 @@ import { Heading, Paragraph } from "@/components/Text";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import Image from "next/image";
+import { overlay } from "overlay-kit";
 import { ReactNode, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export function CodeOverlayContainer({
   children,
-  setShowCodeOverlay,
+
 }: {
   children?: ReactNode;
-  setShowCodeOverlay: React.Dispatch<React.SetStateAction<boolean>>;
+
 }) {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" || event.key === "Esc") {
-        setShowCodeOverlay(false);
+        overlay.unmount("code-overlay");
       }
     };
 
@@ -25,7 +26,7 @@ export function CodeOverlayContainer({
     return () => {
       window.removeEventListener("keydown", handleEscKey);
     };
-  }, [setShowCodeOverlay]);
+  }, []);
   return (
     <div
       className={css({
@@ -53,7 +54,7 @@ export function CodeOverlayContainer({
         <button
           className={css({ cursor: "pointer" })}
           onClick={() => {
-            setShowCodeOverlay(false);
+            overlay.unmount("code-overlay");
           }}
         >
           <Paragraph variant="body2">닫기 X</Paragraph>
