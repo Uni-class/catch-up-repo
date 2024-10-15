@@ -135,13 +135,10 @@ export default function ParticipantViewer(props: ViewerPropType) {
         <PreviewPages
           pdfDocumentURL={pdfDocument.url}
           PDFPainterController={pdfPainterController}
-          getBadgeVisible={
-            (index) => index === hostIndex
-          }
+          getBadgeVisible={(index) => index === hostIndex}
           getBadgeContent={(index) =>
             index !== undefined &&
-            hostIndex !== null && 
-            (
+            hostIndex !== null && (
               <div
                 className={css({
                   position: "absolute",
@@ -150,11 +147,11 @@ export default function ParticipantViewer(props: ViewerPropType) {
                   fontSize: "0.9rem",
                   borderRadius: "50%",
                   bg: "primary.300",
-                  width:"2rem",
-                  height:"2rem",
-                  display:"flex",
-                  alignItems:"center",
-                  justifyContent:"center",
+                  width: "2rem",
+                  height: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 })}
               >
                 <HostIcon width="1em" height="1em" />
