@@ -152,6 +152,8 @@ export default function ParticipantViewer(props: ViewerPropType) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  border: "1px solid",
+                  borderColor: "white",
                 })}
               >
                 <HostIcon width="1em" height="1em" />

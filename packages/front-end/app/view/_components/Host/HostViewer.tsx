@@ -109,7 +109,9 @@ export default function HostViewer(props: ViewerPropType) {
                   borderLeftRadius:"0.75rem",
                   borderRightRadius:"0.75rem",
                   alignItems:"center",
-                  padding:"0 0.25rem"
+                  padding:"0 0.25rem",
+                  borderColor:"black",
+                  border:"1px solid"
                 })}
               >
                 <UsersIcon width="1em" height="1em"/>
