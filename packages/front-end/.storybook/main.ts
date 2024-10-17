@@ -20,6 +20,7 @@ const config: StorybookConfig = {
     getAbsolutePath("@storybook/addon-essentials"),
     getAbsolutePath("@chromatic-com/storybook"),
     getAbsolutePath("@storybook/addon-interactions"),
+    getAbsolutePath("@newhighsco/storybook-addon-svgr"),
   ],
   framework: {
     name: getAbsolutePath("@storybook/nextjs"),
@@ -32,13 +33,16 @@ const config: StorybookConfig = {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../"),
     };
-    if (!config.module?.rules) return config;
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
+
+    config?.module?.rules
+      ?.filter((rule: any) => rule?.test?.test(".svg"))
+      .forEach((rule: any) => (rule.exclude = /\.svg$/i));
+
+    // Add your custom svg loader
+    config?.module?.rules?.push({
+      test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
 };
