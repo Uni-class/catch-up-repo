@@ -14,7 +14,7 @@ const SidebarLink = forwardRef<HTMLAnchorElement, LinkPropsReal>(
         className={css({
           fontWeight: "medium",
           fontSize: "1rem",
-          color: pathname === props.href ? "secondary" : "white",
+          color: pathname === props.href ? "secondary.200" : "white",
           padding: "0.696rem 0",
           paddingLeft: "3.285rem",
         })}
