@@ -11,6 +11,7 @@ const ButtonContainer = styled("button", {
     fontWeight:"medium",
     display:"flex",
     gap:"0.375rem",
+    alignItems:"center",
   },
   variants: {
     size: {

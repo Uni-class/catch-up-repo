@@ -1,6 +1,7 @@
 import type { Meta, StoryFn, StoryObj } from "@storybook/react";
 import Button from "@/components/Button";
-import Icon from "@/public/icons/share.svg";
+import Icon from "@/public/icons/settings.svg";
+import { ReactNode } from "react";
 
 const meta = {
   title: "Components/Button",
@@ -21,6 +22,9 @@ const meta = {
       },
       options: ["primary", "secondary", "gray"],
     },
+    startIcon:{
+      control:false,
+    }
   },
 } satisfies Meta<typeof Button>;
 
