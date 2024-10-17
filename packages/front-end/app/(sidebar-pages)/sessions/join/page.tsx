@@ -62,7 +62,6 @@ export default function Page() {
             className={css({
               height: "inherit",
             })}
-            disabled={sessionCode.trim() === ""}
             onClick={() => {
               if (sessionCode.trim() === "") {
                 toast("세션 코드를 입력해주세요.", { type: "error",position:"top-center" });
