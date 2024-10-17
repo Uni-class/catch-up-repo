@@ -8,13 +8,10 @@ import { Label } from "@/components/Label";
 import { useRouter } from "@/hook/useRouter";
 import { routeTitle } from "@/const/routeTitle";
 import JoinIcon from "@/public/icons/join.svg";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
-  const [status, setStatus] = useState<{
-    status: "notice" | "error";
-    text: string;
-  } | null>(null);
   const router = useRouter();
   return (
     <div
@@ -68,31 +65,19 @@ export default function Page() {
             disabled={sessionCode.trim() === ""}
             onClick={() => {
               if (sessionCode.trim() === "") {
-                setStatus({
-                  status: "error",
-                  text: "세션 코드를 입력해주세요.",
-                });
+                toast("세션 코드를 입력해주세요.", { type: "error",position:"top-center" });
                 return;
               }
-              setStatus({ status: "notice", text: "세션을 로딩중입니다." });
               router.push(
                 router.getURLString("/view", { code: `${sessionCode}` })
               );
             }}
-            startIcon={<JoinIcon width={"1em"} height={"1em"}/>}
+            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
           >
             {"세션 접속"}
           </Button>
         </div>
       </div>
-      <p
-        className={css({
-          height: "1rem",
-          color: status?.status === "error" ? "red.500" : "green",
-        })}
-      >
-        {status?.text}
-      </p>
     </div>
   );
 }
