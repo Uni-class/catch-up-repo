@@ -1695,6 +1695,30 @@ const tokens = {
     "value": "#b39200",
     "variable": "var(--colors-kakao-dark)"
   },
+  "colors.primary.50": {
+    "value": "#ABBDF5",
+    "variable": "var(--colors-primary-50)"
+  },
+  "colors.primary.100": {
+    "value": "#2653D4",
+    "variable": "var(--colors-primary-100)"
+  },
+  "colors.primary.200": {
+    "value": "#0039C8",
+    "variable": "var(--colors-primary-200)"
+  },
+  "colors.primary.300": {
+    "value": "#0136B9",
+    "variable": "var(--colors-primary-300)"
+  },
+  "colors.primary.400": {
+    "value": "#022B92",
+    "variable": "var(--colors-primary-400)"
+  },
+  "colors.primary.500": {
+    "value": "#022D9C",
+    "variable": "var(--colors-primary-500)"
+  },
   "colors.primary.light": {
     "value": "#0039C8",
     "variable": "var(--colors-primary-light)"
@@ -1774,6 +1798,7 @@ const tokens = {
   "colors.gray.dark": {
     "value": "#787976",
     "variable": "var(--colors-gray-dark)"
+  },
   "fonts.sans": {
     "value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
     "variable": "var(--fonts-sans)"

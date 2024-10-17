@@ -2,10 +2,10 @@
 
 import "@/utils/pdfWorkerPolyfill";
 import { User, SessionResponseDto } from "@/schema/backend.schema";
-import HostViewer from "./_components/HostViewer";
+import HostViewer from "./_components/Host/HostViewer";
 import { useQueries } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
-import ParticipantViewer from "./_components/ParticipantViewer";
+import ParticipantViewer from "./_components/Participant/ParticipantViewer";
 import { useAtom } from "jotai";
 import { socketAtom } from "@/client/socketAtom";
 import { useEffect } from "react";

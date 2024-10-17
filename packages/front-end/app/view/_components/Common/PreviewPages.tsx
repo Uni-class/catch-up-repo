@@ -103,9 +103,12 @@ function PageElement({
         onClick={onClick}
         className={css({
           cursor: "pointer",
-          border: currentIndex === index ? "2px solid white" : "",
-          outline: currentIndex === index ? "3px solid black" : "",
+          border: currentIndex === index ?  "2px solid" : "",
+          borderColor:  "white",
+          outline: currentIndex === index ? "3px solid" : "",
+          outlineColor: "primary.500",
           position: "relative",
+          borderRadius:"0.3rem",
         })}
       >
         <Page
@@ -141,23 +144,7 @@ function PageElement({
           renderAnnotationLayer={false}
         />
         {isBadgeVisible && (
-          <div
-            className={css({
-              position: "absolute",
-              right: "-0.75rem",
-              top: "-1rem",
-              borderRadius: "50%",
-              width: "2rem",
-              height: "2rem",
-              border: "2px solid black",
-              backgroundColor: "white",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            })}
-          >
-            {badgeContent}
-          </div>
+            badgeContent
         )}
       </div>
       <p className={css({ textAlign: "center" })}>{index + 1}</p>

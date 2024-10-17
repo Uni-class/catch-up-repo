@@ -3,20 +3,21 @@ import { Heading, Paragraph } from "@/components/Text";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import Image from "next/image";
+import { overlay } from "overlay-kit";
 import { ReactNode, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export function CodeOverlayContainer({
   children,
-  setShowCodeOverlay,
+
 }: {
   children?: ReactNode;
-  setShowCodeOverlay: React.Dispatch<React.SetStateAction<boolean>>;
+
 }) {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" || event.key === "Esc") {
-        setShowCodeOverlay(false);
+        overlay.unmount("code-overlay");
       }
     };
 
@@ -25,7 +26,7 @@ export function CodeOverlayContainer({
     return () => {
       window.removeEventListener("keydown", handleEscKey);
     };
-  }, [setShowCodeOverlay]);
+  }, []);
   return (
     <div
       className={css({
@@ -53,7 +54,7 @@ export function CodeOverlayContainer({
         <button
           className={css({ cursor: "pointer" })}
           onClick={() => {
-            setShowCodeOverlay(false);
+            overlay.unmount("code-overlay");
           }}
         >
           <Paragraph variant="body2">닫기 X</Paragraph>
@@ -100,16 +101,17 @@ export function CodeOverlay({ code }: { code: string }) {
       })}
     >
       <Paragraph variant="sub1">세션 코드</Paragraph>
-      <Heading
-        variant="h1"
+      <h1
         onClick={() => {
           copyToClipboard(code, "코드");
         }}
         className={css({
           cursor:"pointer",
           transition: "opacity 0.3s ease",
+          fontSize: "10rem",
+          fontWeight:"bold",
           "&:hover":{
-            opacity:0.7
+            opacity:0.7,
           }
         })}
       >
@@ -129,7 +131,7 @@ export function CodeOverlay({ code }: { code: string }) {
             })}
           />
         </span>
-      </Heading>
+      </h1>
       <Paragraph variant="sub1">또는</Paragraph>
       <Button
         onClick={() => {

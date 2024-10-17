@@ -16,3 +16,6 @@ dist
 
 .DS_Store/
 .idea
+
+# panda style
+styled-system

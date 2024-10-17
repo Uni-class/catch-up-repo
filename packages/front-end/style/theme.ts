@@ -63,6 +63,12 @@ export const theme: Tokens = {
       },
     },
     primary: {
+      50:{value:"#ABBDF5"},
+      100:{value:"#2653D4"},
+      200:{value:"#0039C8"},
+      300:{value:"#0136B9"},
+      400:{value:"#022B92"},
+      500:{value:"#022D9C"},
       value: "#022D9C",
       light: { value: "#0039C8" },
       mid: { value: "#0136B9" },
