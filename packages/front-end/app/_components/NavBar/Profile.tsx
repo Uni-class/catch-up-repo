@@ -21,7 +21,7 @@ export function Profile() {
         boxSizing: "border-box",
         cursor: "pointer",
         _hover: {
-          bordercolor: "secondary.200",
+          borderColor: "secondary.200",
         },
       })}
       onClick={() => {

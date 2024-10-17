@@ -1,5 +1,10 @@
 import { styled, StyledComponent } from "@/styled-system/jsx";
-import { ReactNode } from "react";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  forwardRef,
+  ReactNode,
+} from "react";
 
 const ButtonContainer = styled("button", {
   base: {
@@ -14,6 +19,14 @@ const ButtonContainer = styled("button", {
     alignItems: "center",
   },
   variants: {
+    isIcon: {
+      true: {
+        justifyContent: "",
+      },
+      false: {
+        justifyContent: "center",
+      },
+    },
     size: {
       mid: {
         fontSize: "1rem",
@@ -52,12 +65,9 @@ const ButtonContainer = styled("button", {
 });
 
 interface PropType
-  extends StyledComponent<
-    "button",
-    {
-      size?: "small" | "mid" | undefined;
-      color?: "primary" | "secondary" | "gray" | undefined;
-    }
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
   > {
   children?: ReactNode;
   startIcon?: ReactNode;
@@ -65,13 +75,17 @@ interface PropType
   color?: "primary" | "secondary" | "gray" | undefined;
 }
 
-const Button = ({ children, startIcon, ...attr }: PropType) => {
-  return (
-    <ButtonContainer {...attr}>
-      {startIcon}
-      {children}
-    </ButtonContainer>
-  );
-};
+const Button = forwardRef<HTMLButtonElement, PropType>(
+  ({ children, startIcon, ...attr }, ref) => {
+    return (
+      <ButtonContainer ref={ref} {...attr} isIcon={!!startIcon}>
+        {startIcon}
+        {children}
+      </ButtonContainer>
+    );
+  }
+);
+
+Button.displayName = "Button";
 
 export default Button;
