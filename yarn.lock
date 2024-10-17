@@ -3623,6 +3623,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@newhighsco/storybook-addon-svgr@npm:^2.0.30":
+  version: 2.0.30
+  resolution: "@newhighsco/storybook-addon-svgr@npm:2.0.30"
+  dependencies:
+    "@svgr/webpack": "npm:8.1.0"
+    new-url-loader: "npm:0.1.1"
+  peerDependencies:
+    "@storybook/react-webpack5": 8.3.5
+    storybook: 8.3.5
+  checksum: 10c0/6329a79355b973734c339ab15d4c2e3f0e5b0747621aa3bc4d3959510c8b84c5278e1e7c8b81b48ad180b1c435df035473dfd9af3feecd96233dcf1be9dae331
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:14.2.10":
   version: 14.2.10
   resolution: "@next/env@npm:14.2.10"
@@ -6391,6 +6404,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/react-webpack5@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/react-webpack5@npm:8.3.5"
+  dependencies:
+    "@storybook/builder-webpack5": "npm:8.3.5"
+    "@storybook/preset-react-webpack": "npm:8.3.5"
+    "@storybook/react": "npm:8.3.5"
+    "@types/node": "npm:^22.0.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    storybook: ^8.3.5
+    typescript: ">= 4.2.x"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/76b17c1c61648dc723c515e697d7b8f1de0c9f9f6ba56136529e962b95e31e5e098c5426a0b1f372a46aa843d34d51784cf7c3f6a8ea0a965f2c318de3b5b4e1
+  languageName: node
+  linkType: hard
+
 "@storybook/react@npm:8.3.5, @storybook/react@npm:^8.2.1":
   version: 8.3.5
   resolution: "@storybook/react@npm:8.3.5"
@@ -6598,7 +6631,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@svgr/webpack@npm:^8.1.0":
+"@svgr/webpack@npm:8.1.0, @svgr/webpack@npm:^8.1.0":
   version: 8.1.0
   resolution: "@svgr/webpack@npm:8.1.0"
   dependencies:
@@ -12306,6 +12339,7 @@ __metadata:
   resolution: "front-end@workspace:packages/front-end"
   dependencies:
     "@chromatic-com/storybook": "npm:^1.6.1"
+    "@newhighsco/storybook-addon-svgr": "npm:^2.0.30"
     "@pandacss/dev": "npm:^0.42.0"
     "@storybook/addon-essentials": "npm:^8.2.1"
     "@storybook/addon-interactions": "npm:^8.2.1"
@@ -12314,6 +12348,7 @@ __metadata:
     "@storybook/blocks": "npm:^8.2.1"
     "@storybook/nextjs": "npm:^8.2.1"
     "@storybook/react": "npm:^8.2.1"
+    "@storybook/react-webpack5": "npm:^8.3.5"
     "@storybook/test": "npm:^8.2.1"
     "@svgr/webpack": "npm:^8.1.0"
     "@tanstack/eslint-plugin-query": "npm:^5.50.1"
@@ -12341,7 +12376,7 @@ __metadata:
     react-pdf: "npm:^9.1.0"
     react-toastify: "npm:^10.0.5"
     socket.io-client: "npm:^4.7.5"
-    storybook: "npm:^8.2.1"
+    storybook: "npm:^8.3.5"
     tldraw: "npm:^2.4.4"
     typescript: "npm:^5"
     usehooks-ts: "npm:^3.1.0"
@@ -15544,6 +15579,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"new-url-loader@npm:0.1.1":
+  version: 0.1.1
+  resolution: "new-url-loader@npm:0.1.1"
+  peerDependencies:
+    webpack: ^5.0.0
+  checksum: 10c0/da52e55088e09888635bf6214e6cdd570eb75ed4416ccde1f2f2eedc75048dcecfd1a0ab84d456aa5cde4a6e0ce799d0cc0bb1c1eab2625d6eec2e4506de15b7
+  languageName: node
+  linkType: hard
+
 "next@npm:14.2.10":
   version: 14.2.10
   resolution: "next@npm:14.2.10"
@@ -18699,7 +18743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^8.2.1":
+"storybook@npm:^8.3.5":
   version: 8.3.5
   resolution: "storybook@npm:8.3.5"
   dependencies:

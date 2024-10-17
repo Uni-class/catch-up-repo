@@ -1735,9 +1735,25 @@ const tokens = {
     "value": "#022D9C",
     "variable": "var(--colors-primary)"
   },
+  "colors.secondary.dark": {
+    "value": "#9FDF05",
+    "variable": "var(--colors-secondary-dark)"
+  },
+  "colors.secondary.light": {
+    "value": "#C7FF33",
+    "variable": "var(--colors-secondary-light)"
+  },
   "colors.secondary": {
     "value": "#AFFD06",
     "variable": "var(--colors-secondary)"
+  },
+  "colors.tertiary.dark": {
+    "value": "#9AADE0",
+    "variable": "var(--colors-tertiary-dark)"
+  },
+  "colors.tertiary.light": {
+    "value": "#C1D1FF",
+    "variable": "var(--colors-tertiary-light)"
   },
   "colors.tertiary": {
     "value": "#ABBDF5",
