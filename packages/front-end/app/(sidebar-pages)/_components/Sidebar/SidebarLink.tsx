@@ -25,7 +25,7 @@ const SidebarLink = forwardRef<HTMLAnchorElement, LinkPropsReal>(
           className={cx(
             css({
               _hover: {
-                color: "tertiary",
+                color: "tertiary.200",
               },
             }),
             props.className

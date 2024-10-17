@@ -22,7 +22,7 @@ export default function RoleProfile({
         display: "flex",
         flexDirection: flexDirection,
         alignItems: "center",
-        marginBottom:"3.4rem",
+        marginBottom: "3.4rem",
       })}
     >
       <div className={css({ position: "relative" })}>
@@ -55,12 +55,12 @@ export default function RoleProfile({
             key={i}
             className={css({
               fontWeight: "semibold",
-              fontSize:"1.25rem",
+              fontSize: "1.25rem",
               padding: "0.25rem 0",
               listStyleType: "disc",
-              marginLeft:"0.95rem",
+              marginLeft: "0.95rem",
               "&::marker": {
-                color: "secondary",
+                color: "secondary.200",
               },
             })}
           >

@@ -15,12 +15,12 @@ const FooterItem = ({
     <div
       className={css({
         display: "flex",
-       
+
         alignItems: "center",
         cursor: "pointer",
         borderRadius: "0.2em",
         _hoverNotActive: {
-          color: "secondary",
+          color: "secondary.200",
         },
       })}
     >

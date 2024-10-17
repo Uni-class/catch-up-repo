@@ -20,7 +20,7 @@ export function HeaderAccount() {
           gap: "0.75rem",
           cursor: "pointer",
           _hover: {
-            color: "primary.light",
+            color: "primary.200",
           },
         })}
         onClick={() => {
@@ -50,7 +50,7 @@ export function HeaderAccount() {
           color: "#666",
           fontSize: "0.9rem",
           _hover: {
-            color: "primary.light",
+            color: "primary.200",
           },
         })}
       >

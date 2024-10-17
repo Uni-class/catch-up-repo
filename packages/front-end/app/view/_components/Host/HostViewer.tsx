@@ -99,22 +99,22 @@ export default function HostViewer(props: ViewerPropType) {
                   position: "absolute",
                   left: 0,
                   bottom: 0,
-                  minWidth:"3.25rem",
-                  height:"1.5rem",
-                  fontSize:"0.8rem",
-                  display:"flex",
-                  color:"black",
-                  bg:"secondary",
-                  justifyContent:"space-around",
-                  borderLeftRadius:"0.75rem",
-                  borderRightRadius:"0.75rem",
-                  alignItems:"center",
-                  padding:"0 0.25rem",
-                  borderColor:"black",
-                  border:"1px solid"
+                  minWidth: "3.25rem",
+                  height: "1.5rem",
+                  fontSize: "0.8rem",
+                  display: "flex",
+                  color: "black",
+                  bg: "secondary.200",
+                  justifyContent: "space-around",
+                  borderLeftRadius: "0.75rem",
+                  borderRightRadius: "0.75rem",
+                  alignItems: "center",
+                  padding: "0 0.25rem",
+                  borderColor: "black",
+                  border: "1px solid"
                 })}
               >
-                <UsersIcon width="1em" height="1em"/>
+                <UsersIcon width="1em" height="1em" />
                 {index !== undefined && roomPageViewerCount[index]}
               </div>
             );
@@ -129,7 +129,7 @@ export default function HostViewer(props: ViewerPropType) {
             display: "flex",
             position: "relative",
             flexDirection: "column",
-            bg: "#F5F7FA",
+            bg: "grey.50",
           })}
         >
           <PDFPainter

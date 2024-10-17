@@ -93,7 +93,7 @@ const featureData: Omit<ElementPropType, "index">[] = [
         <div
           className={css({
             position: "absolute",
-            bg: "primary",
+            bg: "primary.200",
             width: "26%",
             height: "100%",
             borderRadius: "1000px",
@@ -107,7 +107,7 @@ const featureData: Omit<ElementPropType, "index">[] = [
             borderRadius: "50%",
             width: "2rem",
             height: "2rem",
-            bg: "secondary",
+            bg: "secondary.200",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -143,7 +143,7 @@ const featureData: Omit<ElementPropType, "index">[] = [
           className={css({
             width: "4rem",
             height: "4rem",
-            bg: "secondary",
+            bg: "secondary.200",
             borderRadius: "50%",
             display: "flex",
             flexDirection: "column",

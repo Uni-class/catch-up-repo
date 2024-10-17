@@ -10,14 +10,14 @@ export default function NavTitle() {
     <div
       className={css({
         padding: "0.9rem 0",
-        color: "#8084AA",
+        color: "grey.500",
         display: "flex",
         alignItems: "center",
         fontSize: "0.75rem",
         gap: "0.35rem",
       })}
     >
-      <RouteArrowIcon width={"0.8rem"} height={"0.8rem"} fill="#8084AA" />
+      <RouteArrowIcon width={"0.8rem"} height={"0.8rem"} fill="grey.500" />
       <p>{`${routeTitle[pathname].group} :: ${routeTitle[pathname].name}`}</p>
     </div>
   );
