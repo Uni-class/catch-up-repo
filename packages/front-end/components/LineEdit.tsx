@@ -39,7 +39,6 @@ import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 
 const LineEdit = styled("input",{
   base:{
-    width:"100%",
     padding:"0.48rem 0.375rem",
     color:"black",
     bg:"#F5F7FA",
