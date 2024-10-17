@@ -23,7 +23,7 @@ export default function Sidebar() {
         height: "100%",
         borderRight: "1px solid",
         borderColor: "gray.200",
-        bg: "primary.light",
+        bg: "primary.200",
         color: "white",
         float: "left",
       })}

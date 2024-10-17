@@ -12,6 +12,10 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { overlay } from "overlay-kit";
 import { ReactNode, useState } from "react";
+import FileIcon from "@/public/icons/file.svg";
+import SessionIcon from "@/public/icons/session.svg";
+import Divider from "@/components/Divider";
+import { toast } from "react-toastify";
 
 export function SessionFormTemplate({
   useFormDataResult,
@@ -49,18 +53,28 @@ export function SessionFormTemplate({
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "2em",
+        gap: "1.25rem",
         width: "100%",
-        maxWidth: "50em",
+        maxWidth: "70em",
+        padding: "3rem 4.16rem",
+        alignItems: "flex-start",
       })}
       onSubmit={(e) => {
         e.preventDefault();
         const { sessionName, sessionFiles } = unControlledDataRef.current;
         const submitError = { sessionFiles: false, sessionName: false };
         if (!sessionName.trim()) {
+          toast("세션 제목을 입력해주세요.", {
+            type: "error",
+            position: "top-center",
+          });
           submitError.sessionName = true;
         }
         if (sessionFiles.length === 0) {
+          toast("세션 파일을 선택해주세요.", {
+            type: "error",
+            position: "top-center",
+          });
           submitError.sessionFiles = true;
         }
         if (submitError.sessionFiles || submitError.sessionName) {
@@ -82,9 +96,9 @@ export function SessionFormTemplate({
         <LineEdit
           id="session-title"
           name="session-title"
-          placeholder="세션 제목을 입력해주세요"
+          placeholder="세션 제목을 입력해주세요."
           onChange={handleInputChange}
-          className={css({ height: "3em" })}
+          className={css({ flexGrow: 1 })}
           defaultValue={unControlledDataRef.current.sessionName}
         />
       </ControlContainer>
@@ -99,23 +113,25 @@ export function SessionFormTemplate({
           name="select-file"
           type="button"
           onClick={handleFileButtonClick}
-          className={css({
-            height: "3em",
-            backgroundColor: "green.600",
-          })}
+          startIcon={<FileIcon width={"1em"} height={"1em"} />}
+          color="gray"
         >
-          자료 선택
+          파일 선택
         </Button>
       </ControlContainer>
-      <ControlContainer labelText="현재 선택한 파일" height="auto">
+      <ControlContainer labelText="현재 선택한 파일">
         <Paragraph>
           {controlledData.sessionFiles.length > 0
             ? controlledData.sessionFiles[0].name
             : "현재 선택한 파일이 없습니다."}
         </Paragraph>
       </ControlContainer>
-      <Button type="submit" className={css({ height: "3em" })}>
-        세션 시작
+      <Divider />
+      <Button
+        type="submit"
+        startIcon={<SessionIcon width={"1em"} height={"1em"} />}
+      >
+        세션 시작하기
       </Button>
     </form>
   );
@@ -127,7 +143,7 @@ function ControlContainer({
   htmlFor,
   errorText,
   isError,
-  height="135px",
+  height,
 }: {
   children?: ReactNode;
   labelText?: string;
@@ -140,15 +156,16 @@ function ControlContainer({
     <div
       className={css({
         display: "flex",
-        flexDirection: "column",
-        gap: "0.75rem",
         width: "100%",
         height: height,
+        alignItems: "center",
       })}
     >
-      <Label htmlFor={htmlFor}>{labelText}</Label>
+      <Label htmlFor={htmlFor} className={css({ minWidth: "9em" })}>
+        {labelText}
+      </Label>
       {children}
-      {!!isError && <p className={css({ color: "red.500" })}>{errorText}</p>}
+      {/* {!!isError && <p className={css({ color: "red.500" })}>{errorText}</p>} */}
     </div>
   );
 }

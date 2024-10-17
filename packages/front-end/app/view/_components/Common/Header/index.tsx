@@ -45,7 +45,7 @@ export function Header({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        bg: "primary.light",
+        bg: "primary.200",
         padding: "0 2.5rem",
       })}
     >

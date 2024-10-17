@@ -50,14 +50,20 @@ export default function Page({ params }: PropType) {
         height: "100%",
       })}
     >
-      <Heading>{isHost ? "세션 정보 & 수정" : "세션 정보"}</Heading>
-      <Divider />
+      <h1
+        className={css({
+          fontSize: "1.5rem",
+          fontWeight: "semibold",
+          color: "black",
+        })}
+      >
+        {isHost ? "세션 정보 & 수정" : "세션 정보"}
+      </h1>
       <div
         className={css({
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+
           flexGrow: 1,
         })}
       >

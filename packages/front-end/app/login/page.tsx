@@ -18,11 +18,11 @@ export default function Page() {
         display: "flex",
         width: "100%",
         height: "100%",
-        bg: "primary.light",
+        bg: "primary.200",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        color:"white",
+        color: "white",
       })}
     >
       <div
@@ -73,7 +73,7 @@ export default function Page() {
           <LoginButton providerEnum="NAVER" />
           <LoginButton providerEnum="KAKAO" />
         </div>
-        <div className={css({width:"100%",color:"tertiary",display:"flex",justifyContent:"center"})}>
+        <div className={css({ width: "100%", color: "tertiary.200", display: "flex", justifyContent: "center" })}>
           <Link href="/">홈페이지로</Link>
         </div>
       </div>

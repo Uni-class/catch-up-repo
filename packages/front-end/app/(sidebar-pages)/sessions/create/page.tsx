@@ -11,6 +11,7 @@ import { CreateSessionDto, Session } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { useRouter } from "@/hook/useRouter";
 import { AxiosResponse } from "axios";
+import { routeTitle } from "@/const/routeTitle";
 
 export default function Page() {
   const router = useRouter();
@@ -36,14 +37,20 @@ export default function Page() {
         height: "100%",
       })}
     >
-      <Heading>세션 생성</Heading>
-      <Divider />
+      <h1
+        className={css({
+          fontSize: "1.5rem",
+          fontWeight: "semibold",
+          color: "black",
+        })}
+      >
+        {routeTitle[router.pathname].name}
+      </h1>
       <div
         className={css({
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+        
           flexGrow: 1,
         })}
       >

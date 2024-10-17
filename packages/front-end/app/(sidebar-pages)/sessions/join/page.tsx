@@ -2,19 +2,16 @@
 
 import { useState } from "react";
 import LineEdit from "@/components/LineEdit";
-import { Heading, Paragraph } from "@/components/Text";
 import { css } from "@/styled-system/css";
 import Button from "@/components/Button";
-import Divider from "@/components/Divider";
 import { Label } from "@/components/Label";
 import { useRouter } from "@/hook/useRouter";
+import { routeTitle } from "@/const/routeTitle";
+import JoinIcon from "@/public/icons/join.svg";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
-  const [status, setStatus] = useState<{
-    status: "notice" | "error";
-    text: string;
-  } | null>(null);
   const router = useRouter();
   return (
     <div
@@ -24,72 +21,61 @@ export default function Page() {
         flexDirection: "column",
       })}
     >
-      <Heading>세션 접속하기</Heading>
-      <Divider />
+      <h1
+        className={css({
+          fontSize: "1.5rem",
+          fontWeight: "semibold",
+          color: "black",
+        })}
+      >
+        {routeTitle[router.pathname].name}
+      </h1>
       <div
         className={css({
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           flexGrow: 1,
           justifyContent: "center",
+          padding:"3rem 4.16rem"
         })}
       >
         <div
           className={css({
             flex: 1,
             display: "flex",
-            flexDirection: "column",
             gap: "1rem",
+            alignItems: "center",
           })}
         >
           <Label htmlFor="session-code">세션 코드</Label>
-          <div
+          <LineEdit
             className={css({
-              display: "flex",
-              gap: "0.5rem",
+              flexGrow: 1,
+              height: "inherit",
             })}
-          >
-            <LineEdit
-              className={css({
-                flexGrow: 1,
-                height: "inherit",
-              })}
-              placeholder="세션 코드를 입력해 주세요."
-              value={sessionCode}
-              onChange={(event) => setSessionCode(event.target.value)}
-              name="session-code"
-              id="session-code"
-            />
-            <Button
-              className={css({
-                height: "inherit",
-              })}
-              disabled={sessionCode.trim() === ""}
-              onClick={() => {
-                if (sessionCode.trim() === "") {
-                  setStatus({
-                    status: "error",
-                    text: "세션 코드를 입력해주세요.",
-                  });
-                  return;
-                }
-                setStatus({ status: "notice", text: "세션을 로딩중입니다." });
-                router.push(
-                  router.getURLString("/view", { code: `${sessionCode}` })
-                );
-              }}
-            >
-              {"접속하기"}
-            </Button>
-          </div>
-          <p
+            placeholder="세션 코드를 입력해 주세요."
+            value={sessionCode}
+            onChange={(event) => setSessionCode(event.target.value)}
+            name="session-code"
+            id="session-code"
+          />
+          <Button
             className={css({
-              height: "1rem",
-              color: status?.status === "error" ? "red.500" : "green",
+              height: "inherit",
             })}
+            onClick={() => {
+              if (sessionCode.trim() === "") {
+                toast("세션 코드를 입력해주세요.", { type: "error",position:"top-center" });
+                return;
+              }
+              router.push(
+                router.getURLString("/view", { code: `${sessionCode}` })
+              );
+            }}
+            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
           >
-            {status?.text}
-          </p>
+            {"세션 접속"}
+          </Button>
         </div>
       </div>
     </div>
