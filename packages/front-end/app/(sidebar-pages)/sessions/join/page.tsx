@@ -33,9 +33,10 @@ export default function Page() {
       <div
         className={css({
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           flexGrow: 1,
           justifyContent: "center",
+          padding:"4rem 4.16rem"
         })}
       >
         <div
