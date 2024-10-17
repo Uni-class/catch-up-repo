@@ -21,7 +21,7 @@ export function Profile() {
         boxSizing: "border-box",
         cursor: "pointer",
         _hover: {
-          borderColor: "secondary",
+          bordercolor: "secondary.200",
         },
       })}
       onClick={() => {
@@ -30,7 +30,7 @@ export function Profile() {
     >
       <ProfileImage
         alt="profile"
-        src={account? account.profileUrl : ""}
+        src={account ? account.profileUrl : ""}
         width={25}
         height={25}
         className={css({ width: "100%", height: "100%" })}

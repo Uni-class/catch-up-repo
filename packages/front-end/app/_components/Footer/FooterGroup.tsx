@@ -24,7 +24,7 @@ const FooterGroup = ({
           padding: "0.5em 0",
           fontSize: "1.1em",
           fontWeight: "bold",
-          color: "secondary",
+          color: "secondary.200",
         })}
       >
         {name}

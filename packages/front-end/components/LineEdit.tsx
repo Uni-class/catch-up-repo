@@ -37,19 +37,19 @@ import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 //   );
 // }
 
-const LineEdit = styled("input",{
-  base:{
-    padding:"0.48rem 0.375rem",
-    color:"black",
-    bg:"#F5F7FA",
-    border:"1px solid",
-    borderColor:"#EBEDFA",
-    borderRadius:"0.375rem",
-    _hover:{
-      borderColor:"primary.50",
+const LineEdit = styled("input", {
+  base: {
+    padding: "0.48rem 0.375rem",
+    color: "black",
+    bg: "grey.50",
+    border: "1px solid",
+    borderColor: "grey.100",
+    borderRadius: "0.375rem",
+    _hover: {
+      borderColor: "primary.50",
     },
-    _focus:{
-      borderColor:"primary.200",
+    _focus: {
+      borderColor: "primary.200",
     }
   }
 })

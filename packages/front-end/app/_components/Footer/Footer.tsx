@@ -28,7 +28,7 @@ const Footer = () => {
             display: "flex",
             alignItems: "center",
             gap: "0.6em",
-            color: "secondary",
+            color: "secondary.200",
             marginBottom: "0.86rem",
           })}
         >

@@ -13,7 +13,7 @@ export const HeaderControlButton = styled("button", {
     cursor: "pointer",
     borderRadius: "0.5rem",
     _disabled: {
-      bg: "secondary",
+      bg: "secondary.200",
       color: "black",
       border: "1px solid",
       borderColor: "black",

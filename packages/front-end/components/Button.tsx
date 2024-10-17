@@ -8,10 +8,10 @@ const ButtonContainer = styled("button", {
     borderRadius: "0.3rem",
     color: "white",
     cursor: "pointer",
-    fontWeight:"medium",
-    display:"flex",
-    gap:"0.375rem",
-    alignItems:"center",
+    fontWeight: "medium",
+    display: "flex",
+    gap: "0.375rem",
+    alignItems: "center",
   },
   variants: {
     size: {
@@ -31,16 +31,16 @@ const ButtonContainer = styled("button", {
         },
       },
       secondary: {
-        bg: "secondary",
-        color:"black",
+        bg: "secondary.200",
+        color: "black",
         _hover: {
           bg: "secondary.dark",
         },
       },
       gray: {
-        bg: "#8084AA",
+        bg: "grey.500",
         _hover: {
-        bg: "#6F7291",
+          bg: "#6F7291",
         },
       },
     },

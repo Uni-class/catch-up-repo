@@ -14,7 +14,7 @@ export default function Banner() {
       })}
     >
       <div className={css({})}>
-        <h2 className={css({ fontSize: "1.6rem", color: "secondary" })}>
+        <h2 className={css({ fontSize: "1.6rem", color: "secondary.200" })}>
           내 강의를 따라와봐!
         </h2>
         <h1 className={css({ fontSize: "7.5rem", fontWeight: "bold" })}>
@@ -46,11 +46,11 @@ const BannerLinkButton = styled(Link, {
   base: {
     fontSize: "1.6rem",
     color: "black",
-    bg: "secondary",
+    bg: "secondary.200",
     padding: "1rem 1.25rem",
-    display:"inline-block",
-    fontWeight:"bold",
-    margin:"1.46rem 0",
-    borderRadius:"0.5rem"
+    display: "inline-block",
+    fontWeight: "bold",
+    margin: "1.46rem 0",
+    borderRadius: "0.5rem"
   },
 });

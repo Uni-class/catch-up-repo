@@ -1719,76 +1719,60 @@ const tokens = {
     "value": "#022D9C",
     "variable": "var(--colors-primary-500)"
   },
-  "colors.primary.light": {
-    "value": "#0039C8",
-    "variable": "var(--colors-primary-light)"
-  },
-  "colors.primary.mid": {
-    "value": "#0136B9",
-    "variable": "var(--colors-primary-mid)"
-  },
-  "colors.primary.dark": {
-    "value": "#022B92",
-    "variable": "var(--colors-primary-dark)"
-  },
-  "colors.primary": {
-    "value": "#022D9C",
-    "variable": "var(--colors-primary)"
-  },
-  "colors.secondary.dark": {
-    "value": "#9FDF05",
-    "variable": "var(--colors-secondary-dark)"
-  },
-  "colors.secondary.light": {
+  "colors.secondary.100": {
     "value": "#C7FF33",
-    "variable": "var(--colors-secondary-light)"
+    "variable": "var(--colors-secondary-100)"
   },
-  "colors.secondary": {
+  "colors.secondary.200": {
     "value": "#AFFD06",
-    "variable": "var(--colors-secondary)"
+    "variable": "var(--colors-secondary-200)"
   },
-  "colors.tertiary.dark": {
-    "value": "#9AADE0",
-    "variable": "var(--colors-tertiary-dark)"
+  "colors.secondary.300": {
+    "value": "#9FDF05",
+    "variable": "var(--colors-secondary-300)"
   },
-  "colors.tertiary.light": {
+  "colors.tertiary.100": {
     "value": "#C1D1FF",
-    "variable": "var(--colors-tertiary-light)"
+    "variable": "var(--colors-tertiary-100)"
   },
-  "colors.tertiary": {
+  "colors.tertiary.200": {
     "value": "#ABBDF5",
-    "variable": "var(--colors-tertiary)"
+    "variable": "var(--colors-tertiary-200)"
+  },
+  "colors.tertiary.300": {
+    "value": "#9AADE0",
+    "variable": "var(--colors-tertiary-300)"
   },
   "colors.gray.50": {
-    "value": "#f9fafb",
+    "value": "#F5F7FA",
     "variable": "var(--colors-gray-50)"
   },
   "colors.gray.100": {
-    "value": "#f3f4f6",
+    "value": "#EBEDFA",
     "variable": "var(--colors-gray-100)"
   },
   "colors.gray.200": {
-    "value": "#e5e7eb",
+    "value": "#D9DBEC",
     "variable": "var(--colors-gray-200)"
   },
   "colors.gray.300": {
-    "value": "#d1d5db",
+    "value": "#D6D7E5",
     "variable": "var(--colors-gray-300)"
   },
   "colors.gray.400": {
-    "value": "#9ca3af",
+    "value": "#BBBDD5",
     "variable": "var(--colors-gray-400)"
   },
   "colors.gray.500": {
-    "value": "#6b7280",
+    "value": "#8084AA",
     "variable": "var(--colors-gray-500)"
   },
   "colors.gray.600": {
-    "value": "#4b5563",
+    "value": "#787976",
     "variable": "var(--colors-gray-600)"
   },
   "colors.gray.700": {
-    "value": "#374151",
+    "value": "#0039C8",
     "variable": "var(--colors-gray-700)"
   },
   "colors.gray.800": {
@@ -1803,17 +1787,37 @@ const tokens = {
     "value": "#030712",
     "variable": "var(--colors-gray-950)"
   },
-  "colors.gray.light": {
-    "value": "#0039C8",
-    "variable": "var(--colors-gray-light)"
+  "colors.grey.50": {
+    "value": "#F5F7FA",
+    "variable": "var(--colors-grey-50)"
   },
-  "colors.gray.mid": {
+  "colors.grey.100": {
+    "value": "#EBEDFA",
+    "variable": "var(--colors-grey-100)"
+  },
+  "colors.grey.200": {
+    "value": "#D9DBEC",
+    "variable": "var(--colors-grey-200)"
+  },
+  "colors.grey.300": {
+    "value": "#D6D7E5",
+    "variable": "var(--colors-grey-300)"
+  },
+  "colors.grey.400": {
     "value": "#BBBDD5",
-    "variable": "var(--colors-gray-mid)"
+    "variable": "var(--colors-grey-400)"
   },
-  "colors.gray.dark": {
+  "colors.grey.500": {
+    "value": "#8084AA",
+    "variable": "var(--colors-grey-500)"
+  },
+  "colors.grey.600": {
     "value": "#787976",
-    "variable": "var(--colors-gray-dark)"
+    "variable": "var(--colors-grey-600)"
+  },
+  "colors.grey.700": {
+    "value": "#0039C8",
+    "variable": "var(--colors-grey-700)"
   },
   "fonts.sans": {
     "value": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
@@ -2058,14 +2062,6 @@ const tokens = {
   "colors.colorPalette.dark": {
     "value": "var(--colors-color-palette-dark)",
     "variable": "var(--colors-color-palette-dark)"
-  },
-  "colors.colorPalette.light": {
-    "value": "var(--colors-color-palette-light)",
-    "variable": "var(--colors-color-palette-light)"
-  },
-  "colors.colorPalette.mid": {
-    "value": "var(--colors-color-palette-mid)",
-    "variable": "var(--colors-color-palette-mid)"
   }
 }
 

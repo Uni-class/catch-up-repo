@@ -22,21 +22,21 @@ export function RecommendCard({
         })}
       >
         CATCH UP | USE IT
-        <span className={css({ color: "secondary" })}> 0{index}</span>
+        <span className={css({ color: "secondary.200" })}> 0{index}</span>
       </p>
       <div
         className={css({
           position: "relative",
           borderRadius: "50%",
-          bg: "secondary",
+          bg: "secondary.200",
           width: "3.75rem",
           height: "3.75rem",
           marginBottom: "1.41rem",
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center",
-          padding:"0.96rem",
-          boxSizing:"border-box",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0.96rem",
+          boxSizing: "border-box",
         })}
       >
         <Image
