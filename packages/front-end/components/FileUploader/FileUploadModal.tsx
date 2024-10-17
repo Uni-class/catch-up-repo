@@ -6,7 +6,7 @@ import { overlay } from "overlay-kit";
 import { useEffect, useState, useRef, SetStateAction, Dispatch } from "react";
 
 
-export default function FileUploadModal({ setClosingBlocked = () => {} }: { setClosingBlocked?: Dispatch<SetStateAction<boolean>> }) {
+export default function FileUploadModal({ setClosingBlocked = () => { } }: { setClosingBlocked?: Dispatch<SetStateAction<boolean>> }) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<"ready" | "uploading" | "finished">("ready");
   const fileUploaderRef = useRef<{
@@ -65,7 +65,7 @@ export default function FileUploadModal({ setClosingBlocked = () => {} }: { setC
           className={css({
             padding: "0.5em 1em",
           })}
-          preset={"secondary"}
+          color={"secondary"}
           disabled={status === "uploading"}
           onClick={() => {
             overlay.close("File-Upload");
@@ -73,7 +73,7 @@ export default function FileUploadModal({ setClosingBlocked = () => {} }: { setC
         >
           {
             status === "finished"
-            ?
+              ?
               "닫기"
               :
               "취소"
