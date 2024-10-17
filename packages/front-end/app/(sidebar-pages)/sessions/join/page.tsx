@@ -36,7 +36,7 @@ export default function Page() {
           alignItems: "flex-start",
           flexGrow: 1,
           justifyContent: "center",
-          padding:"4rem 4.16rem"
+          padding:"3rem 4.16rem"
         })}
       >
         <div
