@@ -11,7 +11,6 @@ import { apiClient } from "@/utils/axios";
 import { Heading } from "@/components/Text";
 import DeleteIcon from "@/public/icons/delete.svg";
 import LinkButton from "@/components/Button/LinkButton";
-import SessionIcon from "@/public/icons/session.svg";
 import JoinIcon from "@/public/icons/join.svg";
 
 const DataEmptyPlaceholder = (
@@ -117,12 +116,10 @@ export function ParticipantSessionTable({
             display: "flex",
             gap: "1em",
             justifyContent: "flex-end",
+            fontWeight: "medium",
           })}
         >
           <LinkButton
-            className={css({
-              padding: "0.5em 0.8em",
-            })}
             href="/sessions/join"
             startIcon={<JoinIcon width={"1em"} height={"1em"} />}
           >
