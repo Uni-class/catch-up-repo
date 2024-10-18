@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { ModeControl } from "./Mode";
 import { css } from "@/styled-system/css";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
@@ -44,10 +44,10 @@ export function HostViewerDownload({
     }
     const snapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-          pdfPainterController.getPageCount(),
-          sessionId,
-          fileId
-        )
+        pdfPainterController.getPageCount(),
+        sessionId,
+        fileId
+      )
       : [];
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
       await pageEachDrawCallback({
@@ -125,18 +125,18 @@ export function ParticipantViewerDownload({
     }
     const snapshotsFromServer = partiDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-          pdfPainterController.getPageCount(),
-          sessionId,
-          fileId
-        )
+        pdfPainterController.getPageCount(),
+        sessionId,
+        fileId
+      )
       : [];
     const hostSnapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-          pdfPainterController.getPageCount(),
-          sessionId,
-          fileId,
-          true
-        )
+        pdfPainterController.getPageCount(),
+        sessionId,
+        fileId,
+        true
+      )
       : [];
     const pdfBytes = await getMergedPDFBytes(src, async (index) => [
       await pageEachDrawCallback({

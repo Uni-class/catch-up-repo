@@ -1,5 +1,4 @@
-import Button from "@/components/Button";
-import LinkButton from "@/components/LinkButton";
+import Button from "@/components/Button/Button";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
@@ -9,6 +8,10 @@ import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
+import { Heading } from "@/components/Text";
+import DeleteIcon from "@/public/icons/delete.svg";
+import LinkButton from "@/components/Button/LinkButton";
+import JoinIcon from "@/public/icons/join.svg";
 
 const DataEmptyPlaceholder = (
   <div
@@ -100,41 +103,47 @@ export function ParticipantSessionTable({
         display: "flex",
         flexDirection: "column",
         gap: "0.6em",
+        fontSize: "0.8rem",
+        fontWeight: "semibold",
       })}
     >
       <div
-        className={css({
-          display: "flex",
-          gap: "1em",
-          justifyContent: "flex-end",
-        })}
+        className={css({ display: "flex", justifyContent: "space-between" })}
       >
-        <LinkButton
+        <Heading>내가 참가한 세션</Heading>
+        <div
           className={css({
-            padding: "0.5em 0.8em",
+            display: "flex",
+            gap: "1em",
+            justifyContent: "flex-end",
+            fontWeight: "medium",
           })}
-          href="/sessions/join"
         >
-          새 세션 참여하기
-        </LinkButton>
-        <Button
-          className={css({
-            padding: "0.5em 0.8em",
-          })}
-          disabled={selectedItems.length === 0}
-          onClick={() => {
-            sessionMutate.mutate(selectedItems);
-            setSelectedItems([]);
-          }}
-        >
-          선택한 기록 삭제
-        </Button>
+          <LinkButton
+            href="/sessions/join"
+            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+          >
+            새 세션 참여하기
+          </LinkButton>
+          <Button
+            disabled={selectedItems.length === 0}
+            onClick={() => {
+              sessionMutate.mutate(selectedItems);
+              setSelectedItems([]);
+            }}
+            color="gray"
+            startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
+          >
+            선택한 세션 삭제
+          </Button>
+        </div>
       </div>
       <SelectableTable
         head={[
           {
             id: 0,
             value: "제목",
+            align: "left",
           },
           {
             id: 1,
@@ -163,21 +172,29 @@ export function ParticipantSessionTable({
               <div key={1}>
                 {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
               </div>,
-              <div key={2}>
-                {item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}
-              </div>,
-              <LinkButton
-                key={3}
+              <div
+                key={2}
                 className={css({
-                  padding: "0.5em 0.8em",
+                  color: item.closedAt ? "grey.500" : "primary.200",
                 })}
-                href={{pathname:"/view",query:{id:item.sessionId}}}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
               >
-                세션 참여
-              </LinkButton>,
+                {item.closedAt ? `종료됨` : "진행중"}
+              </div>,
+              <div
+                key={3}
+                className={css({ display: "flex", justifyContent: "center" })}
+              >
+                <LinkButton
+                  size="small"
+                  href={{ pathname: "/view", query: { id: item.sessionId } }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+                >
+                  세션 참여
+                </LinkButton>
+              </div>,
             ],
             onClick: () => router.push(`/sessions/detail/${item.sessionId}`),
           };

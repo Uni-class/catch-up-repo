@@ -10,7 +10,7 @@ import { apiClient } from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { File } from "@/schema/backend.schema";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { formatDate } from "date-fns";
 import { overlay } from "overlay-kit";
 import { FileFormDataContext } from ".";

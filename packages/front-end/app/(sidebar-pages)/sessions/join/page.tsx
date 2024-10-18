@@ -3,7 +3,7 @@
 import { useState } from "react";
 import LineEdit from "@/components/LineEdit";
 import { css } from "@/styled-system/css";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { Label } from "@/components/Label";
 import { useRouter } from "@/hook/useRouter";
 import { routeTitle } from "@/const/routeTitle";
@@ -36,7 +36,7 @@ export default function Page() {
           alignItems: "flex-start",
           flexGrow: 1,
           justifyContent: "center",
-          padding:"3rem 4.16rem"
+          padding: "3rem 4.16rem"
         })}
       >
         <div
@@ -65,7 +65,7 @@ export default function Page() {
             })}
             onClick={() => {
               if (sessionCode.trim() === "") {
-                toast("세션 코드를 입력해주세요.", { type: "error",position:"top-center" });
+                toast("세션 코드를 입력해주세요.", { type: "error", position: "top-center" });
                 return;
               }
               router.push(

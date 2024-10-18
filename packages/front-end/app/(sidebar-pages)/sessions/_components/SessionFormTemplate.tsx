@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
 import { Label } from "@/components/Label";
 import LineEdit from "@/components/LineEdit";

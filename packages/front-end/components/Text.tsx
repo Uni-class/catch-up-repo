@@ -45,7 +45,8 @@ export const Paragraph = styled("p", {
 
 export const Heading = styled("h1", {
   base: {
-    fontWeight: 700,
+    fontWeight: "semibold",
+    color: "black",
   },
   variants: {
     variant: {
@@ -94,6 +95,6 @@ export const Heading = styled("h1", {
     },
   },
   defaultVariants: {
-    variant: "h3",
+    variant: "h5",
   },
 });

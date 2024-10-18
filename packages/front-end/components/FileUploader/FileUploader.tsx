@@ -10,7 +10,7 @@ import {
   useEffect,
 } from "react";
 import { useDropzone } from "react-dropzone";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
 import PlusCircleIcon from "@/public/icons/plus-circle.svg";
 import PlusIcon from "@/public/icons/plus.svg";

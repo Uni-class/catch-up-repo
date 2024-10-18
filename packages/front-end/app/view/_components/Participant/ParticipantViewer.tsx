@@ -19,7 +19,7 @@ import { ModeControl } from "../Common/Mode";
 import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
 import { usePostDraw } from "../../_hooks/usePostDraw";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { ParticipantViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PageControl } from "../Common/PageControl";
