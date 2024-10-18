@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { Heading, Paragraph } from "@/components/Text";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
@@ -106,12 +106,12 @@ export function CodeOverlay({ code }: { code: string }) {
           copyToClipboard(code, "코드");
         }}
         className={css({
-          cursor:"pointer",
+          cursor: "pointer",
           transition: "opacity 0.3s ease",
           fontSize: "10rem",
-          fontWeight:"bold",
-          "&:hover":{
-            opacity:0.7,
+          fontWeight: "bold",
+          "&:hover": {
+            opacity: 0.7,
           }
         })}
       >

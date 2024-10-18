@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { css } from "@/styled-system/css";
 import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import LineEdit from "@/components/LineEdit";
@@ -111,10 +111,10 @@ const UserProfileSettings = () => {
             size="small"
             startIcon={<CameraIcon width={"1em"} height={"1em"} />}
             className={css({
-              width:"100%",
+              width: "100%",
             })}
           >
-            <p className={css({textAlign:"center",flex:1,})}>사진 변경</p>
+            <p className={css({ textAlign: "center", flex: 1, })}>사진 변경</p>
           </Button>
           <input
             type="file"

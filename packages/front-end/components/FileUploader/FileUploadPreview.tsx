@@ -1,7 +1,7 @@
 import { css, cx } from "@/styled-system/css";
 import { format } from "date-fns";
 import formatByteSize from "@/utils/formatByteSize";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import CloseIcon from "@/public/icons/close.svg";
 import DocumentIcon from "@/public/icons/document.svg";
 import PdfIcon from "@/public/icons/pdf.svg";
@@ -28,10 +28,10 @@ function openFileInNewTab(file: File): void {
       return;
     const url = URL.createObjectURL(
       new Blob([event.target.result],
-      {
-        type: file.type
-      }
-    ));
+        {
+          type: file.type
+        }
+      ));
     window.open(url, "_blank");
   };
   reader.onerror = (event) => {
@@ -142,7 +142,7 @@ const FileUploadPreview = forwardRef(({ className, file, removeButtonClickHandle
       </div>
       {
         status === "ready"
-        ?
+          ?
           <Button
             className={css({
               padding: "0.1em",
@@ -171,12 +171,12 @@ const FileUploadPreview = forwardRef(({ className, file, removeButtonClickHandle
           width: `${progress}%`,
           backgroundColor: (
             status === "uploading"
-            ?
+              ?
               "#fc7328"
               :
               (
                 status === "error"
-                ?
+                  ?
                   "#e80000"
                   :
                   "#00c40a"

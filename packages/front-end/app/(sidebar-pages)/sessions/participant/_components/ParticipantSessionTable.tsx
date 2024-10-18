@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
@@ -171,7 +171,7 @@ export function ParticipantSessionTable({
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                href={{pathname:"/view",query:{id:item.sessionId}}}
+                href={{ pathname: "/view", query: { id: item.sessionId } }}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

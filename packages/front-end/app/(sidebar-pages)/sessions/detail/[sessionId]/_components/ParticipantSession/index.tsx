@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import { Label } from "@/components/Label";
 import { Paragraph } from "@/components/Text";
 import { useRouter } from "@/hook/useRouter";
@@ -36,7 +36,7 @@ export default function ParticipantSession({ sessionData }: PropType) {
           <Paragraph key={file.fileId}>{file.name}</Paragraph>
         ))}
       </Container>
-      <Divider/>
+      <Divider />
       <Button
         onClick={() => {
           router.push(

@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { Heading } from "../Text";
-import Button from "../Button";
+import Button from "../Button/Button";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import FileUploader from "@/components/FileUploader/FileUploader";

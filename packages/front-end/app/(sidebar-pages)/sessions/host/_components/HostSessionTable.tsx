@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
@@ -9,6 +9,8 @@ import SelectableTable from "@/components/SelectableTable";
 import { PROJECT_NAME } from "@/const/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
+import { Heading } from "@/components/Text";
+import DeleteIcon from "@/public/icons/delete.svg"
 
 const DataEmptyPlaceholder = (
   <div
@@ -99,33 +101,37 @@ export function HostSessionTable({
       })}
     >
       <div
-        className={css({
-          display: "flex",
-          gap: "1em",
-          justifyContent: "flex-end",
-        })}
+        className={css({ display: "flex", justifyContent: "space-between" })}
       >
-        <LinkButton
+        <Heading>내가 주최한 세션</Heading>
+        <div
           className={css({
-            padding: "0.5em 0.8em",
+            display: "flex",
+            gap: "1em",
+            justifyContent: "flex-end",
           })}
-          href="/sessions/create"
         >
-          새로 만들기
-        </LinkButton>
-        <Button
-          className={css({
-            padding: "0.5em 0.8em",
-          })}
-          disabled={selectedItems.length === 0}
-          onClick={() => {
-            sessionMutate.mutate(selectedItems);
-            setSelectedItems([]);
-          }}
-        >
-          선택한 세션 삭제
-        </Button>
+          <LinkButton
+            className={css({
+              padding: "0.5em 0.8em",
+            })}
+            href="/sessions/create"
+          >
+            새로 만들기
+          </LinkButton>
+          <Button
+            disabled={selectedItems.length === 0}
+            onClick={() => {
+              sessionMutate.mutate(selectedItems);
+              setSelectedItems([]);
+            }}
+            startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
+          >
+            선택한 세션 삭제
+          </Button>
+        </div>
       </div>
+
       <SelectableTable
         head={[
           {
@@ -167,7 +173,7 @@ export function HostSessionTable({
                 className={css({
                   padding: "0.5em 0.8em",
                 })}
-                href={{pathname:"/view",query:{id:item.sessionId}}}
+                href={{ pathname: "/view", query: { id: item.sessionId } }}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

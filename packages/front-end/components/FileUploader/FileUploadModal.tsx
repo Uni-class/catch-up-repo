@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import FileUploader from "@/components/FileUploader/FileUploader";
 import { Heading } from "@/components/Text";
 import { css } from "@/styled-system/css";

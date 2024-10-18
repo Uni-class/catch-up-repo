@@ -2,7 +2,7 @@ import { File } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { formatDate } from "date-fns";
 import { useState } from "react";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 import SelectableTable from "@/components/SelectableTable";
 import { overlay } from "overlay-kit";
 import ModalContainer from "@/components/ModalContainer";
