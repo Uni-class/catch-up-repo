@@ -7,7 +7,10 @@ export const TableContainer = styled("table", {
   base: {
     borderCollapse: "collapse",
     border: "1px solid",
-    borderColor: "gray.200",
+    borderColor: "grey.300",
+    borderLeft:"none",
+    borderRight:"none",
+    borderTop:"none",
   },
   variants: {
     fullWidth: {

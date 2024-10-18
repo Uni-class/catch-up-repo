@@ -1,5 +1,4 @@
 import Button from "@/components/Button/Button";
-import LinkButton from "@/components/LinkButton";
 import { useRouter } from "@/hook/useRouter";
 import { Session } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
@@ -10,7 +9,10 @@ import { PROJECT_NAME } from "@/const/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import { Heading } from "@/components/Text";
-import DeleteIcon from "@/public/icons/delete.svg"
+import DeleteIcon from "@/public/icons/delete.svg";
+import LinkButton from "@/components/Button/LinkButton";
+import SessionIcon from "@/public/icons/session.svg";
+import JoinIcon from "@/public/icons/join.svg";
 
 const DataEmptyPlaceholder = (
   <div
@@ -21,15 +23,14 @@ const DataEmptyPlaceholder = (
       justifyContent: "center",
       alignItems: "center",
       gap: "0.5em",
+      color: "gray.500",
     })}
   >
     <p>표시할 데이터가 없습니다.</p>
     <p>새로운 {PROJECT_NAME} 세션을 생성해 보세요!</p>
     <LinkButton
-      className={css({
-        padding: "0.5em 0.8em",
-      })}
       href="/sessions/create"
+      startIcon={<SessionIcon width={"1em"} height={"1em"} />}
     >
       새로 만들기
     </LinkButton>
@@ -98,6 +99,8 @@ export function HostSessionTable({
         display: "flex",
         flexDirection: "column",
         gap: "0.6em",
+        fontSize: "0.8rem",
+        fontWeight: "semibold",
       })}
     >
       <div
@@ -109,13 +112,12 @@ export function HostSessionTable({
             display: "flex",
             gap: "1em",
             justifyContent: "flex-end",
+            fontWeight: "medium",
           })}
         >
           <LinkButton
-            className={css({
-              padding: "0.5em 0.8em",
-            })}
             href="/sessions/create"
+            startIcon={<SessionIcon width={"1em"} height={"1em"} />}
           >
             새로 만들기
           </LinkButton>
@@ -126,6 +128,7 @@ export function HostSessionTable({
               setSelectedItems([]);
             }}
             startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
+            color="gray"
           >
             선택한 세션 삭제
           </Button>
@@ -137,6 +140,7 @@ export function HostSessionTable({
           {
             id: 0,
             value: "제목",
+            align: "left",
           },
           {
             id: 1,
@@ -154,7 +158,7 @@ export function HostSessionTable({
             id: 3,
             value: "빠른 작업",
             width: "10vw",
-            minWidth: "8em",
+            minWidth: "6em",
           },
         ]}
         body={data.map((item) => {
@@ -162,24 +166,32 @@ export function HostSessionTable({
             id: item.sessionId,
             values: [
               <div key={0}>{item.sessionName}</div>,
-              <div key={1}>
+              <div key={1} className={css({})}>
                 {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
               </div>,
-              <div key={2}>
-                {item.closedAt ? `${item.closedAt}에 종료됨` : "진행 중"}
-              </div>,
-              <LinkButton
-                key={3}
+              <div
+                key={2}
                 className={css({
-                  padding: "0.5em 0.8em",
+                  color: item.closedAt ? "grey.500" : "primary.200",
                 })}
-                href={{ pathname: "/view", query: { id: item.sessionId } }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
               >
-                세션 시작
-              </LinkButton>,
+                {item.closedAt ? `종료됨` : "진행중"}
+              </div>,
+              <div
+                key={3}
+                className={css({ display: "flex", justifyContent: "center" })}
+              >
+                <LinkButton
+                  href={{ pathname: "/view", query: { id: item.sessionId } }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  size="small"
+                  startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+                >
+                  세션 시작
+                </LinkButton>
+              </div>,
             ],
             onClick: () => router.push(`/sessions/detail/${item.sessionId}`),
           };
