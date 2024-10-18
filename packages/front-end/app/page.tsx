@@ -17,7 +17,7 @@ export default function Page() {
         className={css({
           width: "100%",
 
-          bg: "primary.light",
+          bg: "primary.200",
           color: "#fff",
           padding: "1rem 1.25rem 6.3rem 1.25rem",
           display: "flex",
@@ -27,9 +27,9 @@ export default function Page() {
       >
         <NavBar />
         <Banner />
-        <Feature/>
-        <AdditionalFeature/>
-        <Recommend/>
+        <Feature />
+        <AdditionalFeature />
+        <Recommend />
       </div>
       <Footer />
     </>

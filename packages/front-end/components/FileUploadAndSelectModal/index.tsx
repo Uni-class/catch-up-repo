@@ -125,7 +125,7 @@ export default function FileUploadAndSelectModal({
                 className={css({
                   padding: "0.5em 1em",
                 })}
-                preset={"secondary"}
+                color={"secondary"}
                 disabled={status === "uploading"}
                 onClick={() => {
                   overlay.close(
@@ -162,7 +162,7 @@ export default function FileUploadAndSelectModal({
                 className={css({
                   padding: "0.5em 1em",
                 })}
-                preset={"secondary"}
+                color={"secondary"}
                 onClick={() => {
                   overlay.close(
                     `File-Select-${useFormDataResult.idRef.current}`,

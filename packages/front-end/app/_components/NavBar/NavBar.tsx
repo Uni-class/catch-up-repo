@@ -39,7 +39,7 @@ const NavBar = () => {
             href={e.href}
             className={css({
               _hover: {
-                color: "tertiary",
+                color: "tertiary.200",
               },
               padding: "10px",
             })}

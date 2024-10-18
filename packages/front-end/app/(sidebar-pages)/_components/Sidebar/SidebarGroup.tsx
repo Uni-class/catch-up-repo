@@ -17,7 +17,7 @@ export default function SidebarGroup({
   return (
     <div
       className={cx(
-        css({ borderBottom: "1px solid", borderColor: "primary.dark" }),
+        css({ borderBottom: "1px solid", borderColor: "primary.400" }),
         className
       )}
     >
@@ -28,7 +28,7 @@ export default function SidebarGroup({
           display: "flex",
           alignItems: "center",
           border: "1px solid",
-          borderColor: "primary",
+          borderColor: "primary.300",
         })}
       >
         <div
@@ -38,7 +38,7 @@ export default function SidebarGroup({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            bg: "primary.mid",
+            bg: "primary.300",
           })}
         >
           {icon}
@@ -47,7 +47,7 @@ export default function SidebarGroup({
           className={css({
             fontSize: "1.125rem",
             paddingLeft: "0.625rem",
-            color: "tertiary",
+            color: "tertiary.200",
           })}
         >
           {name}
@@ -57,7 +57,7 @@ export default function SidebarGroup({
         className={css({
           display: "flex",
           flexDirection: "column",
-          bg: "primary.light",
+          bg: "primary.200",
         })}
       >
         {children}
