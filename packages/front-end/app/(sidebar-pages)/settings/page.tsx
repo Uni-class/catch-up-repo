@@ -5,8 +5,11 @@ import Divider from "@/components/Divider";
 import { Heading } from "@/components/Text";
 import UserProfileSettings from "./_components/UserProfileSettings";
 import { css } from "@/styled-system/css";
+import { routeTitle } from "@/const/routeTitle";
+import { useRouter } from "@/hook/useRouter";
 
 export default function Page() {
+  const router = useRouter();
   return (
     <div
       className={css({
@@ -15,14 +18,21 @@ export default function Page() {
         height: "100%",
       })}
     >
-      <Heading>설정</Heading>
-      <Divider />
+      <h1
+        className={css({
+          fontSize: "1.5rem",
+          fontWeight: "semibold",
+          color: "black",
+        })}
+      >
+        {routeTitle[router.pathname].name}
+      </h1>
       <div
         className={css({
-          flexGrow: 1,
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          flexDirection: "column",
+
+          flexGrow: 1,
         })}
       >
         <ErrorBoundary
