@@ -1,6 +1,8 @@
 "use client";
 
-import { useLoginRedirect } from "@/hook/useLoginRedirect";
+import { useLoginRedirectWithError } from "@/hook/useLoginRedirectWithError";
+
+
 
 export default function Error({
   error,
@@ -9,6 +11,6 @@ export default function Error({
   error: Error & { digest?: string; status: number };
   reset: () => void;
 }) {
-  useLoginRedirect(error);
+  useLoginRedirectWithError(error);
   return <h1>{error.message}</h1>;
 }

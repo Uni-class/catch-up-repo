@@ -5,11 +5,13 @@ import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
 import Header from "./_components/Header";
 import NavTitle from "./_components/NavTitle";
+import { useLoginRedirectWithContext } from "@/hook/useLoginRedirectWithContext";
 
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
 
+  useLoginRedirectWithContext();
   return (
     <div
       className={css({
