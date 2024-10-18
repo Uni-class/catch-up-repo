@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "@/hook/useRouter";
-import { useCallback, useEffect } from "react";
+import { useLoginRedirectWithError } from "@/hook/useLoginRedirectWithError";
+
+
 
 export default function Error({
   error,
@@ -10,18 +11,6 @@ export default function Error({
   error: Error & { digest?: string; status: number };
   reset: () => void;
 }) {
-  const router = useRouter();
-  const getLoginURL = useCallback(() => {
-    return `/login?url=${encodeURIComponent(`${router.pathname}?${router.query.toString()}`)}`; //need fix
-  }, [router]);
-  const goToLogin = useCallback(() => {
-    router.push(getLoginURL());
-  }, [router, getLoginURL]);
-  useEffect(()=>{
-    if (error.status === 401) {
-      goToLogin();
-    }
-  
-  },[error.status, goToLogin])
+  useLoginRedirectWithError(error);
   return <h1>{error.message}</h1>;
 }

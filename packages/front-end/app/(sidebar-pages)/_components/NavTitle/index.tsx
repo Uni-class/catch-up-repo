@@ -18,7 +18,7 @@ export default function NavTitle() {
       })}
     >
       <RouteArrowIcon width={"0.8rem"} height={"0.8rem"} fill="grey.500" />
-      <p>{`${routeTitle[pathname].group} :: ${routeTitle[pathname].name}`}</p>
+      <p>{`${routeTitle[pathname]?.group || ""} :: ${routeTitle[pathname]?.name || ""}`}</p>
     </div>
   );
 }
