@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import { css } from "@/styled-system/css";
-import { useRef, useState, ChangeEvent } from "react";
+import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import LineEdit from "@/components/LineEdit";
 import { User } from "@/schema/backend.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,8 +8,9 @@ import { apiClient } from "@/utils/axios";
 import { Label } from "@/components/Label";
 import { ProfileImage } from "@/components/ProfileImage";
 import { useAccount } from "@/hook/useAccount";
-
-import EditIcon from "@/public/icons/edit.svg";
+import CameraIcon from "@/public/icons/camera.svg";
+import Divider from "@/components/Divider";
+import ProfileIcon from "@/public/icons/profile.svg";
 
 const UserProfileSettings = () => {
   const account: User | null = useAccount();
@@ -53,9 +54,11 @@ const UserProfileSettings = () => {
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "1rem",
-        maxWidth: "50em",
+        gap: "1.25rem",
         width: "100%",
+        maxWidth: "70em",
+        padding: "3rem 4.16rem",
+        alignItems: "flex-start",
       })}
       ref={formRef}
       onSubmit={(e) => {
@@ -71,33 +74,19 @@ const UserProfileSettings = () => {
         }
       }}
     >
-      <Label>프로필 수정</Label>
       <div
         className={css({
           display: "flex",
-          gap: "1em",
+          gap: "2em",
         })}
       >
         <div
           className={css({
-            position: "relative",
-            width: "fit-content",
-            height: "fit-content",
-            cursor: "pointer",
-            gap: "1.5rem",
-            boxSizing: "content-box",
-            border: "0.2em solid #000000",
-            borderRadius: "1.5em",
-            overflow: "hidden",
-            _hover: {
-              opacity: 0.5,
-            },
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            alignItems: "center",
           })}
-          onClick={() => {
-            if (fileInputRef.current !== null) {
-              fileInputRef.current.click();
-            }
-          }}
         >
           <ProfileImage
             src={imageSrc}
@@ -105,25 +94,28 @@ const UserProfileSettings = () => {
             width={256}
             height={256}
             className={css({
-              width: "5em",
-              height: "5em",
+              width: "7rem",
+              height: "7rem",
+              borderRadius: "50%",
+              border: "1px solid",
+              borderColor: "grey.100",
             })}
           />
-          <div
+          <Button
+            onClick={() => {
+              if (fileInputRef.current !== null) {
+                fileInputRef.current.click();
+              }
+            }}
+            color="gray"
+            size="small"
+            startIcon={<CameraIcon width={"1em"} height={"1em"} />}
             className={css({
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              padding: "0.3em",
-              width: "fit-content",
-              height: "fit-content",
-              color: "#ffffff",
-              backgroundColor: "#fa8c0f",
-              borderRadius: "1em 0 0 0",
+              width:"100%",
             })}
           >
-            <EditIcon width={"1.5em"} />
-          </div>
+            <p className={css({textAlign:"center",flex:1,})}>사진 변경</p>
+          </Button>
           <input
             type="file"
             accept="image/*"
@@ -134,36 +126,22 @@ const UserProfileSettings = () => {
           />
         </div>
         <div>
-          <Label
-            className={css({
-              display: "block",
-              fontSize: "1em",
-            })}
-            htmlFor="nickname"
-          >
-            닉네임
-          </Label>
-          <LineEdit
-            placeholder="사용할 닉네임을 입력하세요."
-            defaultValue={account?.nickname || ""}
-            name="nickname"
-            className={css({ flex: 1, height: "3em" })}
-            id="nickname"
-          />
+          <ControlContainer htmlFor="nickname" labelText="닉네임">
+            <LineEdit
+              placeholder="사용할 닉네임을 입력하세요."
+              defaultValue={account?.nickname || ""}
+              name="nickname"
+              className={css({ flex: 1 })}
+              id="nickname"
+            />
+          </ControlContainer>
         </div>
       </div>
-
-      <p
-        className={css({
-          height: "1rem",
-          fontSize: "1rem",
-          color: "red.500",
-        })}
+      <Divider />
+      <Button
+        type="submit"
+        startIcon={<ProfileIcon width={"1em"} height={"1em"} />}
       >
-        {error && error}
-      </p>
-
-      <Button type="submit" className={css({ height: "50px" })}>
         저장하기
       </Button>
     </form>
@@ -171,3 +149,36 @@ const UserProfileSettings = () => {
 };
 
 export default UserProfileSettings;
+
+function ControlContainer({
+  children,
+  labelText,
+  htmlFor,
+  errorText,
+  isError,
+  height,
+}: {
+  children?: ReactNode;
+  labelText?: string;
+  htmlFor?: string;
+  errorText?: string;
+  isError?: boolean;
+  height?: React.CSSProperties["height"];
+}) {
+  return (
+    <div
+      className={css({
+        display: "flex",
+        width: "100%",
+        height: height,
+        alignItems: "center",
+      })}
+    >
+      <Label htmlFor={htmlFor} className={css({ minWidth: "5em" })}>
+        {labelText}
+      </Label>
+      {children}
+      {/* {!!isError && <p className={css({ color: "red.500" })}>{errorText}</p>} */}
+    </div>
+  );
+}
