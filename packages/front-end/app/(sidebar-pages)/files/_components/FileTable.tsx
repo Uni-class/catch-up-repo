@@ -9,6 +9,12 @@ import ModalContainer from "@/components/ModalContainer";
 import FileUploadModal from "@/components/FileUploader/FileUploadModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
+import { Heading } from "@/components/Text";
+import DeleteIcon from "@/public/icons/delete.svg";
+import UploadIcon from "@/public/icons/upload.svg"
+import SessionIcon from "@/public/icons/session.svg";
+
+
 
 const showFileUploadModal = () => {
   overlay.open(
@@ -17,7 +23,7 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File-Upload" },
+    { overlayId: "File-Upload" }
   );
 };
 
@@ -89,7 +95,7 @@ export function FileTable({
       Promise.all(
         selectedItems.map(async (e) => {
           await apiClient.delete(`/file/${e}`);
-        }),
+        })
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "files"] });
@@ -106,43 +112,47 @@ export function FileTable({
         display: "flex",
         flexDirection: "column",
         gap: "0.6em",
+        fontSize: "0.8rem",
+        fontWeight: "semibold",
       })}
     >
       <div
-        className={css({
-          display: "flex",
-          gap: "1em",
-          justifyContent: "flex-end",
-        })}
+        className={css({ display: "flex", justifyContent: "space-between" })}
       >
-        <Button
+        <Heading>강의 자료</Heading>
+        <div
           className={css({
-            padding: "0.5em 0.8em",
+            display: "flex",
+            gap: "1em",
+            justifyContent: "flex-end",
           })}
-          onClick={() => showFileUploadModal()}
         >
-          새 파일 업로드
-        </Button>
-        <Button
-          className={css({
-            padding: "0.5em 0.8em",
-          })}
-          disabled={selectedItems.length === 0}
-          onClick={() => {
-            console.log(`Delete Button Clicked`);
-            console.log(selectedItems);
-            fileMutate.mutate(selectedItems);
-            setSelectedItems([]);
-          }}
-        >
-          선택한 파일 삭제
-        </Button>
+          <Button
+            onClick={() => showFileUploadModal()}
+            startIcon={<UploadIcon width={"1em"} height={"1em"} />}
+          >
+            새 파일 업로드
+          </Button>
+          <Button
+            disabled={selectedItems.length === 0}
+            onClick={() => {
+              fileMutate.mutate(selectedItems);
+              setSelectedItems([]);
+            }}
+            startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
+            color="gray"
+          >
+            선택한 파일 삭제
+          </Button>
+        </div>
       </div>
+
       <SelectableTable
         head={[
           {
             id: 0,
             value: "이름",
+            align: "left",
           },
           {
             id: 1,
