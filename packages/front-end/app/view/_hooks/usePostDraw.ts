@@ -24,10 +24,6 @@ export const usePostDraw = (
     const clean = store.listen(
       ({ changes }) => {
         changedPageIndexRef.current.add(pdfPainterController.getPageIndex());
-        console.log(
-          "Add change page index!",
-          pdfPainterController.getPageIndex()
-        );
       },
       { source: "user", scope: "document" }
     );
@@ -56,7 +52,6 @@ export const usePostDraw = (
     toDeleteSet.forEach((index) => {
       changedPageIndexRef.current.delete(index);
     });
-    console.log("I delete!", changedPageIndexRef.current);
   }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 
   useEffect(() => {
