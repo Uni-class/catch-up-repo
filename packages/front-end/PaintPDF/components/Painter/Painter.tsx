@@ -18,6 +18,8 @@ import {
   useRelevantStyles,
   DefaultToolbar,
   DefaultToolbarContent,
+  BreakPointProvider,
+  DefaultMenuPanel,
 } from "tldraw";
 
 import "tldraw/tldraw.css";
@@ -53,9 +55,11 @@ const PainterComponent = ({
   const CustomStylePanel = memo((props: TLUiStylePanelProps) => {
     const styles = useRelevantStyles();
     return (
-      <DefaultStylePanel {...props}>
-        <DefaultStylePanelContent styles={styles} />
-      </DefaultStylePanel>
+      <BreakPointProvider forceMobile>
+        <DefaultStylePanel {...props}>
+
+        </DefaultStylePanel>
+      </BreakPointProvider>
     );
   });
   CustomStylePanel.displayName = "CustomStylePanel";
@@ -80,18 +84,26 @@ const PainterComponent = ({
       StylePanel: CustomStylePanel,
       PageMenu: null,
       NavigationPanel: null,
-      Toolbar: CustomToolbar,
+      Toolbar: (props) => (
+        <BreakPointProvider forceMobile>
+          <DefaultToolbar {...props} />
+        </BreakPointProvider>
+      ),
       KeyboardShortcutsDialog: null,
       QuickActions: null,
       HelperButtons: null,
       DebugPanel: null,
       DebugMenu: null,
       SharePanel: null,
-      MenuPanel: null,
+      MenuPanel: (props) => (
+        <BreakPointProvider forceMobile>
+          <DefaultMenuPanel {...props} />
+        </BreakPointProvider>
+      ),
       TopPanel: null,
       CursorChatBubble: null,
     }),
-    [CustomContextMenu, CustomStylePanel, CustomToolbar]
+    [CustomContextMenu, CustomStylePanel]
   );
 
   const keyboardShortcutsEnabledOverrides: TLUiOverrides = {

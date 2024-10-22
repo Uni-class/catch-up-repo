@@ -95,3 +95,7 @@ body {
 	--shadow-2: 0px 1px 3px hsl(0, 0%, 0%, 66.6%), 0px 2px 6px hsl(0, 0%, 0%, 33%), inset 0px 0px 0px 1px var(--color-panel-contrast);
 	--shadow-3: 0px 1px 3px hsl(0, 0%, 0%, 50%), 0px 2px 12px hsl(0, 0%, 0%, 50%), inset 0px 0px 0px 1px var(--color-panel-contrast);
 }
+
+.tlui-layout__top__right {
+	display: none;
+}
