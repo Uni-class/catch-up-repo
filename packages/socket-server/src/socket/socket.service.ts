@@ -23,19 +23,30 @@ export class SocketService {
   async validateUser(socket: Socket): Promise<number> {
     try {
       const cookies = socket.handshake.headers.cookie;
-      if (!cookies) return 0;
+      if (!cookies) {
+        console.warn(`There is no cookie at header of ${socket.id}`);
+        return 0;
+      }
       const cookieList = cookie.parse(cookies);
       const accessToken = cookieList['access_token'];
-      if (!accessToken) return 0;
+      if (!accessToken) {
+        console.warn(`There is no access_token at cookie of ${socket.id}`);
+        return 0;
+      }
       const userId = await this.jwtService
         .verifyAsync(accessToken, {
           secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
         })
         .then((payload: JwtPayload) => {
           return payload.id;
+        })
+        .catch((error) => {
+          console.error('Access token validate error:', error);
+          return 0;
         });
       return userId;
     } catch (ex) {
+      console.error(ex);
       return 0;
     }
   }
