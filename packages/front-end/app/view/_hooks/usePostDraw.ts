@@ -54,8 +54,3 @@ export const usePostDraw = (
     };
   }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 };
-/**
- * TODO
- * interval time 줄이기
- * page 전환시 POST
- */
