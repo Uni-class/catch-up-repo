@@ -3,9 +3,9 @@ import {
   PDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { apiClient } from "@/utils/axios";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-const intervalTime = (1000 * 60 * 1) / 3;
+const intervalTime = 1000 * 5;
 export const usePostDraw = (
   sessionId: number,
   fileId: number,
@@ -14,9 +14,6 @@ export const usePostDraw = (
 ) => {
   const editor = pdfPainterInstanceController.getEditor();
   const changedPageIndexRef = useRef<Set<number>>(new Set<number>());
-  const intervalProcessRef = useRef<{ id: NodeJS.Timeout; start: number }[]>(
-    []
-  );
 
   useEffect(() => {
     if (editor === null) return;
@@ -28,54 +25,37 @@ export const usePostDraw = (
       { source: "user", scope: "document" }
     );
 
-    // return () => {
-    //   store.listen(clean);
-    // };
+    return () => {
+      store.listen(clean);
+    };
   }, [editor, pdfPainterController]);
-
-  const sendPostRequest = useCallback(async () => {
-    const width = pdfPainterController.getPage()?.originalWidth;
-    const height = pdfPainterController.getPage()?.originalHeight;
-    const toDeleteSet = new Set<number>();
-    changedPageIndexRef.current.forEach((index) => {
-      toDeleteSet.add(index);
-      const note =
-        pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
-      if (note === null || width === undefined || height === undefined) {
-        return;
-      }
-      apiClient.post(
-        `/user/session/${sessionId}/file/${fileId}/note/${index}`,
-        { note: note, width, height }
-      );
-    });
-    toDeleteSet.forEach((index) => {
-      changedPageIndexRef.current.delete(index);
-    });
-  }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      sendPostRequest();
+      const currentPageIndex = pdfPainterController.getPageIndex();
+      const width = pdfPainterController.getPage()?.originalWidth;
+      const height = pdfPainterController.getPage()?.originalHeight;
+      if (changedPageIndexRef.current.has(currentPageIndex)) {
+        const note =
+          pdfPainterInstanceController.getEditorSnapshotFromStorage(currentPageIndex);
+        if (note === null || width === undefined || height === undefined) {
+          return;
+        }
+        apiClient.post(
+          `/user/session/${sessionId}/file/${fileId}/note/${currentPageIndex}`,
+          { note: note, width, height }
+        );
+      }
+      changedPageIndexRef.current.clear();
     }, intervalTime);
-    intervalProcessRef.current.push({ id: intervalId, start: Date.now() });
 
     return () => {
-      const end = Date.now();
-      const copiedIntervalProcess: { id: NodeJS.Timeout; start: number }[] = [];
-      const toDelete: NodeJS.Timeout[] = [];
-      intervalProcessRef.current.forEach(({ id, start }) => {
-        copiedIntervalProcess.push({ id, start });
-      });
-      copiedIntervalProcess.forEach(({ id, start }) => {
-        if (end - start > intervalTime) {
-          clearInterval(id);
-          toDelete.push(id);
-        }
-      });
-      intervalProcessRef.current = intervalProcessRef.current.filter(
-        ({ id }) => !toDelete.includes(id)
-      );
+      clearInterval(intervalId);
     };
-  }, [sendPostRequest]);
+  }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 };
+/**
+ * TODO
+ * interval time 줄이기
+ * page 전환시 POST
+ */
