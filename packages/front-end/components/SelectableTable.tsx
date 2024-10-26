@@ -152,7 +152,22 @@ export default function SelectableTable({
           >
             {"<"}
           </Button>
-          {[...Array(pagination.totalPageCount).keys()].map((index) => {
+          {[
+            ...[...Array(Math.min(pagination.currentPageIndex, 3)).keys()].map(
+              (item) =>
+                pagination.currentPageIndex -
+                Math.min(pagination.currentPageIndex, 3) +
+                item,
+            ),
+            ...[
+              ...Array(
+                Math.min(
+                  pagination.totalPageCount - pagination.currentPageIndex,
+                  4,
+                ),
+              ).keys(),
+            ].map((item) => pagination.currentPageIndex + item),
+          ].map((index) => {
             return (
               <Button
                 key={index}
