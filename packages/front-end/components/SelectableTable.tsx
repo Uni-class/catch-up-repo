@@ -42,6 +42,27 @@ export default function SelectableTable({
   setSelectedItems,
   pagination,
 }: PropType) {
+  const paginationInfo: {
+    leftSize: number;
+    rightSize: number;
+  } = {
+    leftSize: 0,
+    rightSize: 0,
+  };
+  if (pagination) {
+    paginationInfo.leftSize = Math.min(
+      pagination.currentPageIndex,
+      Math.max(
+        7 - (pagination.totalPageCount - pagination.currentPageIndex),
+        3,
+      ),
+    );
+    paginationInfo.rightSize = Math.min(
+      pagination.totalPageCount - pagination.currentPageIndex,
+      Math.max(7 - pagination.currentPageIndex, 4),
+    );
+  }
+
   return (
     <div
       className={css({
@@ -153,26 +174,19 @@ export default function SelectableTable({
             {"<"}
           </Button>
           {[
-            ...[...Array(Math.min(pagination.currentPageIndex, 3)).keys()].map(
+            ...[...Array(paginationInfo.leftSize).keys()].map(
               (item) =>
-                pagination.currentPageIndex -
-                Math.min(pagination.currentPageIndex, 3) +
-                item,
+                pagination.currentPageIndex - paginationInfo.leftSize + item,
             ),
-            ...[
-              ...Array(
-                Math.min(
-                  pagination.totalPageCount - pagination.currentPageIndex,
-                  4,
-                ),
-              ).keys(),
-            ].map((item) => pagination.currentPageIndex + item),
+            ...[...Array(paginationInfo.rightSize).keys()].map(
+              (item) => pagination.currentPageIndex + item,
+            ),
           ].map((index) => {
             return (
               <Button
                 key={index}
                 color={
-                  index == pagination.currentPageIndex ? "secondary" : "gray"
+                  index === pagination.currentPageIndex ? "secondary" : "gray"
                 }
                 onClick={() => pagination.pageRequested(index)}
               >
