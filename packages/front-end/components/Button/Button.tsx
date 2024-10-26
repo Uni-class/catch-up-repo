@@ -6,7 +6,6 @@ import {
   ReactNode,
 } from "react";
 
-
 const ButtonContainer = styled("button", {
   base: {
     padding: "0.48rem 0.38rem",
@@ -18,6 +17,10 @@ const ButtonContainer = styled("button", {
     display: "flex",
     gap: "0.375rem",
     alignItems: "center",
+    _disabled: {
+      opacity: 0.5,
+      cursor: "default",
+    },
   },
   variants: {
     isIcon: {
@@ -84,7 +87,7 @@ const Button = forwardRef<HTMLButtonElement, PropType>(
         {children}
       </ButtonContainer>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

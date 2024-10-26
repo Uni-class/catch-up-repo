@@ -167,14 +167,17 @@ export default function SelectableTable({
             "&>button": {
               width: "2em",
               height: "2em",
-              color: "#ffffff",
             },
           })}
         >
-          <Button onClick={() => pagination.pageRequested(0)}>
+          <Button
+            disabled={pagination.currentPageIndex === 0}
+            onClick={() => pagination.pageRequested(0)}
+          >
             <ArrowLeftEndIcon width={"0.75em"} height={"0.75em"} />
           </Button>
           <Button
+            disabled={pagination.currentPageIndex === 0}
             onClick={() =>
               pagination.pageRequested(pagination.currentPageIndex - 1)
             }
@@ -203,6 +206,9 @@ export default function SelectableTable({
             );
           })}
           <Button
+            disabled={
+              pagination.currentPageIndex === pagination.totalPageCount - 1
+            }
             onClick={() =>
               pagination.pageRequested(pagination.currentPageIndex + 1)
             }
@@ -210,6 +216,9 @@ export default function SelectableTable({
             <ArrowRightIcon width={"2em"} height={"2em"} />
           </Button>
           <Button
+            disabled={
+              pagination.currentPageIndex === pagination.totalPageCount - 1
+            }
             onClick={() => pagination.pageRequested(pagination.totalPageCount)}
           >
             <ArrowRightEndIcon width={"0.75em"} height={"0.75em"} />
