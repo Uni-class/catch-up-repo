@@ -9,8 +9,17 @@ import ParticipantViewer from "./_components/Participant/ParticipantViewer";
 import { useAtom } from "jotai";
 import { socketAtom } from "@/client/socketAtom";
 import { useEffect } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { useRouter } from "@/hook/useRouter";
+import axios from "axios";
+
+/**
+ * This is internal interface from `@socket.io/component-emitter` used in `socket.io-client`.
+ * `socket.io-client` doesn't export this interface, so we have to define it here.
+ */
+interface DefaultEventsMap {
+  [event: string]: (...args: any[]) => void;
+}
 
 const getAPIQueryParam = (obj: {
   id?: number;
@@ -40,7 +49,7 @@ export default function Page() {
         queryKey: ["session", apiQueryParam],
         queryFn: async () =>
           await apiClient.get<SessionResponseDto>(`/session`, {
-            params: apiQueryParam ,
+            params: apiQueryParam,
           }),
         throwOnError: true,
       },
@@ -48,13 +57,18 @@ export default function Page() {
   });
   const [, setSocket] = useAtom(socketAtom);
   useEffect(() => {
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
-      withCredentials: true,
-      transports: ["websocket"],
-    });
-    setSocket(newSocket);
+    let newSocket: null | Socket<DefaultEventsMap, DefaultEventsMap> = null;
+    const init = async () => {
+      await axios.get("/auth/token-refresh");
+      newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
+        withCredentials: true,
+        transports: ["websocket"],
+      });
+      setSocket(newSocket);
+    };
+    init();
     return () => {
-      newSocket.disconnect();
+      newSocket !== null && newSocket.disconnect();
     };
   }, [setSocket]);
 
