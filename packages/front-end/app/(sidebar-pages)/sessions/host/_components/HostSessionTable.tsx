@@ -82,7 +82,7 @@ export function HostSessionTable({
       Promise.all(
         selectedItems.map(async (selectedItem) => {
           await apiClient.delete(`user/session/${selectedItem}`);
-        })
+        }),
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
@@ -134,7 +134,6 @@ export function HostSessionTable({
           </Button>
         </div>
       </div>
-
       <SelectableTable
         head={[
           {
@@ -205,6 +204,12 @@ export function HostSessionTable({
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        pagination={{
+          currentPageIndex: 3,
+          totalPageCount: 10,
+          pageRequested: (pageIndex: number) =>
+            console.log("New Page Requested", pageIndex),
+        }}
       />
     </div>
   );

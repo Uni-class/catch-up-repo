@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "@/hook/useRouter";
-import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 
 export default function Page() {
