@@ -57,6 +57,9 @@ export default function Page() {
   const [, setSocket] = useAtom(socketAtom);
   useEffect(() => {
     let newSocket: null | Socket<DefaultEventsMap, DefaultEventsMap> = null;
+    const disConnectHandler = async (_reason: Socket.DisconnectReason) => {
+      await refreshClient.get("/auth/token-refresh");
+    };
     const init = async () => {
       await refreshClient.get("/auth/token-refresh");
       newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
@@ -64,10 +67,14 @@ export default function Page() {
         transports: ["websocket"],
       });
       setSocket(newSocket);
+      newSocket.on("disconnect", disConnectHandler);
     };
     init();
     return () => {
-      newSocket !== null && newSocket.disconnect();
+      if (newSocket !== null) {
+        newSocket.off("disconnect", disConnectHandler);
+        newSocket.disconnect();
+      }
     };
   }, [setSocket]);
 
