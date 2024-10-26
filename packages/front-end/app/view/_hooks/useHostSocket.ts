@@ -62,12 +62,15 @@ export const useHostSocket = (
     if (editor === null) return;
     const { store } = editor;
 
-    store.listen(
+    const clean = store.listen(
       ({ changes }) => {
         pushChanges(changes);
       },
       { source: "user", scope: "document" }
     );
+    // return () => {
+    //   store.listen(clean);
+    // };
   }, [editor, pushChanges, socket]);
 
   return {roomPageViewerCount};

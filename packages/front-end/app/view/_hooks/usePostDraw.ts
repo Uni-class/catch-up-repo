@@ -5,7 +5,7 @@ import {
 import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
 
-const intervalTime = (1000 * 60 * 1) / 3;
+const intervalTime = 1000 * 5;
 export const usePostDraw = (
   sessionId: number,
   fileId: number,
@@ -18,43 +18,39 @@ export const usePostDraw = (
   useEffect(() => {
     if (editor === null) return;
     const { store } = editor;
-
-    store.listen(
+    const clean = store.listen(
       ({ changes }) => {
         changedPageIndexRef.current.add(pdfPainterController.getPageIndex());
       },
       { source: "user", scope: "document" }
     );
+
+    return () => {
+      store.listen(clean);
+    };
   }, [editor, pdfPainterController]);
 
   useEffect(() => {
-    const sendPostRequest = async () => {
+    const intervalId = setInterval(() => {
+      const currentPageIndex = pdfPainterController.getPageIndex();
       const width = pdfPainterController.getPage()?.originalWidth;
       const height = pdfPainterController.getPage()?.originalHeight;
-      const tempPageSet = new Set<number>();
-      changedPageIndexRef.current.forEach((index) => {
-        tempPageSet.add(index);
-      });
-      tempPageSet.forEach((index) => {
+      if (changedPageIndexRef.current.has(currentPageIndex)) {
         const note =
-          pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
+          pdfPainterInstanceController.getEditorSnapshotFromStorage(currentPageIndex);
         if (note === null || width === undefined || height === undefined) {
           return;
         }
         apiClient.post(
-          `/user/session/${sessionId}/file/${fileId}/note/${index}`,
+          `/user/session/${sessionId}/file/${fileId}/note/${currentPageIndex}`,
           { note: note, width, height }
         );
-        changedPageIndexRef.current.delete(index);
-      });
-    };
-
-    const intervalId = setInterval(() => {
-      sendPostRequest();
+      }
+      changedPageIndexRef.current.clear();
     }, intervalTime);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [fileId, pdfPainterInstanceController, sessionId]);
+  }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 };
