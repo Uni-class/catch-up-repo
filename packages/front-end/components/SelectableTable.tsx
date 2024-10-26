@@ -11,6 +11,11 @@ import Checkbox from "@/components/Checkbox";
 import { css } from "@/styled-system/css";
 import Button from "@/components/Button/Button";
 
+import ArrowLeftEndIcon from "@/public/icons/arrow-left-end.svg";
+import ArrowLeftIcon from "@/public/icons/arrow-left.svg";
+import ArrowRightIcon from "@/public/icons/arrow-right.svg";
+import ArrowRightEndIcon from "@/public/icons/arrow-right-end.svg";
+
 interface PropType {
   head: {
     id: number;
@@ -160,18 +165,21 @@ export default function SelectableTable({
             alignItems: "center",
             gap: "0.5rem",
             "&>button": {
-              width: "2.4em",
-              height: "2.4em",
+              width: "2em",
+              height: "2em",
+              color: "#ffffff",
             },
           })}
         >
-          <Button onClick={() => pagination.pageRequested(0)}>{"<<"}</Button>
+          <Button onClick={() => pagination.pageRequested(0)}>
+            <ArrowLeftEndIcon width={"0.75em"} height={"0.75em"} />
+          </Button>
           <Button
             onClick={() =>
               pagination.pageRequested(pagination.currentPageIndex - 1)
             }
           >
-            {"<"}
+            <ArrowLeftIcon width={"2em"} height={"2em"} />
           </Button>
           {[
             ...[...Array(paginationInfo.leftSize).keys()].map(
@@ -199,12 +207,12 @@ export default function SelectableTable({
               pagination.pageRequested(pagination.currentPageIndex + 1)
             }
           >
-            {">"}
+            <ArrowRightIcon width={"2em"} height={"2em"} />
           </Button>
           <Button
             onClick={() => pagination.pageRequested(pagination.totalPageCount)}
           >
-            {">>"}
+            <ArrowRightEndIcon width={"0.75em"} height={"0.75em"} />
           </Button>
         </div>
       ) : null}
