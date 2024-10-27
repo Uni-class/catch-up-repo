@@ -12,7 +12,7 @@ import Recommend from "./_components/Recommend";
 
 export default function Page() {
   return (
-    <>
+    <div>
       <div
         className={css({
           width: "100%",
@@ -32,6 +32,6 @@ export default function Page() {
         <Recommend />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
