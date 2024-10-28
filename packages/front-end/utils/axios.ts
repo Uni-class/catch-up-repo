@@ -26,3 +26,13 @@ retryClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
+apiClient.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  async (error) => {
+    return Promise.reject(error);
+  }
+);

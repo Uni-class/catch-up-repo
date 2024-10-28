@@ -16,7 +16,10 @@ export default function QueryClientProvider({ children }: PropType) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: 1,
+            retry: (failureCount,error)=>{
+              console.log(error);
+              return failureCount < 3
+            },
           },
           dehydrate: {
             shouldDehydrateMutation: (_mutation) => false,
