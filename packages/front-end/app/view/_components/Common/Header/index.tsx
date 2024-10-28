@@ -1,5 +1,5 @@
 import { PDFPainterController } from "@/PaintPDF/components";
-import LogoIcon from "@/public/logo-horizontal-white.svg";
+import LogoTextIcon from "@/public/logo-horizontal-white.svg";
 import { css } from "@/styled-system/css";
 import { HeaderControlButton } from "./HeaderControlButton";
 import BrushIcon from "@/public/icons/brush.svg";
@@ -12,6 +12,7 @@ import { HeaderTooltipButton } from "./HeaderToolTipButton";
 import { ReactNode, useState } from "react";
 import { overlay } from "overlay-kit";
 import { ModeContainer } from "../Mode";
+import Link from "next/link";
 
 interface PropType {
   pdfPainterController: PDFPainterController;
@@ -46,10 +47,20 @@ export function Header({
         justifyContent: "space-between",
         alignItems: "center",
         bg: "primary.200",
-        padding: "0 2.5rem",
       })}
     >
-      <LogoIcon height={"1.352rem"} width={"7.08rem"} />
+      <a
+        className={css({
+          display: "flex",
+          height: "100%",
+          padding: "0 2rem",
+          alignItems: "center",
+          justifyContent: "center",
+        })}
+        href={"/"}
+      >
+        <LogoTextIcon height={"1.352rem"} width={"7.08rem"} />
+      </a>
       <div
         className={css({
           display: "flex",
@@ -83,6 +94,7 @@ export function Header({
           display: "flex",
           alignItems: "center",
           gap: "1.54rem",
+          padding: "0 2rem",
         })}
       >
         <HeaderTooltipButton
@@ -98,9 +110,13 @@ export function Header({
           onClick={() => {
             setIsModeOpen(!isModeOpen);
           }}
-          tooltip={isModeOpen && (
-            <ModeContainer setVisible={setIsModeOpen}>{modeRender}</ModeContainer>
-          )}
+          tooltip={
+            isModeOpen && (
+              <ModeContainer setVisible={setIsModeOpen}>
+                {modeRender}
+              </ModeContainer>
+            )
+          }
         />
         <HeaderTooltipButton
           text={"다운로드"}

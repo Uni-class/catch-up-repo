@@ -205,8 +205,8 @@ export function HostSessionTable({
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         pagination={{
-          currentPageIndex: 4,
-          totalPageCount: 10,
+          currentPageIndex: 15,
+          totalPageCount: 20,
           pageRequested: (pageIndex: number) =>
             console.log("New Page Requested", pageIndex),
         }}
