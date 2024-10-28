@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AxiosError } from "axios";
 
 interface PropType {
   children: ReactNode;
@@ -16,9 +17,12 @@ export default function QueryClientProvider({ children }: PropType) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: (failureCount,error)=>{
-              console.log(error);
-              return failureCount < 3
+            retry: (failureCount, _error) => {
+              const error = _error as AxiosError;
+              if (error.response?.status === 401) {
+                return false;
+              }
+              return failureCount < 2;
             },
           },
           dehydrate: {
