@@ -73,8 +73,17 @@ export class AuthService implements OnModuleInit {
     });
   }
 
-  async generateRefreshToken(user: User) {
+  async generateRefreshToken(user: User): Promise<string> {
     const payload = { id: user.userId };
+    const thisUser: User = await this.userService.findUserById(user.userId);
+    if (
+      thisUser?.refreshToken &&
+      (await this.jwtService.verifyAsync(thisUser.refreshToken, {
+        secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
+      }))
+    ) {
+      return thisUser.refreshToken;
+    }
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('REFRESH_TOKEN_EXPIRATION'),
