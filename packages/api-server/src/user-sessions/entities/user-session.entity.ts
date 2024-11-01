@@ -52,10 +52,9 @@ export class UserSession {
   @DeleteDateColumn()
   deletedAt: string;
 
-  @ApiProperty()
   @ManyToOne(() => Session, (session) => session.userSessions)
   @JoinColumn({ name: 'session_id', referencedColumnName: 'sessionId' })
-  session: Promise<Session>;
+  session: Session;
 
   @ManyToOne(() => User, (user) => user.userSessions)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })

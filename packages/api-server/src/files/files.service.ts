@@ -71,7 +71,9 @@ export class FilesService {
   }
 
   async s3Upload(userId: number, file: Multer.File) {
-    const fileName: string = file.originalname.normalize('NFC');
+    const fileName: string = Buffer.from(file.originalname, 'latin1')
+      .toString('utf8')
+      .normalize('NFC');
     const key: string = `${Date.now().toString()}-${fileName}`;
     const param = {
       Key: key,

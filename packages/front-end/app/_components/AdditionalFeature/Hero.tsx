@@ -18,6 +18,7 @@ export default function Hero({
           top: 0,
           zIndex:0,
           margin:"0 -8.36rem",
+          userSelect:"none",
         }),
         className
       )}

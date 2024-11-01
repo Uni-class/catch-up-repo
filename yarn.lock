@@ -8492,6 +8492,7 @@ __metadata:
     jest: "npm:^29.5.0"
     mongodb: "npm:^6.8.0"
     mongoose: "npm:^8.5.3"
+    multer-utf8: "npm:^1.4.7"
     passport: "npm:^0.7.0"
     passport-google-oauth20: "npm:^2.0.0"
     passport-jwt: "npm:^4.0.1"
@@ -9464,7 +9465,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "catch-up-repo@workspace:."
   dependencies:
-    multer-utf8: "npm:^1.4.5-lts.11"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -15476,7 +15476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer-utf8@npm:^1.4.5-lts.11":
+"multer-utf8@npm:^1.4.7":
   version: 1.4.7
   resolution: "multer-utf8@npm:1.4.7"
   dependencies:

@@ -31,7 +31,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Session } from '../sessions/entities/session.entity';
-import { Role } from './types/role.type';
+import { GetSessionsQuery } from './types/get-sessions-query.type';
 import { UserSession } from '../user-sessions/entities/user-session.entity';
 import { CreateUserSessionDto } from '../user-sessions/dto/create-user-session.dto';
 import { UpdateUserSessionDto } from '../user-sessions/dto/update-user-session.dto';
@@ -42,6 +42,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from '../files/files.service';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { GetFilesQueryDto } from './dto/get-files-query.dto';
+import { GetSessionsResponseDto } from './dto/get-sessions-response.dto';
+import { GetFilesResponseDto } from './dto/get-files-response.dto';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -113,17 +115,23 @@ export class UsersController {
   }
 
   @Get('sessions')
-  @ApiExtraModels(Session, UserSession)
-  @ApiQuery({ name: 'role', type: String })
-  @ApiResponse({ type: [Session] })
+  @ApiResponse({ type: GetSessionsResponseDto })
   @UseGuards(JwtGuard)
   async getSessions(
     @UserId(ParseIntPipe) userId: number,
-    @Query() query: Role,
-  ): Promise<Session[]> {
+    @Query() query: GetSessionsQuery,
+  ): Promise<GetSessionsResponseDto> {
     if (query.role === 'host')
-      return await this.usersService.getSessionsByHost(userId);
-    return await this.usersService.getSessionsByParticipant(userId);
+      return await this.usersService.getSessionsByHost(
+        userId,
+        query.size,
+        query.page,
+      );
+    return await this.usersService.getSessionsByParticipant(
+      userId,
+      query.size,
+      query.page,
+    );
   }
 
   @Post('session/:sessionId/join')
@@ -177,15 +185,13 @@ export class UsersController {
   }
 
   @Get('files')
-  @ApiQuery({ name: 'last', type: Number })
-  @ApiResponse({ type: [File] })
+  @ApiResponse({ type: GetFilesResponseDto })
   @UseGuards(JwtGuard)
   async getUserFiles(
     @UserId(ParseIntPipe) userId: number,
-    @Query() { last }: GetFilesQueryDto,
-  ): Promise<File[]> {
-    const files: File[] = await this.usersService.getUserFiles(userId, last);
-    return files;
+    @Query() query: GetFilesQueryDto,
+  ): Promise<GetFilesResponseDto> {
+    return await this.usersService.getUserFiles(userId, query.size, query.page);
   }
 
   @Get('session/:sessionId/file/:fileId/note/:pageNumber')

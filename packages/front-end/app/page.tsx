@@ -10,23 +10,32 @@ import Recommend from "./_components/Recommend";
 export default function Page() {
   return (
     <>
-      <div
+      <main
         className={css({
           width: "100%",
           bg: "primary.200",
-          color: "#fff",
-          padding: "1rem 1.25rem 6.3rem 1.25rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display:"flex",
+          justifyContent:"center",
         })}
       >
-        <NavBar />
-        <Banner />
-        <Feature />
-        <AdditionalFeature />
-        <Recommend />
-      </div>
+        <div
+          className={css({
+            width: "100%",
+            maxWidth: "1600px",
+            color: "#fff",
+            padding: "1rem 1.25rem 6.3rem 1.25rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          })}
+        >
+          <NavBar />
+          <Banner />
+          <Feature />
+          <AdditionalFeature />
+          <Recommend />
+        </div>
+      </main>
       <Footer />
     </>
   );
