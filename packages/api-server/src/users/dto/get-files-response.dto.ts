@@ -11,7 +11,7 @@ export class GetFilesResponseDto {
   @IsNumber()
   page: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: [File] })
   files: File[];
 
   constructor(totalPages: number, page: number, sessions: File[]) {

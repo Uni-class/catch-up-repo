@@ -30,12 +30,17 @@ export interface Session {
   sessionId: number;
   sessionName: string;
   hostId: number;
+  sessionCode: string;
   createdAt: string;
   updatedAt: string;
   closedAt: string;
 }
 
-export type Promise = object;
+export interface GetSessionsResponseDto {
+  totalPages: number;
+  page: number;
+  sessions: Session[];
+}
 
 export interface UserSession {
   userSessionId: number;
@@ -45,7 +50,6 @@ export interface UserSession {
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
-  session: Promise;
 }
 
 export type UserSessionBodyType = object;
@@ -60,6 +64,12 @@ export interface File {
   deletedAt: string;
 }
 
+export interface GetFilesResponseDto {
+  totalPages: number;
+  page: number;
+  files: File[];
+}
+
 export interface CreateSessionDto {
   sessionName: string;
   sessionFileIds: number[];
@@ -69,14 +79,18 @@ export interface SessionResponseDto {
   sessionId: number;
   sessionName: string;
   hostId: number;
+  sessionCode: string;
   createdAt: string;
   fileList: File[];
-  sessionCode: string;
 }
 
 export interface UpdateSessionDto {
   sessionName?: string;
   sessionFileIds?: number[];
+}
+
+export interface SessionStatusResponseDto {
+  sessionCode: string;
 }
 
 export interface FileUploadResponseDto {
@@ -115,7 +129,7 @@ export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
   baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
-  securityWorker?: (securityData: SecurityDataType | null) => RequestParams | void;
+  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
 }
 
@@ -248,7 +262,7 @@ export class HttpClient<SecurityDataType = unknown> {
     baseUrl,
     cancelToken,
     ...params
-  }: FullRequestParams) => {
+  }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
       ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
@@ -465,10 +479,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     usersControllerGetSessions: (
       query: {
         role: string;
+        size: number;
+        page: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<any, Session[]>({
+      this.request<any, GetSessionsResponseDto>({
         path: `/user/sessions`,
         method: 'GET',
         query: query,
@@ -481,16 +497,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerPostUserSession
-     * @request POST:/user/sessions/{sessionId}/join
+     * @request POST:/user/session/{sessionId}/join
      * @secure
      */
-    usersControllerPostUserSession: (sessionId: number, data: UserSessionBodyType, params: RequestParams = {}) =>
+    usersControllerPostUserSession: (sessionId: number, params: RequestParams = {}) =>
       this.request<any, UserSession>({
-        path: `/user/sessions/${sessionId}/join`,
+        path: `/user/session/${sessionId}/join`,
         method: 'POST',
-        body: data,
         secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
@@ -499,12 +513,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerPatchUserSession
-     * @request PATCH:/user/sessions/{sessionId}/display-name
+     * @request PATCH:/user/session/{sessionId}/display-name
      * @secure
      */
     usersControllerPatchUserSession: (sessionId: number, data: UserSessionBodyType, params: RequestParams = {}) =>
       this.request<any, UpdateResult>({
-        path: `/user/sessions/${sessionId}/display-name`,
+        path: `/user/session/${sessionId}/display-name`,
         method: 'PATCH',
         body: data,
         secure: true,
@@ -517,12 +531,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UsersControllerDeleteUserSession
-     * @request DELETE:/user/sessions/{sessionId}
+     * @request DELETE:/user/session/{sessionId}
      * @secure
      */
     usersControllerDeleteUserSession: (sessionId: number, params: RequestParams = {}) =>
       this.request<any, UserSession>({
-        path: `/user/sessions/${sessionId}`,
+        path: `/user/session/${sessionId}`,
         method: 'DELETE',
         secure: true,
         ...params,
@@ -538,15 +552,72 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     usersControllerGetUserFiles: (
       query: {
-        last: number;
+        size: number;
+        page: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<any, File[]>({
+      this.request<any, GetFilesResponseDto>({
         path: `/user/files`,
         method: 'GET',
         query: query,
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerGetFileNotes
+     * @request GET:/user/session/{sessionId}/file/{fileId}/note/{pageNumber}
+     * @secure
+     */
+    usersControllerGetFileNotes: (sessionId: number, fileId: number, pageNumber: number, params: RequestParams = {}) =>
+      this.request<UpdateResult, any>({
+        path: `/user/session/${sessionId}/file/${fileId}/note/${pageNumber}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerPostFileNotes
+     * @request POST:/user/session/{sessionId}/file/{fileId}/note/{pageNumber}
+     * @secure
+     */
+    usersControllerPostFileNotes: (sessionId: number, fileId: number, pageNumber: number, params: RequestParams = {}) =>
+      this.request<UpdateResult, any>({
+        path: `/user/session/${sessionId}/file/${fileId}/note/${pageNumber}`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UsersControllerGetHostFileNotes
+     * @request GET:/user/session/{sessionId}/file/{fileId}/host-note/{pageNumber}
+     * @secure
+     */
+    usersControllerGetHostFileNotes: (
+      sessionId: number,
+      fileId: number,
+      pageNumber: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<UpdateResult, any>({
+        path: `/user/session/${sessionId}/file/${fileId}/host-note/${pageNumber}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
   };
@@ -574,13 +645,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Session
      * @name SessionsControllerGetSessionInfo
-     * @request GET:/session/{sessionId}
+     * @request GET:/session
      * @secure
      */
-    sessionsControllerGetSessionInfo: (sessionId: number, params: RequestParams = {}) =>
+    sessionsControllerGetSessionInfo: (
+      query: {
+        id: number;
+        code: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<any, SessionResponseDto>({
-        path: `/session/${sessionId}`,
+        path: `/session`,
         method: 'GET',
+        query: query,
         secure: true,
         ...params,
       }),
@@ -600,6 +678,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Session
+     * @name SessionsControllerChangeSessionStatus
+     * @request POST:/session/{sessionId}
+     * @secure
+     */
+    sessionsControllerChangeSessionStatus: (
+      sessionId: number,
+      query: {
+        status: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, SessionStatusResponseDto>({
+        path: `/session/${sessionId}`,
+        method: 'POST',
+        query: query,
+        secure: true,
         ...params,
       }),
   };

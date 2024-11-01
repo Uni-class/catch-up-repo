@@ -11,7 +11,7 @@ export class GetSessionsResponseDto {
   @IsNumber()
   page: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: [Session] })
   sessions: Session[];
 
   constructor(totalPages: number, page: number, sessions: Session[]) {

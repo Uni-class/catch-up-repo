@@ -115,11 +115,7 @@ export class UsersController {
   }
 
   @Get('sessions')
-  @ApiExtraModels(Session, UserSession)
-  @ApiQuery({ name: 'role', type: String })
-  @ApiQuery({ name: 'size', type: Number })
-  @ApiQuery({ name: 'page', type: Number })
-  @ApiResponse({ type: [Session] })
+  @ApiResponse({ type: GetSessionsResponseDto })
   @UseGuards(JwtGuard)
   async getSessions(
     @UserId(ParseIntPipe) userId: number,
@@ -189,8 +185,7 @@ export class UsersController {
   }
 
   @Get('files')
-  @ApiQuery({ name: 'last', type: Number })
-  @ApiResponse({ type: [File] })
+  @ApiResponse({ type: GetFilesResponseDto })
   @UseGuards(JwtGuard)
   async getUserFiles(
     @UserId(ParseIntPipe) userId: number,
