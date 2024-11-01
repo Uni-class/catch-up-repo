@@ -3,32 +3,44 @@ import { AxiosResponse } from "axios";
 import { Session } from "@/schema/backend.schema";
 import { apiClient } from "@/utils/axios";
 import { HostSessionTable } from "../_components/HostSessionTable";
-
+import { useState } from "react";
 
 export default function HostSessionTableFetcher() {
-  const { data: response, isLoading, isError } = useQuery<AxiosResponse<Session[]>>({
-    queryKey: ["user", "sessions", "host"],
+  const size = 10;
+
+  const [page, setPage] = useState(0);
+
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useQuery<AxiosResponse<Session[]>>({
+    queryKey: ["user", "sessions", "host", size, page],
     queryFn: async () => {
       return await apiClient.get("/user/sessions", {
         params: {
-          role: "host"
+          role: "host",
+          size: size,
+          page: page,
         },
       });
-    }
+    },
   });
   const data = response?.data;
-  const status = (
-    isLoading
-    ?
-      "loading"
-      :
-      (
-        isError || !Array.isArray(data)
-        ?
-          "error"
-          :
-          null
-      )
+  const status = isLoading
+    ? "loading"
+    : isError || !Array.isArray(data)
+      ? "error"
+      : null;
+  return (
+    <HostSessionTable
+      data={data || []}
+      pagination={{
+        size: size,
+        index: page,
+        setIndex: setPage,
+      }}
+      status={status}
+    />
   );
-  return <HostSessionTable data={data || []} status={status} />
 }

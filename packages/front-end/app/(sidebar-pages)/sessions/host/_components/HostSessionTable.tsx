@@ -69,9 +69,15 @@ const ErrorPlaceholder = (
 
 export function HostSessionTable({
   data,
+  pagination,
   status = null,
 }: {
   data: Session[];
+  pagination: {
+    size: number;
+    index: number;
+    setIndex: (index: number) => void;
+  };
   status?: "loading" | "error" | null;
 }) {
   const router = useRouter();
@@ -85,8 +91,24 @@ export function HostSessionTable({
         }),
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
-      queryClient.refetchQueries({ queryKey: ["user", "sessions", "host"] });
+      queryClient.invalidateQueries({
+        queryKey: [
+          "user",
+          "sessions",
+          "host",
+          pagination.size,
+          pagination.index,
+        ],
+      });
+      queryClient.refetchQueries({
+        queryKey: [
+          "user",
+          "sessions",
+          "host",
+          pagination.size,
+          pagination.index,
+        ],
+      });
     },
     onError: (e) => {
       console.error(e);
@@ -205,10 +227,12 @@ export function HostSessionTable({
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         pagination={{
-          currentPageIndex: 15,
+          currentPageIndex: pagination.index,
           totalPageCount: 20,
-          pageRequested: (pageIndex: number) =>
-            console.log("New Page Requested", pageIndex),
+          pageRequested: (pageIndex: number) => {
+            console.log("New Page Requested", pageIndex);
+            pagination.setIndex(pageIndex);
+          },
         }}
       />
     </div>
