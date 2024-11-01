@@ -30,20 +30,9 @@ retryClient.interceptors.response.use(
 
 apiClient.interceptors.response.use(
   (response) => {
-    console.log("success", response);
     return response.data;
   },
   async (error) => {
-    const originalReq = error.config as InternalAxiosRequestConfig<any>;
-    console.log(error, originalReq);
-    if (error?.response?.status === 401) {
-      try {
-        await refreshClient.get("/auth/token-refresh");
-        return retryClient(originalReq);
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    }
     return Promise.reject(error);
   }
 );
