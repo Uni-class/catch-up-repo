@@ -19,6 +19,8 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Note } from './schemas/note.schema';
 import { Model } from 'mongoose';
+import { GetSessionsResponseDto } from './dto/get-sessions-response.dto';
+import { session } from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -77,36 +79,47 @@ export class UsersService {
     });
   }
 
-  async getSessionsByHost(userId: number): Promise<Session[]> {
-    const userSessions = await this.userSessionRepository.find({
-      where: { userId },
-      order: { createdAt: 'DESC' },
-    });
+  async getSessionsByHost(
+    userId: number,
+    size: number,
+    page: number,
+  ): Promise<GetSessionsResponseDto> {
+    const [sessions, totalCount] = await this.sessionRepository
+      .createQueryBuilder('s')
+      .innerJoin('s.userSessions', 'us')
+      .where('s.hostId = :userId', { userId })
+      .orderBy('s.createdAt', 'DESC')
+      .skip((page - 1) * size)
+      .take(size)
+      .getManyAndCount();
 
-    const sessions = (
-      await Promise.all(userSessions.map((userSession) => userSession.session))
-    )
-      .filter((session) => session.hostId === userId)
-      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    const totalPages = Math.ceil(totalCount / size);
 
-    return sessions;
+    return new GetSessionsResponseDto(totalPages, page, sessions);
   }
 
-  async getSessionsByParticipant(userId: number): Promise<Session[]> {
-    const userSessions: UserSession[] = await this.userSessionRepository.find({
-      where: { userId },
-      order: { createdAt: 'DESC' },
-      relations: ['session'],
-      take: 10,
+  async getSessionsByParticipant(
+    userId: number,
+    size: number,
+    page: number,
+  ): Promise<GetSessionsResponseDto> {
+    const [userSessions, totalCount] = await this.userSessionRepository
+      .createQueryBuilder('us')
+      .leftJoinAndSelect('us.session', 's')
+      .where('s.hostId != :userId', { userId })
+      .andWhere('us.userId = :userId', { userId })
+      .orderBy('us.createdAt', 'DESC')
+      .skip((page - 1) * size)
+      .take(size)
+      .getManyAndCount();
+
+    const sessions = userSessions.map((userSession) => {
+      return userSession.session;
     });
-    const sessions = await Promise.all(
-      userSessions.map((userSession) => {
-        return userSession.session;
-      }),
-    );
-    return sessions.filter((session) => {
-      return session.hostId !== userId;
-    });
+
+    const totalPages = Math.ceil(totalCount / size);
+
+    return new GetSessionsResponseDto(totalPages, page, sessions);
   }
 
   async postUserSession(
