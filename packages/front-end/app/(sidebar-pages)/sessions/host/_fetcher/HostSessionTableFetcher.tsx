@@ -14,14 +14,20 @@ export default function HostSessionTableFetcher() {
     data: response,
     isLoading,
     isError,
-  } = useQuery<AxiosResponse<Session[]>>({
+  } = useQuery<
+    AxiosResponse<{
+      page: number;
+      totalPages: number;
+      sessions: Session[];
+    }>
+  >({
     queryKey: ["user", "sessions", "host", size, page],
     queryFn: async () => {
       return await apiClient.get("/user/sessions", {
         params: {
           role: "host",
           size: size,
-          page: page,
+          page: page + 1,
         },
       });
     },
@@ -34,7 +40,7 @@ export default function HostSessionTableFetcher() {
       : null;
   return (
     <HostSessionTable
-      data={data || []}
+      data={data ? { ...data, page: data.page - 1 } : undefined}
       pagination={{
         size: size,
         index: page,

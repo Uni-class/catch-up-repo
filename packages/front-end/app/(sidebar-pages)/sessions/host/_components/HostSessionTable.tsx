@@ -68,11 +68,19 @@ const ErrorPlaceholder = (
 );
 
 export function HostSessionTable({
-  data,
+  data = {
+    page: 0,
+    totalPages: 0,
+    sessions: [],
+  },
   pagination,
   status = null,
 }: {
-  data: Session[];
+  data?: {
+    page: number;
+    totalPages: number;
+    sessions: Session[];
+  };
   pagination: {
     size: number;
     index: number;
@@ -182,7 +190,7 @@ export function HostSessionTable({
             minWidth: "6em",
           },
         ]}
-        body={data.map((item) => {
+        body={data.sessions.map((item) => {
           return {
             id: item.sessionId,
             values: [
@@ -227,8 +235,8 @@ export function HostSessionTable({
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         pagination={{
-          currentPageIndex: pagination.index,
-          totalPageCount: 20,
+          currentPageIndex: data.page,
+          totalPageCount: data.totalPages,
           pageRequested: (pageIndex: number) => {
             console.log("New Page Requested", pageIndex);
             pagination.setIndex(pageIndex);
