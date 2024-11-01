@@ -21,6 +21,7 @@ import { Note } from './schemas/note.schema';
 import { Model } from 'mongoose';
 import { GetSessionsResponseDto } from './dto/get-sessions-response.dto';
 import { session } from 'passport';
+import { GetFilesResponseDto } from './dto/get-files-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -81,8 +82,8 @@ export class UsersService {
 
   async getSessionsByHost(
     userId: number,
-    size: number,
-    page: number,
+    size: number = 10,
+    page: number = 1,
   ): Promise<GetSessionsResponseDto> {
     const [sessions, totalCount] = await this.sessionRepository
       .createQueryBuilder('s')
@@ -100,8 +101,8 @@ export class UsersService {
 
   async getSessionsByParticipant(
     userId: number,
-    size: number,
-    page: number,
+    size: number = 10,
+    page: number = 1,
   ): Promise<GetSessionsResponseDto> {
     const [userSessions, totalCount] = await this.userSessionRepository
       .createQueryBuilder('us')
@@ -195,14 +196,19 @@ export class UsersService {
     return await this.userSessionRepository.softRemove(userSession);
   }
 
-  async getUserFiles(userId: number, last: number = 0): Promise<File[]> {
-    const files: File[] = await this.fileRepository.find({
+  async getUserFiles(
+    userId: number,
+    size: number = 10,
+    page: number = 1,
+  ): Promise<GetFilesResponseDto> {
+    const [files, totalCount] = await this.fileRepository.findAndCount({
       where: { ownerId: userId },
       order: { createdAt: 'DESC' },
-      skip: 10 * last,
-      take: 10,
+      skip: (page - 1) * size,
+      take: size,
     });
-    return files;
+    const totalPages = Math.ceil(totalCount / size);
+    return new GetFilesResponseDto(totalPages, page, files);
   }
 
   async deleteRefreshToken(userId: number) {

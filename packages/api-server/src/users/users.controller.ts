@@ -43,6 +43,7 @@ import { FilesService } from '../files/files.service';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { GetFilesQueryDto } from './dto/get-files-query.dto';
 import { GetSessionsResponseDto } from './dto/get-sessions-response.dto';
+import { GetFilesResponseDto } from './dto/get-files-response.dto';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -193,10 +194,9 @@ export class UsersController {
   @UseGuards(JwtGuard)
   async getUserFiles(
     @UserId(ParseIntPipe) userId: number,
-    @Query() { last }: GetFilesQueryDto,
-  ): Promise<File[]> {
-    const files: File[] = await this.usersService.getUserFiles(userId, last);
-    return files;
+    @Query() query: GetFilesQueryDto,
+  ): Promise<GetFilesResponseDto> {
+    return await this.usersService.getUserFiles(userId, query.size, query.page);
   }
 
   @Get('session/:sessionId/file/:fileId/note/:pageNumber')
