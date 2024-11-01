@@ -36,6 +36,7 @@ export default function Banner() {
           position: "absolute",
           bottom: 0,
           right: "12.9rem",
+          maxWidth:"700px",
         })}
       />
     </section>
