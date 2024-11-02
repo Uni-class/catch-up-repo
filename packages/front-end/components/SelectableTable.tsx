@@ -219,7 +219,9 @@ export default function SelectableTable({
             disabled={
               pagination.currentPageIndex === pagination.totalPageCount - 1
             }
-            onClick={() => pagination.pageRequested(pagination.totalPageCount)}
+            onClick={() =>
+              pagination.pageRequested(pagination.totalPageCount - 1)
+            }
           >
             <ArrowRightEndIcon width={"0.75em"} height={"0.75em"} />
           </Button>
