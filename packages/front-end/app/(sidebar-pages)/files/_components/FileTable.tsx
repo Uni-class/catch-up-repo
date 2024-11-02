@@ -161,7 +161,6 @@ export function FileTable({
           </Button>
         </div>
       </div>
-
       <SelectableTable
         head={[
           {
