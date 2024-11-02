@@ -6,7 +6,7 @@ import { ParticipantSessionTable } from "../_components/ParticipantSessionTable"
 import { useState } from "react";
 
 export default function ParticipantSessionTableFetcher() {
-  const size = 10;
+  const size = 5;
 
   const [page, setPage] = useState(0);
 

@@ -6,7 +6,7 @@ import { HostSessionTable } from "../_components/HostSessionTable";
 import { useState } from "react";
 
 export default function HostSessionTableFetcher() {
-  const size = 10;
+  const size = 5;
 
   const [page, setPage] = useState(0);
 
