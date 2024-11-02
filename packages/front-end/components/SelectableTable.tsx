@@ -157,7 +157,7 @@ export default function SelectableTable({
           )}
         </TableBody>
       </TableContainer>
-      {pagination ? (
+      {pagination && pagination.totalPageCount > 1 ? (
         <div
           className={css({
             display: "flex",

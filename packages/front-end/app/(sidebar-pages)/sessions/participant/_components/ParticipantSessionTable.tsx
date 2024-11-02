@@ -68,10 +68,24 @@ const ErrorPlaceholder = (
 );
 
 export function ParticipantSessionTable({
-  data,
+  data = {
+    page: 0,
+    totalPages: 0,
+    sessions: [],
+  },
+  pagination,
   status = null,
 }: {
-  data: Session[];
+  data?: {
+    page: number;
+    totalPages: number;
+    sessions: Session[];
+  };
+  pagination: {
+    size: number;
+    index: number;
+    setIndex: (index: number) => void;
+  };
   status?: "loading" | "error" | null;
 }) {
   const router = useRouter();
@@ -82,14 +96,26 @@ export function ParticipantSessionTable({
       Promise.all(
         selectedItems.map(async (selectedItem) => {
           await apiClient.delete(`user/session/${selectedItem}`);
-        })
+        }),
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["user", "sessions", "participant"],
+        queryKey: [
+          "user",
+          "sessions",
+          "participant",
+          pagination.size,
+          pagination.index,
+        ],
       });
       queryClient.refetchQueries({
-        queryKey: ["user", "sessions", "participant"],
+        queryKey: [
+          "user",
+          "sessions",
+          "participant",
+          pagination.size,
+          pagination.index,
+        ],
       });
     },
     onError: (e) => {
@@ -164,7 +190,7 @@ export function ParticipantSessionTable({
             minWidth: "8em",
           },
         ]}
-        body={data.map((item) => {
+        body={data.sessions.map((item) => {
           return {
             id: item.sessionId,
             values: [
@@ -208,6 +234,13 @@ export function ParticipantSessionTable({
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        pagination={{
+          currentPageIndex: data.page,
+          totalPageCount: data.totalPages,
+          pageRequested: (pageIndex: number) => {
+            pagination.setIndex(pageIndex);
+          },
+        }}
       />
     </div>
   );

@@ -238,7 +238,6 @@ export function HostSessionTable({
           currentPageIndex: data.page,
           totalPageCount: data.totalPages,
           pageRequested: (pageIndex: number) => {
-            console.log("New Page Requested", pageIndex);
             pagination.setIndex(pageIndex);
           },
         }}
