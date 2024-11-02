@@ -14,15 +14,15 @@ export default function Page() {
         className={css({
           width: "100%",
           bg: "primary.200",
-          display:"flex",
-          justifyContent:"center",
+          display: "flex",
+          justifyContent: "center",
         })}
       >
         <div
           className={css({
             width: "100%",
             maxWidth: "1600px",
-            color: "#fff",
+            color: "#ffffff",
             padding: "1rem 1.25rem 6.3rem 1.25rem",
             display: "flex",
             flexDirection: "column",
