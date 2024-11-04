@@ -32,9 +32,10 @@ export default function Feature() {
         <div
           className={css({
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             flexWrap: "wrap",
-            gap: "3rem 0",
+            gap: "5rem 3rem",
+            alignItems: "center",
           })}
         >
           {featureData.map((feature, index) => (
@@ -169,8 +170,8 @@ function FeatureElement({ index, text, footer }: ElementPropType) {
       className={css({
         borderRadius: "30px",
         backgroundColor: "#F4F4F4",
-        width: "266px",
-        height: "191px",
+        width: "300px",
+        height: "200px",
         padding: "1.6rem 2.5rem 2.625rem 2.5rem",
         textAlign: "center",
         position: "relative",
