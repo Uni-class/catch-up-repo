@@ -5,7 +5,8 @@ export default function Header() {
   return (
     <header
       className={css({
-        height: "4.16rem",
+        minHeight: "4.16rem",
+        maxHeight: "4.16rem",
         bg: "white",
         color: "black",
         display: "flex",
@@ -23,7 +24,7 @@ export default function Header() {
           강의 환경 동기화를 위한 솔루션 캐치업
         </p>
       </div>
-      <HeaderAccount/>
+      <HeaderAccount />
     </header>
   );
 }

@@ -19,6 +19,10 @@ const ButtonContainer = styled(Link, {
     display: "flex",
     gap: "0.375rem",
     alignItems: "center",
+    _disabled: {
+      opacity: 0.5,
+      cursor: "default",
+    },
   },
   variants: {
     isIcon: {
@@ -66,8 +70,7 @@ const ButtonContainer = styled(Link, {
   },
 });
 
-interface PropType
-  extends LinkPropsReal {
+interface PropType extends LinkPropsReal {
   children?: ReactNode;
   startIcon?: ReactNode;
   size?: "small" | "mid" | undefined;
@@ -82,7 +85,7 @@ const LinkButton = forwardRef<HTMLAnchorElement, PropType>(
         {children}
       </ButtonContainer>
     );
-  }
+  },
 );
 
 LinkButton.displayName = "LinkButton";

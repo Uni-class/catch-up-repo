@@ -37,6 +37,18 @@ export default function Page() {
   const queryObj = router.queryObj as unknown as { id?: number; code?: string };
   const apiQueryParam = getAPIQueryParam(queryObj);
 
+  useEffect(() => {
+    const exitingFunction = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", exitingFunction);
+
+    return () => {
+      window.removeEventListener("beforeunload", exitingFunction);
+    };
+  }, []);
+
   const [userQuery, sessionQuery] = useQueries({
     queries: [
       {

@@ -68,10 +68,24 @@ const ErrorPlaceholder = (
 );
 
 export function HostSessionTable({
-  data,
+  data = {
+    page: 0,
+    totalPages: 0,
+    sessions: [],
+  },
+  pagination,
   status = null,
 }: {
-  data: Session[];
+  data?: {
+    page: number;
+    totalPages: number;
+    sessions: Session[];
+  };
+  pagination: {
+    size: number;
+    index: number;
+    setIndex: (index: number) => void;
+  };
   status?: "loading" | "error" | null;
 }) {
   const router = useRouter();
@@ -82,11 +96,27 @@ export function HostSessionTable({
       Promise.all(
         selectedItems.map(async (selectedItem) => {
           await apiClient.delete(`user/session/${selectedItem}`);
-        })
+        }),
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "sessions", "host"] });
-      queryClient.refetchQueries({ queryKey: ["user", "sessions", "host"] });
+      queryClient.invalidateQueries({
+        queryKey: [
+          "user",
+          "sessions",
+          "host",
+          pagination.size,
+          pagination.index,
+        ],
+      });
+      queryClient.refetchQueries({
+        queryKey: [
+          "user",
+          "sessions",
+          "host",
+          pagination.size,
+          pagination.index,
+        ],
+      });
     },
     onError: (e) => {
       console.error(e);
@@ -134,7 +164,6 @@ export function HostSessionTable({
           </Button>
         </div>
       </div>
-
       <SelectableTable
         head={[
           {
@@ -161,7 +190,7 @@ export function HostSessionTable({
             minWidth: "6em",
           },
         ]}
-        body={data.map((item) => {
+        body={data.sessions.map((item) => {
           return {
             id: item.sessionId,
             values: [
@@ -205,6 +234,13 @@ export function HostSessionTable({
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        pagination={{
+          currentPageIndex: data.page,
+          totalPageCount: data.totalPages,
+          pageRequested: (pageIndex: number) => {
+            pagination.setIndex(pageIndex);
+          },
+        }}
       />
     </div>
   );

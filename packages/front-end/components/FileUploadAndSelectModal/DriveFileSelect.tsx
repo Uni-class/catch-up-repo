@@ -14,13 +14,29 @@ import Button from "@/components/Button/Button";
 import { formatDate } from "date-fns";
 import { overlay } from "overlay-kit";
 import { FileFormDataContext } from ".";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { css } from "@/styled-system/css";
 
 export default function DriveFileUploadFetch() {
-  const { data: fileRes, isLoading } = useQuery<AxiosResponse<File[]>>({
-    queryKey: ["user", "files"],
-    queryFn: async () => await apiClient.get("user/files"),
+  const size = 1000; //need fix
+
+  const [page, setPage] = useState(0);
+
+  const { data: fileRes, isLoading } = useQuery<
+    AxiosResponse<{
+      page: number;
+      totalPages: number;
+      files: File[];
+    }>
+  >({
+    queryKey: ["user", "files", size, page],
+    queryFn: async () =>
+      await apiClient.get("user/files", {
+        params: {
+          size: size,
+          page: page + 1,
+        },
+      }),
     throwOnError: true,
   });
   if (isLoading) {
@@ -35,12 +51,37 @@ export default function DriveFileUploadFetch() {
         overflowY: "auto",
       })}
     >
-      <DriveFileUpload data={data} />
+      <DriveFileUpload
+        data={data ? { ...data, page: data.page - 1 } : undefined}
+        pagination={{
+          size: size,
+          index: page,
+          setIndex: setPage,
+        }}
+      />
     </div>
   );
 }
 
-export function DriveFileUpload({ data }: { data: File[] }) {
+export function DriveFileUpload({
+  data = {
+    page: 0,
+    totalPages: 0,
+    files: [],
+  },
+  pagination,
+}: {
+  data?: {
+    page: number;
+    totalPages: number;
+    files: File[];
+  };
+  pagination: {
+    size: number;
+    index: number;
+    setIndex: (index: number) => void;
+  };
+}) {
   return (
     <TableContainer>
       <TableHead>
@@ -51,7 +92,7 @@ export function DriveFileUpload({ data }: { data: File[] }) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((e) => (
+        {data.files.map((e) => (
           <Row file={e} key={e.fileId} />
         ))}
       </TableBody>

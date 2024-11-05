@@ -11,10 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/utils/axios";
 import { Heading } from "@/components/Text";
 import DeleteIcon from "@/public/icons/delete.svg";
-import UploadIcon from "@/public/icons/upload.svg"
-import SessionIcon from "@/public/icons/session.svg";
-
-
+import UploadIcon from "@/public/icons/upload.svg";
 
 const showFileUploadModal = () => {
   overlay.open(
@@ -23,7 +20,7 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File-Upload" }
+    { overlayId: "File-Upload" },
   );
 };
 
@@ -82,10 +79,24 @@ const ErrorPlaceholder = (
 );
 
 export function FileTable({
-  data,
+  data = {
+    page: 0,
+    totalPages: 0,
+    files: [],
+  },
+  pagination,
   status = null,
 }: {
-  data: File[];
+  data?: {
+    page: number;
+    totalPages: number;
+    files: File[];
+  };
+  pagination: {
+    size: number;
+    index: number;
+    setIndex: (index: number) => void;
+  };
   status?: "loading" | "error" | null;
 }) {
   const queryClient = useQueryClient();
@@ -95,11 +106,15 @@ export function FileTable({
       Promise.all(
         selectedItems.map(async (e) => {
           await apiClient.delete(`/file/${e}`);
-        })
+        }),
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "files"] });
-      queryClient.refetchQueries({ queryKey: ["user", "files"] });
+      queryClient.invalidateQueries({
+        queryKey: ["user", "files", pagination.size, pagination.index],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["user", "files", pagination.size, pagination.index],
+      });
     },
     onError: (e) => {
       console.error(e);
@@ -146,7 +161,6 @@ export function FileTable({
           </Button>
         </div>
       </div>
-
       <SelectableTable
         head={[
           {
@@ -161,7 +175,7 @@ export function FileTable({
             minWidth: "13em",
           },
         ]}
-        body={data.map((item) => {
+        body={data.files.map((item) => {
           return {
             id: item.fileId,
             values: [
@@ -182,6 +196,13 @@ export function FileTable({
         }
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        pagination={{
+          currentPageIndex: data.page,
+          totalPageCount: data.totalPages,
+          pageRequested: (pageIndex: number) => {
+            pagination.setIndex(pageIndex);
+          },
+        }}
       />
     </div>
   );
