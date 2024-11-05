@@ -1,4 +1,4 @@
-import { IsIn, IsNumber } from 'class-validator';
+import { IsIn, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetSessionsQuery {
@@ -7,10 +7,12 @@ export class GetSessionsQuery {
   role: 'host' | 'participant';
 
   @ApiProperty()
+  @IsOptional()
   @IsNumber()
-  size: number;
+  size: number = 100;
 
   @ApiProperty()
+  @IsOptional()
   @IsNumber()
-  page: number;
+  page: number = 1;
 }
