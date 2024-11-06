@@ -7,7 +7,7 @@ import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
 import { T, TLEditorSnapshot } from "tldraw";
 
-const intervalTime = 1000 * 5;
+const intervalTime = 1000 * 10;
 
 const postDraw = async ({
   sessionId,
