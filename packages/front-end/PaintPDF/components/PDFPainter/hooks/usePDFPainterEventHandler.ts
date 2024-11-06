@@ -7,6 +7,8 @@ export type DeleteFunction = () => void;
  */
 export const usePDFPainterEventHandler: () => {
   listen: (handler: HandlerFunction) => DeleteFunction;
+  get: Set<HandlerFunction>;
+  execute: (index:number) => void;
 } = () => {
   const handlerRef = useRef<Set<HandlerFunction>>(new Set());
 
@@ -16,6 +18,12 @@ export const usePDFPainterEventHandler: () => {
       return () => {
         handlerRef.current.delete(handler);
       };
+    },
+    get: handlerRef.current,
+    execute: (index: number) => {
+      handlerRef.current.forEach((handler) => {
+        handler(index);
+      });
     },
   };
 };

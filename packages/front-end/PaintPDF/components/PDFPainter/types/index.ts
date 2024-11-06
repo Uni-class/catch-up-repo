@@ -7,6 +7,7 @@ import {
   PDFViewerController,
 } from "../../PDF/types";
 import { ExternalAssetStore } from "../../Painter/types";
+import { DeleteFunction, HandlerFunction } from "../hooks/usePDFPainterEventHandler";
 
 export type PaintMode = "default" | "move" | "draw";
 
@@ -24,16 +25,16 @@ export type PDFPainterController = {
   getEditor: (editorId: string) => Editor | null;
   getEditorSnapshot: (
     editorId: string,
-    pageIndex: number,
+    pageIndex: number
   ) => EditorSnapshot | null;
   getEditorSnapshotFromStorage: (
     editorId: string,
-    pageIndex: number,
+    pageIndex: number
   ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
     pageIndex: number,
-    snapshot: EditorSnapshot,
+    snapshot: EditorSnapshot
   ) => void;
   clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
   isAutoSaveEnabled: () => boolean;
@@ -43,6 +44,8 @@ export type PDFPainterController = {
   isIdEnsureVisibleWhileDraw: (editorId: string) => boolean;
   addIdEnsureVisibleWhileDraw: (editorId: string) => void;
   deleteIdEnsureVisibleWhileDraw: (editorId: string) => void;
+  addPrevPageEventListener: (handler: HandlerFunction) => DeleteFunction;
+  addCurrentPageEventListener: (handler: HandlerFunction) => DeleteFunction;
 } & PDFViewerController;
 
 export type PDFPainterControllerHook = {
