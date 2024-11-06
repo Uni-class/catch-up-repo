@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { toast } from "react-toastify";
 import { PageIndexChange } from "./PageIndexChange";
 import { PageIndexShow } from "./PageIndexShow";
+import { PageZoomControl } from "./PageZoomControl";
 
 interface PropType {
   pdfPainterController: PDFPainterController;
@@ -26,13 +27,7 @@ export function PDFFooter({ pdfPainterController }: PropType) {
         justifyContent: "space-evenly",
       })}
     >
-      <div
-        className={css({
-          display: "flex",
-          height: "2rem",
-          fontSize: "1rem",
-        })}
-      ></div>
+      <PageZoomControl pdfPainterController={pdfPainterController}/>
       <PageIndexShow pdfPainterController={pdfPainterController} />
       <PageIndexChange pdfPainterController={pdfPainterController} />
     </div>
