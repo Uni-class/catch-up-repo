@@ -19,7 +19,7 @@ import { usePostDraw } from "../../_hooks/usePostDraw";
 import Button from "@/components/Button/Button";
 import { HostViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
-import { PageControl } from "../Common/PageControl";
+import { PDFFooter } from "../Common/PDFFooter";
 import UsersIcon from "@/public/icons/users.svg";
 
 export default function HostViewer(props: ViewerPropType) {
@@ -145,7 +145,7 @@ export default function HostViewer(props: ViewerPropType) {
               }
             />
           </PDFPainter>
-          <PageControl pdfPainterController={pdfPainterController} />
+          <PDFFooter pdfPainterController={pdfPainterController} />
         </div>
       </div>
     </>
