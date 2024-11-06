@@ -6,28 +6,33 @@ export type DeleteFunction = () => void;
  * This is internal hook to be used in pdfPainterController.
  */
 export const usePDFPainterEventHandler: () => {
-  listen: (handler: HandlerFunction) => DeleteFunction;
-  get: () => Set<HandlerFunction>;
-  execute: (index:number) => void;
+  listen: (key: string, handler: HandlerFunction) => DeleteFunction;
+  get: (key: string) => HandlerFunction | undefined;
+  executeAll: (index: number) => void;
   clear: () => void;
+  delete: (key: string) => void;
 } = () => {
-  const handlerRef = useRef<Set<HandlerFunction>>(new Set());
+  const handlerRef = useRef<Map<string, HandlerFunction>>(new Map());
 
   return {
-    listen: (handler: HandlerFunction) => {
-      handlerRef.current.add(handler);
+    listen: (key, handler: HandlerFunction) => {
+      handlerRef.current.set(key, handler);
       return () => {
-        handlerRef.current.delete(handler);
+        handlerRef.current.delete(key);
       };
     },
-    get: () => handlerRef.current,
-    execute: (index: number) => {
-      handlerRef.current.forEach((handler) => {
+    get: (key) => handlerRef.current.get(key),
+    executeAll: (index: number) => {
+      console.log("execute", index, handlerRef.current);
+      for (const handler of handlerRef.current.values()){
         handler(index);
-      });
+      }
     },
     clear: () => {
       handlerRef.current.clear();
+    },
+    delete: (key) => {
+      handlerRef.current.delete(key);
     },
   };
 };
