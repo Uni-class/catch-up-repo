@@ -9,7 +9,6 @@ export default function Page() {
     const storage = window.sessionStorage;
     const prevURL = storage.getItem("prevURL");
     router.push(prevURL !== null ? prevURL : "/sessions/participant");
-    storage.removeItem("prevURL");
   }, [router]);
   return <></>;
 }

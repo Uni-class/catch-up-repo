@@ -5,6 +5,7 @@ import LoginButton from "./_components/LoginButton";
 import { useAccountController } from "@/hook/useAccount";
 import Image from "next/image";
 import Link from "next/link";
+import { GuestLoginButton } from "./_components/GuestLoginButton";
 
 export default function Page() {
   const accountController = useAccountController();
@@ -29,7 +30,7 @@ export default function Page() {
         className={css({
           width: "35rem",
           borderRadius: "4rem",
-          padding: "5rem 2.5rem",
+          padding: "2.5rem 2.5rem",
           backgroundColor: "#FFFFFF1A",
         })}
       >
@@ -72,8 +73,16 @@ export default function Page() {
           <LoginButton providerEnum="GOOGLE" />
           <LoginButton providerEnum="NAVER" />
           <LoginButton providerEnum="KAKAO" />
+          <GuestLoginButton/>
         </div>
-        <div className={css({ width: "100%", color: "tertiary.200", display: "flex", justifyContent: "center" })}>
+        <div
+          className={css({
+            width: "100%",
+            color: "tertiary.200",
+            display: "flex",
+            justifyContent: "center",
+          })}
+        >
           <Link href="/">홈페이지로</Link>
         </div>
       </div>
