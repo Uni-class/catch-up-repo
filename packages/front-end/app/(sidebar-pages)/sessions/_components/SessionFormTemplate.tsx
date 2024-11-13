@@ -36,12 +36,12 @@ export function SessionFormTemplate({
   });
   const handleFileButtonClick = () => {
     overlay.open(
-      ({ isOpen, close }) => (
-        <ModalContainer isOpen={isOpen} onClose={close}>
+      ({ isOpen, unmount }) => (
+        <ModalContainer isOpen={isOpen} onClose={unmount}>
           <FileUploadAndSelectModal useFormDataResult={useFormDataResult} />
         </ModalContainer>
       ),
-      { overlayId: `File-Select-${idRef.current}` }
+      { overlayId: `File-Select` }
     );
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
