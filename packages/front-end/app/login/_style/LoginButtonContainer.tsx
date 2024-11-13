@@ -50,7 +50,7 @@ export const LoginButtonContainer = styled(Link, {
           backgroundColor: "kakao.dark",
           color: "kakao.dark.text",
         }
-      }
+      },
     },
   },
 });
