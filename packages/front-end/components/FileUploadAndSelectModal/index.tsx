@@ -129,7 +129,7 @@ export default function FileUploadAndSelectModal({
                 disabled={status === "uploading"}
                 onClick={() => {
                   overlay.unmount(
-                    `File-Select-${useFormDataResult.idRef.current}`,
+                    `File-Select`,
                   );
                 }}
               >
@@ -165,7 +165,7 @@ export default function FileUploadAndSelectModal({
                 color={"secondary"}
                 onClick={() => {
                   overlay.unmount(
-                    `File-Select-${useFormDataResult.idRef.current}`,
+                    `File-Select`,
                   );
                 }}
               >

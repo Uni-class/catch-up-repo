@@ -41,7 +41,7 @@ export function SessionFormTemplate({
           <FileUploadAndSelectModal useFormDataResult={useFormDataResult} />
         </ModalContainer>
       ),
-      { overlayId: `File-Select-${idRef.current}` }
+      { overlayId: `File-Select` }
     );
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

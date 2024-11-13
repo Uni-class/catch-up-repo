@@ -104,7 +104,7 @@ function Row({ file }: { file: File }) {
   const { setControlledData, idRef } = useContext(FileFormDataContext);
   const handleRowButtonClick = () => {
     setControlledData({ sessionFiles: [file] });
-    overlay.close(`File-Select-${idRef.current}`);
+    overlay.unmount(`File-Select`);
   };
   return (
     <TableRow>
