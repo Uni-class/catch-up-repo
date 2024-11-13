@@ -30,7 +30,7 @@ export default function Page() {
         className={css({
           width: "35rem",
           borderRadius: "4rem",
-          padding: "5rem 2.5rem",
+          padding: "2.5rem 2.5rem",
           backgroundColor: "#FFFFFF1A",
         })}
       >
