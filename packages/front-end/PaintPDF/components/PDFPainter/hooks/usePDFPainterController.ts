@@ -223,12 +223,17 @@ export const usePDFPainterController = ({
   useEffect(() => {
     if (currentPageId.current !== pdfViewerController.getPageIndex()) {
       if (currentPageId.current !== null) {
-        prevPageEventHandle.execute(currentPageId.current);
+        prevPageEventHandle.executeAll(currentPageId.current);
         savePageSnapshots(currentPageId.current);
       }
       currentPageId.current = pdfViewerController.getPageIndex();
-      currentPageEventHandle.execute(currentPageId.current);
+      currentPageEventHandle.executeAll(currentPageId.current);
       loadPageSnapshots(currentPageId.current);
+    }
+    return () => {
+      console.log("clear",prevPageEventHandle)
+      // prevPageEventHandle.clear();
+      // currentPageEventHandle.clear();
     }
   }, [
     pdfViewerController,
@@ -286,9 +291,7 @@ export const usePDFPainterController = ({
   );
 
   const autoSave = useCallback(() => {
-    console.log("Auto Save Started");
     savePageSnapshots(pdfViewerController.getPageIndex());
-    console.log("Auto Save Completed");
   }, [pdfViewerController, savePageSnapshots]);
 
   const isAutoSaveEnabled = useCallback(() => {
