@@ -36,8 +36,8 @@ export function SessionFormTemplate({
   });
   const handleFileButtonClick = () => {
     overlay.open(
-      ({ isOpen, close }) => (
-        <ModalContainer isOpen={isOpen} onClose={close}>
+      ({ isOpen, unmount }) => (
+        <ModalContainer isOpen={isOpen} onClose={unmount}>
           <FileUploadAndSelectModal useFormDataResult={useFormDataResult} />
         </ModalContainer>
       ),
