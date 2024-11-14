@@ -35,11 +35,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Change directory
-        run: cd packages/front-end
-
       - name: Install dependencies
-        run: yarn install
+        run: yarn workspaces focus front-end
         env:
           YARN_ENABLE_HARDENED_MODE: 0
 
@@ -65,11 +62,8 @@ jobs:
       - name: Set Yarn version
         run: corepack prepare yarn@4.3.1 --activate
 
-      - name: Change directory
-        run: cd packages/api-server
-
       - name: Install dependencies
-        run: yarn install
+        run: yarn workspaces focus api-server
         env:
           YARN_ENABLE_HARDENED_MODE: 0
 
@@ -95,11 +89,8 @@ jobs:
       - name: Set Yarn version
         run: corepack prepare yarn@4.3.1 --activate
 
-      - name: Change directory
-        run: cd packages/socket-server
-
       - name: Install dependencies
-        run: yarn install
+        run: yarn workspaces focus socket-server
         env:
           YARN_ENABLE_HARDENED_MODE: 0
 
