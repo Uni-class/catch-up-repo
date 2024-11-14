@@ -13,11 +13,19 @@ export const useLoadDraw = (
   useEffect(() => {
     const pageIndex = pdfPainterController.getPageIndex();
     const instanceId = pdfPainterInstanceController.getInstanceId();
-    const snapshot =
-      pdfPainterInstanceController.getEditorSnapshotFromStorage(pageIndex);
     pdfPainterController.currentPageEventHandler.listen(
-      `${sessionId}-${fileId}-${pageIndex}`,
-      () => {}
+      `${instanceId}-${pageIndex}`,
+      (index) => {
+            const snapshot =
+              pdfPainterInstanceController.getEditorSnapshotFromStorage(
+                index
+              );
+        if (snapshot !== null) {
+          pdfPainterInstanceController.setEditorSnapshot(index, snapshot);
+          return;
+        }
+        // TODO: api call
+      }
     );
-  }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
+  }, [pdfPainterController, pdfPainterInstanceController]);
 };

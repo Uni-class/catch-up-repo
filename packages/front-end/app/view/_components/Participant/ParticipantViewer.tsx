@@ -24,6 +24,7 @@ import { ParticipantViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
 import HostIcon from "@/public/icons/host.svg";
+import { useLoadDraw } from "../../_hooks/useLoadDraw";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -43,11 +44,16 @@ export default function ParticipantViewer(props: ViewerPropType) {
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
+  const { pdfPainterInstanceController: pdfPainterHostInstanceController } =
+    pdfPainterHostInstanceControllerHook;
   const pdfPainterParticipantInstanceControllerHook =
     usePDFPainterInstanceController({
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
+  const {
+    pdfPainterInstanceController: pdfPainterParticipantInstanceController,
+  } = pdfPainterParticipantInstanceControllerHook;
   const { pdfPainterController } = pdfPainterControllerHook;
   const { hostIndex } = useParticipantSocket(
     sessionId,
@@ -62,6 +68,18 @@ export default function ParticipantViewer(props: ViewerPropType) {
     sessionId,
     fileId,
     pdfPainterParticipantInstanceControllerHook.pdfPainterInstanceController,
+    pdfPainterController
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterParticipantInstanceController,
+    pdfPainterController
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterHostInstanceController,
     pdfPainterController
   );
 

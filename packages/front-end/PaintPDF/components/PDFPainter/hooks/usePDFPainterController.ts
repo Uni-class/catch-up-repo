@@ -228,7 +228,7 @@ export const usePDFPainterController = ({
       }
       currentPageId.current = pdfViewerController.getPageIndex();
       currentPageEventHandle.executeAll(currentPageId.current);
-      loadPageSnapshots(currentPageId.current);
+      //loadPageSnapshots(currentPageId.current);
     }
   }, [
     pdfViewerController,
