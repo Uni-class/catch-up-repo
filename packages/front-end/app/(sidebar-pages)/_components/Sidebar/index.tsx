@@ -19,7 +19,7 @@ export default function Sidebar() {
   return (
     <aside
       className={css({
-        width: "15.15rem",
+        width: "20rem",
         height: "100%",
         borderRight: "1px solid",
         borderColor: "gray.200",

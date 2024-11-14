@@ -1,17 +1,63 @@
 "use client";
 
-import { ReactNode, } from "react";
+import { ReactNode, useEffect } from "react";
 import { css } from "@/styled-system/css";
 import Sidebar from "@/app/(sidebar-pages)/_components/Sidebar";
 import Header from "./_components/Header";
 import NavTitle from "./_components/NavTitle";
-import { useLoginRedirectWithContext } from "@/hook/useLoginRedirectWithContext";
+import { useAccountController } from "@/hook/useAccount";
+import { useRouter } from "@/hook/useRouter";
+import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
+import Placeholder from "@/components/Placeholder/Placeholder";
 
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const controller = useAccountController();
+  const router = useRouter();
 
-  useLoginRedirectWithContext();
+  useEffect(() => {
+    if (controller.isError) {
+      const prevURL = `${router.pathname}?${router.query.toString()}`;
+      const storage = window.sessionStorage;
+      storage.setItem("prevURL", prevURL);
+      router.push("/login");
+    }
+  }, [controller.isError, router]);
+
+  if (controller.isLoading) {
+    return (
+      <div
+        className={css({
+          display: "flex",
+          width: "100%",
+          height: "100%",
+        })}
+      >
+        <PlaceholderLayout type={"horizontal"} gap={0} alignItems={"center"}>
+          <Sidebar />
+          <PlaceholderLayout type={"vertical"} gap={0} alignItems={"center"}>
+            <Header />
+            <PlaceholderLayout
+              type={"vertical"}
+              padding={"2em"}
+              gap={"1em"}
+              alignItems={"flex-start"}
+            >
+              <Placeholder
+                type={"text"}
+                width={"10em"}
+                height={"1.5em"}
+                lineHeight={"1.5em"}
+              />
+              <Placeholder width={"100%"} height={"100%"} />
+            </PlaceholderLayout>
+          </PlaceholderLayout>
+        </PlaceholderLayout>
+      </div>
+    );
+  }
+
   return (
     <div
       className={css({
@@ -23,7 +69,7 @@ export default function Layout({
       <Sidebar />
       <div
         className={css({
-          flex: 1,
+          width: "100%",
           bg: "grey.50",
           display: "flex",
           flexDirection: "column",
@@ -36,7 +82,7 @@ export default function Layout({
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
-            overflow: "scroll"
+            overflow: "scroll",
           })}
         >
           <NavTitle />
@@ -46,7 +92,7 @@ export default function Layout({
               borderRadius: "0.5rem",
               flex: 1,
               overflowY: "scroll",
-              padding: "1.208rem 1.6875rem 1.41rem 1.6875rem"
+              padding: "1.208rem 1.6875rem 1.41rem 1.6875rem",
             })}
           >
             {children}

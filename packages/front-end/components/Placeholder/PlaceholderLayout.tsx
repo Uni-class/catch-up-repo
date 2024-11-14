@@ -15,8 +15,8 @@ interface PlaceholderLayoutProps {
 const PlaceholderLayout = ({
   type = "horizontal",
   padding,
-  width,
-  height,
+  width = "100%",
+  height = "100%",
   gap = "0.2em",
   justifyContent = "center",
   alignItems = "center",

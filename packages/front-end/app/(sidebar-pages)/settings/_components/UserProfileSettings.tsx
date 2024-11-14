@@ -11,6 +11,7 @@ import { useAccount } from "@/hook/useAccount";
 import CameraIcon from "@/public/icons/camera.svg";
 import Divider from "@/components/Divider";
 import ProfileIcon from "@/public/icons/profile.svg";
+import { toast } from "react-toastify";
 
 const UserProfileSettings = () => {
   const account: User | null = useAccount();
@@ -26,6 +27,7 @@ const UserProfileSettings = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
       queryClient.refetchQueries({ queryKey: ["user", "profile"] });
+      toast("저장이 완료되었습니다.");
     },
     onError: (e) => {
       setError(`프로필 저장 실패: ${e.message}`);
@@ -44,7 +46,6 @@ const UserProfileSettings = () => {
           setError(reader.error.message);
         }
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -114,7 +115,7 @@ const UserProfileSettings = () => {
               width: "100%",
             })}
           >
-            <p className={css({ textAlign: "center", flex: 1, })}>사진 변경</p>
+            <p className={css({ textAlign: "center", flex: 1 })}>사진 변경</p>
           </Button>
           <input
             type="file"
