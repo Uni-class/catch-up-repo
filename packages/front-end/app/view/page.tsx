@@ -14,6 +14,13 @@ import { useRouter } from "@/hook/useRouter";
 import Placeholder from "@/components/Placeholder/Placeholder";
 import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
 import { css } from "@/styled-system/css";
+import {
+  CodeOverlay,
+  CodeOverlayContainer,
+} from "@/app/view/_components/Common/CodeOverlay";
+import { ModeControl } from "@/app/view/_components/Common/Mode";
+import { HostViewerDownload } from "@/app/view/_components/Common/Download";
+import { Header } from "@/app/view/_components/Common/Header";
 
 /**
  * This is internal interface from `@socket.io/component-emitter` used in `socket.io-client`.
@@ -93,8 +100,7 @@ export default function Page() {
     };
   }, [setSocket]);
 
-  //if (userQuery.isLoading || sessionQuery.isLoading) {
-  if (true) {
+  if (userQuery.isLoading || sessionQuery.isLoading) {
     return (
       <div
         className={css({
@@ -104,7 +110,7 @@ export default function Page() {
         })}
       >
         <PlaceholderLayout type={"vertical"} gap={"1em"} alignItems={"center"}>
-          <Placeholder width={"100%"} height={"4.2rem"} />
+          <Header />
           <PlaceholderLayout
             type={"horizontal"}
             gap={"1em"}
@@ -126,7 +132,7 @@ export default function Page() {
             </PlaceholderLayout>
             <PlaceholderLayout
               type={"vertical"}
-              gap={"0.8em"}
+              gap={"0.5em"}
               alignItems={"center"}
             >
               <Placeholder width={"100%"} height={"100%"} />
