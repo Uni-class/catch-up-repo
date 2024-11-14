@@ -36,7 +36,7 @@ export default function Page() {
           alignItems: "flex-start",
           flexGrow: 1,
           justifyContent: "center",
-          padding: "3rem 4.16rem"
+          padding: "3rem 4.16rem",
         })}
       >
         <div
@@ -65,11 +65,14 @@ export default function Page() {
             })}
             onClick={() => {
               if (sessionCode.trim() === "") {
-                toast("세션 코드를 입력해주세요.", { type: "error", position: "top-center" });
+                toast("세션 코드를 입력해주세요.", {
+                  type: "error",
+                  position: "top-center",
+                });
                 return;
               }
               router.push(
-                router.getURLString("/view", { code: `${sessionCode}` })
+                router.getURLString("/view", { id: `${sessionCode}` }),
               );
             }}
             startIcon={<JoinIcon width={"1em"} height={"1em"} />}
