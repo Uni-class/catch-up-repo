@@ -25,7 +25,7 @@ export default function Layout({
     }
   }, [controller.isError, router]);
 
-  if (true) {
+  if (controller.isLoading) {
     return (
       <div
         className={css({
@@ -35,15 +35,21 @@ export default function Layout({
         })}
       >
         <PlaceholderLayout type={"horizontal"} gap={0} alignItems={"center"}>
-          <Placeholder
-            width={"20rem"}
-            height={"100%"}
-            type={"box"}
-            borderRadius={0}
-          />
+          <Sidebar />
           <PlaceholderLayout type={"vertical"} gap={0} alignItems={"center"}>
             <Header />
-            <PlaceholderLayout padding={"1.5em"}>
+            <PlaceholderLayout
+              type={"vertical"}
+              padding={"2em"}
+              gap={"1em"}
+              alignItems={"flex-start"}
+            >
+              <Placeholder
+                type={"text"}
+                width={"10em"}
+                height={"1.5em"}
+                lineHeight={"1.5em"}
+              />
               <Placeholder width={"100%"} height={"100%"} />
             </PlaceholderLayout>
           </PlaceholderLayout>
@@ -63,7 +69,7 @@ export default function Layout({
       <Sidebar />
       <div
         className={css({
-          flex: 1,
+          width: "100%",
           bg: "grey.50",
           display: "flex",
           flexDirection: "column",
