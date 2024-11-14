@@ -41,8 +41,9 @@ export const usePostDraw = (
   const changedPageIndexRef = useRef<Set<number>>(new Set<number>());
 
   useEffect(() => {
+    pdfPainterController.prevPageEventHandler.clear();
     const currentPageIndex = pdfPainterController.getPageIndex();
-    const deleteFunc = pdfPainterController.addPrevPageEventListener(
+    const deleteFunc = pdfPainterController.prevPageEventHandler.listen(
       `${sessionId}-${fileId}-${currentPageIndex}`,
       (index) => {
         const width = pdfPainterController.getPage()?.originalWidth;
