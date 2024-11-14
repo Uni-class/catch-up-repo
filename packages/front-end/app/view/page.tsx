@@ -8,18 +8,12 @@ import { apiClient, refreshClient } from "@/utils/axios";
 import ParticipantViewer from "./_components/Participant/ParticipantViewer";
 import { useAtom } from "jotai";
 import { socketAtom } from "@/client/socketAtom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { useRouter } from "@/hook/useRouter";
 import Placeholder from "@/components/Placeholder/Placeholder";
 import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
 import { css } from "@/styled-system/css";
-import {
-  CodeOverlay,
-  CodeOverlayContainer,
-} from "@/app/view/_components/Common/CodeOverlay";
-import { ModeControl } from "@/app/view/_components/Common/Mode";
-import { HostViewerDownload } from "@/app/view/_components/Common/Download";
 import { Header } from "@/app/view/_components/Common/Header";
 
 /**
@@ -46,6 +40,7 @@ export default function Page() {
   const router = useRouter();
   const queryObj = router.queryObj as unknown as { id?: number; code?: string };
   const apiQueryParam = getAPIQueryParam(queryObj);
+  const isSessionInvalid = useRef(false);
 
   useEffect(() => {
     const exitingFunction = (e: BeforeUnloadEvent) => {
@@ -145,7 +140,12 @@ export default function Page() {
   }
 
   if (userQuery.data === undefined || sessionQuery.data === undefined) {
-    return <></>;
+    if (!isSessionInvalid.current) {
+      isSessionInvalid.current = true;
+      alert("유효하지 않은 세션입니다.");
+      router.push("/sessions/join");
+    }
+    return null;
   }
   const userData = userQuery.data.data;
   const sessionData = sessionQuery.data.data;
