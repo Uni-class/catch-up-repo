@@ -25,7 +25,7 @@ export default function Layout({
     }
   }, [controller.isError, router]);
 
-  if (controller.isLoading) {
+  if (true) {
     return (
       <div
         className={css({
@@ -42,7 +42,7 @@ export default function Layout({
             borderRadius={0}
           />
           <PlaceholderLayout type={"vertical"} gap={0} alignItems={"center"}>
-            <Placeholder width={"100%"} height={"5rem"} borderRadius={0} />
+            <Header />
             <PlaceholderLayout padding={"1.5em"}>
               <Placeholder width={"100%"} height={"100%"} />
             </PlaceholderLayout>

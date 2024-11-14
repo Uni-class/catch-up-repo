@@ -5,10 +5,36 @@ import { useAccount } from "@/hook/useAccount";
 import { useRouter } from "@/hook/useRouter";
 import { css } from "@/styled-system/css";
 import Link from "next/link";
+import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
+import Placeholder from "@/components/Placeholder/Placeholder";
 
 export function HeaderAccount() {
   const account = useAccount();
   const router = useRouter();
+
+  if (!account) {
+    return (
+      <div>
+        <PlaceholderLayout type={"horizontal"} gap={"0.5em"}>
+          <Placeholder type={"circle"} width={"1.8em"} height={"1.8em"} />
+          <Placeholder type={"text"} width={"5em"} />
+          <Divider direction="vertical" />
+          <p
+            className={css({
+              color: "#666",
+              fontSize: "0.9rem",
+              _hover: {
+                color: "primary.200",
+              },
+            })}
+          >
+            로그아웃
+          </p>
+        </PlaceholderLayout>
+      </div>
+    );
+  }
+
   return (
     <div
       className={css({ display: "flex", alignItems: "center", gap: "0.5rem" })}
@@ -54,7 +80,7 @@ export function HeaderAccount() {
           },
         })}
       >
-        Log out
+        로그아웃
       </Link>
     </div>
   );
