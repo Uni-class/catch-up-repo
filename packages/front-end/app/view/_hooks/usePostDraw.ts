@@ -1,11 +1,10 @@
-import { session } from "passport";
 import {
   PDFPainterController,
   PDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { apiClient } from "@/utils/axios";
 import { useEffect, useRef } from "react";
-import { T, TLEditorSnapshot } from "tldraw";
+import { TLEditorSnapshot } from "tldraw";
 
 const intervalTime = 1000 * 10;
 
