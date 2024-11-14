@@ -25,6 +25,7 @@ export const useLoadDraw = (
   }>
 ) => {
   useEffect(() => {
+    pdfPainterController.currentPageEventHandler.clear();
     const pageIndex = pdfPainterController.getPageIndex();
     const instanceId = pdfPainterInstanceController.getInstanceId();
     pdfPainterController.currentPageEventHandler.listen(
@@ -39,7 +40,7 @@ export const useLoadDraw = (
         const note = await apiCallback({
           sessionId,
           fileId,
-          currentPageIndex: pageIndex,
+          currentPageIndex: index,
         }).then((res) => res.note);
         if (note === null) return;
         pdfPainterInstanceController.setEditorSnapshot(index, note);

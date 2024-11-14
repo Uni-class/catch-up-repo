@@ -36,13 +36,21 @@ export const getUserDraw = async ({
   currentPageIndex: number;
 }) => {
   const { note, width, height } = await apiClient
-    .get<{
-      note: TLEditorSnapshot | null;
-      width: number;
-      height: number;
-    }>(`/user/session/${sessionId}/file/${fileId}/note/${currentPageIndex}`)
+    .get<
+      {
+        data: {
+          note: TLEditorSnapshot | null;
+          width: number;
+          height: number;
+        };
+      }[]
+    >(`/user/session/${sessionId}/file/${fileId}/note/${currentPageIndex}`)
     .then((res) => {
-      return res.data;
+      console.log({ res }, "API RESULT");
+      // res: data: {data:{}}[]
+      return res.data[0]
+        ? res.data[0]?.data
+        : { note: null, width: 0, height: 0 };
     })
     .catch((error) => {
       toast(
