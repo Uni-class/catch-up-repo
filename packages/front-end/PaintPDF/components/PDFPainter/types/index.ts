@@ -82,6 +82,7 @@ export type PDFPainterInstanceController = {
     elementId: PainterShapeId,
     elementGenerator: (previousElementData: PainterShape) => PainterShape
   ) => void;
+  getInstanceId: () => string;
 };
 
 export type PDFPainterInstanceControllerHook = {

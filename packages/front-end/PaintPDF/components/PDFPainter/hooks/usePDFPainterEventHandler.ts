@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export type HandlerFunction = (index: number) => void;
+export type HandlerFunction = (index: number) => (void | Promise<void>);
 export type DeleteFunction = () => void;
 
 export interface PDFPainterEventHandlerReturn {
@@ -25,7 +25,6 @@ export const usePDFPainterEventHandler: () => PDFPainterEventHandlerReturn = () 
     },
     get: (key) => handlerRef.current.get(key),
     executeAll: (index: number) => {
-      console.log("execute", index, handlerRef.current);
       for (const handler of handlerRef.current.values()) {
         handler(index);
       }
