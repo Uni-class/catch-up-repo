@@ -15,7 +15,7 @@ export const useLoadDraw = (
     const instanceId = pdfPainterInstanceController.getInstanceId();
     pdfPainterController.currentPageEventHandler.listen(
       `${instanceId}-${pageIndex}`,
-      (index) => {
+      async (index) => {
             const snapshot =
               pdfPainterInstanceController.getEditorSnapshotFromStorage(
                 index
