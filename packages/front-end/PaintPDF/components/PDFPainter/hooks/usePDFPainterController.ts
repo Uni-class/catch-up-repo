@@ -230,11 +230,6 @@ export const usePDFPainterController = ({
       currentPageEventHandle.executeAll(currentPageId.current);
       loadPageSnapshots(currentPageId.current);
     }
-    return () => {
-      console.log("clear", prevPageEventHandle);
-      // prevPageEventHandle.clear();
-      // currentPageEventHandle.clear();
-    };
   }, [
     pdfViewerController,
     loadPageSnapshots,
