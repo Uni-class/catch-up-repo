@@ -52,3 +52,15 @@ export const getUserDraw = async ({
     });
   return { note, width, height };
 };
+
+export const getHostDraw = async ({
+  sessionId,
+  fileId,
+  currentPageIndex,
+}: {
+  sessionId: number;
+  fileId: number;
+  currentPageIndex: number;
+}) => {
+  return { note: null, width: 0, height: 0 };
+};

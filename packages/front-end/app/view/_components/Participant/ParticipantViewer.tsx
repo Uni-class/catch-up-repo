@@ -25,6 +25,7 @@ import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
 import HostIcon from "@/public/icons/host.svg";
 import { useLoadDraw } from "../../_hooks/useLoadDraw";
+import { getHostDraw, getUserDraw } from "../../_utils/drawAPIUtils";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -74,13 +75,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
     sessionId,
     fileId,
     pdfPainterParticipantInstanceController,
-    pdfPainterController
+    pdfPainterController,
+    getUserDraw
   );
   useLoadDraw(
     sessionId,
     fileId,
     pdfPainterHostInstanceController,
-    pdfPainterController
+    pdfPainterController,
+    getHostDraw
   );
 
   if (joinQuery.isLoading) {
