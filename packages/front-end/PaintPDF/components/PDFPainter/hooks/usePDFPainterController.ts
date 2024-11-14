@@ -231,10 +231,10 @@ export const usePDFPainterController = ({
       loadPageSnapshots(currentPageId.current);
     }
     return () => {
-      console.log("clear",prevPageEventHandle)
+      console.log("clear", prevPageEventHandle);
       // prevPageEventHandle.clear();
       // currentPageEventHandle.clear();
-    }
+    };
   }, [
     pdfViewerController,
     loadPageSnapshots,
@@ -368,8 +368,8 @@ export const usePDFPainterController = ({
       isIdEnsureVisibleWhileDraw,
       addIdEnsureVisibleWhileDraw,
       deleteIdEnsureVisibleWhileDraw,
-      addPrevPageEventListener: prevPageEventHandle.listen,
-      addCurrentPageEventListener: currentPageEventHandle.listen,
+      prevPageEventHandler: prevPageEventHandle,
+      currentPageEventHandler: currentPageEventHandle,
     };
   }, [
     pdfViewerController,
@@ -387,8 +387,8 @@ export const usePDFPainterController = ({
     isIdEnsureVisibleWhileDraw,
     addIdEnsureVisibleWhileDraw,
     deleteIdEnsureVisibleWhileDraw,
-    prevPageEventHandle.listen,
-    currentPageEventHandle.listen,
+    prevPageEventHandle,
+    currentPageEventHandle,
     paintMode,
   ]);
 
