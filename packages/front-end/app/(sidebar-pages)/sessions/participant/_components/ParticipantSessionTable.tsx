@@ -157,7 +157,7 @@ export function ParticipantSessionTable({
               sessionMutate.mutate(selectedItems);
               setSelectedItems([]);
             }}
-            color="gray"
+            color={selectedItems.length === 0 ? "gray" : "dangerous"}
             startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
           >
             선택한 세션 삭제
@@ -218,7 +218,7 @@ export function ParticipantSessionTable({
                   }}
                   startIcon={<JoinIcon width={"1em"} height={"1em"} />}
                 >
-                  세션 참여
+                  참여하기
                 </LinkButton>
               </div>,
             ],

@@ -158,7 +158,7 @@ export function HostSessionTable({
               setSelectedItems([]);
             }}
             startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
-            color="gray"
+            color={selectedItems.length === 0 ? "gray" : "dangerous"}
           >
             선택한 세션 삭제
           </Button>
@@ -218,7 +218,7 @@ export function HostSessionTable({
                   size="small"
                   startIcon={<JoinIcon width={"1em"} height={"1em"} />}
                 >
-                  세션 시작
+                  열기
                 </LinkButton>
               </div>,
             ],
