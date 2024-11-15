@@ -13,8 +13,9 @@ export class GoogleAuthGuard extends AuthGuard('google') {
     // 에러가 발생했거나 사용자가 없다면
     if (err || !user) {
       // 실패 시 리다이렉트 URL 설정
-      res.redirect(this.configService.get<string>('CLIENT_DOMAIN') + '/login');
-      return null;
+      return res.redirect(
+        this.configService.get<string>('CLIENT_DOMAIN') + '/login',
+      );
     }
     return user;
   }
