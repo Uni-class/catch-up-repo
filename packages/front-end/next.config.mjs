@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: "k.kakaocdn.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "storage.catchup.tools",
+        pathname: "/**",
+      },
     ],
   },
   experimental: {
