@@ -1,7 +1,5 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-kakao';
-import { AuthService } from '../auth.service';
-import * as process from 'node:process';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
