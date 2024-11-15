@@ -103,7 +103,8 @@ const UserProfileSettings = () => {
             })}
           />
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               if (fileInputRef.current !== null) {
                 fileInputRef.current.click();
               }
@@ -127,9 +128,14 @@ const UserProfileSettings = () => {
           />
         </div>
         <div>
-          <ControlContainer htmlFor="nickname" labelText="닉네임">
+          <ControlContainer
+            htmlFor="nickname"
+            labelText="닉네임"
+            isError={!!error}
+            errorText={error || ""}
+          >
             <LineEdit
-              placeholder="사용할 닉네임을 입력하세요."
+              placeholder="닉네임을 입력하세요."
               defaultValue={account?.nickname || ""}
               name="nickname"
               className={css({ flex: 1 })}
@@ -179,7 +185,6 @@ function ControlContainer({
         {labelText}
       </Label>
       {children}
-      {/* {!!isError && <p className={css({ color: "red.500" })}>{errorText}</p>} */}
     </div>
   );
 }
