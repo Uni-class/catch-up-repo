@@ -1,8 +1,6 @@
 "use client";
 
 import { ErrorBoundary } from "react-error-boundary";
-import Divider from "@/components/Divider";
-import { Heading } from "@/components/Text";
 import UserProfileSettings from "./_components/UserProfileSettings";
 import { css } from "@/styled-system/css";
 import { routeTitle } from "@/const/routeTitle";
