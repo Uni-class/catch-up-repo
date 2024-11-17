@@ -165,7 +165,9 @@ export class AuthController {
     }
   }
 
-  @Get('guest')
+  @ApiCreatedResponse({ description: 'User logged in!' })
+  @HttpCode(302)
+  @Post('guest')
   async guestLogIn(
     @Req() req: Request,
     @Body() profile: GuestBodyDto,
@@ -197,7 +199,6 @@ export class AuthController {
           this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
         );
     } catch (e) {
-      console.log(e);
       throw new InternalServerErrorException('Server Error', e);
     }
   }
