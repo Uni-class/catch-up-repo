@@ -60,6 +60,12 @@ const ButtonContainer = styled("button", {
           bg: "#6F7291",
         },
       },
+      dangerous: {
+        bg: "red.500",
+        _hover: {
+          bg: "red.800",
+        },
+      },
     },
   },
   defaultVariants: {
@@ -76,7 +82,7 @@ interface PropType
   children?: ReactNode;
   startIcon?: ReactNode;
   size?: "small" | "mid" | undefined;
-  color?: "primary" | "secondary" | "gray" | undefined;
+  color?: "primary" | "secondary" | "gray" | "dangerous" | undefined;
 }
 
 const Button = forwardRef<HTMLButtonElement, PropType>(
