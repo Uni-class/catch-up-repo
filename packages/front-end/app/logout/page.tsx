@@ -2,7 +2,7 @@
 
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "@/hook/useRouter";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -16,8 +16,8 @@ export default function Page() {
       router.push("/");
     },
     onError: (error) => {
+      queryClient.clear();
       router.push("/");
-      alert(`로그아웃 실패:${error.message}`);
     },
   });
 
