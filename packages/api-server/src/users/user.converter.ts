@@ -59,6 +59,7 @@ export class UserConverter {
   async guestUserConverter(profile: GuestBodyDto) {
     const userBuilder = Builder<CreateUserDto>();
     userBuilder.provider('guest').providerId(profile.id).status('using');
+    userBuilder.nickname(await this.randomNickname());
     return userBuilder.build();
   }
 }
