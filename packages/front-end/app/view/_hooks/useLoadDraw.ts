@@ -12,10 +12,8 @@ export const useLoadDraw = (
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController,
   apiCallback: GetDrawType,
-  isClear:boolean = true
 ) => {
   useEffect(() => {
-    isClear && pdfPainterController.currentPageEventHandler.clear();
     const pageIndex = pdfPainterController.getPageIndex();
     const instanceId = pdfPainterInstanceController.getInstanceId();
     pdfPainterController.currentPageEventHandler.listen(

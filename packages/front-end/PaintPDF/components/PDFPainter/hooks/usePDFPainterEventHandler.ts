@@ -1,12 +1,12 @@
 import { useRef } from "react";
 
-export type HandlerFunction = (index: number) => (void | Promise<void>);
+export type HandlerFunction = (index: number) => Promise<void>;
 export type DeleteFunction = () => void;
 
 export interface PDFPainterEventHandlerReturn {
   listen: (key: string, handler: HandlerFunction) => DeleteFunction;
   get: (key: string) => HandlerFunction | undefined;
-  executeAll: (index: number) => void;
+  executeAll: (index: number) => Promise<void>;
   clear: () => void;
   delete: (key: string) => void;
 }
@@ -24,10 +24,12 @@ export const usePDFPainterEventHandler: () => PDFPainterEventHandlerReturn = () 
       };
     },
     get: (key) => handlerRef.current.get(key),
-    executeAll: (index: number) => {
+    executeAll: async (index: number) => {
+      const promises:Promise<void>[] = []
       for (const handler of handlerRef.current.values()) {
-        handler(index);
+        promises.push(handler(index));
       }
+      await Promise.allSettled(promises)
     },
     clear: () => {
       handlerRef.current.clear();

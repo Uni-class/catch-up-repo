@@ -168,6 +168,7 @@ export const usePDFPainterController = ({
 
   const saveEditorSnapshot = useCallback(
     (editorId: string, pageIndex: number) => {
+      console.log("Set Editor", editorId, pageIndex);
       const editor = getEditor(editorId);
       if (editor === null) {
         return;
@@ -221,14 +222,29 @@ export const usePDFPainterController = ({
   }, []);
 
   useEffect(() => {
-    if (currentPageId.current !== pdfViewerController.getPageIndex()) {
+    const processCurrentPage = async () => {
+      currentPageId.current = pdfViewerController.getPageIndex();
+      await currentPageEventHandle.executeAll(currentPageId.current);
+    };
+
+    const processPrevPage = async () => {
       if (currentPageId.current !== null) {
-        prevPageEventHandle.executeAll(currentPageId.current);
+        await prevPageEventHandle.executeAll(currentPageId.current);
         savePageSnapshots(currentPageId.current);
       }
-      currentPageId.current = pdfViewerController.getPageIndex();
-      currentPageEventHandle.executeAll(currentPageId.current);
-      //loadPageSnapshots(currentPageId.current);
+    };
+
+    if (
+      currentPageId.current === 0 &&
+      pdfViewerController.getPageIndex() === 0
+    ) {
+      processCurrentPage(); // To config 0 index draws
+    }
+    if (currentPageId.current !== pdfViewerController.getPageIndex()) {
+      if (currentPageId.current !== null) {
+        processPrevPage();
+      }
+      processCurrentPage();
     }
   }, [
     pdfViewerController,

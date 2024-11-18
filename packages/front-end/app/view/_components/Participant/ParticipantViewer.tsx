@@ -84,7 +84,6 @@ export default function ParticipantViewer(props: ViewerPropType) {
     pdfPainterHostInstanceController,
     pdfPainterController,
     getHostDraw,
-    false
   );
 
   if (joinQuery.isLoading) {
