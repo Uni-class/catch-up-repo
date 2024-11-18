@@ -45,7 +45,7 @@ export const usePostDraw = (
     const currentPageIndex = pdfPainterController.getPageIndex();
     pdfPainterController.prevPageEventHandler.listen(
       `${sessionId}-${fileId}-${currentPageIndex}`,
-      (index) => {
+      async (index) => {
         const width = pdfPainterController.getPage()?.originalWidth;
         const height = pdfPainterController.getPage()?.originalHeight;
         if (changedPageIndexRef.current.has(currentPageIndex)) {
