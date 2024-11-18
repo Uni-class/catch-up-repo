@@ -168,7 +168,6 @@ export const usePDFPainterController = ({
 
   const saveEditorSnapshot = useCallback(
     (editorId: string, pageIndex: number) => {
-      console.log("Set Editor", editorId, pageIndex);
       const editor = getEditor(editorId);
       if (editor === null) {
         return;
