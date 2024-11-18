@@ -26,7 +26,21 @@ export const postDraw = async ({
   );
 };
 
-export const getUserDraw = async ({
+export type GetDrawType = ({
+  sessionId,
+  fileId,
+  currentPageIndex,
+}: {
+  sessionId: number;
+  fileId: number;
+  currentPageIndex: number;
+}) => Promise<{
+  note: TLEditorSnapshot | null;
+  width: number;
+  height: number;
+}>;
+
+export const getUserDraw:GetDrawType = async ({
   sessionId,
   fileId,
   currentPageIndex,
@@ -61,7 +75,7 @@ export const getUserDraw = async ({
   return { note, width, height };
 };
 
-export const getHostDraw = async ({
+export const getHostDraw:GetDrawType = async ({
   sessionId,
   fileId,
   currentPageIndex,
