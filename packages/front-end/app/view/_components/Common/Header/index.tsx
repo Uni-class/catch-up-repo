@@ -68,20 +68,20 @@ export function Header({
               alignItems: "center",
               flex: 1,
               paddingLeft: "7rem",
-              gap: "1.92rem",
+              gap: "0.8rem",
             })}
           >
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("text-select")}
               disabled={pdfPainterController.getCurrentTool() === "text-select"}
             >
-              <ViewIcon width={"1em"} height={"1em"} />
+              <ViewIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("drag")}
               disabled={pdfPainterController.getCurrentTool() === "drag"}
             >
-              <MoveIcon width={"1em"} height={"1em"} />
+              <MoveIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("area-select")}
@@ -93,7 +93,7 @@ export function Header({
               onClick={() => pdfPainterController.setCurrentTool("pen")}
               disabled={pdfPainterController.getCurrentTool() === "pen"}
             >
-              <BrushIcon width={"1em"} height={"1em"} />
+              <BrushIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("eraser")}

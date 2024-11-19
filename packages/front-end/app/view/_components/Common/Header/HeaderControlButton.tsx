@@ -2,8 +2,8 @@ import { styled } from "@/styled-system/jsx";
 
 export const HeaderControlButton = styled("button", {
   base: {
-    width: "1.92rem",
-    height: "1.92rem",
+    width: "3rem",
+    height: "3rem",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
