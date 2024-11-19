@@ -179,9 +179,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
       isDragModeEnabled: () => {
         return dragModeEnabled;
       },
-      setDragModeEnabled: (enabled: boolean) => {
-        //deprecated
-      },
       drag: ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
         setRenderOptions({
           width: renderOptions.width,

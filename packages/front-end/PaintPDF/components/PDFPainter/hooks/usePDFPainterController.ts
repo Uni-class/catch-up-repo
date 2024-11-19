@@ -4,7 +4,6 @@ import { usePDFViewerController } from "../../PDF";
 
 import { ExternalAssetStore } from "../../Painter/types";
 import {
-  PaintMode,
   EditorSnapshot,
   PDFPainterController,
   PDFPainterControllerHook,
@@ -32,7 +31,7 @@ export const usePDFPainterController = ({
   const prevPageEventHandle = usePDFPainterEventHandler();
   const currentPageEventHandle = usePDFPainterEventHandler();
 
-  const [paintMode, setPaintMode] = useState<PaintMode>("default");
+  const [paintMode, setPaintMode] = useState<boolean>(true);
 
   const [isInstanceHidden, setIsInstanceHidden] = useState<{
     [key: string]: boolean;
@@ -45,7 +44,6 @@ export const usePDFPainterController = ({
   const [autoSaveEnabledState, setAutoSaveEnabledState] = useState(true);
 
   useEffect(() => {
-    pdfViewerController.setDragModeEnabled(paintMode === "move");
     Object.values(editors.current).forEach((editor: Editor) => {
       editor.selectNone();
     });
@@ -62,14 +60,14 @@ export const usePDFPainterController = ({
     (editorId: string, pdfPageIndex: number) => {
       return `${painterId}_${editorId}_${pdfPageIndex}`;
     },
-    [painterId]
+    [painterId],
   );
 
   const getEditorSnapshotFromStorage = useCallback(
     (editorId: string, pageIndex: number): EditorSnapshot | null => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
       console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Get Editor Snapshot: ${snapshotId}`
+        `[Editor: ${editorId} - Page: ${pageIndex}] Get Editor Snapshot: ${snapshotId}`,
       );
       const data = localStorage.getItem(snapshotId);
       if (data !== null) {
@@ -77,36 +75,36 @@ export const usePDFPainterController = ({
           return JSON.parse(data);
         } catch (e) {
           console.log(
-            `[Editor: ${editorId} - Page: ${pageIndex}] Invalid Snapshot: ${snapshotId}`
+            `[Editor: ${editorId} - Page: ${pageIndex}] Invalid Snapshot: ${snapshotId}`,
           );
           console.log(e);
         }
       }
       return null;
     },
-    [getSnapshotId]
+    [getSnapshotId],
   );
 
   const setEditorSnapshotToStorage = useCallback(
     (editorId: string, pageIndex: number, snapshot: EditorSnapshot) => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
       console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Set Editor Snapshot: ${snapshotId}`
+        `[Editor: ${editorId} - Page: ${pageIndex}] Set Editor Snapshot: ${snapshotId}`,
       );
       localStorage.setItem(snapshotId, JSON.stringify(snapshot));
     },
-    [getSnapshotId]
+    [getSnapshotId],
   );
 
   const clearEditorSnapshotFromStorage = useCallback(
     (editorId: string, pageIndex: number) => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
       console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Clear Editor Snapshot: ${snapshotId}`
+        `[Editor: ${editorId} - Page: ${pageIndex}] Clear Editor Snapshot: ${snapshotId}`,
       );
       localStorage.removeItem(snapshotId);
     },
-    [getSnapshotId]
+    [getSnapshotId],
   );
 
   const loadEmptySnapshot = useCallback(
@@ -122,7 +120,7 @@ export const usePDFPainterController = ({
         console.log(`[Editor: ${editorId}] Unable to load empty snapshot.`);
       }
     },
-    [getEditor]
+    [getEditor],
   );
 
   const loadEditorSnapshot = useCallback(
@@ -133,13 +131,13 @@ export const usePDFPainterController = ({
       }
       const snapshotId = getSnapshotId(editorId, pageIndex);
       console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Load snapshot: ${snapshotId}`
+        `[Editor: ${editorId} - Page: ${pageIndex}] Load snapshot: ${snapshotId}`,
       );
       const snapShot = getEditorSnapshotFromStorage(editorId, pageIndex);
       editor.store.mergeRemoteChanges(() => {
         if (snapShot === null) {
           console.log(
-            `[Editor: ${editorId} - Page: ${pageIndex}] Snapshot not found: ${snapshotId}`
+            `[Editor: ${editorId} - Page: ${pageIndex}] Snapshot not found: ${snapshotId}`,
           );
           loadEmptySnapshot(editorId);
         } else {
@@ -147,14 +145,14 @@ export const usePDFPainterController = ({
             editor.loadSnapshot(snapShot);
           } catch {
             console.log(
-              `[Editor: ${editorId} - Page: ${pageIndex}] Unable to load snapshot: ${snapshotId}`
+              `[Editor: ${editorId} - Page: ${pageIndex}] Unable to load snapshot: ${snapshotId}`,
             );
             loadEmptySnapshot(editorId);
           }
         }
       });
     },
-    [getEditor, getSnapshotId, getEditorSnapshotFromStorage, loadEmptySnapshot]
+    [getEditor, getSnapshotId, getEditorSnapshotFromStorage, loadEmptySnapshot],
   );
 
   const loadPageSnapshots = useCallback(
@@ -163,7 +161,7 @@ export const usePDFPainterController = ({
         loadEditorSnapshot(editorId, pageIndex);
       }
     },
-    [loadEditorSnapshot]
+    [loadEditorSnapshot],
   );
 
   const saveEditorSnapshot = useCallback(
@@ -178,11 +176,11 @@ export const usePDFPainterController = ({
         setEditorSnapshotToStorage(editorId, pageIndex, editor.getSnapshot());
       } catch {
         console.log(
-          `[Editor: ${editorId} - Page: ${pageIndex}] Unable to save snapshot: ${snapshotId}`
+          `[Editor: ${editorId} - Page: ${pageIndex}] Unable to save snapshot: ${snapshotId}`,
         );
       }
     },
-    [getEditor, getSnapshotId, setEditorSnapshotToStorage]
+    [getEditor, getSnapshotId, setEditorSnapshotToStorage],
   );
 
   const savePageSnapshots = useCallback(
@@ -191,7 +189,7 @@ export const usePDFPainterController = ({
         saveEditorSnapshot(editorId, pageIndex);
       }
     },
-    [saveEditorSnapshot]
+    [saveEditorSnapshot],
   );
 
   const registerEditor = useCallback(
@@ -211,7 +209,7 @@ export const usePDFPainterController = ({
         }
       }
     },
-    [loadEditorSnapshot]
+    [loadEditorSnapshot],
   );
 
   const unregisterEditor = useCallback((editorId: string) => {
@@ -231,10 +229,10 @@ export const usePDFPainterController = ({
       loadPageSnapshots(currentPageId.current);
     }
     return () => {
-      console.log("clear",prevPageEventHandle)
+      console.log("clear", prevPageEventHandle);
       // prevPageEventHandle.clear();
       // currentPageEventHandle.clear();
-    }
+    };
   }, [
     pdfViewerController,
     loadPageSnapshots,
@@ -261,7 +259,7 @@ export const usePDFPainterController = ({
         },
         {
           force: true,
-        }
+        },
       );
     }
   }, [pdfViewerController]);
@@ -271,7 +269,7 @@ export const usePDFPainterController = ({
       saveEditorSnapshot(editorId, pageIndex);
       return getEditorSnapshotFromStorage(editorId, pageIndex);
     },
-    [saveEditorSnapshot, getEditorSnapshotFromStorage]
+    [saveEditorSnapshot, getEditorSnapshotFromStorage],
   );
 
   const setEditorSnapshot = useCallback(
@@ -279,7 +277,7 @@ export const usePDFPainterController = ({
       setEditorSnapshotToStorage(editorId, pageIndex, snapshot);
       loadEditorSnapshot(editorId, pageIndex);
     },
-    [loadEditorSnapshot, setEditorSnapshotToStorage]
+    [loadEditorSnapshot, setEditorSnapshotToStorage],
   );
 
   const clearEditorSnapshot = useCallback(
@@ -287,7 +285,7 @@ export const usePDFPainterController = ({
       clearEditorSnapshotFromStorage(editorId, pageIndex);
       loadEditorSnapshot(editorId, pageIndex);
     },
-    [loadEditorSnapshot, clearEditorSnapshotFromStorage]
+    [loadEditorSnapshot, clearEditorSnapshotFromStorage],
   );
 
   const autoSave = useCallback(() => {
@@ -302,7 +300,7 @@ export const usePDFPainterController = ({
     (enabled: boolean) => {
       setAutoSaveEnabledState(enabled);
     },
-    [setAutoSaveEnabledState]
+    [setAutoSaveEnabledState],
   );
 
   useEffect(() => {
@@ -321,14 +319,14 @@ export const usePDFPainterController = ({
     (editorId: string) => {
       return !!isInstanceHidden[editorId];
     },
-    [isInstanceHidden]
+    [isInstanceHidden],
   );
 
   const setInstanceHidden = useCallback(
     (editorId: string, isHidden: boolean) => {
       setIsInstanceHidden({ ...isInstanceHidden, [editorId]: isHidden });
     },
-    [isInstanceHidden]
+    [isInstanceHidden],
   );
 
   const ensureVisibleWhileDrawRef = useRef<Set<string>>(new Set());
@@ -348,10 +346,10 @@ export const usePDFPainterController = ({
   const pdfPainterController: PDFPainterController = useMemo(() => {
     return {
       ...pdfViewerController,
-      getPaintMode: () => {
+      isPaintMode: () => {
         return paintMode;
       },
-      setPaintMode: (paintMode: PaintMode) => {
+      setPaintMode: (paintMode: boolean) => {
         setPaintMode(paintMode);
       },
       registerEditor: registerEditor,

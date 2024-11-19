@@ -12,8 +12,6 @@ import {
   HandlerFunction,
 } from "../hooks/usePDFPainterEventHandler";
 
-export type PaintMode = "default" | "move" | "draw";
-
 export type EditorSnapshot = TLEditorSnapshot;
 
 export type PainterShapeId = IdOf<TLRecord>;
@@ -21,23 +19,23 @@ export type PainterShapeId = IdOf<TLRecord>;
 export type PainterShape = TLRecord;
 
 export type PDFPainterController = {
-  getPaintMode: () => PaintMode;
-  setPaintMode: (paintMode: PaintMode) => void;
+  isPaintMode: () => boolean;
+  setPaintMode: (paintMode: boolean) => void;
   registerEditor: (editorId: string, editor: Editor) => void;
   unregisterEditor: (editorId: string) => void;
   getEditor: (editorId: string) => Editor | null;
   getEditorSnapshot: (
     editorId: string,
-    pageIndex: number
+    pageIndex: number,
   ) => EditorSnapshot | null;
   getEditorSnapshotFromStorage: (
     editorId: string,
-    pageIndex: number
+    pageIndex: number,
   ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
     pageIndex: number,
-    snapshot: EditorSnapshot
+    snapshot: EditorSnapshot,
   ) => void;
   clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
   isAutoSaveEnabled: () => boolean;
@@ -49,11 +47,11 @@ export type PDFPainterController = {
   deleteIdEnsureVisibleWhileDraw: (editorId: string) => void;
   addPrevPageEventListener: (
     key: string,
-    handler: HandlerFunction
+    handler: HandlerFunction,
   ) => DeleteFunction;
   addCurrentPageEventListener: (
     key: string,
-    handler: HandlerFunction
+    handler: HandlerFunction,
   ) => DeleteFunction;
 } & PDFViewerController;
 
@@ -80,12 +78,12 @@ export type PDFPainterInstanceController = {
   addPaintElement: (elementData: PainterShape[]) => void;
   updatePaintElement: (
     elementId: PainterShapeId,
-    elementData: PainterShape
+    elementData: PainterShape,
   ) => void;
   removePaintElement: (elementIds: PainterShapeId[]) => void;
   updatePaintElementByGenerator: (
     elementId: PainterShapeId,
-    elementGenerator: (previousElementData: PainterShape) => PainterShape
+    elementGenerator: (previousElementData: PainterShape) => PainterShape,
   ) => void;
 };
 

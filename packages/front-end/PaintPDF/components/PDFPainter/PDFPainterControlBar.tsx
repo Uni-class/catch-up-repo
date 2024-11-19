@@ -24,12 +24,6 @@ const PDFPainterControlBarComponent = ({
   showCodeOverlay: boolean;
   setShowCodeOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  useEffect(() => {
-    pdfPainterController.setDragModeEnabled(
-      pdfPainterController.getPaintMode() === "move"
-    );
-  }, [pdfPainterController]);
-
   const [showModeToolTip, setShowModeToolTip] = useState(false);
   const [showDownloadToolTip, setShowDownloadToolTip] = useState(false);
 
@@ -53,20 +47,20 @@ const PDFPainterControlBarComponent = ({
         })}
       >
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("default")}
-          disabled={pdfPainterController.getPaintMode() === "default"}
+          onClick={() => pdfPainterController.setPaintMode(false)}
+          disabled={!pdfPainterController.isPaintMode()}
         >
           <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("move")}
-          disabled={pdfPainterController.getPaintMode() === "move"}
+          onClick={() => pdfPainterController.setPaintMode(false)}
+          disabled={!pdfPainterController.isPaintMode()}
         >
           <ToolHandIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("draw")}
-          disabled={pdfPainterController.getPaintMode() === "draw"}
+          onClick={() => pdfPainterController.setPaintMode(true)}
+          disabled={pdfPainterController.isPaintMode()}
         >
           <ToolEditIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
@@ -134,7 +128,10 @@ const PDFPainterControlBarComponent = ({
             <p>{showDownloadToolTip ? "닫기" : "다운로드"}</p>
           </PDFPainterControlBarButton>
           {showDownloadToolTip && (
-            <ModeContainer setVisible={setShowDownloadToolTip} title="다운로드 옵션">
+            <ModeContainer
+              setVisible={setShowDownloadToolTip}
+              title="다운로드 옵션"
+            >
               {downloadComponent}
             </ModeContainer>
           )}

@@ -72,20 +72,20 @@ export function Header({
             })}
           >
             <HeaderControlButton
-              onClick={() => pdfPainterController.setPaintMode("default")}
-              disabled={pdfPainterController.getPaintMode() === "default"}
+              onClick={() => pdfPainterController.setPaintMode(false)}
+              disabled={!pdfPainterController.isPaintMode()}
             >
               <ViewIcon width={"1em"} height={"1em"} />
             </HeaderControlButton>
             <HeaderControlButton
-              onClick={() => pdfPainterController.setPaintMode("move")}
-              disabled={pdfPainterController.getPaintMode() === "move"}
+              onClick={() => pdfPainterController.setPaintMode(false)}
+              disabled={!pdfPainterController.isPaintMode()}
             >
               <MoveIcon width={"1em"} height={"1em"} />
             </HeaderControlButton>
             <HeaderControlButton
-              onClick={() => pdfPainterController.setPaintMode("draw")}
-              disabled={pdfPainterController.getPaintMode() === "draw"}
+              onClick={() => pdfPainterController.setPaintMode(true)}
+              disabled={pdfPainterController.isPaintMode()}
             >
               <BrushIcon width={"1em"} height={"1em"} />
             </HeaderControlButton>
