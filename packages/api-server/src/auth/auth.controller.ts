@@ -10,6 +10,7 @@ import {
   InternalServerErrorException,
   Post,
   ParseIntPipe,
+  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NaverAuthGuard } from './guards/naverauth.guard';
@@ -34,6 +35,7 @@ import { ConfigService } from '@nestjs/config';
 import { CookieOptions } from './cookie.option';
 import { JwtGuard } from './guards/jwt.guard';
 import { UserId } from '../users/decorators/user-id.decorator';
+import { GuestBodyDto } from './dto/guest-body.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -55,8 +57,14 @@ export class AuthController {
     try {
       const profile = req.user as NaverProfile;
       const user = await this.authService.validateNaverUser(profile);
-      const accessToken = await this.authService.generateAccessToken(user);
-      const refreshToken = await this.authService.generateRefreshToken(user);
+      const accessToken = await this.authService.generateAccessToken(
+        user,
+        false,
+      );
+      const refreshToken = await this.authService.generateRefreshToken(
+        user,
+        false,
+      );
       await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie(
@@ -89,8 +97,14 @@ export class AuthController {
     try {
       const profile = req.user as GoogleProfile;
       const user = await this.authService.validateGoogleUser(profile);
-      const accessToken = await this.authService.generateAccessToken(user);
-      const refreshToken = await this.authService.generateRefreshToken(user);
+      const accessToken = await this.authService.generateAccessToken(
+        user,
+        false,
+      );
+      const refreshToken = await this.authService.generateRefreshToken(
+        user,
+        false,
+      );
       await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie(
@@ -122,8 +136,14 @@ export class AuthController {
     try {
       const profile = req.user as KakaoProfile;
       const user = await this.authService.validateKakaoUser(profile);
-      const accessToken = await this.authService.generateAccessToken(user);
-      const refreshToken = await this.authService.generateRefreshToken(user);
+      const accessToken = await this.authService.generateAccessToken(
+        user,
+        false,
+      );
+      const refreshToken = await this.authService.generateRefreshToken(
+        user,
+        false,
+      );
       await this.userService.update(user.userId, { refreshToken });
       return res
         .cookie(
@@ -141,6 +161,44 @@ export class AuthController {
         );
     } catch (e) {
       console.log(e);
+      throw new InternalServerErrorException('Server Error', e);
+    }
+  }
+
+  @ApiCreatedResponse({ description: 'User logged in!' })
+  @HttpCode(302)
+  @Post('guest')
+  async guestLogIn(
+    @Req() req: Request,
+    @Body() profile: GuestBodyDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    try {
+      const guestUser = await this.authService.createGuestUser(profile);
+      const accessToken = await this.authService.generateAccessToken(
+        guestUser,
+        true,
+      );
+      const refreshToken = await this.authService.generateRefreshToken(
+        guestUser,
+        true,
+      );
+      await this.userService.update(guestUser.userId, { refreshToken });
+      return res
+        .cookie(
+          'access_token',
+          accessToken,
+          await CookieOptions(this.configService, 'accessToken'),
+        )
+        .cookie(
+          'refresh_token',
+          refreshToken,
+          await CookieOptions(this.configService, 'refreshToken'),
+        )
+        .redirect(
+          this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
+        );
+    } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
     }
   }
@@ -163,7 +221,12 @@ export class AuthController {
         .status(HttpStatus.UNAUTHORIZED)
         .json({ msg: `This refresh token is not user's token` });
     }
-    const newAccessToken = await this.authService.generateAccessToken(user);
+
+    const isGuest: boolean = user.provider === 'guest';
+    const newAccessToken = await this.authService.generateAccessToken(
+      user,
+      isGuest,
+    );
 
     return res
       .cookie(

@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt.payload';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
+import { GuestBodyDto } from './dto/guest-body.dto';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -65,16 +66,22 @@ export class AuthService implements OnModuleInit {
     return user;
   }
 
-  async generateAccessToken(user: User) {
-    const payload: JwtPayload = { id: user.userId };
+  async createGuestUser(profile: GuestBodyDto): Promise<User> {
+    return await this.userService.create(
+      await this.userConverter.guestUserConverter(profile),
+    );
+  }
+
+  async generateAccessToken(user: User, isGuest: boolean) {
+    const payload: JwtPayload = { id: user.userId, isGuest };
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('ACCESS_TOKEN_EXPIRATION'),
     });
   }
 
-  async generateRefreshToken(user: User) {
-    const payload = { id: user.userId };
+  async generateRefreshToken(user: User, isGuest: boolean) {
+    const payload: JwtPayload = { id: user.userId, isGuest };
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('REFRESH_TOKEN_EXPIRATION'),

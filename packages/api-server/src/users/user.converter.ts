@@ -6,6 +6,7 @@ import { Builder } from 'builder-pattern';
 import { generateUsername } from 'unique-username-generator';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { GuestBodyDto } from '../auth/dto/guest-body.dto';
 
 @Injectable()
 export class UserConverter {
@@ -52,6 +53,13 @@ export class UserConverter {
     userBuilder.nickname(profile.username).username(profile.username);
     if (profile._json.properties?.profile_image)
       userBuilder.profileUrl(profile._json.properties?.profile_image);
+    return userBuilder.build();
+  }
+
+  async guestUserConverter(profile: GuestBodyDto) {
+    const userBuilder = Builder<CreateUserDto>();
+    userBuilder.provider('guest').providerId(profile.id).status('using');
+    userBuilder.nickname(await this.randomNickname());
     return userBuilder.build();
   }
 }
