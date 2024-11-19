@@ -30,6 +30,7 @@ export const usePDFPainterEventHandler: () => PDFPainterEventHandlerReturn = () 
         promises.push(handler(index));
       }
       await Promise.allSettled(promises)
+      handlerRef.current.clear()
     },
     clear: () => {
       handlerRef.current.clear();
