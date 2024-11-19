@@ -42,11 +42,7 @@ const PDFViewerComponent = ({
     <div
       ref={pdfRendererElement}
       style={{
-        cursor:
-          pdfViewerController.isDragModeEnabled() ||
-          pdfViewerController.isControlEnabled()
-            ? "move"
-            : "default",
+        cursor: pdfViewerController.isDragModeEnabled() ? "move" : "default",
       }}
     >
       <PDFRenderer

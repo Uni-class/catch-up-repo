@@ -20,7 +20,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     scale: 1,
   });
   const [dragModeEnabled, setDragModeEnabled] = useState(false);
-  const [controlEnabled, setControlEnabled] = useState(false);
   const [itemClickEnabled, setItemClickEnabled] = useState(true);
 
   const setPageIndex = useCallback((newPageIndex: number) => {
@@ -181,10 +180,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         return dragModeEnabled;
       },
       setDragModeEnabled: (enabled: boolean) => {
-        setDragModeEnabled(enabled);
-      },
-      isControlEnabled: () => {
-        return controlEnabled;
+        //deprecated
       },
       drag: ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
         setRenderOptions({
@@ -210,7 +206,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     pageIndex,
     renderOptions,
     dragModeEnabled,
-    controlEnabled,
     itemClickEnabled,
   ]);
 
@@ -218,7 +213,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     (event: KeyboardEvent) => {
       switch (event.key) {
         case "Control":
-          setControlEnabled(true);
+          setDragModeEnabled(true);
           break;
         case "ArrowLeft":
           pdfViewerController.moveToPreviousPage();
@@ -236,7 +231,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
   const keyupEventHandler = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "Control":
-        setControlEnabled(false);
+        setDragModeEnabled(false);
         break;
       default:
         break;
@@ -254,7 +249,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
 
   const mouseMoveEventHandler = useCallback(
     (event: MouseEvent) => {
-      if (!dragModeEnabled && !controlEnabled) {
+      if (!dragModeEnabled) {
         return;
       }
       event.preventDefault();
@@ -271,7 +266,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
 
   const wheelEventHandler = useCallback(
     (event: WheelEvent) => {
-      if (!dragModeEnabled && !controlEnabled) {
+      if (!dragModeEnabled) {
         return;
       }
       event.preventDefault();
