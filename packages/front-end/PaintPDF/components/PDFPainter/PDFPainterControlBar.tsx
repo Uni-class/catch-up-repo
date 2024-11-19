@@ -1,4 +1,4 @@
-import { memo, ReactNode, useEffect, useState } from "react";
+import { memo, ReactNode, useState } from "react";
 import type { PDFPainterController } from "./types";
 import ToolPointerIcon from "@/PaintPDF/assets/icons/tool-pointer.svg";
 import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
@@ -47,20 +47,20 @@ const PDFPainterControlBarComponent = ({
         })}
       >
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode(false)}
-          disabled={!pdfPainterController.isPaintMode()}
+          onClick={() => pdfPainterController.setCurrentTool("select")}
+          disabled={pdfPainterController.getCurrentTool() === "select"}
         >
           <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode(false)}
-          disabled={!pdfPainterController.isPaintMode()}
+          onClick={() => pdfPainterController.setCurrentTool("drag")}
+          disabled={pdfPainterController.getCurrentTool() === "drag"}
         >
           <ToolHandIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode(true)}
-          disabled={pdfPainterController.isPaintMode()}
+          onClick={() => pdfPainterController.setCurrentTool("pen")}
+          disabled={pdfPainterController.getCurrentTool() === "pen"}
         >
           <ToolEditIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>

@@ -12,6 +12,8 @@ import {
   HandlerFunction,
 } from "../hooks/usePDFPainterEventHandler";
 
+export type PaintTool = "select" | "drag" | "pen" | "eraser" | "text";
+
 export type EditorSnapshot = TLEditorSnapshot;
 
 export type PainterShapeId = IdOf<TLRecord>;
@@ -19,8 +21,9 @@ export type PainterShapeId = IdOf<TLRecord>;
 export type PainterShape = TLRecord;
 
 export type PDFPainterController = {
+  getCurrentTool: () => PaintTool;
+  setCurrentTool: (paintTool: PaintTool) => void;
   isPaintMode: () => boolean;
-  setPaintMode: (paintMode: boolean) => void;
   registerEditor: (editorId: string, editor: Editor) => void;
   unregisterEditor: (editorId: string) => void;
   getEditor: (editorId: string) => Editor | null;

@@ -56,9 +56,7 @@ const PainterComponent = ({
     const styles = useRelevantStyles();
     return (
       <BreakPointProvider forceMobile>
-        <DefaultStylePanel {...props}>
-
-        </DefaultStylePanel>
+        <DefaultStylePanel {...props}></DefaultStylePanel>
       </BreakPointProvider>
     );
   });
@@ -103,7 +101,7 @@ const PainterComponent = ({
       TopPanel: null,
       CursorChatBubble: null,
     }),
-    [CustomContextMenu, CustomStylePanel]
+    [CustomContextMenu, CustomStylePanel],
   );
 
   const keyboardShortcutsEnabledOverrides: TLUiOverrides = {
@@ -122,7 +120,7 @@ const PainterComponent = ({
         Object.entries(actions).map(([key, value]) => [
           key,
           { ...value, kbd: key in shortcuts ? shortcuts[key] : "" },
-        ])
+        ]),
       );
     },
     tools(_editor, tools): TLUiToolsContextType {
@@ -130,7 +128,7 @@ const PainterComponent = ({
         Object.entries(tools).map(([key, value]) => [
           key,
           { ...value, kbd: "" },
-        ])
+        ]),
       );
     },
   };
@@ -141,7 +139,7 @@ const PainterComponent = ({
         Object.entries(actions).map(([key, value]) => [
           key,
           { ...value, kbd: "" },
-        ])
+        ]),
       );
     },
     tools(_editor, tools): TLUiToolsContextType {
@@ -149,7 +147,7 @@ const PainterComponent = ({
         Object.entries(tools).map(([key, value]) => [
           key,
           { ...value, kbd: "" },
-        ])
+        ]),
       );
     },
   };
@@ -164,7 +162,7 @@ const PainterComponent = ({
           return externalAssetStore.resolve(
             asset.id,
             asset.type,
-            (asset.props.src || "") as ExternalAssetURL
+            (asset.props.src || "") as ExternalAssetURL,
           );
         },
       };

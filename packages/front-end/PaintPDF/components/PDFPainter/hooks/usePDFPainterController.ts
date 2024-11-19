@@ -4,6 +4,7 @@ import { usePDFViewerController } from "../../PDF";
 
 import { ExternalAssetStore } from "../../Painter/types";
 import {
+  PaintTool,
   EditorSnapshot,
   PDFPainterController,
   PDFPainterControllerHook,
@@ -31,7 +32,7 @@ export const usePDFPainterController = ({
   const prevPageEventHandle = usePDFPainterEventHandler();
   const currentPageEventHandle = usePDFPainterEventHandler();
 
-  const [paintMode, setPaintMode] = useState<boolean>(true);
+  const [currentTool, setCurrentTool] = useState<PaintTool>("select");
 
   const [isInstanceHidden, setIsInstanceHidden] = useState<{
     [key: string]: boolean;
@@ -43,11 +44,17 @@ export const usePDFPainterController = ({
 
   const [autoSaveEnabledState, setAutoSaveEnabledState] = useState(true);
 
+  const isPaintMode = useCallback(() => {
+    return currentTool !== "select" && currentTool !== "drag";
+  }, [currentTool]);
+
   useEffect(() => {
-    Object.values(editors.current).forEach((editor: Editor) => {
-      editor.selectNone();
-    });
-  }, [pdfViewerController, paintMode]);
+    if (!isPaintMode()) {
+      Object.values(editors.current).forEach((editor: Editor) => {
+        editor.selectNone();
+      });
+    }
+  }, [pdfViewerController, isPaintMode]);
 
   const getEditor = useCallback((editorId: string): Editor | null => {
     if (editorId in editors.current) {
@@ -304,7 +311,7 @@ export const usePDFPainterController = ({
   );
 
   useEffect(() => {
-    if (autoSaveEnabledState && paintMode) {
+    if (autoSaveEnabledState && currentTool) {
       const interval = setInterval(() => {
         autoSave();
       }, 10000);
@@ -313,7 +320,7 @@ export const usePDFPainterController = ({
         clearInterval(interval);
       };
     }
-  }, [autoSaveEnabledState, paintMode, autoSave]);
+  }, [autoSaveEnabledState, currentTool, autoSave]);
 
   const getInstanceHidden = useCallback(
     (editorId: string) => {
@@ -346,11 +353,14 @@ export const usePDFPainterController = ({
   const pdfPainterController: PDFPainterController = useMemo(() => {
     return {
       ...pdfViewerController,
-      isPaintMode: () => {
-        return paintMode;
+      getCurrentTool: () => {
+        return currentTool;
       },
-      setPaintMode: (paintMode: boolean) => {
-        setPaintMode(paintMode);
+      setCurrentTool: (paintTool: PaintTool) => {
+        setCurrentTool(paintTool);
+      },
+      isPaintMode: () => {
+        return isPaintMode();
       },
       registerEditor: registerEditor,
       unregisterEditor: unregisterEditor,
@@ -387,7 +397,7 @@ export const usePDFPainterController = ({
     deleteIdEnsureVisibleWhileDraw,
     prevPageEventHandle.listen,
     currentPageEventHandle.listen,
-    paintMode,
+    currentTool,
   ]);
 
   return {
