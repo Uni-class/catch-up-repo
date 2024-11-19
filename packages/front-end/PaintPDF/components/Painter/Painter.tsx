@@ -82,11 +82,7 @@ const PainterComponent = ({
       StylePanel: CustomStylePanel,
       PageMenu: null,
       NavigationPanel: null,
-      Toolbar: (props) => (
-        <BreakPointProvider forceMobile>
-          <DefaultToolbar {...props} />
-        </BreakPointProvider>
-      ),
+      Toolbar: null,
       KeyboardShortcutsDialog: null,
       QuickActions: null,
       HelperButtons: null,

@@ -72,8 +72,8 @@ export function Header({
             })}
           >
             <HeaderControlButton
-              onClick={() => pdfPainterController.setCurrentTool("select")}
-              disabled={pdfPainterController.getCurrentTool() === "select"}
+              onClick={() => pdfPainterController.setCurrentTool("text-select")}
+              disabled={pdfPainterController.getCurrentTool() === "text-select"}
             >
               <ViewIcon width={"1em"} height={"1em"} />
             </HeaderControlButton>
@@ -84,10 +84,28 @@ export function Header({
               <MoveIcon width={"1em"} height={"1em"} />
             </HeaderControlButton>
             <HeaderControlButton
+              onClick={() => pdfPainterController.setCurrentTool("area-select")}
+              disabled={pdfPainterController.getCurrentTool() === "area-select"}
+            >
+              영역 선택
+            </HeaderControlButton>
+            <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("pen")}
               disabled={pdfPainterController.getCurrentTool() === "pen"}
             >
               <BrushIcon width={"1em"} height={"1em"} />
+            </HeaderControlButton>
+            <HeaderControlButton
+              onClick={() => pdfPainterController.setCurrentTool("eraser")}
+              disabled={pdfPainterController.getCurrentTool() === "eraser"}
+            >
+              지우개
+            </HeaderControlButton>
+            <HeaderControlButton
+              onClick={() => pdfPainterController.setCurrentTool("text")}
+              disabled={pdfPainterController.getCurrentTool() === "text"}
+            >
+              텍스트
             </HeaderControlButton>
           </div>
           <div

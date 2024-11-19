@@ -47,8 +47,8 @@ const PDFPainterControlBarComponent = ({
         })}
       >
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setCurrentTool("select")}
-          disabled={pdfPainterController.getCurrentTool() === "select"}
+          onClick={() => pdfPainterController.setCurrentTool("text-select")}
+          disabled={pdfPainterController.getCurrentTool() === "text-select"}
         >
           <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>

@@ -32,7 +32,7 @@ export const usePDFPainterController = ({
   const prevPageEventHandle = usePDFPainterEventHandler();
   const currentPageEventHandle = usePDFPainterEventHandler();
 
-  const [currentTool, setCurrentTool] = useState<PaintTool>("select");
+  const [currentTool, setCurrentTool] = useState<PaintTool>("text-select");
 
   const [isInstanceHidden, setIsInstanceHidden] = useState<{
     [key: string]: boolean;
@@ -45,16 +45,34 @@ export const usePDFPainterController = ({
   const [autoSaveEnabledState, setAutoSaveEnabledState] = useState(true);
 
   const isPaintMode = useCallback(() => {
-    return currentTool !== "select" && currentTool !== "drag";
+    return currentTool !== "text-select" && currentTool !== "drag";
   }, [currentTool]);
 
   useEffect(() => {
-    if (!isPaintMode()) {
-      Object.values(editors.current).forEach((editor: Editor) => {
-        editor.selectNone();
-      });
-    }
-  }, [pdfViewerController, isPaintMode]);
+    Object.values(editors.current).forEach((editor: Editor) => {
+      editor.selectNone();
+      switch (currentTool) {
+        case "text-select":
+          break;
+        case "drag":
+          break;
+        case "area-select":
+          editor.setCurrentTool("select");
+          break;
+        case "pen":
+          editor.setCurrentTool("draw");
+          break;
+        case "eraser":
+          editor.setCurrentTool("eraser");
+          break;
+        case "text":
+          editor.setCurrentTool("text");
+          break;
+        default:
+          break;
+      }
+    });
+  }, [pdfViewerController, currentTool]);
 
   const getEditor = useCallback((editorId: string): Editor | null => {
     if (editorId in editors.current) {
@@ -381,6 +399,7 @@ export const usePDFPainterController = ({
     };
   }, [
     pdfViewerController,
+    isPaintMode,
     registerEditor,
     unregisterEditor,
     getEditor,

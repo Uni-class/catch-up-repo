@@ -12,7 +12,13 @@ import {
   HandlerFunction,
 } from "../hooks/usePDFPainterEventHandler";
 
-export type PaintTool = "select" | "drag" | "pen" | "eraser" | "text";
+export type PaintTool =
+  | "text-select"
+  | "drag"
+  | "area-select"
+  | "pen"
+  | "eraser"
+  | "text";
 
 export type EditorSnapshot = TLEditorSnapshot;
 
