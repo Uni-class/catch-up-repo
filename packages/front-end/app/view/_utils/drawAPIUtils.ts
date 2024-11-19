@@ -60,7 +60,6 @@ export const getUserDraw: GetDrawType = async ({
       }[]
     >(`/user/session/${sessionId}/file/${fileId}/note/${currentPageIndex}`)
     .then((res) => {
-      console.log({ res }, "API RESULT");
       // res: data: {data:{}}[]
       return res.data[0]
         ? res.data[0]?.data
@@ -95,7 +94,6 @@ export const getHostDraw: GetDrawType = async ({
       }[]
     >(`/user/session/${sessionId}/file/${fileId}/host-note/${currentPageIndex}`)
     .then((res) => {
-      console.log({ res }, "API RESULT");
       // res: data: {data:{}}[]
       return res.data[0]
         ? res.data[0]?.data
@@ -107,5 +105,5 @@ export const getHostDraw: GetDrawType = async ({
       );
       return { note: null, width: 0, height: 0 };
     });
-  return { note: null, width: 0, height: 0 };
+  return { note, width, height };
 };

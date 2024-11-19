@@ -12,6 +12,7 @@ import {
 
 import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
 import { usePDFPainterEventHandler } from "./usePDFPainterEventHandler";
+import { isEmptySnapshot } from "../utils/validate";
 
 export const usePDFPainterController = ({
   painterId,
@@ -93,6 +94,7 @@ export const usePDFPainterController = ({
       console.log(
         `[Editor: ${editorId} - Page: ${pageIndex}] Set Editor Snapshot: ${snapshotId}`
       );
+      if (isEmptySnapshot(snapshot)) return;
       localStorage.setItem(snapshotId, JSON.stringify(snapshot));
     },
     [getSnapshotId]

@@ -11,7 +11,7 @@ export const useLoadDraw = (
   fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController,
-  apiCallback: GetDrawType,
+  apiCallback: GetDrawType
 ) => {
   useEffect(() => {
     const pageIndex = pdfPainterController.getPageIndex();
