@@ -23,7 +23,7 @@ const postDraw = async ({
   width?: number;
   height?: number;
 }) => {
-  if (note === null || width === undefined || height === undefined) {
+  if (width === undefined || height === undefined) {
     return;
   }
   apiClient.post(
@@ -51,7 +51,7 @@ export const usePostDraw = (
         if (changedPageIndexRef.current.has(currentPageIndex)) {
           const note =
             pdfPainterInstanceController.getEditorSnapshotFromStorage(
-              currentPageIndex
+              index
             );
           postDraw({
             sessionId,
@@ -64,9 +64,6 @@ export const usePostDraw = (
         }
       }
     );
-    // return () => {
-    //   deleteFunc();
-    // };
   }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 
   useEffect(() => {

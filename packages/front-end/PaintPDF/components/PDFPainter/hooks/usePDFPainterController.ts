@@ -94,7 +94,6 @@ export const usePDFPainterController = ({
       console.log(
         `[Editor: ${editorId} - Page: ${pageIndex}] Set Editor Snapshot: ${snapshotId}`
       );
-      if (isEmptySnapshot(snapshot)) return;
       localStorage.setItem(snapshotId, JSON.stringify(snapshot));
     },
     [getSnapshotId]
@@ -235,10 +234,7 @@ export const usePDFPainterController = ({
       }
     };
 
-    if (
-      currentPageId.current === 0 &&
-      pdfViewerController.getPageIndex() === 0
-    ) {
+    if (currentPageId.current === null) {
       processCurrentPage(); // To config 0 index draws
     }
     if (currentPageId.current !== pdfViewerController.getPageIndex()) {

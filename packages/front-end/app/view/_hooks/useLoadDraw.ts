@@ -1,9 +1,9 @@
 import {
+  CleanPainterSnapshot,
   PDFPainterController,
   PDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { useEffect } from "react";
-import { TLEditorSnapshot } from "tldraw";
 import { GetDrawType } from "../_utils/drawAPIUtils";
 
 export const useLoadDraw = (
@@ -30,7 +30,10 @@ export const useLoadDraw = (
           fileId,
           currentPageIndex: index,
         }).then((res) => res.note);
-        if (note === null) return;
+        if (note === null) {
+          pdfPainterInstanceController.setEditorSnapshot(index,CleanPainterSnapshot);
+          return
+        };
         pdfPainterInstanceController.setEditorSnapshot(index, note);
       }
     );
