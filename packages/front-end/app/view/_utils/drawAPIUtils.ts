@@ -67,7 +67,7 @@ export const getUserDraw: GetDrawType = async ({
     })
     .catch((error) => {
       toast(
-        `필기를 불러오는 중 에러가 발생했어요.: ${error.response?.data?.message}`
+        `필기를 불러오는 중 에러가 발생했어요.`
       );
       return { note: null, width: 0, height: 0 };
     });
@@ -101,7 +101,7 @@ export const getHostDraw: GetDrawType = async ({
     })
     .catch((error) => {
       toast(
-        `필기를 불러오는 중 에러가 발생했어요.: ${error.response?.data?.message}`
+        `필기를 불러오는 중 에러가 발생했어요.`
       );
       return { note: null, width: 0, height: 0 };
     });
