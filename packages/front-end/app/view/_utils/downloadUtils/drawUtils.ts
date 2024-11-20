@@ -29,42 +29,6 @@ export const setTempEditor = (
   editor.loadSnapshot(snapshot);
   return true;
 };
-/**
- * @deprecated change logic
- */
-export const pageEachDrawCallback = async ({
-  index,
-  checked,
-  editor,
-  responses,
-}: {
-  index: number;
-  checked: boolean | undefined;
-  editor: Editor | null;
-  responses: { note: TLEditorSnapshot | null; width: number; height: number }[];
-}) => {
-  if (checked) {
-    const snapshot = responses[index];
-    if (!snapshot) {
-      return null;
-    }
-    const flag = setTempEditor(editor, snapshot.note);
-    if (!flag) {
-      return null;
-    }
-    const blob = await exportTldrawEditorAsBlob(editor, [
-      0,
-      0,
-      snapshot.width,
-      snapshot.height,
-    ]);
-    if (blob === null) {
-      return null;
-    }
-    return await convertBlobToUint8Array(blob);
-  }
-  return null;
-};
 
 export const getShapes = (snapshots: (NoteAPIResType | null)[]) => {
   const shapes: TLRecord[] = [];

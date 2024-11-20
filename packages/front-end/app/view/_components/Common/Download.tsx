@@ -9,8 +9,6 @@ import { downloadPDF } from "../../_utils/downloadUtils/downloadUtils";
 import { getSelfDrawFromServer } from "../../_utils/downloadUtils/apiUtils";
 import {
   convertSnapshotToPNG,
-  getShapes,
-  pageEachDrawCallback,
 } from "../../_utils/downloadUtils/drawUtils";
 
 interface PropType {

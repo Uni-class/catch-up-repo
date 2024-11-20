@@ -28,19 +28,6 @@ export default function RootLayout({
           >
             {children}
           </div>
-          <div
-            id="hidden-download-container"
-            className={css({
-              visibility: "hidden",
-              position: "absolute",
-              zIndex: -1000,
-              top: 0,
-              left: 0,
-              width: "5000px",
-              height: "5000px",
-              overflow: "hidden",
-            })}
-          ></div>
         </Provider>
       </body>
     </html>
