@@ -1,5 +1,6 @@
 import { PDFDocument, PDFPage } from "pdf-lib";
 import { pdfjs } from "react-pdf";
+import { TLEditorSnapshot } from "tldraw";
 
 export type PNGType = string | Uint8Array | ArrayBuffer | null;
 export const getPDFDocumentProxy = async (
@@ -27,22 +28,18 @@ export const drawPNGOnPDFPage = async (
   mergeDoc: PDFDocument,
   mergePage: PDFPage,
   index: number,
-  getPageDrawCallback: (index: number) => Promise<PNGType[] | null>,
+  getPageDrawCallback: (index: number) => Promise<(TLEditorSnapshot | null)[]>,
 ) => {
   const { width, height } = mergePage.getSize();
-  const encodedPNGs = await getPageDrawCallback(index);
-  if (encodedPNGs === null) {
-    return;
-  }
-  const drawPromises = encodedPNGs.map(async (encodedPNG) => {
-    if (encodedPNG === null) return;
-    const pngImage = await mergeDoc.embedPng(encodedPNG);
-    mergePage.drawImage(pngImage, {
-      x: 0,
-      y: 0,
-      width: width,
-      height: height,
-    });
+  const snapshots = await getPageDrawCallback(index);
+  // TODO: make a PNGType image from snapshots
+  const encodedPNG = convertSnapshotToPNG(snapshots)
+  if (encodedPNG === null) return;
+  const pngImage = await mergeDoc.embedPng(encodedPNG);
+  mergePage.drawImage(pngImage, {
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
   });
-  Promise.all(drawPromises);
 };

@@ -5,10 +5,11 @@ import {
   getPDFDocumentProxy,
   PNGType,
 } from "./pdfUtils";
+import { TLEditorSnapshot } from "tldraw";
 
 export const getMergedPDFBytes = async (
   src: string | URL,
-  getPageDrawCallback: (index: number) => Promise<(PNGType | null)[]>,
+  getPageDrawCallback: (index: number) => Promise<(TLEditorSnapshot | null)[]>,
   cMapUrl?: string | undefined
 ): Promise<Uint8Array> => {
   const originalDocProxy = await getPDFDocumentProxy(src, cMapUrl);
