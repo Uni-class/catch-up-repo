@@ -36,7 +36,7 @@ export const getShapes = (snapshots: (NoteAPIResType | null)[]) => {
   let height: number = 0;
   snapshots.forEach((snapshot) => {
     if (snapshot === null) return;
-    if (!snapshot.note) return;
+    if (!snapshot?.note) return;
     width = snapshot.width;
     height = snapshot.height;
     const records = snapshot.note.document.store;
@@ -57,8 +57,6 @@ export const convertSnapshotToPNG = async (
   if (shapes.length === 0) return null;
   editor.store.put(shapes);
   const blob = await exportTldrawEditorAsBlob(editor, [0, 0, width, height]);
-  // delay 200ms
-  //await new Promise((resolve) => setTimeout(resolve, 200));
   editor.store.remove(shapes.map((shape) => shape.id));
   if (blob === null) {
     return null;
