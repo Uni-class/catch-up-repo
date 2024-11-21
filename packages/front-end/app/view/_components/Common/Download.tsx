@@ -7,7 +7,9 @@ import { PDFPainterController } from "@/PaintPDF/components";
 import { getMergedPDFBytes } from "../../_utils/downloadUtils/getMergedPDFBytes";
 import { downloadPDF } from "../../_utils/downloadUtils/downloadUtils";
 import { getSelfDrawFromServer } from "../../_utils/downloadUtils/apiUtils";
-import { pageEachDrawCallback } from "../../_utils/downloadUtils/drawUtils";
+import {
+  convertSnapshotToPNG,
+} from "../../_utils/downloadUtils/drawUtils";
 
 interface PropType {
   fileName: string;
@@ -44,19 +46,17 @@ export function HostViewerDownload({
     }
     const snapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-        pdfPainterController.getPageCount(),
-        sessionId,
-        fileId
-      )
+          pdfPainterController.getPageCount(),
+          sessionId,
+          fileId
+        )
       : [];
-    const pdfBytes = await getMergedPDFBytes(src, async (index) => [
-      await pageEachDrawCallback({
-        index,
-        editor: editorState,
-        checked: hostDrawControlRef.current?.checked,
-        responses: snapshotsFromServer,
-      }),
-    ]);
+    const pdfBytes = await getMergedPDFBytes(src, async (index) => {
+      return await convertSnapshotToPNG(
+        [snapshotsFromServer[index]],
+        editorState
+      );
+    });
     downloadPDF(pdfBytes, fileName);
   };
   return (
@@ -125,33 +125,23 @@ export function ParticipantViewerDownload({
     }
     const snapshotsFromServer = partiDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-        pdfPainterController.getPageCount(),
-        sessionId,
-        fileId
-      )
+          pdfPainterController.getPageCount(),
+          sessionId,
+          fileId
+        )
       : [];
     const hostSnapshotsFromServer = hostDrawControlRef.current.checked
       ? await getSelfDrawFromServer(
-        pdfPainterController.getPageCount(),
-        sessionId,
-        fileId,
-        true
-      )
+          pdfPainterController.getPageCount(),
+          sessionId,
+          fileId,
+          true
+        )
       : [];
-    const pdfBytes = await getMergedPDFBytes(src, async (index) => [
-      await pageEachDrawCallback({
-        index,
-        editor: editorState,
-        checked: hostDrawControlRef.current?.checked,
-        responses: snapshotsFromServer,
-      }),
-      await pageEachDrawCallback({
-        index,
-        editor: editorState,
-        checked: partiDrawControlRef.current?.checked,
-        responses: hostSnapshotsFromServer,
-      }),
-    ]);
+    const pdfBytes = await getMergedPDFBytes(src, async (index) => await convertSnapshotToPNG([
+      snapshotsFromServer[index],
+      hostSnapshotsFromServer[index],
+    ],editorState));
     downloadPDF(pdfBytes, fileName);
   };
   return (
