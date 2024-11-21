@@ -34,6 +34,7 @@ export const usePDFPainterInstanceController = ({
   const pdfPainterInstanceController: PDFPainterInstanceController =
     useMemo(() => {
       return {
+        getInstanceId: () => editorId,
         getEditor: () => pdfPainterController.getEditor(editorId),
         getEditorSnapshot: (pageIndex: number) =>
           pdfPainterController.getEditorSnapshot(editorId, pageIndex),

@@ -21,6 +21,8 @@ import { HostViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
 import UsersIcon from "@/public/icons/users.svg";
+import { useLoadDraw } from "../../_hooks/useLoadDraw";
+import { getUserDraw } from "../../_utils/drawAPIUtils";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -48,6 +50,13 @@ export default function HostViewer(props: ViewerPropType) {
     fileId,
     pdfPainterInstanceController,
     pdfPainterController
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterInstanceController,
+    pdfPainterController,
+    getUserDraw
   );
 
   return (

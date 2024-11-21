@@ -1,17 +1,19 @@
 import { useRef } from "react";
 
-export type HandlerFunction = (index: number) => void;
+export type HandlerFunction = (index: number) => Promise<void>;
 export type DeleteFunction = () => void;
+
+export interface PDFPainterEventHandlerReturn {
+  listen: (key: string, handler: HandlerFunction) => DeleteFunction;
+  get: (key: string) => HandlerFunction | undefined;
+  executeAll: (index: number) => Promise<void>;
+  clear: () => void;
+  delete: (key: string) => void;
+}
 /**
  * This is internal hook to be used in pdfPainterController.
  */
-export const usePDFPainterEventHandler: () => {
-  listen: (key: string, handler: HandlerFunction) => DeleteFunction;
-  get: (key: string) => HandlerFunction | undefined;
-  executeAll: (index: number) => void;
-  clear: () => void;
-  delete: (key: string) => void;
-} = () => {
+export const usePDFPainterEventHandler: () => PDFPainterEventHandlerReturn = () => {
   const handlerRef = useRef<Map<string, HandlerFunction>>(new Map());
 
   return {
@@ -22,11 +24,13 @@ export const usePDFPainterEventHandler: () => {
       };
     },
     get: (key) => handlerRef.current.get(key),
-    executeAll: (index: number) => {
-      console.log("execute", index, handlerRef.current);
-      for (const handler of handlerRef.current.values()){
-        handler(index);
+    executeAll: async (index: number) => {
+      const promises:Promise<void>[] = []
+      for (const handler of handlerRef.current.values()) {
+        promises.push(handler(index));
       }
+      await Promise.allSettled(promises)
+      handlerRef.current.clear()
     },
     clear: () => {
       handlerRef.current.clear();
