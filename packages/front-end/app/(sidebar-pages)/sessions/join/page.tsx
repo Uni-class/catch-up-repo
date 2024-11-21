@@ -90,7 +90,14 @@ export default function Page() {
             })}
           >
             <Label>세션명</Label>
-            <p>{sessionInfo.sessionName}</p>
+            <LineEdit
+              className={css({
+                flexGrow: 1,
+                height: "inherit",
+              })}
+              disabled={true}
+              value={sessionInfo.sessionName}
+            />
             <Button
               className={css({
                 height: "inherit",
