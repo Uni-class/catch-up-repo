@@ -19,7 +19,8 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     baseY: 0,
     scale: 1,
   });
-  const [dragModeEnabled, setDragModeEnabled] = useState(false);
+  const [controlLockEnabled, setControlLockEnabled] = useState(false);
+  const [controlModeForced, setControlModeForced] = useState(false);
   const [itemClickEnabled, setItemClickEnabled] = useState(true);
 
   const setPageIndex = useCallback((newPageIndex: number) => {
@@ -176,8 +177,17 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
           scale: newScale,
         });
       },
-      isDragModeEnabled: () => {
-        return dragModeEnabled;
+      isControlLockEnabled: () => {
+        return controlLockEnabled;
+      },
+      setControlLockEnabled: (enabled: boolean) => {
+        setControlLockEnabled(enabled);
+      },
+      isControlModeForced: () => {
+        return controlModeForced;
+      },
+      isDragAvailable: () => {
+        return !controlLockEnabled || controlModeForced;
       },
       drag: ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => {
         setRenderOptions({
@@ -202,7 +212,8 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     pdfPage,
     pageIndex,
     renderOptions,
-    dragModeEnabled,
+    controlLockEnabled,
+    controlModeForced,
     itemClickEnabled,
   ]);
 
@@ -210,7 +221,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
     (event: KeyboardEvent) => {
       switch (event.key) {
         case "Control":
-          setDragModeEnabled(true);
+          setControlModeForced(true);
           break;
         case "ArrowLeft":
           pdfViewerController.moveToPreviousPage();
@@ -228,7 +239,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
   const keyupEventHandler = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "Control":
-        setDragModeEnabled(false);
+        setControlModeForced(false);
         break;
       default:
         break;
@@ -246,7 +257,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
 
   const mouseMoveEventHandler = useCallback(
     (event: MouseEvent) => {
-      if (!dragModeEnabled) {
+      if (controlLockEnabled && !controlModeForced) {
         return;
       }
       event.preventDefault();
@@ -258,12 +269,12 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         });
       }
     },
-    [dragModeEnabled, pdfViewerController],
+    [controlLockEnabled, controlModeForced, pdfViewerController],
   );
 
   const wheelEventHandler = useCallback(
     (event: WheelEvent) => {
-      if (!dragModeEnabled) {
+      if (controlLockEnabled && !controlModeForced) {
         return;
       }
       event.preventDefault();
@@ -288,7 +299,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         scaleDelta: wheelDelta * scaleRatio,
       });
     },
-    [pdfViewerController],
+    [controlLockEnabled, controlModeForced, pdfViewerController],
   );
 
   const itemClickHandler = useCallback(

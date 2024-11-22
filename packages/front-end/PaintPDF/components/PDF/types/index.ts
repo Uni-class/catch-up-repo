@@ -56,7 +56,10 @@ export type PDFViewerController = {
     offsetY: number;
     scaleDelta: number;
   }) => void;
-  isDragModeEnabled: () => boolean;
+  isControlLockEnabled: () => boolean;
+  setControlLockEnabled: (enabled: boolean) => void;
+  isControlModeForced: () => boolean;
+  isDragAvailable: () => boolean;
   drag: ({ deltaX, deltaY }: { deltaX: number; deltaY: number }) => void;
   isItemClickEnabled: () => boolean;
   setItemClickEnabled: (enabled: boolean) => void;

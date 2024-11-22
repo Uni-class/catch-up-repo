@@ -140,7 +140,7 @@ const PDFPainterComponent = ({
                     width: pdfPainterController.getRenderSize().width,
                     height: pdfPainterController.getRenderSize().height,
                     pointerEvents:
-                      !pdfPainterController.isDragModeEnabled() &&
+                      !pdfPainterController.isControlModeForced() &&
                       pdfPainterController.isPaintMode()
                         ? "unset"
                         : "none",

@@ -42,14 +42,14 @@ const PDFViewerComponent = ({
     <div
       ref={pdfRendererElement}
       style={{
-        cursor: pdfViewerController.isDragModeEnabled() ? "move" : "default",
+        cursor: pdfViewerController.isDragAvailable() ? "move" : "default",
       }}
     >
       <PDFRenderer
         pdfDocumentURL={pdfDocumentURL}
         pdfPageIndex={pdfViewerController.getPageIndex()}
         pdfRenderOptions={pdfViewerController.getRenderOptions()}
-        pdfInteractionEnabled={!pdfViewerController.isDragModeEnabled()}
+        pdfInteractionEnabled={!pdfViewerController.isDragAvailable()}
         pdfItemClickEnabled={pdfViewerController.isItemClickEnabled()}
         onPdfDocumentChange={onPdfDocumentChange}
         onPdfPageChange={onPdfPageChange}
