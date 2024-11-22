@@ -1,6 +1,7 @@
 import { css } from "@/styled-system/css";
 import UsersIcon from "@/public/icons/users.svg";
 import { apiClient } from "@/utils/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const getUUID = () => {
     const existUUID = localStorage.getItem("catchup-guest-id")
@@ -13,6 +14,22 @@ const getUUID = () => {
 }
 
 export const GuestLoginButton = () => {
+  const queryClient = useQueryClient()
+  const profileMutation = useMutation({
+    mutationFn: async (id:string) => {
+      const res = await apiClient.post("/auth/guest", {id:id})
+      return res.data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["user","profile"]
+      })
+      // console.log(data)
+    },
+    onError: (error) => {
+      alert("게스트 로그인중 오류가 발생했어요.")
+    }
+  })
   return (
     <button
       className={css({
@@ -33,9 +50,8 @@ export const GuestLoginButton = () => {
         },
       })}
       onClick={async ()=>{
-        console.log("guest login")
         const guestID = getUUID();
-        // await apiClient.post("/auth",{id:guestID})
+        profileMutation.mutate(guestID)
       }}
     >
       <UsersIcon width={"30px"} height={"30px"} />
