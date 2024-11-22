@@ -30,7 +30,7 @@ export function ColorPicker({
     <div
       className={css({
         position: "absolute",
-        top: "150%",
+        top: "115%",
         left: "0%",
         display: "flex",
         padding: "2.5em 1em 1em 1em",
