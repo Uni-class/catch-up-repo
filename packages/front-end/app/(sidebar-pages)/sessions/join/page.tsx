@@ -13,12 +13,15 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { apiClient } from "@/utils/axios";
 import { Session } from "@/schema/backend.schema";
+import { ModalContainer } from "./_components/ModalContainer";
+import { SessionInfo } from "./_components/SessionInfo";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
   const [searchSessionCode, setSearchSessionCode] = useState<string | null>(
     null
   );
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const { data, isLoading, isError } = useQuery<AxiosResponse<Session>>({
@@ -42,7 +45,7 @@ export default function Page() {
       });
       return;
     }
-    setSearchSessionCode(sessionCode);
+    setIsOpen(true);
   }, [sessionCode]);
 
   const joinSession = useCallback(() => {
@@ -118,6 +121,11 @@ export default function Page() {
           </Button>
         </div>
       </div>
+      {isOpen && (
+        <ModalContainer onClose={()=>{setIsOpen(false)}}>
+          <SessionInfo sessionCode={sessionCode}/>
+        </ModalContainer>
+      )}
     </div>
   );
 }
