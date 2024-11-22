@@ -13,26 +13,13 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { apiClient } from "@/utils/axios";
 import { Session } from "@/schema/backend.schema";
+import { ModalContainer } from "./_components/ModalContainer";
+import { SessionInfo } from "./_components/SessionInfo";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
-  const [searchSessionCode, setSearchSessionCode] = useState<string | null>(
-    null,
-  );
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  const { data, isLoading, isError } = useQuery<AxiosResponse<Session>>({
-    queryKey: ["session", "code", searchSessionCode],
-    queryFn: async () => {
-      return await apiClient.get("/session", {
-        params: {
-          code: searchSessionCode,
-        },
-      });
-    },
-  });
-
-  const sessionInfo = data?.data;
 
   const fetchSessionInfo = useCallback(() => {
     if (sessionCode.trim() === "") {
@@ -42,17 +29,8 @@ export default function Page() {
       });
       return;
     }
-    setSearchSessionCode(sessionCode);
+    setIsOpen(true);
   }, [sessionCode]);
-
-  const joinSession = useCallback(() => {
-    if (!sessionInfo) {
-      return;
-    }
-    router.push(
-      router.getURLString("/view", { id: `${sessionInfo.sessionId}` }),
-    );
-  }, [router, sessionInfo]);
 
   return (
     <div
@@ -78,78 +56,61 @@ export default function Page() {
           flexGrow: 1,
           justifyContent: "center",
           padding: "3rem 4.16rem",
+          maxWidth: "60rem",
         })}
       >
-        {sessionInfo ? (
-          <div
+        <div
+          className={css({
+            flex: 1,
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+          })}
+        >
+          <Label htmlFor="session-code">참여 코드</Label>
+          <LineEdit
             className={css({
-              flex: 1,
-              display: "flex",
-              gap: "1rem",
-              alignItems: "center",
+              flexGrow: 1,
+              height: "inherit",
             })}
-          >
-            <Label>세션명</Label>
-            <LineEdit
-              className={css({
-                flexGrow: 1,
-                height: "inherit",
-              })}
-              disabled={true}
-              value={sessionInfo.sessionName}
-            />
-            <Button
-              className={css({
-                height: "inherit",
-              })}
-              onClick={() => {
-                joinSession();
-              }}
-              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
-            >
-              접속하기
-            </Button>
-          </div>
-        ) : (
-          <div
-            className={css({
-              flex: 1,
-              display: "flex",
-              gap: "1rem",
-              alignItems: "center",
-            })}
-          >
-            <Label htmlFor="session-code">참여 코드</Label>
-            <LineEdit
-              className={css({
-                flexGrow: 1,
-                height: "inherit",
-              })}
-              placeholder="참여 코드를 입력해 주세요."
-              value={sessionCode}
-              onChange={(event) => setSessionCode(event.target.value)}
-              name="session-code"
-              id="session-code"
-              onKeyDown={(event) => {
-                if (event.key == "Enter") {
-                  fetchSessionInfo();
-                }
-              }}
-            />
-            <Button
-              className={css({
-                height: "inherit",
-              })}
-              onClick={() => {
+            placeholder="참여 코드를 입력해 주세요."
+            value={sessionCode}
+            onChange={(event) => setSessionCode(event.target.value)}
+            name="session-code"
+            id="session-code"
+            onKeyDown={(event) => {
+              if (event.key == "Enter") {
                 fetchSessionInfo();
-              }}
-              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
-            >
-              접속하기
-            </Button>
-          </div>
-        )}
+              }
+            }}
+          />
+          <Button
+            className={css({
+              height: "inherit",
+            })}
+            onClick={() => {
+              fetchSessionInfo();
+            }}
+            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+          >
+            접속하기
+          </Button>
+        </div>
       </div>
+      {isOpen && (
+        <ModalContainer
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        >
+          <SessionInfo
+            sessionCode={sessionCode}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
+        </ModalContainer>
+      )}
     </div>
   );
 }
