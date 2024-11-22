@@ -13,7 +13,8 @@ import {
 
 import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
 import { usePDFPainterEventHandler } from "./usePDFPainterEventHandler";
-import { Editor, DefaultColorStyle } from "tldraw";
+import { Editor, DefaultColorStyle, defaultColorNames } from "tldraw";
+import { DefaultColorThemePalette } from "@tldraw/tlschema";
 
 export const usePDFPainterController = ({
   painterId,
@@ -362,6 +363,14 @@ export const usePDFPainterController = ({
       setCurrentColor: (paintColor: PaintColor) => {
         setCurrentColor(paintColor);
       },
+      getAvailableColors: () => {
+        return defaultColorNames.map((colorName: PaintColor) => {
+          return {
+            name: colorName,
+            value: DefaultColorThemePalette.lightMode[colorName].solid,
+          };
+        });
+      },
       isPaintMode: () => {
         return isPaintMode();
       },
@@ -402,6 +411,7 @@ export const usePDFPainterController = ({
     prevPageEventHandle.listen,
     currentPageEventHandle.listen,
     currentTool,
+    currentColor,
   ]);
 
   return {

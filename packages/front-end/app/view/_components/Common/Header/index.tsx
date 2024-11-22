@@ -17,6 +17,7 @@ import { ReactNode, useState } from "react";
 import { overlay } from "overlay-kit";
 import { ModeContainer } from "../Mode";
 import Divider from "@/components/Divider";
+import { ColorPicker } from "@/app/view/_components/Common/Header/ColorPicker";
 
 interface PropType {
   pdfPainterController?: PDFPainterController;
@@ -110,6 +111,7 @@ export function Header({
             >
               <TypeIcon width={"1em"} height={"1em"} />
             </ToolButton>
+            <ColorPicker pdfPainterController={pdfPainterController} />
           </ToolPanel>
           <div
             className={css({
