@@ -16,6 +16,7 @@ import { HeaderTooltipButton } from "./HeaderToolTipButton";
 import { ReactNode, useState } from "react";
 import { overlay } from "overlay-kit";
 import { ModeContainer } from "../Mode";
+import Divider from "@/components/Divider";
 
 interface PropType {
   pdfPainterController?: PDFPainterController;
@@ -85,6 +86,12 @@ export function Header({
             >
               <RegionSelectIcon width={"1em"} height={"1em"} />
             </ToolButton>
+            <Divider
+              direction="vertical"
+              className={css({
+                margin: "0 0.3em",
+              })}
+            />
             <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("pen")}
               disabled={pdfPainterController.getCurrentTool() === "pen"}

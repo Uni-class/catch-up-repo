@@ -14,7 +14,6 @@ import {
   SelectAllMenuItem,
   DefaultStylePanel,
   TLUiStylePanelProps,
-  DefaultStylePanelContent,
   useRelevantStyles,
   DefaultToolbar,
   DefaultToolbarContent,

@@ -1,4 +1,10 @@
-import { Editor, TLEditorSnapshot, IdOf, TLRecord } from "tldraw";
+import {
+  Editor,
+  TLEditorSnapshot,
+  IdOf,
+  TLRecord,
+  defaultColorNames,
+} from "tldraw";
 
 import {
   PDFDocument,
@@ -20,6 +26,8 @@ export type PaintTool =
   | "eraser"
   | "text";
 
+export type PaintColor = (typeof defaultColorNames)[number];
+
 export type EditorSnapshot = TLEditorSnapshot;
 
 export type PainterShapeId = IdOf<TLRecord>;
@@ -29,6 +37,8 @@ export type PainterShape = TLRecord;
 export type PDFPainterController = {
   getCurrentTool: () => PaintTool;
   setCurrentTool: (paintTool: PaintTool) => void;
+  getCurrentColor: () => PaintColor;
+  setCurrentColor: (paintColor: PaintColor) => void;
   isPaintMode: () => boolean;
   registerEditor: (editorId: string, editor: Editor) => void;
   unregisterEditor: (editorId: string) => void;

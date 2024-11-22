@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
-import { Editor } from "tldraw";
+
 import { usePDFViewerController } from "../../PDF";
 
 import { ExternalAssetStore } from "../../Painter/types";
@@ -8,10 +8,12 @@ import {
   EditorSnapshot,
   PDFPainterController,
   PDFPainterControllerHook,
+  PaintColor,
 } from "../types";
 
 import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
 import { usePDFPainterEventHandler } from "./usePDFPainterEventHandler";
+import { Editor, DefaultColorStyle } from "tldraw";
 
 export const usePDFPainterController = ({
   painterId,
@@ -33,6 +35,7 @@ export const usePDFPainterController = ({
   const currentPageEventHandle = usePDFPainterEventHandler();
 
   const [currentTool, setCurrentTool] = useState<PaintTool>("text-select");
+  const [currentColor, setCurrentColor] = useState<PaintColor>("black");
 
   const [isInstanceHidden, setIsInstanceHidden] = useState<{
     [key: string]: boolean;
@@ -74,6 +77,13 @@ export const usePDFPainterController = ({
       }
     });
   }, [pdfViewerController, currentTool]);
+
+  useEffect(() => {
+    Object.values(editors.current).forEach((editor: Editor) => {
+      editor.setStyleForSelectedShapes(DefaultColorStyle, currentColor);
+      editor.setStyleForNextShapes(DefaultColorStyle, currentColor);
+    });
+  }, [currentColor]);
 
   const getEditor = useCallback((editorId: string): Editor | null => {
     if (editorId in editors.current) {
@@ -345,6 +355,12 @@ export const usePDFPainterController = ({
       },
       setCurrentTool: (paintTool: PaintTool) => {
         setCurrentTool(paintTool);
+      },
+      getCurrentColor: () => {
+        return currentColor;
+      },
+      setCurrentColor: (paintColor: PaintColor) => {
+        setCurrentColor(paintColor);
       },
       isPaintMode: () => {
         return isPaintMode();
