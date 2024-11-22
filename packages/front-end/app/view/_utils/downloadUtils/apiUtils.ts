@@ -13,7 +13,7 @@ export const getSelfDrawFromServer = async (
     promises.push(
       apiClient.get<
         { data: { note: TLEditorSnapshot; width: number; height: number } }[]
-      >(`/user/session/${sessionId}/file/${fileId}/${!!isHost? "host-note" : "note"}/${i}`)
+      >(`/user/session/${sessionId}/file/${fileId}/${isHost? "host-note" : "note"}/${i}`)
     );
   }
   const results = await Promise.allSettled(promises);

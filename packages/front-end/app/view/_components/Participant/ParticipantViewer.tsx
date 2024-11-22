@@ -7,7 +7,6 @@ import { useParticipantSocket } from "../../_hooks/useParticipantSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
-  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
@@ -19,11 +18,12 @@ import { ModeControl } from "../Common/Mode";
 import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
 import { usePostDraw } from "../../_hooks/usePostDraw";
-import Button from "@/components/Button/Button";
 import { ParticipantViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
 import HostIcon from "@/public/icons/host.svg";
+import { useLoadDraw } from "../../_hooks/useLoadDraw";
+import { getHostDraw, getUserDraw } from "../../_utils/drawAPIUtils";
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -43,26 +43,45 @@ export default function ParticipantViewer(props: ViewerPropType) {
     editorId: "Host",
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
+  const { pdfPainterInstanceController: pdfPainterHostInstanceController } =
+    pdfPainterHostInstanceControllerHook;
   const pdfPainterParticipantInstanceControllerHook =
     usePDFPainterInstanceController({
       editorId: "Participant",
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
+  const {
+    pdfPainterInstanceController: pdfPainterParticipantInstanceController,
+  } = pdfPainterParticipantInstanceControllerHook;
   const { pdfPainterController } = pdfPainterControllerHook;
   const { hostIndex } = useParticipantSocket(
     sessionId,
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
     pdfPainterControllerHook.pdfPainterController,
-    isChaseMode
+    isChaseMode,
   );
   useEnsureVisibleWhileDraw("Participant", pdfPainterController);
-  const [showCodeOverlay, setShowCodeOverlay] = useState(false);
+
   usePostDraw(
     sessionId,
     fileId,
     pdfPainterParticipantInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterController
+    pdfPainterController,
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterParticipantInstanceController,
+    pdfPainterController,
+    getUserDraw
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterHostInstanceController,
+    pdfPainterController,
+    getHostDraw,
   );
 
   if (joinQuery.isLoading) {
@@ -98,7 +117,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Host",
-                  e.target.checked
+                  e.target.checked,
                 );
               }}
             />
@@ -109,7 +128,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Participant",
-                  e.target.checked
+                  e.target.checked,
                 );
               }}
             />

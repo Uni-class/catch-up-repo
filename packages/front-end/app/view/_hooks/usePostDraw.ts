@@ -23,7 +23,7 @@ const postDraw = async ({
   width?: number;
   height?: number;
 }) => {
-  if (note === null || width === undefined || height === undefined) {
+  if (width === undefined || height === undefined) {
     return;
   }
   apiClient.post(
@@ -41,16 +41,17 @@ export const usePostDraw = (
   const changedPageIndexRef = useRef<Set<number>>(new Set<number>());
 
   useEffect(() => {
+    pdfPainterController.prevPageEventHandler.clear();
     const currentPageIndex = pdfPainterController.getPageIndex();
-    const deleteFunc = pdfPainterController.addPrevPageEventListener(
+    pdfPainterController.prevPageEventHandler.listen(
       `${sessionId}-${fileId}-${currentPageIndex}`,
-      (index) => {
+      async (index) => {
         const width = pdfPainterController.getPage()?.originalWidth;
         const height = pdfPainterController.getPage()?.originalHeight;
         if (changedPageIndexRef.current.has(currentPageIndex)) {
           const note =
             pdfPainterInstanceController.getEditorSnapshotFromStorage(
-              currentPageIndex
+              index
             );
           postDraw({
             sessionId,
@@ -63,9 +64,6 @@ export const usePostDraw = (
         }
       }
     );
-    // return () => {
-    //   deleteFunc();
-    // };
   }, [fileId, pdfPainterController, pdfPainterInstanceController, sessionId]);
 
   useEffect(() => {

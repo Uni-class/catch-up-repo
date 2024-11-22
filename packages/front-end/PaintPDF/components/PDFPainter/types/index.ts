@@ -16,6 +16,7 @@ import { ExternalAssetStore } from "../../Painter/types";
 import {
   DeleteFunction,
   HandlerFunction,
+  PDFPainterEventHandlerReturn,
 } from "../hooks/usePDFPainterEventHandler";
 
 export type PaintTool =
@@ -70,14 +71,8 @@ export type PDFPainterController = {
   isIdEnsureVisibleWhileDraw: (editorId: string) => boolean;
   addIdEnsureVisibleWhileDraw: (editorId: string) => void;
   deleteIdEnsureVisibleWhileDraw: (editorId: string) => void;
-  addPrevPageEventListener: (
-    key: string,
-    handler: HandlerFunction,
-  ) => DeleteFunction;
-  addCurrentPageEventListener: (
-    key: string,
-    handler: HandlerFunction,
-  ) => DeleteFunction;
+  prevPageEventHandler: PDFPainterEventHandlerReturn;
+  currentPageEventHandler: PDFPainterEventHandlerReturn;
 } & PDFViewerController;
 
 export type PDFPainterControllerHook = {
@@ -110,6 +105,7 @@ export type PDFPainterInstanceController = {
     elementId: PainterShapeId,
     elementGenerator: (previousElementData: PainterShape) => PainterShape,
   ) => void;
+  getInstanceId: () => string;
 };
 
 export type PDFPainterInstanceControllerHook = {

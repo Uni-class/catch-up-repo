@@ -13,6 +13,7 @@ import {
 
 import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
 import { usePDFPainterEventHandler } from "./usePDFPainterEventHandler";
+import { isEmptySnapshot } from "../utils/validate";
 import { Editor, DefaultColorStyle, defaultColorNames } from "tldraw";
 import { DefaultColorThemePalette } from "@tldraw/tlschema";
 
@@ -227,19 +228,27 @@ export const usePDFPainterController = ({
   }, []);
 
   useEffect(() => {
-    if (currentPageId.current !== pdfViewerController.getPageIndex()) {
+    const processCurrentPage = async () => {
+      currentPageId.current = pdfViewerController.getPageIndex();
+      await currentPageEventHandle.executeAll(currentPageId.current);
+    };
+
+    const processPrevPage = async () => {
       if (currentPageId.current !== null) {
-        prevPageEventHandle.executeAll(currentPageId.current);
+        await prevPageEventHandle.executeAll(currentPageId.current);
         savePageSnapshots(currentPageId.current);
       }
-      currentPageId.current = pdfViewerController.getPageIndex();
-      currentPageEventHandle.executeAll(currentPageId.current);
-      loadPageSnapshots(currentPageId.current);
-    }
-    return () => {
-      // prevPageEventHandle.clear();
-      // currentPageEventHandle.clear();
     };
+
+    if (currentPageId.current === null) {
+      processCurrentPage(); // To config 0 index draws
+    }
+    if (currentPageId.current !== pdfViewerController.getPageIndex()) {
+      if (currentPageId.current !== null) {
+        processPrevPage();
+      }
+      processCurrentPage();
+    }
   }, [
     pdfViewerController,
     loadPageSnapshots,
@@ -418,8 +427,8 @@ export const usePDFPainterController = ({
       isIdEnsureVisibleWhileDraw,
       addIdEnsureVisibleWhileDraw,
       deleteIdEnsureVisibleWhileDraw,
-      addPrevPageEventListener: prevPageEventHandle.listen,
-      addCurrentPageEventListener: currentPageEventHandle.listen,
+      prevPageEventHandler: prevPageEventHandle,
+      currentPageEventHandler: currentPageEventHandle,
     };
   }, [
     pdfViewerController,

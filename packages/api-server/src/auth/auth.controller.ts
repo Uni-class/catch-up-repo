@@ -184,7 +184,7 @@ export class AuthController {
         true,
       );
       await this.userService.update(guestUser.userId, { refreshToken });
-      return res
+      res
         .cookie(
           'access_token',
           accessToken,
@@ -194,10 +194,7 @@ export class AuthController {
           'refresh_token',
           refreshToken,
           await CookieOptions(this.configService, 'refreshToken'),
-        )
-        .redirect(
-          this.configService.get<string>('CLIENT_DOMAIN') + '/dashboard',
-        );
+        ).sendStatus(302);
     } catch (e) {
       throw new InternalServerErrorException('Server Error', e);
     }

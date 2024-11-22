@@ -4,23 +4,22 @@ import { useHostSocket } from "../../_hooks/useHostSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
-  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
 import { ViewerPropType } from "../../_types/ViewerType";
 import { PreviewPages } from "../Common/PreviewPages";
 import { css } from "@/styled-system/css";
-import { ModeContainer, ModeControl } from "../Common/Mode";
+import { ModeControl } from "../Common/Mode";
 import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
-import { useState } from "react";
 import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
 import { usePostDraw } from "../../_hooks/usePostDraw";
-import Button from "@/components/Button/Button";
 import { HostViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
 import UsersIcon from "@/public/icons/users.svg";
+import { useLoadDraw } from "../../_hooks/useLoadDraw";
+import { getUserDraw } from "../../_utils/drawAPIUtils";
 
 export default function HostViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
@@ -39,7 +38,7 @@ export default function HostViewer(props: ViewerPropType) {
     sessionId,
     fileId,
     pdfPainterInstanceController,
-    pdfPainterController
+    pdfPainterController,
   );
   useEnsureVisibleWhileDraw("Host", pdfPainterController);
 
@@ -47,7 +46,14 @@ export default function HostViewer(props: ViewerPropType) {
     sessionId,
     fileId,
     pdfPainterInstanceController,
-    pdfPainterController
+    pdfPainterController,
+  );
+  useLoadDraw(
+    sessionId,
+    fileId,
+    pdfPainterInstanceController,
+    pdfPainterController,
+    getUserDraw
   );
 
   return (
@@ -89,9 +95,7 @@ export default function HostViewer(props: ViewerPropType) {
         <PreviewPages
           pdfDocumentURL={pdfDocument.url}
           PDFPainterController={pdfPainterController}
-          getBadgeVisible={
-            (index) => roomPageViewerCount.hasOwnProperty(index)
-          }
+          getBadgeVisible={(index) => roomPageViewerCount.hasOwnProperty(index)}
           getBadgeContent={(index) => {
             return (
               <div
@@ -111,7 +115,7 @@ export default function HostViewer(props: ViewerPropType) {
                   alignItems: "center",
                   padding: "0 0.25rem",
                   borderColor: "black",
-                  border: "1px solid"
+                  border: "1px solid",
                 })}
               >
                 <UsersIcon width="1em" height="1em" />

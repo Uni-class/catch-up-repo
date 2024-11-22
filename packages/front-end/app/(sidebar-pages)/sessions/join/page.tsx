@@ -9,21 +9,28 @@ import { useRouter } from "@/hook/useRouter";
 import { routeTitle } from "@/const/routeTitle";
 import JoinIcon from "@/public/icons/join.svg";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import { apiClient } from "@/utils/axios";
+import { Session } from "@/schema/backend.schema";
+import { ModalContainer } from "./_components/ModalContainer";
+import { SessionInfo } from "./_components/SessionInfo";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const joinSession = useCallback(() => {
+  const fetchSessionInfo = useCallback(() => {
     if (sessionCode.trim() === "") {
-      toast("세션 코드를 입력해주세요.", {
+      toast("참여 코드를 입력해주세요.", {
         type: "error",
         position: "top-center",
       });
       return;
     }
-    router.push(router.getURLString("/view", { id: `${sessionCode}` }));
-  }, [sessionCode, router]);
+    setIsOpen(true);
+  }, [sessionCode]);
 
   return (
     <div
@@ -49,6 +56,7 @@ export default function Page() {
           flexGrow: 1,
           justifyContent: "center",
           padding: "3rem 4.16rem",
+          maxWidth: "60rem",
         })}
       >
         <div
@@ -59,20 +67,20 @@ export default function Page() {
             alignItems: "center",
           })}
         >
-          <Label htmlFor="session-code">세션 코드</Label>
+          <Label htmlFor="session-code">참여 코드</Label>
           <LineEdit
             className={css({
               flexGrow: 1,
               height: "inherit",
             })}
-            placeholder="세션 코드를 입력해 주세요."
+            placeholder="참여 코드를 입력해 주세요."
             value={sessionCode}
             onChange={(event) => setSessionCode(event.target.value)}
             name="session-code"
             id="session-code"
             onKeyDown={(event) => {
               if (event.key == "Enter") {
-                joinSession();
+                fetchSessionInfo();
               }
             }}
           />
@@ -81,14 +89,28 @@ export default function Page() {
               height: "inherit",
             })}
             onClick={() => {
-              joinSession();
+              fetchSessionInfo();
             }}
             startIcon={<JoinIcon width={"1em"} height={"1em"} />}
           >
-            {"세션 접속"}
+            접속하기
           </Button>
         </div>
       </div>
+      {isOpen && (
+        <ModalContainer
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        >
+          <SessionInfo
+            sessionCode={sessionCode}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
+        </ModalContainer>
+      )}
     </div>
   );
 }
