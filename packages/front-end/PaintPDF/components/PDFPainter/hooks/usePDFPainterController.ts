@@ -92,19 +92,11 @@ export const usePDFPainterController = ({
   const getEditorSnapshotFromStorage = useCallback(
     (editorId: string, pageIndex: number): EditorSnapshot | null => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
-      console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Get Editor Snapshot: ${snapshotId}`,
-      );
       const data = localStorage.getItem(snapshotId);
       if (data !== null) {
         try {
           return JSON.parse(data);
-        } catch (e) {
-          console.log(
-            `[Editor: ${editorId} - Page: ${pageIndex}] Invalid Snapshot: ${snapshotId}`,
-          );
-          console.log(e);
-        }
+        } catch (e) {}
       }
       return null;
     },
@@ -114,9 +106,6 @@ export const usePDFPainterController = ({
   const setEditorSnapshotToStorage = useCallback(
     (editorId: string, pageIndex: number, snapshot: EditorSnapshot) => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
-      console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Set Editor Snapshot: ${snapshotId}`,
-      );
       localStorage.setItem(snapshotId, JSON.stringify(snapshot));
     },
     [getSnapshotId],
@@ -125,9 +114,6 @@ export const usePDFPainterController = ({
   const clearEditorSnapshotFromStorage = useCallback(
     (editorId: string, pageIndex: number) => {
       const snapshotId = getSnapshotId(editorId, pageIndex);
-      console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Clear Editor Snapshot: ${snapshotId}`,
-      );
       localStorage.removeItem(snapshotId);
     },
     [getSnapshotId],
@@ -139,12 +125,9 @@ export const usePDFPainterController = ({
       if (editor === null) {
         return;
       }
-      console.log(`[Editor: ${editorId}] Load empty snapshot.`);
       try {
         editor.loadSnapshot(CleanPainterSnapshot as unknown as EditorSnapshot);
-      } catch {
-        console.log(`[Editor: ${editorId}] Unable to load empty snapshot.`);
-      }
+      } catch {}
     },
     [getEditor],
   );
@@ -156,23 +139,14 @@ export const usePDFPainterController = ({
         return;
       }
       const snapshotId = getSnapshotId(editorId, pageIndex);
-      console.log(
-        `[Editor: ${editorId} - Page: ${pageIndex}] Load snapshot: ${snapshotId}`,
-      );
       const snapShot = getEditorSnapshotFromStorage(editorId, pageIndex);
       editor.store.mergeRemoteChanges(() => {
         if (snapShot === null) {
-          console.log(
-            `[Editor: ${editorId} - Page: ${pageIndex}] Snapshot not found: ${snapshotId}`,
-          );
           loadEmptySnapshot(editorId);
         } else {
           try {
             editor.loadSnapshot(snapShot);
           } catch {
-            console.log(
-              `[Editor: ${editorId} - Page: ${pageIndex}] Unable to load snapshot: ${snapshotId}`,
-            );
             loadEmptySnapshot(editorId);
           }
         }
@@ -200,11 +174,7 @@ export const usePDFPainterController = ({
       try {
         editor.selectNone();
         setEditorSnapshotToStorage(editorId, pageIndex, editor.getSnapshot());
-      } catch {
-        console.log(
-          `[Editor: ${editorId} - Page: ${pageIndex}] Unable to save snapshot: ${snapshotId}`,
-        );
-      }
+      } catch {}
     },
     [getEditor, getSnapshotId, setEditorSnapshotToStorage],
   );
@@ -255,7 +225,6 @@ export const usePDFPainterController = ({
       loadPageSnapshots(currentPageId.current);
     }
     return () => {
-      console.log("clear", prevPageEventHandle);
       // prevPageEventHandle.clear();
       // currentPageEventHandle.clear();
     };
@@ -268,7 +237,6 @@ export const usePDFPainterController = ({
   ]);
 
   useEffect(() => {
-    console.log("Update Camera");
     const { width, height, baseX, baseY, scale } =
       pdfViewerController.getRenderOptions();
     const pdfRenderScaleX =

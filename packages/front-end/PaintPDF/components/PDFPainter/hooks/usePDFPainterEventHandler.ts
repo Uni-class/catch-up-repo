@@ -23,8 +23,7 @@ export const usePDFPainterEventHandler: () => {
     },
     get: (key) => handlerRef.current.get(key),
     executeAll: (index: number) => {
-      console.log("execute", index, handlerRef.current);
-      for (const handler of handlerRef.current.values()){
+      for (const handler of handlerRef.current.values()) {
         handler(index);
       }
     },

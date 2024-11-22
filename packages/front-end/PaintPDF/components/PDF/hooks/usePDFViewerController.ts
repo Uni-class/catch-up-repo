@@ -66,7 +66,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         ) {
           return newRenderOptions;
         } else {
-          console.log("ignore render update");
           return renderOptions;
         }
       });
@@ -262,7 +261,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
       }
       event.preventDefault();
       if (event.buttons === 1) {
-        console.log(event.movementX, event.movementY);
         pdfViewerController.drag({
           deltaX: -event.movementX,
           deltaY: -event.movementY,
@@ -304,7 +302,6 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
 
   const itemClickHandler = useCallback(
     ({ pageIndex, destination }: PDFItemClickHandlerArguments) => {
-      console.log(`Target Page Index: ${pageIndex}`, destination);
       if (itemClickEnabled) {
         setPageIndex(pageIndex);
       }
