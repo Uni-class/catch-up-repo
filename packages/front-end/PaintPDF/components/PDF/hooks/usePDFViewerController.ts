@@ -223,10 +223,14 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
           setControlModeForced(true);
           break;
         case "ArrowLeft":
-          pdfViewerController.moveToPreviousPage();
+          if (!controlLockEnabled || controlModeForced) {
+            pdfViewerController.moveToPreviousPage();
+          }
           break;
         case "ArrowRight":
-          pdfViewerController.moveToNextPage();
+          if (!controlLockEnabled || controlModeForced) {
+            pdfViewerController.moveToNextPage();
+          }
           break;
         default:
           break;
