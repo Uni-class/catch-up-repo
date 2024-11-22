@@ -35,7 +35,7 @@ export default function ParticipantSessionTableFetcher() {
   const data = response?.data;
   const status = isLoading
     ? "loading"
-    : isError || !Array.isArray(data)
+    : isError || !Array.isArray(data?.sessions)
       ? "error"
       : null;
   return (

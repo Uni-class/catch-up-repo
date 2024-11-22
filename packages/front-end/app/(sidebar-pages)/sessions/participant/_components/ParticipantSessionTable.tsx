@@ -22,15 +22,14 @@ const DataEmptyPlaceholder = (
       justifyContent: "center",
       alignItems: "center",
       gap: "0.5em",
+      color: "gray.500",
     })}
   >
     <p>표시할 데이터가 없습니다.</p>
     <p>새로운 {PROJECT_NAME} 세션에 참가해 보세요!</p>
     <LinkButton
-      className={css({
-        padding: "0.5em 0.8em",
-      })}
       href="/sessions/join"
+      startIcon={<JoinIcon width={"1em"} height={"1em"} />}
     >
       새 세션 참여하기
     </LinkButton>
