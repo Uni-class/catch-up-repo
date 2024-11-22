@@ -378,6 +378,32 @@ export const usePDFPainterController = ({
       isPaintMode: () => {
         return isPaintMode();
       },
+      canUndo: () => {
+        Object.values(editors.current).forEach((editor: Editor) => {
+          if (editor.getCanUndo()) {
+            return true;
+          }
+        });
+        return false;
+      },
+      undo: () => {
+        Object.values(editors.current).forEach((editor: Editor) => {
+          editor.undo();
+        });
+      },
+      canRedo: () => {
+        Object.values(editors.current).forEach((editor: Editor) => {
+          if (editor.getCanRedo()) {
+            return true;
+          }
+        });
+        return false;
+      },
+      redo: () => {
+        Object.values(editors.current).forEach((editor: Editor) => {
+          editor.redo();
+        });
+      },
       registerEditor: registerEditor,
       unregisterEditor: unregisterEditor,
       getEditor: getEditor,

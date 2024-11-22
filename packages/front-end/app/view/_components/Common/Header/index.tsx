@@ -9,6 +9,8 @@ import RegionSelectIcon from "@/public/icons/region-select.svg";
 import PenIcon from "@/public/icons/pen.svg";
 import EraserIcon from "@/public/icons/eraser.svg";
 import TypeIcon from "@/public/icons/type.svg";
+import UndoIcon from "@/public/icons/undo.svg";
+import RedoIcon from "@/public/icons/redo.svg";
 import DownloadIcon from "@/public/icons/download.svg";
 import SettingsIcon from "@/public/icons/settings.svg";
 import ShareIcon from "@/public/icons/share.svg";
@@ -145,6 +147,12 @@ export function Header({
                 ></div>
               </ToolButton>
             </HeaderTooltipButton>
+            <ToolButton onClick={() => pdfPainterController.undo()}>
+              <UndoIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton onClick={() => pdfPainterController.redo()}>
+              <RedoIcon width={"1em"} height={"1em"} />
+            </ToolButton>
           </ToolPanel>
           <div
             className={css({
