@@ -55,6 +55,7 @@ export const usePDFPainterController = ({
   useEffect(() => {
     Object.values(editors.current).forEach((editor: Editor) => {
       editor.selectNone();
+      window.getSelection()?.removeAllRanges();
       pdfViewerController.setControlLockEnabled(currentTool !== "drag");
       switch (currentTool) {
         case "text-select":
