@@ -17,7 +17,7 @@ import { Session } from "@/schema/backend.schema";
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
   const [searchSessionCode, setSearchSessionCode] = useState<string | null>(
-    null,
+    null
   );
   const router = useRouter();
 
@@ -50,7 +50,7 @@ export default function Page() {
       return;
     }
     router.push(
-      router.getURLString("/view", { id: `${sessionInfo.sessionId}` }),
+      router.getURLString("/view", { id: `${sessionInfo.sessionId}` })
     );
   }, [router, sessionInfo]);
 
@@ -80,75 +80,43 @@ export default function Page() {
           padding: "3rem 4.16rem",
         })}
       >
-        {sessionInfo ? (
-          <div
+        <div
+          className={css({
+            flex: 1,
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+          })}
+        >
+          <Label htmlFor="session-code">참여 코드</Label>
+          <LineEdit
             className={css({
-              flex: 1,
-              display: "flex",
-              gap: "1rem",
-              alignItems: "center",
+              flexGrow: 1,
+              height: "inherit",
             })}
-          >
-            <Label>세션명</Label>
-            <LineEdit
-              className={css({
-                flexGrow: 1,
-                height: "inherit",
-              })}
-              disabled={true}
-              value={sessionInfo.sessionName}
-            />
-            <Button
-              className={css({
-                height: "inherit",
-              })}
-              onClick={() => {
-                joinSession();
-              }}
-              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
-            >
-              접속하기
-            </Button>
-          </div>
-        ) : (
-          <div
-            className={css({
-              flex: 1,
-              display: "flex",
-              gap: "1rem",
-              alignItems: "center",
-            })}
-          >
-            <Label htmlFor="session-code">참여 코드</Label>
-            <LineEdit
-              className={css({
-                flexGrow: 1,
-                height: "inherit",
-              })}
-              placeholder="참여 코드를 입력해 주세요."
-              value={sessionCode}
-              onChange={(event) => setSessionCode(event.target.value)}
-              name="session-code"
-              id="session-code"
-              onKeyDown={(event) => {
-                if (event.key == "Enter") {
-                  fetchSessionInfo();
-                }
-              }}
-            />
-            <Button
-              className={css({
-                height: "inherit",
-              })}
-              onClick={() => {
+            placeholder="참여 코드를 입력해 주세요."
+            value={sessionCode}
+            onChange={(event) => setSessionCode(event.target.value)}
+            name="session-code"
+            id="session-code"
+            onKeyDown={(event) => {
+              if (event.key == "Enter") {
                 fetchSessionInfo();
-              }}
-              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
-            >
-              접속하기
-            </Button>
-          </div>
-        )}
+              }
+            }}
+          />
+          <Button
+            className={css({
+              height: "inherit",
+            })}
+            onClick={() => {
+              fetchSessionInfo();
+            }}
+            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+          >
+            접속하기
+          </Button>
+        </div>
       </div>
     </div>
   );
