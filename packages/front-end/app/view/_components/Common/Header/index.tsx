@@ -1,7 +1,8 @@
 import { PDFPainterController } from "@/PaintPDF/components";
 import LogoTextIcon from "@/public/logo-horizontal-white.svg";
 import { css } from "@/styled-system/css";
-import { HeaderControlButton } from "./HeaderControlButton";
+import { ToolPanel } from "@/app/view/_components/Common/Header/ToolPanel";
+import { ToolButton } from "./ToolButton";
 import PointerIcon from "@/public/icons/pointer.svg";
 import MoveIcon from "@/public/icons/move.svg";
 import RegionSelectIcon from "@/public/icons/region-select.svg";
@@ -65,52 +66,44 @@ export function Header({
       </a>
       {pdfPainterController ? (
         <>
-          <div
-            className={css({
-              display: "flex",
-              alignItems: "center",
-              flex: 1,
-              paddingLeft: "7rem",
-              gap: "0.8rem",
-            })}
-          >
-            <HeaderControlButton
+          <ToolPanel>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("text-select")}
               disabled={pdfPainterController.getCurrentTool() === "text-select"}
             >
-              <PointerIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-            <HeaderControlButton
+              <PointerIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("drag")}
               disabled={pdfPainterController.getCurrentTool() === "drag"}
             >
-              <MoveIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-            <HeaderControlButton
+              <MoveIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("area-select")}
               disabled={pdfPainterController.getCurrentTool() === "area-select"}
             >
-              <RegionSelectIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-            <HeaderControlButton
+              <RegionSelectIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("pen")}
               disabled={pdfPainterController.getCurrentTool() === "pen"}
             >
-              <PenIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-            <HeaderControlButton
+              <PenIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("eraser")}
               disabled={pdfPainterController.getCurrentTool() === "eraser"}
             >
-              <EraserIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-            <HeaderControlButton
+              <EraserIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+            <ToolButton
               onClick={() => pdfPainterController.setCurrentTool("text")}
               disabled={pdfPainterController.getCurrentTool() === "text"}
             >
-              <TypeIcon width={"1.2em"} height={"1.2em"} />
-            </HeaderControlButton>
-          </div>
+              <TypeIcon width={"1em"} height={"1em"} />
+            </ToolButton>
+          </ToolPanel>
           <div
             className={css({
               display: "flex",

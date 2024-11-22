@@ -1,6 +1,6 @@
 import { styled } from "@/styled-system/jsx";
 
-export const HeaderControlButton = styled("button", {
+export const ToolButton = styled("button", {
   base: {
     width: "3rem",
     height: "3rem",
@@ -11,7 +11,7 @@ export const HeaderControlButton = styled("button", {
     bg: "primary.400",
     fontSize: "1.08rem",
     cursor: "pointer",
-    borderRadius: "0.5rem",
+    borderRadius: "100%",
     _disabled: {
       bg: "secondary.200",
       color: "black",
