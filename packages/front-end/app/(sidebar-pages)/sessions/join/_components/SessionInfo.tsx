@@ -57,8 +57,8 @@ export const SessionInfo = ({ sessionCode }: PropType) => {
         }}
         startIcon={<SessionIcon width={"1.5em"} height={"1.5em"} />}
         className={css({
-          //width: "100%",
-          
+          width: "100%",
+          justifyContent:"center",
         })}
       >
         접속하기

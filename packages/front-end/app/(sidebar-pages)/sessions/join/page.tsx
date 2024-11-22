@@ -18,24 +18,8 @@ import { SessionInfo } from "./_components/SessionInfo";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
-  const [searchSessionCode, setSearchSessionCode] = useState<string | null>(
-    null
-  );
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  const { data, isLoading, isError } = useQuery<AxiosResponse<Session>>({
-    queryKey: ["session", "code", searchSessionCode],
-    queryFn: async () => {
-      return await apiClient.get("/session", {
-        params: {
-          code: searchSessionCode,
-        },
-      });
-    },
-  });
-
-  const sessionInfo = data?.data;
 
   const fetchSessionInfo = useCallback(() => {
     if (sessionCode.trim() === "") {
@@ -47,15 +31,6 @@ export default function Page() {
     }
     setIsOpen(true);
   }, [sessionCode]);
-
-  const joinSession = useCallback(() => {
-    if (!sessionInfo) {
-      return;
-    }
-    router.push(
-      router.getURLString("/view", { id: `${sessionInfo.sessionId}` })
-    );
-  }, [router, sessionInfo]);
 
   return (
     <div
