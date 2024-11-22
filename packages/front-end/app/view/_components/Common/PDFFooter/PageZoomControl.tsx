@@ -35,10 +35,10 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
         })}
         startIcon={<MinusIcon width={"1em"} height={"1em"} />}
         onClick={() => {
-          const scale = currentRenderOptions.scale - 0.1;
-          pdfPainterController.setRenderOptions({
-            ...currentRenderOptions,
-            scale,
+          pdfPainterController.zoom({
+            offsetX: pdfPainterController.getRenderOptions().width / 2,
+            offsetY: pdfPainterController.getRenderOptions().height / 2,
+            scaleDelta: -0.1,
           });
         }}
       >
@@ -52,10 +52,12 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
         })}
       >
         {formatNumber(currentRenderOptions.scale)}
-        <span className={css({
-            fontWeight:400
-        })}>
-            %
+        <span
+          className={css({
+            fontWeight: 400,
+          })}
+        >
+          %
         </span>
       </p>
       <Button
@@ -68,10 +70,10 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
         })}
         startIcon={<PlusIcon width={"1em"} height={"1em"} />}
         onClick={() => {
-          const scale = currentRenderOptions.scale + 0.1;
-          pdfPainterController.setRenderOptions({
-            ...currentRenderOptions,
-            scale,
+          pdfPainterController.zoom({
+            offsetX: pdfPainterController.getRenderOptions().width / 2,
+            offsetY: pdfPainterController.getRenderOptions().height / 2,
+            scaleDelta: 0.1,
           });
         }}
       >
