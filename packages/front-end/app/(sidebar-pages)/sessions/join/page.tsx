@@ -56,6 +56,7 @@ export default function Page() {
           flexGrow: 1,
           justifyContent: "center",
           padding: "3rem 4.16rem",
+          maxWidth: "60rem",
         })}
       >
         <div
