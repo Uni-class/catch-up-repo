@@ -97,8 +97,17 @@ export default function Page() {
         </div>
       </div>
       {isOpen && (
-        <ModalContainer onClose={()=>{setIsOpen(false)}}>
-          <SessionInfo sessionCode={sessionCode}/>
+        <ModalContainer
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        >
+          <SessionInfo
+            sessionCode={sessionCode}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
         </ModalContainer>
       )}
     </div>

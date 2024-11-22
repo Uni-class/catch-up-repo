@@ -1,7 +1,7 @@
 import { SessionResponseDto } from "@/schema/backend.schema";
 import { css } from "@/styled-system/css";
 import { apiClient } from "@/utils/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { ReactNode } from "react";
 import { Label } from "@/components/Label";
@@ -10,13 +10,18 @@ import Divider from "@/components/Divider";
 import Button from "@/components/Button/Button";
 import { useRouter } from "@/hook/useRouter";
 import SessionIcon from "@/public/icons/session.svg";
+import CloseIcon from "@/public/icons/close.svg";
+import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
+import Placeholder from "@/components/Placeholder/Placeholder";
 
 interface PropType {
+  onClose: () => void;
   sessionCode: string;
 }
 
-export const SessionInfo = ({ sessionCode }: PropType) => {
+export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery<
     AxiosResponse<SessionResponseDto>
   >({
@@ -29,10 +34,46 @@ export const SessionInfo = ({ sessionCode }: PropType) => {
       });
     },
   });
-  const sessionData = data?.data;
+  const sessionData = data?.data as SessionResponseDto;
 
-  if (sessionData === undefined) {
-    return <></>;
+  if (isLoading) {
+    return (
+      <PlaceholderLayout width={"100%"} gap="1.5rem" type="vertical">
+        <Placeholder width={"100%"} height={"1.5rem"} />
+        <Placeholder width={"100%"} height={"1.5rem"} />
+        <Divider />
+        <Placeholder width={"100%"} height={"1.5rem"} />
+      </PlaceholderLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <>
+        <h1 className={css({ textAlign: "center" })}>오류가 발생했어요.</h1>
+        <Button
+          onClick={() => {
+            queryClient.invalidateQueries({
+              queryKey: ["session", "code", sessionCode],
+              exact: true,
+            });
+          }}
+        >
+          재시도하기
+        </Button>
+        <Divider />
+        <Button
+          className={css({ width: "100%", justifyContent: "center" })}
+          color="dangerous"
+          startIcon={<CloseIcon width={"1.5em"} height={"1.5em"} />}
+          onClick={() => {
+            onClose();
+          }}
+        >
+          닫기
+        </Button>
+      </>
+    );
   }
 
   return (
@@ -58,7 +99,7 @@ export const SessionInfo = ({ sessionCode }: PropType) => {
         startIcon={<SessionIcon width={"1.5em"} height={"1.5em"} />}
         className={css({
           width: "100%",
-          justifyContent:"center",
+          justifyContent: "center",
         })}
       >
         접속하기
