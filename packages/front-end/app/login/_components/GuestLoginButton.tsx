@@ -2,6 +2,8 @@ import { css } from "@/styled-system/css";
 import UsersIcon from "@/public/icons/users.svg";
 import { apiClient } from "@/utils/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "@/hook/useRouter";
 
 const getUUID = () => {
     const existUUID = localStorage.getItem("catchup-guest-id")
@@ -14,19 +16,24 @@ const getUUID = () => {
 }
 
 export const GuestLoginButton = () => {
+  const router = useRouter();
   const queryClient = useQueryClient()
   const profileMutation = useMutation({
     mutationFn: async (id:string) => {
-      const res = await apiClient.post("/auth/guest", {id:id})
+      const res = await apiClient.post("/auth/guest", {id:id},{
+        validateStatus: (status) => {
+          return status === 302
+        }
+      })
       return res.data
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user","profile"]
       })
-      // console.log(data)
+      router.push("/dashboard")
     },
-    onError: (error) => {
+    onError: (error:AxiosError<any>) => {
       alert("게스트 로그인중 오류가 발생했어요.")
     }
   })
