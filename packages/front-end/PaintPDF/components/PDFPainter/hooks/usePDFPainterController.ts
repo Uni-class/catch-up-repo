@@ -360,6 +360,9 @@ export const usePDFPainterController = ({
       getCurrentColor: () => {
         return currentColor;
       },
+      getCurrentColorValue: () => {
+        return DefaultColorThemePalette.lightMode[currentColor].solid;
+      },
       setCurrentColor: (paintColor: PaintColor) => {
         setCurrentColor(paintColor);
       },

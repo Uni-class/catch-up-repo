@@ -38,6 +38,7 @@ export type PDFPainterController = {
   getCurrentTool: () => PaintTool;
   setCurrentTool: (paintTool: PaintTool) => void;
   getCurrentColor: () => PaintColor;
+  getCurrentColorValue: () => string;
   setCurrentColor: (paintColor: PaintColor) => void;
   getAvailableColors: () => readonly { name: PaintColor; value: string }[];
   isPaintMode: () => boolean;

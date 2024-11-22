@@ -41,6 +41,7 @@ export function Header({
   downloadRender,
   modeRender,
 }: PropType) {
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const [isModeOpen, setIsModeOpen] = useState(false);
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   return (
@@ -111,7 +112,33 @@ export function Header({
             >
               <TypeIcon width={"1em"} height={"1em"} />
             </ToolButton>
-            <ColorPicker pdfPainterController={pdfPainterController} />
+            <HeaderTooltipButton
+              onClick={() => {
+                setShowColorPicker(!showColorPicker);
+              }}
+              tooltip={
+                showColorPicker && (
+                  <ColorPicker
+                    pdfPainterController={pdfPainterController}
+                    setWindowVisible={setShowColorPicker}
+                  />
+                )
+              }
+            >
+              <ToolButton>
+                <div
+                  className={css({
+                    width: "2em",
+                    height: "2em",
+                    borderRadius: "100%",
+                  })}
+                  style={{
+                    backgroundColor:
+                      pdfPainterController.getCurrentColorValue(),
+                  }}
+                ></div>
+              </ToolButton>
+            </HeaderTooltipButton>
           </ToolPanel>
           <div
             className={css({
@@ -122,14 +149,14 @@ export function Header({
             })}
           >
             <HeaderTooltipButton
-              text={"공유"}
               startIcon={<ShareIcon width={"1rem"} height={"1rem"} />}
               onClick={() => {
                 overlay.open(() => codeRender, { overlayId: "code-overlay" });
               }}
-            />
+            >
+              공유
+            </HeaderTooltipButton>
             <HeaderTooltipButton
-              text={"모드"}
               startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />}
               onClick={() => {
                 setIsModeOpen(!isModeOpen);
@@ -141,9 +168,10 @@ export function Header({
                   </ModeContainer>
                 )
               }
-            />
+            >
+              모드
+            </HeaderTooltipButton>
             <HeaderTooltipButton
-              text={"다운로드"}
               startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />}
               onClick={() => {
                 setIsDownloadOpen(!isDownloadOpen);
@@ -155,7 +183,9 @@ export function Header({
                   </ModeContainer>
                 )
               }
-            />
+            >
+              다운로드
+            </HeaderTooltipButton>
           </div>
         </>
       ) : null}

@@ -9,14 +9,14 @@ export const ToolButton = styled("button", {
     justifyContent: "center",
     color: "white",
     bg: "primary.400",
-    fontSize: "1.08rem",
+    fontSize: "1rem",
     cursor: "pointer",
     borderRadius: "100%",
+    overflow: "hidden",
     _disabled: {
       bg: "secondary.200",
       color: "black",
-      border: "1px solid",
-      borderColor: "black",
+      border: "1px solid black",
       cursor: "default",
       _hover: {
         color: "black",
