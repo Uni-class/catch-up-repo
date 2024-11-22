@@ -7,7 +7,6 @@ import { useParticipantSocket } from "../../_hooks/useParticipantSocket";
 import {
   PainterInstanceGenerator,
   PDFPainter,
-  PDFPainterControlBar,
   usePDFPainterController,
   usePDFPainterInstanceController,
 } from "@/PaintPDF/components";
@@ -19,7 +18,6 @@ import { ModeControl } from "../Common/Mode";
 import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
 import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
 import { usePostDraw } from "../../_hooks/usePostDraw";
-import Button from "@/components/Button/Button";
 import { ParticipantViewerDownload } from "../Common/Download";
 import { Header } from "../Common/Header";
 import { PDFFooter } from "../Common/PDFFooter";
@@ -61,15 +59,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
     pdfPainterControllerHook.pdfPainterController,
-    isChaseMode
+    isChaseMode,
   );
   useEnsureVisibleWhileDraw("Participant", pdfPainterController);
-  const [showCodeOverlay, setShowCodeOverlay] = useState(false);
+
   usePostDraw(
     sessionId,
     fileId,
     pdfPainterParticipantInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterController
+    pdfPainterController,
   );
   useLoadDraw(
     sessionId,
@@ -119,7 +117,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Host",
-                  e.target.checked
+                  e.target.checked,
                 );
               }}
             />
@@ -130,7 +128,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
                   "Participant",
-                  e.target.checked
+                  e.target.checked,
                 );
               }}
             />

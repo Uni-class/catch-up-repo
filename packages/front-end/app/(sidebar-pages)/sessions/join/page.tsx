@@ -9,21 +9,50 @@ import { useRouter } from "@/hook/useRouter";
 import { routeTitle } from "@/const/routeTitle";
 import JoinIcon from "@/public/icons/join.svg";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import { apiClient } from "@/utils/axios";
+import { Session } from "@/schema/backend.schema";
 
 export default function Page() {
   const [sessionCode, setSessionCode] = useState("");
+  const [searchSessionCode, setSearchSessionCode] = useState<string | null>(
+    null,
+  );
   const router = useRouter();
 
-  const joinSession = useCallback(() => {
+  const { data, isLoading, isError } = useQuery<AxiosResponse<Session>>({
+    queryKey: ["session", "code", searchSessionCode],
+    queryFn: async () => {
+      return await apiClient.get("/session", {
+        params: {
+          code: searchSessionCode,
+        },
+      });
+    },
+  });
+
+  const sessionInfo = data?.data;
+
+  const fetchSessionInfo = useCallback(() => {
     if (sessionCode.trim() === "") {
-      toast("세션 코드를 입력해주세요.", {
+      toast("참여 코드를 입력해주세요.", {
         type: "error",
         position: "top-center",
       });
       return;
     }
-    router.push(router.getURLString("/view", { id: `${sessionCode}` }));
-  }, [sessionCode, router]);
+    setSearchSessionCode(sessionCode);
+  }, [sessionCode]);
+
+  const joinSession = useCallback(() => {
+    if (!sessionInfo) {
+      return;
+    }
+    router.push(
+      router.getURLString("/view", { id: `${sessionInfo.sessionId}` }),
+    );
+  }, [router, sessionInfo]);
 
   return (
     <div
@@ -51,43 +80,75 @@ export default function Page() {
           padding: "3rem 4.16rem",
         })}
       >
-        <div
-          className={css({
-            flex: 1,
-            display: "flex",
-            gap: "1rem",
-            alignItems: "center",
-          })}
-        >
-          <Label htmlFor="session-code">세션 코드</Label>
-          <LineEdit
+        {sessionInfo ? (
+          <div
             className={css({
-              flexGrow: 1,
-              height: "inherit",
+              flex: 1,
+              display: "flex",
+              gap: "1rem",
+              alignItems: "center",
             })}
-            placeholder="세션 코드를 입력해 주세요."
-            value={sessionCode}
-            onChange={(event) => setSessionCode(event.target.value)}
-            name="session-code"
-            id="session-code"
-            onKeyDown={(event) => {
-              if (event.key == "Enter") {
-                joinSession();
-              }
-            }}
-          />
-          <Button
-            className={css({
-              height: "inherit",
-            })}
-            onClick={() => {
-              joinSession();
-            }}
-            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
           >
-            {"세션 접속"}
-          </Button>
-        </div>
+            <Label>세션명</Label>
+            <LineEdit
+              className={css({
+                flexGrow: 1,
+                height: "inherit",
+              })}
+              disabled={true}
+              value={sessionInfo.sessionName}
+            />
+            <Button
+              className={css({
+                height: "inherit",
+              })}
+              onClick={() => {
+                joinSession();
+              }}
+              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+            >
+              접속하기
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={css({
+              flex: 1,
+              display: "flex",
+              gap: "1rem",
+              alignItems: "center",
+            })}
+          >
+            <Label htmlFor="session-code">참여 코드</Label>
+            <LineEdit
+              className={css({
+                flexGrow: 1,
+                height: "inherit",
+              })}
+              placeholder="참여 코드를 입력해 주세요."
+              value={sessionCode}
+              onChange={(event) => setSessionCode(event.target.value)}
+              name="session-code"
+              id="session-code"
+              onKeyDown={(event) => {
+                if (event.key == "Enter") {
+                  fetchSessionInfo();
+                }
+              }}
+            />
+            <Button
+              className={css({
+                height: "inherit",
+              })}
+              onClick={() => {
+                fetchSessionInfo();
+              }}
+              startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+            >
+              접속하기
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
