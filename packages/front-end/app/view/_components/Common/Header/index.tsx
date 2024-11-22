@@ -2,9 +2,12 @@ import { PDFPainterController } from "@/PaintPDF/components";
 import LogoTextIcon from "@/public/logo-horizontal-white.svg";
 import { css } from "@/styled-system/css";
 import { HeaderControlButton } from "./HeaderControlButton";
-import BrushIcon from "@/public/icons/brush.svg";
-import ViewIcon from "@/public/icons/view.svg";
-import MoveIcon from "@/public/icons/zoom.svg";
+import PointerIcon from "@/public/icons/pointer.svg";
+import MoveIcon from "@/public/icons/move.svg";
+import RegionSelectIcon from "@/public/icons/region-select.svg";
+import PenIcon from "@/public/icons/pen.svg";
+import EraserIcon from "@/public/icons/eraser.svg";
+import TypeIcon from "@/public/icons/type.svg";
 import DownloadIcon from "@/public/icons/download.svg";
 import SettingsIcon from "@/public/icons/settings.svg";
 import ShareIcon from "@/public/icons/share.svg";
@@ -75,7 +78,7 @@ export function Header({
               onClick={() => pdfPainterController.setCurrentTool("text-select")}
               disabled={pdfPainterController.getCurrentTool() === "text-select"}
             >
-              <ViewIcon width={"1.2em"} height={"1.2em"} />
+              <PointerIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("drag")}
@@ -87,25 +90,25 @@ export function Header({
               onClick={() => pdfPainterController.setCurrentTool("area-select")}
               disabled={pdfPainterController.getCurrentTool() === "area-select"}
             >
-              영역 선택
+              <RegionSelectIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("pen")}
               disabled={pdfPainterController.getCurrentTool() === "pen"}
             >
-              <BrushIcon width={"1.2em"} height={"1.2em"} />
+              <PenIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("eraser")}
               disabled={pdfPainterController.getCurrentTool() === "eraser"}
             >
-              지우개
+              <EraserIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
             <HeaderControlButton
               onClick={() => pdfPainterController.setCurrentTool("text")}
               disabled={pdfPainterController.getCurrentTool() === "text"}
             >
-              텍스트
+              <TypeIcon width={"1.2em"} height={"1.2em"} />
             </HeaderControlButton>
           </div>
           <div
