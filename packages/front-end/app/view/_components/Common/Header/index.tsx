@@ -114,6 +114,12 @@ export function Header({
             </ToolButton>
             <HeaderTooltipButton
               onClick={() => {
+                if (
+                  pdfPainterController.getCurrentTool() !== "pen" &&
+                  pdfPainterController.getCurrentTool() !== "text"
+                ) {
+                  pdfPainterController.setCurrentTool("pen");
+                }
                 setShowColorPicker(!showColorPicker);
               }}
               tooltip={
