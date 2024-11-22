@@ -9,6 +9,8 @@
     "build": "yarn prepare & next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier . --write",
+    "format-check": "prettier . --check",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -56,6 +58,7 @@
     "eslint-config-next": "14.2.4",
     "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8",
+    "prettier": "3.3.3",
     "storybook": "^8.3.5",
     "typescript": "^5"
   },

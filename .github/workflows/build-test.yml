@@ -39,6 +39,9 @@ jobs:
         run: yarn workspaces focus front-end
         env:
           YARN_ENABLE_HARDENED_MODE: 0
+      
+      - name: Check format
+        run: yarn front-end run format-check
 
       - name: Build front-end
         run: yarn front-end run build
