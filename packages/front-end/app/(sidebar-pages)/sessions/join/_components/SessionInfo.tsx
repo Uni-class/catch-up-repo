@@ -41,6 +41,7 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
       <PlaceholderLayout width={"100%"} gap="1.5rem" type="vertical">
         <Placeholder width={"100%"} height={"1.5rem"} />
         <Placeholder width={"100%"} height={"1.5rem"} />
+        <Placeholder width={"100%"} height={"1.5rem"} />
         <Divider />
         <Placeholder width={"100%"} height={"1.5rem"} />
       </PlaceholderLayout>
@@ -50,12 +51,13 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
   if (isError) {
     return (
       <>
-        <h1 className={css({ textAlign: "center" })}>오류가 발생했어요.</h1>
+        <p className={css({ textAlign: "center" })}>오류가 발생했어요.</p>
         <Button
           onClick={() => {
-            queryClient.invalidateQueries({
+            queryClient.refetchQueries({
               queryKey: ["session", "code", sessionCode],
               exact: true,
+              type: "active",
             });
           }}
         >

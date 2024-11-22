@@ -45,15 +45,18 @@ export const ModalContainer = ({ onClose, children }: PropType) => {
           flexDirection: "column",
           gap: "1.25rem",
           alignItems: "flex-start",
-          width:"30rem",
+          width: "30rem",
         })}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
       >
         <div
           className={css({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            width:"100%",
+            width: "100%",
           })}
         >
           <h1
@@ -69,7 +72,7 @@ export const ModalContainer = ({ onClose, children }: PropType) => {
             onClick={() => {
               onClose();
             }}
-            className={css({cursor:"pointer"})}
+            className={css({ cursor: "pointer" })}
           >
             <CloseIcon width={"1.5rem"} height={"1.5rem"} color={"#000"} />
           </button>
