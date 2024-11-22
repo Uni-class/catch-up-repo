@@ -31,7 +31,7 @@ export function PreviewPages({
         borderRight: "1px solid",
         borderColor: "gray.300",
         display: "flex",
-        overflow: "scroll",
+        overflowY: "scroll",
         justifyContent: "center",
         bg: "gray.100",
         padding: "1rem 0",
@@ -103,12 +103,12 @@ function PageElement({
         onClick={onClick}
         className={css({
           cursor: "pointer",
-          border: currentIndex === index ?  "2px solid" : "",
-          borderColor:  "white",
+          border: currentIndex === index ? "2px solid" : "",
+          borderColor: "white",
           outline: currentIndex === index ? "3px solid" : "",
           outlineColor: "primary.500",
           position: "relative",
-          borderRadius:"0.3rem",
+          borderRadius: "0.3rem",
         })}
       >
         <Page
@@ -143,9 +143,7 @@ function PageElement({
           renderTextLayer={false}
           renderAnnotationLayer={false}
         />
-        {isBadgeVisible && (
-            badgeContent
-        )}
+        {isBadgeVisible && badgeContent}
       </div>
       <p className={css({ textAlign: "center" })}>{index + 1}</p>
     </div>
