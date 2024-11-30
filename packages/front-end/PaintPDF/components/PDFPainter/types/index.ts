@@ -1,4 +1,10 @@
-import { Editor, TLEditorSnapshot, IdOf, TLRecord } from "tldraw";
+import {
+  Editor,
+  TLEditorSnapshot,
+  IdOf,
+  TLRecord,
+  defaultColorNames,
+} from "tldraw";
 
 import {
   PDFDocument,
@@ -13,7 +19,15 @@ import {
   PDFPainterEventHandlerReturn,
 } from "../hooks/usePDFPainterEventHandler";
 
-export type PaintMode = "default" | "move" | "draw";
+export type PaintTool =
+  | "text-select"
+  | "drag"
+  | "area-select"
+  | "pen"
+  | "eraser"
+  | "text";
+
+export type PaintColor = (typeof defaultColorNames)[number];
 
 export type EditorSnapshot = TLEditorSnapshot;
 
@@ -22,23 +36,32 @@ export type PainterShapeId = IdOf<TLRecord>;
 export type PainterShape = TLRecord;
 
 export type PDFPainterController = {
-  getPaintMode: () => PaintMode;
-  setPaintMode: (paintMode: PaintMode) => void;
+  getCurrentTool: () => PaintTool;
+  setCurrentTool: (paintTool: PaintTool) => void;
+  getCurrentColor: () => PaintColor;
+  getCurrentColorValue: () => string;
+  setCurrentColor: (paintColor: PaintColor) => void;
+  getAvailableColors: () => readonly { name: PaintColor; value: string }[];
+  isPaintMode: () => boolean;
+  canUndo: () => boolean;
+  undo: () => void;
+  canRedo: () => boolean;
+  redo: () => void;
   registerEditor: (editorId: string, editor: Editor) => void;
   unregisterEditor: (editorId: string) => void;
   getEditor: (editorId: string) => Editor | null;
   getEditorSnapshot: (
     editorId: string,
-    pageIndex: number
+    pageIndex: number,
   ) => EditorSnapshot | null;
   getEditorSnapshotFromStorage: (
     editorId: string,
-    pageIndex: number
+    pageIndex: number,
   ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
     pageIndex: number,
-    snapshot: EditorSnapshot
+    snapshot: EditorSnapshot,
   ) => void;
   clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
   isAutoSaveEnabled: () => boolean;
@@ -75,12 +98,12 @@ export type PDFPainterInstanceController = {
   addPaintElement: (elementData: PainterShape[]) => void;
   updatePaintElement: (
     elementId: PainterShapeId,
-    elementData: PainterShape
+    elementData: PainterShape,
   ) => void;
   removePaintElement: (elementIds: PainterShapeId[]) => void;
   updatePaintElementByGenerator: (
     elementId: PainterShapeId,
-    elementGenerator: (previousElementData: PainterShape) => PainterShape
+    elementGenerator: (previousElementData: PainterShape) => PainterShape,
   ) => void;
   getInstanceId: () => string;
 };

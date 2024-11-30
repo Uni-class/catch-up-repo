@@ -8,14 +8,10 @@ import {
   ReactNode,
 } from "react";
 import { PDFRenderSize } from "../PDF/types";
-import {
-  PDFPainterControllerHook,
-  PDFPainterInstanceControllerHook,
-} from "./types";
+import { PDFPainterControllerHook } from "./types";
 import { usePDFPainterController } from "./hooks/usePDFPainterController";
 import { PDFViewer } from "../PDF/PDFViewer";
 import { PainterInstance } from "./PainterInstance";
-import { PDFPainterControlBar } from "./PDFPainterControlBar";
 const PDFPainterComponent = ({
   painterId,
   pdfDocumentURL,
@@ -86,12 +82,12 @@ const PDFPainterComponent = ({
       return (
         pdfPainterController.getInstanceHidden(instanceId) &&
         !(
-          pdfPainterController.getPaintMode() === "draw" &&
+          pdfPainterController.isPaintMode() &&
           pdfPainterController.isIdEnsureVisibleWhileDraw(instanceId)
         )
       );
     },
-    [pdfPainterController]
+    [pdfPainterController],
   );
 
   return (
@@ -144,7 +140,8 @@ const PDFPainterComponent = ({
                     width: pdfPainterController.getRenderSize().width,
                     height: pdfPainterController.getRenderSize().height,
                     pointerEvents:
-                      pdfPainterController.getPaintMode() === "draw"
+                      !pdfPainterController.isControlModeForced() &&
+                      pdfPainterController.isPaintMode()
                         ? "unset"
                         : "none",
                     visibility: isInstanceHidden(element.props.instanceId)
@@ -156,7 +153,7 @@ const PDFPainterComponent = ({
                     instanceId={element.props.instanceId}
                     readOnly={
                       element.props.readOnly ||
-                      pdfPainterController.getPaintMode() !== "draw"
+                      !pdfPainterController.isPaintMode()
                     }
                     pdfPainterControllerHook={pdfPainterControllerHook}
                     customPdfPainterInstanceControllerHook={

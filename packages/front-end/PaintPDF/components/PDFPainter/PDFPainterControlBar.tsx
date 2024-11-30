@@ -1,4 +1,4 @@
-import { memo, ReactNode, useEffect, useState } from "react";
+import { memo, ReactNode, useState } from "react";
 import type { PDFPainterController } from "./types";
 import ToolPointerIcon from "@/PaintPDF/assets/icons/tool-pointer.svg";
 import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
@@ -24,12 +24,6 @@ const PDFPainterControlBarComponent = ({
   showCodeOverlay: boolean;
   setShowCodeOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  useEffect(() => {
-    pdfPainterController.setDragModeEnabled(
-      pdfPainterController.getPaintMode() === "move"
-    );
-  }, [pdfPainterController]);
-
   const [showModeToolTip, setShowModeToolTip] = useState(false);
   const [showDownloadToolTip, setShowDownloadToolTip] = useState(false);
 
@@ -53,20 +47,20 @@ const PDFPainterControlBarComponent = ({
         })}
       >
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("default")}
-          disabled={pdfPainterController.getPaintMode() === "default"}
+          onClick={() => pdfPainterController.setCurrentTool("text-select")}
+          disabled={pdfPainterController.getCurrentTool() === "text-select"}
         >
           <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("move")}
-          disabled={pdfPainterController.getPaintMode() === "move"}
+          onClick={() => pdfPainterController.setCurrentTool("drag")}
+          disabled={pdfPainterController.getCurrentTool() === "drag"}
         >
           <ToolHandIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setPaintMode("draw")}
-          disabled={pdfPainterController.getPaintMode() === "draw"}
+          onClick={() => pdfPainterController.setCurrentTool("pen")}
+          disabled={pdfPainterController.getCurrentTool() === "pen"}
         >
           <ToolEditIcon width={"1.6em"} height={"1.6em"} />
         </PDFPainterControlBarButton>
@@ -134,7 +128,10 @@ const PDFPainterControlBarComponent = ({
             <p>{showDownloadToolTip ? "닫기" : "다운로드"}</p>
           </PDFPainterControlBarButton>
           {showDownloadToolTip && (
-            <ModeContainer setVisible={setShowDownloadToolTip} title="다운로드 옵션">
+            <ModeContainer
+              setVisible={setShowDownloadToolTip}
+              title="다운로드 옵션"
+            >
               {downloadComponent}
             </ModeContainer>
           )}

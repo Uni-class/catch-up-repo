@@ -1,22 +1,22 @@
 import { styled } from "@/styled-system/jsx";
 
-export const HeaderControlButton = styled("button", {
+export const ToolButton = styled("button", {
   base: {
-    width: "1.92rem",
-    height: "1.92rem",
+    width: "3rem",
+    height: "3rem",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: "white",
     bg: "primary.400",
-    fontSize: "1.08rem",
+    fontSize: "1rem",
     cursor: "pointer",
-    borderRadius: "0.5rem",
+    borderRadius: "100%",
+    overflow: "hidden",
     _disabled: {
       bg: "secondary.200",
       color: "black",
-      border: "1px solid",
-      borderColor: "black",
+      border: "1px solid black",
       cursor: "default",
       _hover: {
         color: "black",

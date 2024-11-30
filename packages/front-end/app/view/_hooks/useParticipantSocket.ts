@@ -14,7 +14,7 @@ export const useParticipantSocket = (
   fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController,
-  isChaseMode: boolean
+  isChaseMode: boolean,
 ) => {
   const editor = pdfPainterInstanceController.getEditor();
   const {
@@ -64,10 +64,10 @@ export const useParticipantSocket = (
       "getHostPageNumber",
       (data: { fileId: number; index: number; userId: number }) => {
         setHostIndex(data.index);
-        if (pdfPainterController.getPaintMode() === "default" && isChaseMode) {
+        if (!pdfPainterController.isPaintMode() && isChaseMode) {
           pdfPainterController.setPageIndex(data.index);
         }
-      }
+      },
     );
     return () => {
       socket.off("getHostPageNumber");
@@ -83,7 +83,7 @@ export const useParticipantSocket = (
         pageIndex === message.index
           ? pdfPainterInstanceController.addPaintElement(message.data)
           : addDrawCache(message.index, message.data);
-      }
+      },
     );
     socket.on(
       "getRemovedDraw",
@@ -91,7 +91,7 @@ export const useParticipantSocket = (
         pageIndex === message.index
           ? pdfPainterInstanceController.removePaintElement(message.data)
           : removeDrawCache(message.index, message.data);
-      }
+      },
     );
     socket.on(
       "getUpdatedDraw",
@@ -103,13 +103,13 @@ export const useParticipantSocket = (
               update.id,
               (record) => {
                 return integralRecord(record, update);
-              }
+              },
             );
           } else {
             updateDrawCache(message.index, message.data);
           }
         });
-      }
+      },
     );
     return () => {
       socket.off("getAddedDraw");
