@@ -1,4 +1,4 @@
-import { css, cx } from "@/styled-system/css";
+import { css, cx } from '@/styled-system/css';
 import {
   DetailedHTMLProps,
   Dispatch,
@@ -7,7 +7,7 @@ import {
   ReactNode,
   SetStateAction,
   useEffect,
-} from "react";
+} from 'react';
 
 export function ModeControl({
   labelText,
@@ -23,7 +23,7 @@ export function ModeControl({
         type="checkbox"
         {...attr}
         className={cx(
-          css({ margin: "0.5rem 0.25rem 0.5rem 0" }),
+          css({ margin: '0.5rem 0.25rem 0.5rem 0' }),
           attr.className
         )}
         ref={checkboxRef}
@@ -36,7 +36,7 @@ export function ModeControl({
 export function ModeContainer({
   setVisible,
   children,
-  title = "모드 설정",
+  title = '모드 설정',
 }: {
   setVisible: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
@@ -44,39 +44,39 @@ export function ModeContainer({
 }) {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" || event.key === "Esc") {
+      if (event.key === 'Escape' || event.key === 'Esc') {
         setVisible(false);
       }
     };
 
-    window.addEventListener("keydown", handleEscKey);
+    window.addEventListener('keydown', handleEscKey);
 
     return () => {
-      window.removeEventListener("keydown", handleEscKey);
+      window.removeEventListener('keydown', handleEscKey);
     };
   }, [setVisible]);
   return (
     <div
       className={css({
-        position: "absolute",
-        top: "110%",
-        right: "10%",
-        backgroundColor: "#fff",
-        border: "2px solid black",
-        borderRadius: "0.5rem",
-        padding: "1rem",
-        color: "#000",
-        whiteSpace: "normal",
+        position: 'absolute',
+        top: '110%',
+        right: '10%',
+        backgroundColor: '#fff',
+        border: '2px solid black',
+        borderRadius: '0.5rem',
+        padding: '1rem',
+        color: '#000',
+        whiteSpace: 'normal',
         zIndex: 1000,
-        width: "15rem",
+        width: '15rem',
       })}
     >
       <div
         className={css({
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.5rem 0",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0.5rem 0',
         })}
       >
         <p>{title}</p>
@@ -84,7 +84,7 @@ export function ModeContainer({
           onClick={() => {
             setVisible(false);
           }}
-          className={css({ cursor: "pointer" })}
+          className={css({ cursor: 'pointer' })}
         >
           X
         </button>

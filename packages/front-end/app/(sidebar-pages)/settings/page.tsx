@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { ErrorBoundary } from "react-error-boundary";
-import UserProfileSettings from "./_components/UserProfileSettings";
-import { css } from "@/styled-system/css";
-import { routeTitle } from "@/const/routeTitle";
-import { useRouter } from "@/hook/useRouter";
+import { ErrorBoundary } from 'react-error-boundary';
+import UserProfileSettings from './_components/UserProfileSettings';
+import { css } from '@/styled-system/css';
+import { routeTitle } from '@/const/routeTitle';
+import { useRouter } from '@/hook/useRouter';
 
 export default function Page() {
   const router = useRouter();
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       })}
     >
       <h1
         className={css({
-          fontSize: "1.5rem",
-          fontWeight: "semibold",
-          color: "black",
+          fontSize: '1.5rem',
+          fontWeight: 'semibold',
+          color: 'black',
         })}
       >
         {routeTitle[router.pathname].name}
       </h1>
       <div
         className={css({
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
 
           flexGrow: 1,
         })}

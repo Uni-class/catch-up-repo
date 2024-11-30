@@ -1,21 +1,21 @@
-import Button from "@/components/Button/Button";
-import FileUploadAndSelectModal from "@/components/FileUploadAndSelectModal";
-import { Label } from "@/components/Label";
-import LineEdit from "@/components/LineEdit";
-import ModalContainer from "@/components/ModalContainer";
-import { Paragraph } from "@/components/Text";
-import { UseFormDataResultType } from "@/hook/useFormData";
-import { CreateSessionDto } from "@/schema/backend.schema";
-import { css } from "@/styled-system/css";
-import { SessionFormType } from "@/type/SessionFormType";
-import { UseMutationResult } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { overlay } from "overlay-kit";
-import { ReactNode, useState } from "react";
-import FileIcon from "@/public/icons/file.svg";
-import SessionIcon from "@/public/icons/session.svg";
-import Divider from "@/components/Divider";
-import { toast } from "react-toastify";
+import Button from '@/components/Button/Button';
+import FileUploadAndSelectModal from '@/components/FileUploadAndSelectModal';
+import { Label } from '@/components/Label';
+import LineEdit from '@/components/LineEdit';
+import ModalContainer from '@/components/ModalContainer';
+import { Paragraph } from '@/components/Text';
+import { UseFormDataResultType } from '@/hook/useFormData';
+import { CreateSessionDto } from '@/schema/backend.schema';
+import { css } from '@/styled-system/css';
+import { SessionFormType } from '@/type/SessionFormType';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { overlay } from 'overlay-kit';
+import { ReactNode, useState } from 'react';
+import FileIcon from '@/public/icons/file.svg';
+import SessionIcon from '@/public/icons/session.svg';
+import Divider from '@/components/Divider';
+import { toast } from 'react-toastify';
 
 export function SessionFormTemplate({
   useFormDataResult,
@@ -51,29 +51,29 @@ export function SessionFormTemplate({
   return (
     <form
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.25rem",
-        width: "100%",
-        maxWidth: "70em",
-        padding: "3rem 4.16rem",
-        alignItems: "flex-start",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem',
+        width: '100%',
+        maxWidth: '70em',
+        padding: '3rem 4.16rem',
+        alignItems: 'flex-start',
       })}
       onSubmit={(e) => {
         e.preventDefault();
         const { sessionName, sessionFiles } = unControlledDataRef.current;
         const submitError = { sessionFiles: false, sessionName: false };
         if (!sessionName.trim()) {
-          toast("세션 제목을 입력해주세요.", {
-            type: "error",
-            position: "top-center",
+          toast('세션 제목을 입력해주세요.', {
+            type: 'error',
+            position: 'top-center',
           });
           submitError.sessionName = true;
         }
         if (sessionFiles.length === 0) {
-          toast("세션 파일을 선택해주세요.", {
-            type: "error",
-            position: "top-center",
+          toast('세션 파일을 선택해주세요.', {
+            type: 'error',
+            position: 'top-center',
           });
           submitError.sessionFiles = true;
         }
@@ -113,7 +113,7 @@ export function SessionFormTemplate({
           name="select-file"
           type="button"
           onClick={handleFileButtonClick}
-          startIcon={<FileIcon width={"1em"} height={"1em"} />}
+          startIcon={<FileIcon width={'1em'} height={'1em'} />}
           color="gray"
         >
           파일 선택
@@ -123,13 +123,13 @@ export function SessionFormTemplate({
         <Paragraph>
           {controlledData.sessionFiles.length > 0
             ? controlledData.sessionFiles[0].name
-            : "현재 선택한 파일이 없습니다."}
+            : '현재 선택한 파일이 없습니다.'}
         </Paragraph>
       </ControlContainer>
       <Divider />
       <Button
         type="submit"
-        startIcon={<SessionIcon width={"1em"} height={"1em"} />}
+        startIcon={<SessionIcon width={'1em'} height={'1em'} />}
       >
         세션 시작하기
       </Button>
@@ -150,18 +150,18 @@ function ControlContainer({
   htmlFor?: string;
   errorText?: string;
   isError?: boolean;
-  height?: React.CSSProperties["height"];
+  height?: React.CSSProperties['height'];
 }) {
   return (
     <div
       className={css({
-        display: "flex",
-        width: "100%",
+        display: 'flex',
+        width: '100%',
         height: height,
-        alignItems: "center",
+        alignItems: 'center',
       })}
     >
-      <Label htmlFor={htmlFor} className={css({ minWidth: "9em" })}>
+      <Label htmlFor={htmlFor} className={css({ minWidth: '9em' })}>
         {labelText}
       </Label>
       {children}

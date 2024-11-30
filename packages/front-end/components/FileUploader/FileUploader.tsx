@@ -1,5 +1,5 @@
-import { Paragraph } from "@/components/Text";
-import { css } from "@/styled-system/css";
+import { Paragraph } from '@/components/Text';
+import { css } from '@/styled-system/css';
 import {
   Dispatch,
   SetStateAction,
@@ -8,13 +8,13 @@ import {
   useImperativeHandle,
   useRef,
   useEffect,
-} from "react";
-import { useDropzone } from "react-dropzone";
-import Button from "@/components/Button/Button";
-import FileUploadPreview from "@/components/FileUploader/FileUploadPreview";
-import PlusCircleIcon from "@/public/icons/plus-circle.svg";
-import PlusIcon from "@/public/icons/plus.svg";
-import RepeatIcon from "@/public/icons/repeat.svg";
+} from 'react';
+import { useDropzone } from 'react-dropzone';
+import Button from '@/components/Button/Button';
+import FileUploadPreview from '@/components/FileUploader/FileUploadPreview';
+import PlusCircleIcon from '@/public/icons/plus-circle.svg';
+import PlusIcon from '@/public/icons/plus.svg';
+import RepeatIcon from '@/public/icons/repeat.svg';
 
 const FileUploader = forwardRef(
   (
@@ -33,7 +33,7 @@ const FileUploader = forwardRef(
       allowMultipleFiles?: boolean;
       uploadFinishHandler?: () => void;
     },
-    ref,
+    ref
   ) => {
     const [uploadStarted, setUploadStarted] = useState(false);
     const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
@@ -65,33 +65,33 @@ const FileUploader = forwardRef(
     return (
       <div
         className={css({
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          overflow: "hidden",
-          gap: "0.5em",
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          overflow: 'hidden',
+          gap: '0.5em',
         })}
       >
         {selectedFiles.length === 0 || uploadStarted ? null : (
           <Button
             className={css({
-              display: "flex",
-              margin: "0 0.5em 0 auto",
-              padding: "0.5em 0.7em",
-              gap: "0.3em",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              margin: '0 0.5em 0 auto',
+              padding: '0.5em 0.7em',
+              gap: '0.3em',
+              justifyContent: 'center',
+              alignItems: 'center',
             })}
             onClick={open}
           >
             {allowMultipleFiles ? (
               <>
-                <PlusIcon width={"1.5em"} />
+                <PlusIcon width={'1.5em'} />
                 <p>파일 추가하기</p>
               </>
             ) : (
               <>
-                <RepeatIcon width={"1.5em"} />
+                <RepeatIcon width={'1.5em'} />
                 <p>파일 변경하기</p>
               </>
             )}
@@ -101,28 +101,28 @@ const FileUploader = forwardRef(
         <div
           {...getRootProps()}
           className={css({
-            display: "flex",
-            height: "100%",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            justifyContent: "center",
-            gap: "0.5em",
-            overflow: "hidden",
+            display: 'flex',
+            height: '100%',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            justifyContent: 'center',
+            gap: '0.5em',
+            overflow: 'hidden',
           })}
         >
           <div
             className={css({
-              position: "relative",
-              width: "100%",
-              height: "100%",
+              position: 'relative',
+              width: '100%',
+              height: '100%',
             })}
           >
             <div
               className={css({
-                padding: "0.2em",
-                width: "100%",
-                height: "100%",
+                padding: '0.2em',
+                width: '100%',
+                height: '100%',
               })}
               onClick={(event) => {
                 if (selectedFiles.length !== 0) event.stopPropagation();
@@ -142,9 +142,9 @@ const FileUploader = forwardRef(
         </div>
       </div>
     );
-  },
+  }
 );
-FileUploader.displayName = "FileUploader";
+FileUploader.displayName = 'FileUploader';
 export default FileUploader;
 
 const SelectedFilesView = forwardRef(
@@ -158,10 +158,10 @@ const SelectedFilesView = forwardRef(
       setSelectedFiles: Dispatch<SetStateAction<File[]>>;
       uploadFinishHandler?: () => void;
     },
-    ref,
+    ref
   ) => {
-    const [status, setStatus] = useState<"ready" | "uploading" | "finished">(
-      "ready",
+    const [status, setStatus] = useState<'ready' | 'uploading' | 'finished'>(
+      'ready'
     );
     const [finishedCount, setFinishedCount] = useState(0);
     const fileUploadPreviewRefs = useRef<
@@ -171,14 +171,14 @@ const SelectedFilesView = forwardRef(
     >([]);
 
     useEffect(() => {
-      if (status === "uploading" && finishedCount === selectedFiles.length) {
-        setStatus("finished");
+      if (status === 'uploading' && finishedCount === selectedFiles.length) {
+        setStatus('finished');
         if (uploadFinishHandler) uploadFinishHandler();
       }
     }, [status, selectedFiles, uploadFinishHandler, finishedCount]);
 
     const uploadFiles = () => {
-      setStatus("uploading");
+      setStatus('uploading');
       fileUploadPreviewRefs.current.forEach((ref) => {
         if (ref && ref.uploadFile) {
           ref.uploadFile();
@@ -193,18 +193,18 @@ const SelectedFilesView = forwardRef(
     return (
       <div
         className={css({
-          width: "100%",
-          height: "100%",
-          overflowY: "auto",
+          width: '100%',
+          height: '100%',
+          overflowY: 'auto',
         })}
       >
         <div
           className={css({
-            display: "flex",
-            padding: "0.3em",
-            width: "100%",
-            flexDirection: "column",
-            gap: "0.5em",
+            display: 'flex',
+            padding: '0.3em',
+            width: '100%',
+            flexDirection: 'column',
+            gap: '0.5em',
           })}
           onClick={(event) => event.stopPropagation()}
         >
@@ -228,35 +228,35 @@ const SelectedFilesView = forwardRef(
         </div>
       </div>
     );
-  },
+  }
 );
-SelectedFilesView.displayName = "SelectedFilesView";
+SelectedFilesView.displayName = 'SelectedFilesView';
 
 function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
   return (
     <div
       className={css({
-        position: "absolute",
-        top: "0",
-        left: "0",
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        flexDirection: "column",
-        gap: "0.5em",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "#000000",
-        backgroundColor: "#dddddd80",
-        border: "1px dashed #ccc",
-        borderRadius: "0.5em",
-        cursor: "pointer",
-        userSelect: "none",
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+        gap: '0.5em',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#000000',
+        backgroundColor: '#dddddd80',
+        border: '1px dashed #ccc',
+        borderRadius: '0.5em',
+        cursor: 'pointer',
+        userSelect: 'none',
       })}
     >
       {isDragActive ? (
         <>
-          <PlusCircleIcon width={"3em"} />
+          <PlusCircleIcon width={'3em'} />
           <Paragraph variant="body2">이곳에 파일을 놓아주세요.</Paragraph>
         </>
       ) : (
@@ -265,8 +265,8 @@ function FileDropArea({ isDragActive }: { isDragActive: boolean }) {
           <Paragraph variant="body3">또는</Paragraph>
           <Button
             className={css({
-              padding: "0.5em 0.8em",
-              width: "fit-content",
+              padding: '0.5em 0.8em',
+              width: 'fit-content',
             })}
           >
             파일 선택하기

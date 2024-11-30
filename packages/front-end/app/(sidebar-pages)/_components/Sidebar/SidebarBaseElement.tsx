@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
-import { css, cx } from "@/styled-system/css";
-
+import { ReactNode } from 'react';
+import { css, cx } from '@/styled-system/css';
 
 interface PropType {
   className?: string;
@@ -9,40 +8,42 @@ interface PropType {
   children?: ReactNode;
 }
 
-
-export default function SidebarBaseElement({className, active, onClick, children}: PropType) {
+export default function SidebarBaseElement({
+  className,
+  active,
+  onClick,
+  children,
+}: PropType) {
   return (
     <div
       onClick={onClick}
       className={cx(
         className,
         css({
-          display: "flex",
-          padding: "0.8em",
-          borderRadius: "0.5em",
-          cursor: "pointer",
-          userSelect: "none",
-          gap: "0.5em",
+          display: 'flex',
+          padding: '0.8em',
+          borderRadius: '0.5em',
+          cursor: 'pointer',
+          userSelect: 'none',
+          gap: '0.5em',
         }),
         css(
           active
-            ?
-            {
-              color: "#ffffff",
-              backgroundColor: "orange.400",
-              fontWeight: "bold",
-            }
-            :
-            {
-              "&:hover": {
-                backgroundColor: "gray.200",
-              },
-              "&:active": {
-                color: "#ffffff",
-                backgroundColor: "orange.300",
-                fontWeight: "bold",
+            ? {
+                color: '#ffffff',
+                backgroundColor: 'orange.400',
+                fontWeight: 'bold',
               }
-            }
+            : {
+                '&:hover': {
+                  backgroundColor: 'gray.200',
+                },
+                '&:active': {
+                  color: '#ffffff',
+                  backgroundColor: 'orange.300',
+                  fontWeight: 'bold',
+                },
+              }
         )
       )}
     >

@@ -1,23 +1,23 @@
-import { css } from "@/styled-system/css";
-import Image from "next/image";
-import Link from "next/link";
-import { Profile } from "./Profile";
-import { Suspense } from "react";
+import { css } from '@/styled-system/css';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Profile } from './Profile';
+import { Suspense } from 'react';
 
 const navData: { href: URL | string; text: string }[] = [
-  { href: "/", text: "도움말" },
-  { href: "/", text: "문의하기" },
+  { href: '/', text: '도움말' },
+  { href: '/', text: '문의하기' },
 ];
 
 const NavBar = () => {
   return (
     <div
       className={css({
-        height: "4.25rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
+        height: '4.25rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
       })}
     >
       <Image
@@ -28,9 +28,9 @@ const NavBar = () => {
       />
       <nav
         className={css({
-          display: "flex",
-          justifyContent: "space-between",
-          gap: " 2rem",
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: ' 2rem',
         })}
       >
         {navData.map((e, i) => (
@@ -39,9 +39,9 @@ const NavBar = () => {
             href={e.href}
             className={css({
               _hover: {
-                color: "tertiary.200",
+                color: 'tertiary.200',
               },
-              padding: "10px",
+              padding: '10px',
             })}
           >
             {e.text}

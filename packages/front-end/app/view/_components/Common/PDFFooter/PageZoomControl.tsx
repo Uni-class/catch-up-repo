@@ -1,8 +1,8 @@
-import Button from "@/components/Button/Button";
-import { PDFPainterController } from "@/PaintPDF/components";
-import { css } from "@/styled-system/css";
-import PlusIcon from "@/public/icons/plus.svg";
-import MinusIcon from "@/public/icons/minus.svg";
+import Button from '@/components/Button/Button';
+import { PDFPainterController } from '@/PaintPDF/components';
+import { css } from '@/styled-system/css';
+import PlusIcon from '@/public/icons/plus.svg';
+import MinusIcon from '@/public/icons/minus.svg';
 
 interface PropType {
   pdfPainterController: PDFPainterController;
@@ -19,21 +19,21 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
   return (
     <div
       className={css({
-        display: "flex",
-        height: "2rem",
-        fontSize: "1rem",
-        alignItems: "center",
+        display: 'flex',
+        height: '2rem',
+        fontSize: '1rem',
+        alignItems: 'center',
       })}
     >
       <Button
         className={css({
-          borderRadius: "0.35rem",
-          bg: "primary.500",
+          borderRadius: '0.35rem',
+          bg: 'primary.500',
           _hover: {
-            bg: "primary.200",
+            bg: 'primary.200',
           },
         })}
-        startIcon={<MinusIcon width={"1em"} height={"1em"} />}
+        startIcon={<MinusIcon width={'1em'} height={'1em'} />}
         onClick={() => {
           pdfPainterController.zoom({
             offsetX: pdfPainterController.getRenderOptions().width / 2,
@@ -46,9 +46,9 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
       </Button>
       <p
         className={css({
-          width: "4rem",
-          textAlign: "center",
-          fontWeight: "semibold",
+          width: '4rem',
+          textAlign: 'center',
+          fontWeight: 'semibold',
         })}
       >
         {formatNumber(currentRenderOptions.scale)}
@@ -62,13 +62,13 @@ export function PageZoomControl({ pdfPainterController }: PropType) {
       </p>
       <Button
         className={css({
-          borderRadius: "0.35rem",
-          bg: "primary.500",
+          borderRadius: '0.35rem',
+          bg: 'primary.500',
           _hover: {
-            bg: "primary.200",
+            bg: 'primary.200',
           },
         })}
-        startIcon={<PlusIcon width={"1em"} height={"1em"} />}
+        startIcon={<PlusIcon width={'1em'} height={'1em'} />}
         onClick={() => {
           pdfPainterController.zoom({
             offsetX: pdfPainterController.getRenderOptions().width / 2,

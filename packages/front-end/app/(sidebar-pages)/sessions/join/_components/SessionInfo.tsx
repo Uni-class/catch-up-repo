@@ -1,18 +1,18 @@
-import { SessionResponseDto } from "@/schema/backend.schema";
-import { css } from "@/styled-system/css";
-import { apiClient } from "@/utils/axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { ReactNode } from "react";
-import { Label } from "@/components/Label";
-import { Paragraph } from "@/components/Text";
-import Divider from "@/components/Divider";
-import Button from "@/components/Button/Button";
-import { useRouter } from "@/hook/useRouter";
-import SessionIcon from "@/public/icons/session.svg";
-import CloseIcon from "@/public/icons/close.svg";
-import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
-import Placeholder from "@/components/Placeholder/Placeholder";
+import { SessionResponseDto } from '@/schema/backend.schema';
+import { css } from '@/styled-system/css';
+import { apiClient } from '@/utils/axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { ReactNode } from 'react';
+import { Label } from '@/components/Label';
+import { Paragraph } from '@/components/Text';
+import Divider from '@/components/Divider';
+import Button from '@/components/Button/Button';
+import { useRouter } from '@/hook/useRouter';
+import SessionIcon from '@/public/icons/session.svg';
+import CloseIcon from '@/public/icons/close.svg';
+import PlaceholderLayout from '@/components/Placeholder/PlaceholderLayout';
+import Placeholder from '@/components/Placeholder/Placeholder';
 
 interface PropType {
   onClose: () => void;
@@ -25,9 +25,9 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
   const { data, isLoading, isError } = useQuery<
     AxiosResponse<SessionResponseDto>
   >({
-    queryKey: ["session", "code", sessionCode],
+    queryKey: ['session', 'code', sessionCode],
     queryFn: async () => {
-      return await apiClient.get("/session", {
+      return await apiClient.get('/session', {
         params: {
           code: sessionCode,
         },
@@ -38,12 +38,12 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
 
   if (isLoading) {
     return (
-      <PlaceholderLayout width={"100%"} gap="1.5rem" type="vertical">
-        <Placeholder width={"100%"} height={"1.5rem"} />
-        <Placeholder width={"100%"} height={"1.5rem"} />
-        <Placeholder width={"100%"} height={"1.5rem"} />
+      <PlaceholderLayout width={'100%'} gap="1.5rem" type="vertical">
+        <Placeholder width={'100%'} height={'1.5rem'} />
+        <Placeholder width={'100%'} height={'1.5rem'} />
+        <Placeholder width={'100%'} height={'1.5rem'} />
         <Divider />
-        <Placeholder width={"100%"} height={"1.5rem"} />
+        <Placeholder width={'100%'} height={'1.5rem'} />
       </PlaceholderLayout>
     );
   }
@@ -51,13 +51,13 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
   if (isError) {
     return (
       <>
-        <p className={css({ textAlign: "center" })}>오류가 발생했어요.</p>
+        <p className={css({ textAlign: 'center' })}>오류가 발생했어요.</p>
         <Button
           onClick={() => {
             queryClient.refetchQueries({
-              queryKey: ["session", "code", sessionCode],
+              queryKey: ['session', 'code', sessionCode],
               exact: true,
-              type: "active",
+              type: 'active',
             });
           }}
         >
@@ -65,9 +65,9 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
         </Button>
         <Divider />
         <Button
-          className={css({ width: "100%", justifyContent: "center" })}
+          className={css({ width: '100%', justifyContent: 'center' })}
           color="dangerous"
-          startIcon={<CloseIcon width={"1.5em"} height={"1.5em"} />}
+          startIcon={<CloseIcon width={'1.5em'} height={'1.5em'} />}
           onClick={() => {
             onClose();
           }}
@@ -95,13 +95,13 @@ export const SessionInfo = ({ sessionCode, onClose }: PropType) => {
       <Button
         onClick={() => {
           router.push(
-            router.getURLString("/view", { id: `${sessionData.sessionId}` })
+            router.getURLString('/view', { id: `${sessionData.sessionId}` })
           );
         }}
-        startIcon={<SessionIcon width={"1.5em"} height={"1.5em"} />}
+        startIcon={<SessionIcon width={'1.5em'} height={'1.5em'} />}
         className={css({
-          width: "100%",
-          justifyContent: "center",
+          width: '100%',
+          justifyContent: 'center',
         })}
       >
         접속하기
@@ -120,18 +120,18 @@ function Container({
   htmlFor?: string;
   errorText?: string;
   isError?: boolean;
-  height?: React.CSSProperties["height"];
+  height?: React.CSSProperties['height'];
 }) {
   return (
     <div
       className={css({
-        display: "flex",
-        width: "100%",
+        display: 'flex',
+        width: '100%',
         height: height,
-        alignItems: "center",
+        alignItems: 'center',
       })}
     >
-      <Label className={css({ minWidth: "9em" })}>{labelText}</Label>
+      <Label className={css({ minWidth: '9em' })}>{labelText}</Label>
       {children}
     </div>
   );

@@ -1,60 +1,54 @@
-import Button from "@/components/Button/Button";
-import { Heading, Paragraph } from "@/components/Text";
-import { useRouter } from "@/hook/useRouter";
-import { css } from "@/styled-system/css";
-import Image from "next/image";
-import { overlay } from "overlay-kit";
-import { ReactNode, useEffect } from "react";
-import { toast } from "react-toastify";
+import Button from '@/components/Button/Button';
+import { Heading, Paragraph } from '@/components/Text';
+import { useRouter } from '@/hook/useRouter';
+import { css } from '@/styled-system/css';
+import Image from 'next/image';
+import { overlay } from 'overlay-kit';
+import { ReactNode, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-export function CodeOverlayContainer({
-  children,
-
-}: {
-  children?: ReactNode;
-
-}) {
+export function CodeOverlayContainer({ children }: { children?: ReactNode }) {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" || event.key === "Esc") {
-        overlay.unmount("code-overlay");
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        overlay.unmount('code-overlay');
       }
     };
 
-    window.addEventListener("keydown", handleEscKey);
+    window.addEventListener('keydown', handleEscKey);
 
     return () => {
-      window.removeEventListener("keydown", handleEscKey);
+      window.removeEventListener('keydown', handleEscKey);
     };
   }, []);
   return (
     <div
       className={css({
-        position: "absolute",
+        position: 'absolute',
         zIndex: 1000,
         top: 0,
         left: 0,
-        backgroundColor: "#FFFFFFF5",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: "2.5rem",
+        backgroundColor: '#FFFFFFF5',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '2.5rem',
       })}
     >
       <div
         className={css({
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         })}
       >
         <Paragraph variant="body2">참여 정보를 공유하세요</Paragraph>
         <button
-          className={css({ cursor: "pointer" })}
+          className={css({ cursor: 'pointer' })}
           onClick={() => {
-            overlay.unmount("code-overlay");
+            overlay.unmount('code-overlay');
           }}
         >
           <Paragraph variant="body2">닫기 X</Paragraph>
@@ -62,10 +56,10 @@ export function CodeOverlayContainer({
       </div>
       <div
         className={css({
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           flexGrow: 1,
         })}
       >
@@ -82,12 +76,12 @@ export function CodeOverlay({ code }: { code: string }) {
       .writeText(text)
       .then(() => {
         toast(`${prefix}가 클립보드에 복사되었습니다!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
         });
       })
       .catch((err) => {
-        toast("복사에 실패했습니다. 다시 시도해주세요.", {
-          position: "bottom-left",
+        toast('복사에 실패했습니다. 다시 시도해주세요.', {
+          position: 'bottom-left',
         });
       });
   };
@@ -95,24 +89,24 @@ export function CodeOverlay({ code }: { code: string }) {
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
       })}
     >
       <Paragraph variant="sub1">세션 코드</Paragraph>
       <h1
         onClick={() => {
-          copyToClipboard(code, "코드");
+          copyToClipboard(code, '코드');
         }}
         className={css({
-          cursor: "pointer",
-          transition: "opacity 0.3s ease",
-          fontSize: "10rem",
-          fontWeight: "bold",
-          "&:hover": {
+          cursor: 'pointer',
+          transition: 'opacity 0.3s ease',
+          fontSize: '10rem',
+          fontWeight: 'bold',
+          '&:hover': {
             opacity: 0.7,
-          }
+          },
         })}
       >
         {code}
@@ -123,11 +117,11 @@ export function CodeOverlay({ code }: { code: string }) {
             width={10}
             height={10}
             className={css({
-              width: "1em",
-              height: "1em",
-              color: "#fff",
-              display: "inline",
-              marginLeft: "0.25em",
+              width: '1em',
+              height: '1em',
+              color: '#fff',
+              display: 'inline',
+              marginLeft: '0.25em',
             })}
           />
         </span>
@@ -136,7 +130,7 @@ export function CodeOverlay({ code }: { code: string }) {
       <Button
         onClick={() => {
           const currentURL = router.getCurrentURL();
-          copyToClipboard(currentURL, "링크");
+          copyToClipboard(currentURL, '링크');
         }}
       >
         링크 복사

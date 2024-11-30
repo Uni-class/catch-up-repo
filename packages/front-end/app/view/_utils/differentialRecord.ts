@@ -1,13 +1,13 @@
-import { TLRecord } from "tldraw";
+import { TLRecord } from 'tldraw';
 
 type argType = Partial<TLRecord> | unknown;
 
 export const differentialRecord = (prev: argType, next: argType): argType => {
-  // 원시값인 경우 그대로 
-    if (typeof prev !== "object" || prev === null) {
+  // 원시값인 경우 그대로
+  if (typeof prev !== 'object' || prev === null) {
     return prev === next ? undefined : next;
   }
-// 배열인 경우
+  // 배열인 경우
   if (Array.isArray(prev) && Array.isArray(next)) {
     // key: 배열 인덱스, value: 배열 엘리먼트
     const diff: { [key in number]: unknown } = {};
@@ -19,14 +19,14 @@ export const differentialRecord = (prev: argType, next: argType): argType => {
       }
     }
     for (let i = prev.length; i < next.length; i++) {
-        // 
+      //
       diff[i] = next[i];
     }
     return Object.keys(diff).length > 0 ? diff : undefined;
   }
 
   // 객체일 경우 객체의 차이를 반환
-  if (typeof prev === "object" && typeof next === "object") {
+  if (typeof prev === 'object' && typeof next === 'object') {
     const difference: { [key in string | number]: unknown } = {};
     for (const key in next) {
       if (next.hasOwnProperty(key)) {
@@ -37,7 +37,7 @@ export const differentialRecord = (prev: argType, next: argType): argType => {
             prev[key as keyof typeof prev],
             next[key as keyof typeof next]
           );
-          if (typeof diff !== "undefined") {
+          if (typeof diff !== 'undefined') {
             difference[key] = diff; // 차이가 존재하는 경우 갱신
           }
         }

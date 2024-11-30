@@ -1,10 +1,10 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
   useRouter as _useRouter,
   ReadonlyURLSearchParams,
   usePathname,
   useSearchParams,
-} from "next/navigation";
+} from 'next/navigation';
 
 export interface RouterInstance extends AppRouterInstance {
   pathname: string;
@@ -28,9 +28,9 @@ export const useRouter = (): RouterInstance => {
   };
   const getCurrentURL = () => {
     const protocol =
-      typeof window !== "undefined" ? window.location.protocol : "https";
+      typeof window !== 'undefined' ? window.location.protocol : 'https';
     const host =
-      typeof window !== "undefined" ? window.location.host : "catchup.tools";
+      typeof window !== 'undefined' ? window.location.host : 'catchup.tools';
     return query.toString()
       ? `${protocol}//${host}${pathname}?${query.toString()}`
       : pathname;

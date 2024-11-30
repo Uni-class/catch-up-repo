@@ -1,13 +1,13 @@
-"use client";
+'use client';
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider as _QueryClientProvider,
-} from "@tanstack/react-query";
-import { ReactNode, useState } from "react";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AxiosError } from "axios";
-import { refreshClient } from "@/utils/axios";
+} from '@tanstack/react-query';
+import { ReactNode, useState } from 'react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AxiosError } from 'axios';
+import { refreshClient } from '@/utils/axios';
 
 interface PropType {
   children: ReactNode;
@@ -36,11 +36,9 @@ export default function QueryClientProvider({ children }: PropType) {
           onError: (_error, query) => {
             const error = _error as AxiosError;
             if (error.response?.status === 401) {
-              refreshClient
-                .get("/auth/token-refresh")
-                .then(() => {
-                  queryClient.refetchQueries({ queryKey: query.queryKey }); // (query) ??
-                })
+              refreshClient.get('/auth/token-refresh').then(() => {
+                queryClient.refetchQueries({ queryKey: query.queryKey }); // (query) ??
+              });
             }
           },
         }),

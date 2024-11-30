@@ -1,6 +1,6 @@
-import { useCallback, useRef } from "react";
-import { Editor, RecordId, TLRecord } from "tldraw";
-import { integralRecord } from "../_utils/integralRecord";
+import { useCallback, useRef } from 'react';
+import { Editor, RecordId, TLRecord } from 'tldraw';
+import { integralRecord } from '../_utils/integralRecord';
 
 export const useReceiveDrawCache = (editor: Editor | null) => {
   const drawCacheRef = useRef<Map<number, Map<RecordId<any>, TLRecord>>>(

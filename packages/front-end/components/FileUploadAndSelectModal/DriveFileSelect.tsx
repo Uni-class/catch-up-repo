@@ -5,17 +5,17 @@ import {
   TableRow,
   Td,
   Th,
-} from "@/components/Table";
-import { apiClient } from "@/utils/axios";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { File } from "@/schema/backend.schema";
-import Button from "@/components/Button/Button";
-import { formatDate } from "date-fns";
-import { overlay } from "overlay-kit";
-import { FileFormDataContext } from ".";
-import { useContext, useState } from "react";
-import { css } from "@/styled-system/css";
+} from '@/components/Table';
+import { apiClient } from '@/utils/axios';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { File } from '@/schema/backend.schema';
+import Button from '@/components/Button/Button';
+import { formatDate } from 'date-fns';
+import { overlay } from 'overlay-kit';
+import { FileFormDataContext } from '.';
+import { useContext, useState } from 'react';
+import { css } from '@/styled-system/css';
 
 export default function DriveFileUploadFetch() {
   const size = 1000; //need fix
@@ -29,9 +29,9 @@ export default function DriveFileUploadFetch() {
       files: File[];
     }>
   >({
-    queryKey: ["user", "files", size, page],
+    queryKey: ['user', 'files', size, page],
     queryFn: async () =>
-      await apiClient.get("user/files", {
+      await apiClient.get('user/files', {
         params: {
           size: size,
           page: page + 1,
@@ -47,8 +47,8 @@ export default function DriveFileUploadFetch() {
   return (
     <div
       className={css({
-        height: "100%",
-        overflowY: "auto",
+        height: '100%',
+        overflowY: 'auto',
       })}
     >
       <DriveFileUpload
@@ -109,7 +109,7 @@ function Row({ file }: { file: File }) {
   return (
     <TableRow>
       <Td>{file.name}</Td>
-      <Td>{formatDate(file.createdAt, "yyyy-MM-dd")}</Td>
+      <Td>{formatDate(file.createdAt, 'yyyy-MM-dd')}</Td>
       <Td align="center">
         <Button onClick={handleRowButtonClick}>선택하기</Button>
       </Td>

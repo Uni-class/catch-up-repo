@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
-import LineEdit from "@/components/LineEdit";
-import { css } from "@/styled-system/css";
-import Button from "@/components/Button/Button";
-import { Label } from "@/components/Label";
-import { useRouter } from "@/hook/useRouter";
-import { routeTitle } from "@/const/routeTitle";
-import JoinIcon from "@/public/icons/join.svg";
-import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { apiClient } from "@/utils/axios";
-import { Session } from "@/schema/backend.schema";
-import { ModalContainer } from "./_components/ModalContainer";
-import { SessionInfo } from "./_components/SessionInfo";
+import { useCallback, useState } from 'react';
+import LineEdit from '@/components/LineEdit';
+import { css } from '@/styled-system/css';
+import Button from '@/components/Button/Button';
+import { Label } from '@/components/Label';
+import { useRouter } from '@/hook/useRouter';
+import { routeTitle } from '@/const/routeTitle';
+import JoinIcon from '@/public/icons/join.svg';
+import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { apiClient } from '@/utils/axios';
+import { Session } from '@/schema/backend.schema';
+import { ModalContainer } from './_components/ModalContainer';
+import { SessionInfo } from './_components/SessionInfo';
 
 export default function Page() {
-  const [sessionCode, setSessionCode] = useState("");
+  const [sessionCode, setSessionCode] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const fetchSessionInfo = useCallback(() => {
-    if (sessionCode.trim() === "") {
-      toast("참여 코드를 입력해주세요.", {
-        type: "error",
-        position: "top-center",
+    if (sessionCode.trim() === '') {
+      toast('참여 코드를 입력해주세요.', {
+        type: 'error',
+        position: 'top-center',
       });
       return;
     }
@@ -35,43 +35,43 @@ export default function Page() {
   return (
     <div
       className={css({
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       })}
     >
       <h1
         className={css({
-          fontSize: "1.5rem",
-          fontWeight: "semibold",
-          color: "black",
+          fontSize: '1.5rem',
+          fontWeight: 'semibold',
+          color: 'black',
         })}
       >
         {routeTitle[router.pathname].name}
       </h1>
       <div
         className={css({
-          display: "flex",
-          alignItems: "flex-start",
+          display: 'flex',
+          alignItems: 'flex-start',
           flexGrow: 1,
-          justifyContent: "center",
-          padding: "3rem 4.16rem",
-          maxWidth: "60rem",
+          justifyContent: 'center',
+          padding: '3rem 4.16rem',
+          maxWidth: '60rem',
         })}
       >
         <div
           className={css({
             flex: 1,
-            display: "flex",
-            gap: "1rem",
-            alignItems: "center",
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center',
           })}
         >
           <Label htmlFor="session-code">참여 코드</Label>
           <LineEdit
             className={css({
               flexGrow: 1,
-              height: "inherit",
+              height: 'inherit',
             })}
             placeholder="참여 코드를 입력해 주세요."
             value={sessionCode}
@@ -79,19 +79,19 @@ export default function Page() {
             name="session-code"
             id="session-code"
             onKeyDown={(event) => {
-              if (event.key == "Enter") {
+              if (event.key == 'Enter') {
                 fetchSessionInfo();
               }
             }}
           />
           <Button
             className={css({
-              height: "inherit",
+              height: 'inherit',
             })}
             onClick={() => {
               fetchSessionInfo();
             }}
-            startIcon={<JoinIcon width={"1em"} height={"1em"} />}
+            startIcon={<JoinIcon width={'1em'} height={'1em'} />}
           >
             접속하기
           </Button>

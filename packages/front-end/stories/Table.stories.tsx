@@ -5,37 +5,37 @@ import {
   TableRow,
   Td,
   Th,
-} from "@/components/Table";
-import { Meta, StoryFn, StoryObj } from "@storybook/react";
+} from '@/components/Table';
+import { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: "Components/Table",
+  title: 'Components/Table',
   component: TableContainer,
   argTypes: {
     align: {
       control: {
-        type: "radio",
+        type: 'radio',
       },
-      options: ["left", "center", "right"],
+      options: ['left', 'center', 'right'],
     },
     size: {
       control: {
-        type: "radio",
+        type: 'radio',
       },
-      options: ["sm", "md", "lg"],
+      options: ['sm', 'md', 'lg'],
     },
   },
 } satisfies Meta<
   React.ComponentProps<typeof TableContainer> & {
-    align?: "left" | "center" | "right";
-    size?: "sm" | "md" | "lg";
+    align?: 'left' | 'center' | 'right';
+    size?: 'sm' | 'md' | 'lg';
   }
 >;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const headData: string[] = ["name", "location", "tel", "comment"];
+const headData: string[] = ['name', 'location', 'tel', 'comment'];
 const bodyData: {
   name: string;
   location: string;
@@ -43,17 +43,17 @@ const bodyData: {
   comment: string;
 }[] = [
   {
-    name: "John",
-    location: "USA",
-    tel: "010-1234-5678",
-    comment: "blahblah~~~",
+    name: 'John',
+    location: 'USA',
+    tel: '010-1234-5678',
+    comment: 'blahblah~~~',
   },
-  { name: "Younsang", location: "KOR", tel: "010-2468-1357", comment: "hello" },
+  { name: 'Younsang', location: 'KOR', tel: '010-2468-1357', comment: 'hello' },
   {
-    name: "Aru",
-    location: "JAP",
-    tel: "010-9876-5432",
-    comment: "blahblah~~~ hihi",
+    name: 'Aru',
+    location: 'JAP',
+    tel: '010-9876-5432',
+    comment: 'blahblah~~~ hihi',
   },
 ];
 

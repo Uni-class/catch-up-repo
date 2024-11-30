@@ -1,5 +1,5 @@
-import { PDFPainterController } from "@/PaintPDF/components";
-import { useEffect } from "react";
+import { PDFPainterController } from '@/PaintPDF/components';
+import { useEffect } from 'react';
 
 export const useEnsureVisibleWhileDraw = (
   editorId: string,

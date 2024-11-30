@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useBatchSocket } from "./useBatchSocket";
+import { useEffect, useState } from 'react';
+import { useBatchSocket } from './useBatchSocket';
 import {
   PDFPainterController,
   PDFPainterInstanceController,
-} from "@/PaintPDF/components";
-import { socketAtom } from "@/client/socketAtom";
-import { useAtom } from "jotai";
+} from '@/PaintPDF/components';
+import { socketAtom } from '@/client/socketAtom';
+import { useAtom } from 'jotai';
 
 export const useHostSocket = (
   roomId: number | string,
@@ -24,36 +24,36 @@ export const useHostSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("createRoom", { roomId, fileIds: [fileId] });
-    socket.on("initUser", () => {
-      console.log("Connected to WebSocket server:", socket.id);
-      socket.emit("createRoom", { roomId, fileIds: [fileId] });
+    socket.emit('createRoom', { roomId, fileIds: [fileId] });
+    socket.on('initUser', () => {
+      console.log('Connected to WebSocket server:', socket.id);
+      socket.emit('createRoom', { roomId, fileIds: [fileId] });
     });
-    socket.on("userList", (userList: any) => {
+    socket.on('userList', (userList: any) => {
       console.log({ userList });
     });
     return () => {
-      socket.off("connect");
-      socket.off("userList");
-      socket.off("initUser");
+      socket.off('connect');
+      socket.off('userList');
+      socket.off('initUser');
     };
   }, [fileId, roomId, socket]);
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("sendHostPageNumber", { roomId, fileId, index: pageIndex });
+    socket.emit('sendHostPageNumber', { roomId, fileId, index: pageIndex });
   }, [fileId, pageIndex, roomId, socket]);
 
   useEffect(() => {
     if (socket === null) return;
     socket.on(
-      "getPartiPageNumber",
+      'getPartiPageNumber',
       (data: { roomPageViewerCount: { [key in number]: number } }) => {
         setRoomPageViewerCount({ ...data.roomPageViewerCount });
       }
     );
     return () => {
-      socket.off("getPartiPageNumber");
+      socket.off('getPartiPageNumber');
     };
   }, [socket]);
 
@@ -66,12 +66,12 @@ export const useHostSocket = (
       ({ changes }) => {
         pushChanges(changes);
       },
-      { source: "user", scope: "document" }
+      { source: 'user', scope: 'document' }
     );
     // return () => {
     //   store.listen(clean);
     // };
   }, [editor, pushChanges, socket]);
 
-  return {roomPageViewerCount};
+  return { roomPageViewerCount };
 };

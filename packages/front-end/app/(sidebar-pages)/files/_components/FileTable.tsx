@@ -1,17 +1,17 @@
-import { File } from "@/schema/backend.schema";
-import { css } from "@/styled-system/css";
-import { formatDate } from "date-fns";
-import { useState } from "react";
-import Button from "@/components/Button/Button";
-import SelectableTable from "@/components/SelectableTable";
-import { overlay } from "overlay-kit";
-import ModalContainer from "@/components/ModalContainer";
-import FileUploadModal from "@/components/FileUploader/FileUploadModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/utils/axios";
-import { Heading } from "@/components/Text";
-import DeleteIcon from "@/public/icons/delete.svg";
-import UploadIcon from "@/public/icons/upload.svg";
+import { File } from '@/schema/backend.schema';
+import { css } from '@/styled-system/css';
+import { formatDate } from 'date-fns';
+import { useState } from 'react';
+import Button from '@/components/Button/Button';
+import SelectableTable from '@/components/SelectableTable';
+import { overlay } from 'overlay-kit';
+import ModalContainer from '@/components/ModalContainer';
+import FileUploadModal from '@/components/FileUploader/FileUploadModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiClient } from '@/utils/axios';
+import { Heading } from '@/components/Text';
+import DeleteIcon from '@/public/icons/delete.svg';
+import UploadIcon from '@/public/icons/upload.svg';
 
 const showFileUploadModal = () => {
   overlay.open(
@@ -20,26 +20,26 @@ const showFileUploadModal = () => {
         <FileUploadModal />
       </ModalContainer>
     ),
-    { overlayId: "File-Upload" },
+    { overlayId: 'File-Upload' }
   );
 };
 
 const DataEmptyPlaceholder = (
   <div
     className={css({
-      display: "flex",
-      padding: "1em",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "0.5em",
+      display: 'flex',
+      padding: '1em',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '0.5em',
     })}
   >
     <p>표시할 데이터가 없습니다.</p>
     <p>새로운 파일을 업로드해 보세요!</p>
     <Button
       className={css({
-        padding: "0.5em 0.8em",
+        padding: '0.5em 0.8em',
       })}
       onClick={() => showFileUploadModal()}
     >
@@ -51,12 +51,12 @@ const DataEmptyPlaceholder = (
 const LoadingPlaceholder = (
   <div
     className={css({
-      display: "flex",
-      padding: "1em",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "0.5em",
+      display: 'flex',
+      padding: '1em',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '0.5em',
     })}
   >
     <p>불러오는 중...</p>
@@ -66,12 +66,12 @@ const LoadingPlaceholder = (
 const ErrorPlaceholder = (
   <div
     className={css({
-      display: "flex",
-      padding: "1em",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "0.5em",
+      display: 'flex',
+      padding: '1em',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '0.5em',
     })}
   >
     <p>오류가 발생하였습니다.</p>
@@ -97,7 +97,7 @@ export function FileTable({
     index: number;
     setIndex: (index: number) => void;
   };
-  status?: "loading" | "error" | null;
+  status?: 'loading' | 'error' | null;
 }) {
   const queryClient = useQueryClient();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -106,14 +106,14 @@ export function FileTable({
       Promise.all(
         selectedItems.map(async (e) => {
           await apiClient.delete(`/file/${e}`);
-        }),
+        })
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["user", "files", pagination.size, pagination.index],
+        queryKey: ['user', 'files', pagination.size, pagination.index],
       });
       queryClient.refetchQueries({
-        queryKey: ["user", "files", pagination.size, pagination.index],
+        queryKey: ['user', 'files', pagination.size, pagination.index],
       });
     },
     onError: (e) => {
@@ -124,27 +124,27 @@ export function FileTable({
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.6em",
-        fontSize: "0.8rem",
-        fontWeight: "semibold",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.6em',
+        fontSize: '0.8rem',
+        fontWeight: 'semibold',
       })}
     >
       <div
-        className={css({ display: "flex", justifyContent: "space-between" })}
+        className={css({ display: 'flex', justifyContent: 'space-between' })}
       >
         <Heading>강의 자료</Heading>
         <div
           className={css({
-            display: "flex",
-            gap: "1em",
-            justifyContent: "flex-end",
+            display: 'flex',
+            gap: '1em',
+            justifyContent: 'flex-end',
           })}
         >
           <Button
             onClick={() => showFileUploadModal()}
-            startIcon={<UploadIcon width={"1em"} height={"1em"} />}
+            startIcon={<UploadIcon width={'1em'} height={'1em'} />}
           >
             새 파일 업로드
           </Button>
@@ -154,7 +154,7 @@ export function FileTable({
               fileMutate.mutate(selectedItems);
               setSelectedItems([]);
             }}
-            startIcon={<DeleteIcon width={"1em"} height={"1em"} />}
+            startIcon={<DeleteIcon width={'1em'} height={'1em'} />}
             color="gray"
           >
             선택한 파일 삭제
@@ -165,14 +165,14 @@ export function FileTable({
         head={[
           {
             id: 0,
-            value: "이름",
-            align: "left",
+            value: '이름',
+            align: 'left',
           },
           {
             id: 1,
-            value: "업로드 시간",
-            width: "20vw",
-            minWidth: "13em",
+            value: '업로드 시간',
+            width: '20vw',
+            minWidth: '13em',
           },
         ]}
         body={data.files.map((item) => {
@@ -181,16 +181,16 @@ export function FileTable({
             values: [
               <div key={0}>{item.name}</div>,
               <div key={1}>
-                {formatDate(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
+                {formatDate(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}
               </div>,
             ],
-            onClick: () => window.open(`/viewer/${item.fileId}`, "_blank"),
+            onClick: () => window.open(`/viewer/${item.fileId}`, '_blank'),
           };
         })}
         placeholder={
           status === null
             ? DataEmptyPlaceholder
-            : status === "loading"
+            : status === 'loading'
               ? LoadingPlaceholder
               : ErrorPlaceholder
         }

@@ -1,25 +1,25 @@
-import { PDFPainterController } from "@/PaintPDF/components";
-import LogoTextIcon from "@/public/logo-horizontal-white.svg";
-import { css } from "@/styled-system/css";
-import { ToolPanel } from "@/app/view/_components/Common/Header/ToolPanel";
-import { ToolButton } from "./ToolButton";
-import PointerIcon from "@/public/icons/pointer.svg";
-import MoveIcon from "@/public/icons/move.svg";
-import RegionSelectIcon from "@/public/icons/region-select.svg";
-import PenIcon from "@/public/icons/pen.svg";
-import EraserIcon from "@/public/icons/eraser.svg";
-import TypeIcon from "@/public/icons/type.svg";
-import UndoIcon from "@/public/icons/undo.svg";
-import RedoIcon from "@/public/icons/redo.svg";
-import DownloadIcon from "@/public/icons/download.svg";
-import SettingsIcon from "@/public/icons/settings.svg";
-import ShareIcon from "@/public/icons/share.svg";
-import { HeaderTooltipButton } from "./HeaderToolTipButton";
-import { ReactNode, useState } from "react";
-import { overlay } from "overlay-kit";
-import { ModeContainer } from "../Mode";
-import Divider from "@/components/Divider";
-import { ColorPicker } from "@/app/view/_components/Common/Header/ColorPicker";
+import { PDFPainterController } from '@/PaintPDF/components';
+import LogoTextIcon from '@/public/logo-horizontal-white.svg';
+import { css } from '@/styled-system/css';
+import { ToolPanel } from '@/app/view/_components/Common/Header/ToolPanel';
+import { ToolButton } from './ToolButton';
+import PointerIcon from '@/public/icons/pointer.svg';
+import MoveIcon from '@/public/icons/move.svg';
+import RegionSelectIcon from '@/public/icons/region-select.svg';
+import PenIcon from '@/public/icons/pen.svg';
+import EraserIcon from '@/public/icons/eraser.svg';
+import TypeIcon from '@/public/icons/type.svg';
+import UndoIcon from '@/public/icons/undo.svg';
+import RedoIcon from '@/public/icons/redo.svg';
+import DownloadIcon from '@/public/icons/download.svg';
+import SettingsIcon from '@/public/icons/settings.svg';
+import ShareIcon from '@/public/icons/share.svg';
+import { HeaderTooltipButton } from './HeaderToolTipButton';
+import { ReactNode, useState } from 'react';
+import { overlay } from 'overlay-kit';
+import { ModeContainer } from '../Mode';
+import Divider from '@/components/Divider';
+import { ColorPicker } from '@/app/view/_components/Common/Header/ColorPicker';
 
 interface PropType {
   pdfPainterController?: PDFPainterController;
@@ -49,78 +49,78 @@ export function Header({
   return (
     <header
       className={css({
-        width: "100%",
-        height: "4.2rem",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        bg: "primary.200",
+        width: '100%',
+        height: '4.2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        bg: 'primary.200',
       })}
     >
       <a
         className={css({
-          display: "flex",
-          height: "100%",
-          padding: "0 2rem",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          height: '100%',
+          padding: '0 2rem',
+          alignItems: 'center',
+          justifyContent: 'center',
         })}
-        href={"/"}
+        href={'/'}
       >
-        <LogoTextIcon height={"1.352rem"} width={"7.08rem"} />
+        <LogoTextIcon height={'1.352rem'} width={'7.08rem'} />
       </a>
       {pdfPainterController ? (
         <>
           <ToolPanel>
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("text-select")}
-              disabled={pdfPainterController.getCurrentTool() === "text-select"}
+              onClick={() => pdfPainterController.setCurrentTool('text-select')}
+              disabled={pdfPainterController.getCurrentTool() === 'text-select'}
             >
-              <PointerIcon width={"1em"} height={"1em"} />
+              <PointerIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("drag")}
-              disabled={pdfPainterController.getCurrentTool() === "drag"}
+              onClick={() => pdfPainterController.setCurrentTool('drag')}
+              disabled={pdfPainterController.getCurrentTool() === 'drag'}
             >
-              <MoveIcon width={"1em"} height={"1em"} />
+              <MoveIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("area-select")}
-              disabled={pdfPainterController.getCurrentTool() === "area-select"}
+              onClick={() => pdfPainterController.setCurrentTool('area-select')}
+              disabled={pdfPainterController.getCurrentTool() === 'area-select'}
             >
-              <RegionSelectIcon width={"1em"} height={"1em"} />
+              <RegionSelectIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <Divider
               direction="vertical"
               className={css({
-                margin: "0 0.3em",
+                margin: '0 0.3em',
               })}
             />
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("pen")}
-              disabled={pdfPainterController.getCurrentTool() === "pen"}
+              onClick={() => pdfPainterController.setCurrentTool('pen')}
+              disabled={pdfPainterController.getCurrentTool() === 'pen'}
             >
-              <PenIcon width={"1em"} height={"1em"} />
+              <PenIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("eraser")}
-              disabled={pdfPainterController.getCurrentTool() === "eraser"}
+              onClick={() => pdfPainterController.setCurrentTool('eraser')}
+              disabled={pdfPainterController.getCurrentTool() === 'eraser'}
             >
-              <EraserIcon width={"1em"} height={"1em"} />
+              <EraserIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <ToolButton
-              onClick={() => pdfPainterController.setCurrentTool("text")}
-              disabled={pdfPainterController.getCurrentTool() === "text"}
+              onClick={() => pdfPainterController.setCurrentTool('text')}
+              disabled={pdfPainterController.getCurrentTool() === 'text'}
             >
-              <TypeIcon width={"1em"} height={"1em"} />
+              <TypeIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <HeaderTooltipButton
               onClick={() => {
                 if (
-                  pdfPainterController.getCurrentTool() !== "pen" &&
-                  pdfPainterController.getCurrentTool() !== "text"
+                  pdfPainterController.getCurrentTool() !== 'pen' &&
+                  pdfPainterController.getCurrentTool() !== 'text'
                 ) {
-                  pdfPainterController.setCurrentTool("pen");
+                  pdfPainterController.setCurrentTool('pen');
                 }
                 setShowColorPicker(!showColorPicker);
               }}
@@ -136,9 +136,9 @@ export function Header({
               <ToolButton>
                 <div
                   className={css({
-                    width: "2em",
-                    height: "2em",
-                    borderRadius: "100%",
+                    width: '2em',
+                    height: '2em',
+                    borderRadius: '100%',
                   })}
                   style={{
                     backgroundColor:
@@ -148,30 +148,30 @@ export function Header({
               </ToolButton>
             </HeaderTooltipButton>
             <ToolButton onClick={() => pdfPainterController.undo()}>
-              <UndoIcon width={"1em"} height={"1em"} />
+              <UndoIcon width={'1em'} height={'1em'} />
             </ToolButton>
             <ToolButton onClick={() => pdfPainterController.redo()}>
-              <RedoIcon width={"1em"} height={"1em"} />
+              <RedoIcon width={'1em'} height={'1em'} />
             </ToolButton>
           </ToolPanel>
           <div
             className={css({
-              display: "flex",
-              alignItems: "center",
-              gap: "1.54rem",
-              padding: "0 2rem",
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1.54rem',
+              padding: '0 2rem',
             })}
           >
             <HeaderTooltipButton
-              startIcon={<ShareIcon width={"1rem"} height={"1rem"} />}
+              startIcon={<ShareIcon width={'1rem'} height={'1rem'} />}
               onClick={() => {
-                overlay.open(() => codeRender, { overlayId: "code-overlay" });
+                overlay.open(() => codeRender, { overlayId: 'code-overlay' });
               }}
             >
               공유
             </HeaderTooltipButton>
             <HeaderTooltipButton
-              startIcon={<SettingsIcon width={"1rem"} height={"1rem"} />}
+              startIcon={<SettingsIcon width={'1rem'} height={'1rem'} />}
               onClick={() => {
                 setIsModeOpen(!isModeOpen);
               }}
@@ -186,7 +186,7 @@ export function Header({
               모드
             </HeaderTooltipButton>
             <HeaderTooltipButton
-              startIcon={<DownloadIcon width={"1rem"} height={"1rem"} />}
+              startIcon={<DownloadIcon width={'1rem'} height={'1rem'} />}
               onClick={() => {
                 setIsDownloadOpen(!isDownloadOpen);
               }}

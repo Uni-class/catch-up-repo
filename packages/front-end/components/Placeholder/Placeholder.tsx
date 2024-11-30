@@ -1,34 +1,34 @@
-import { css, cx } from "@/styled-system/css";
-import { memo, CSSProperties } from "react";
+import { css, cx } from '@/styled-system/css';
+import { memo, CSSProperties } from 'react';
 
 interface PlaceholderProps {
-  type?: "box" | "circle" | "text";
-  width?: CSSProperties["width"];
-  height?: CSSProperties["height"];
+  type?: 'box' | 'circle' | 'text';
+  width?: CSSProperties['width'];
+  height?: CSSProperties['height'];
   lineCount?: number;
-  lineHeight?: CSSProperties["lineHeight"];
-  lineGap?: CSSProperties["gap"];
-  justifyContent?: CSSProperties["justifyContent"];
-  borderRadius?: CSSProperties["borderRadius"];
+  lineHeight?: CSSProperties['lineHeight'];
+  lineGap?: CSSProperties['gap'];
+  justifyContent?: CSSProperties['justifyContent'];
+  borderRadius?: CSSProperties['borderRadius'];
 }
 
 const Placeholder = ({
-  type = "box",
-  width = "1em",
-  height = "1em",
+  type = 'box',
+  width = '1em',
+  height = '1em',
   lineCount = 1,
-  lineHeight = "1em",
-  lineGap = "1em",
-  justifyContent = "space-between",
-  borderRadius = "0.2em",
+  lineHeight = '1em',
+  lineGap = '1em',
+  justifyContent = 'space-between',
+  borderRadius = '0.2em',
 }: PlaceholderProps) => {
-  if (type === "text") {
+  if (type === 'text') {
     return (
       <div
         className={css({
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         })}
         style={{
           width: width,
@@ -43,10 +43,10 @@ const Placeholder = ({
             className={cx(
               css({
                 backgroundImage:
-                  "linear-gradient(90deg, #d0d0d0 calc(50% - 1.5em), #e8e8e8 50%, #d0d0d0 calc(50% + 1.5em))",
-                backgroundSize: "400%",
-                animation: "placeholderLoading 3s infinite linear",
-              }),
+                  'linear-gradient(90deg, #d0d0d0 calc(50% - 1.5em), #e8e8e8 50%, #d0d0d0 calc(50% + 1.5em))',
+                backgroundSize: '400%',
+                animation: 'placeholderLoading 3s infinite linear',
+              })
             )}
             style={{
               width: width,
@@ -62,14 +62,14 @@ const Placeholder = ({
     <div
       className={css({
         backgroundImage:
-          "linear-gradient(90deg, #d0d0d0 calc(50% - 1.5em), #e8e8e8 50%, #d0d0d0 calc(50% + 1.5em))",
-        backgroundSize: "400%",
-        animation: "placeholderLoading 3s infinite linear",
+          'linear-gradient(90deg, #d0d0d0 calc(50% - 1.5em), #e8e8e8 50%, #d0d0d0 calc(50% + 1.5em))',
+        backgroundSize: '400%',
+        animation: 'placeholderLoading 3s infinite linear',
       })}
       style={{
         width: width,
         height: height,
-        borderRadius: type === "circle" ? "100%" : borderRadius,
+        borderRadius: type === 'circle' ? '100%' : borderRadius,
       }}
     ></div>
   );

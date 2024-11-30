@@ -1,10 +1,10 @@
 import {
   PDFPainterController,
   PDFPainterInstanceController,
-} from "@/PaintPDF/components";
-import { apiClient } from "@/utils/axios";
-import { useEffect, useRef } from "react";
-import { TLEditorSnapshot } from "tldraw";
+} from '@/PaintPDF/components';
+import { apiClient } from '@/utils/axios';
+import { useEffect, useRef } from 'react';
+import { TLEditorSnapshot } from 'tldraw';
 
 const intervalTime = 1000 * 10;
 
@@ -50,9 +50,7 @@ export const usePostDraw = (
         const height = pdfPainterController.getPage()?.originalHeight;
         if (changedPageIndexRef.current.has(currentPageIndex)) {
           const note =
-            pdfPainterInstanceController.getEditorSnapshotFromStorage(
-              index
-            );
+            pdfPainterInstanceController.getEditorSnapshotFromStorage(index);
           postDraw({
             sessionId,
             fileId,
@@ -73,7 +71,7 @@ export const usePostDraw = (
       ({ changes }) => {
         changedPageIndexRef.current.add(pdfPainterController.getPageIndex());
       },
-      { source: "user", scope: "document" }
+      { source: 'user', scope: 'document' }
     );
 
     return () => {

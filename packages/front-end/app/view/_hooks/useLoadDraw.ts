@@ -2,9 +2,9 @@ import {
   CleanPainterSnapshot,
   PDFPainterController,
   PDFPainterInstanceController,
-} from "@/PaintPDF/components";
-import { useEffect } from "react";
-import { GetDrawType } from "../_utils/drawAPIUtils";
+} from '@/PaintPDF/components';
+import { useEffect } from 'react';
+import { GetDrawType } from '../_utils/drawAPIUtils';
 
 export const useLoadDraw = (
   sessionId: number,
@@ -31,9 +31,12 @@ export const useLoadDraw = (
           currentPageIndex: index,
         }).then((res) => res.note);
         if (note === null) {
-          pdfPainterInstanceController.setEditorSnapshot(index,CleanPainterSnapshot);
-          return
-        };
+          pdfPainterInstanceController.setEditorSnapshot(
+            index,
+            CleanPainterSnapshot
+          );
+          return;
+        }
         pdfPainterInstanceController.setEditorSnapshot(index, note);
       }
     );

@@ -1,9 +1,9 @@
-import { styled } from "@/styled-system/jsx";
+import { styled } from '@/styled-system/jsx';
 
-export const Label = styled("label", {
-    base: {
-      fontWeight:"semibold",
-      fontSize: "1rem",
-      color:"gray.500"
-    },
-  });
+export const Label = styled('label', {
+  base: {
+    fontWeight: 'semibold',
+    fontSize: '1rem',
+    color: 'gray.500',
+  },
+});

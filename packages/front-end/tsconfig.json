@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "target":"ESNext",
+    "target": "ESNext",
     "plugins": [
       {
         "name": "next"
@@ -21,8 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@cu/common": ["../../libs/common/src"],
-      "@cu/component": ["../../libs//components/src"],
-
+      "@cu/component": ["../../libs//components/src"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

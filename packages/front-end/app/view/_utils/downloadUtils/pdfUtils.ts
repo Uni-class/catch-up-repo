@@ -1,6 +1,6 @@
-import { PDFDocument, PDFPage } from "pdf-lib";
-import { pdfjs } from "react-pdf";
-import { NoteAPIResType } from "../../_types/apiType";
+import { PDFDocument, PDFPage } from 'pdf-lib';
+import { pdfjs } from 'react-pdf';
+import { NoteAPIResType } from '../../_types/apiType';
 
 export type PNGType = string | Uint8Array | ArrayBuffer | null;
 export const getPDFDocumentProxy = async (
@@ -28,11 +28,7 @@ export const drawPNGOnPDFPage = async (
   mergeDoc: PDFDocument,
   mergePage: PDFPage,
   index: number,
-  getPageDrawCallback: (
-    index: number
-  ) => Promise<
-    (PNGType | null)
-  >
+  getPageDrawCallback: (index: number) => Promise<PNGType | null>
 ) => {
   const { width, height } = mergePage.getSize();
   const encodedPNG = await getPageDrawCallback(index);

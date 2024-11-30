@@ -1,1 +1,1 @@
-export type ProviderEnum = "GOOGLE" | "NAVER" | "KAKAO";
+export type ProviderEnum = 'GOOGLE' | 'NAVER' | 'KAKAO';

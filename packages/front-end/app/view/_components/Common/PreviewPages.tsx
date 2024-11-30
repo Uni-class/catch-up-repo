@@ -1,9 +1,9 @@
-import { PDFPainterController } from "@/PaintPDF/components";
-import { css } from "@/styled-system/css";
-import { MouseEventHandler, ReactNode } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-import Placeholder from "@/components/Placeholder/Placeholder";
-import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
+import { PDFPainterController } from '@/PaintPDF/components';
+import { css } from '@/styled-system/css';
+import { MouseEventHandler, ReactNode } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import Placeholder from '@/components/Placeholder/Placeholder';
+import PlaceholderLayout from '@/components/Placeholder/PlaceholderLayout';
 
 const options = {
   cMapUrl: `//unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
@@ -26,15 +26,15 @@ export function PreviewPages({
   return (
     <div
       className={css({
-        width: "13rem",
-        height: "100%",
-        borderRight: "1px solid",
-        borderColor: "gray.300",
-        display: "flex",
-        overflowY: "scroll",
-        justifyContent: "center",
-        bg: "gray.100",
-        padding: "1rem 0",
+        width: '13rem',
+        height: '100%',
+        borderRight: '1px solid',
+        borderColor: 'gray.300',
+        display: 'flex',
+        overflowY: 'scroll',
+        justifyContent: 'center',
+        bg: 'gray.100',
+        padding: '1rem 0',
       })}
     >
       <Document
@@ -42,22 +42,22 @@ export function PreviewPages({
         loading={
           <PlaceholderLayout
             width={160}
-            type={"vertical"}
-            gap={"1em"}
-            alignItems={"flex-start"}
+            type={'vertical'}
+            gap={'1em'}
+            alignItems={'flex-start'}
           >
-            <Placeholder width={160} height={90} type={"box"} />
-            <Placeholder width={160} height={90} type={"box"} />
-            <Placeholder width={160} height={90} type={"box"} />
-            <Placeholder width={160} height={90} type={"box"} />
-            <Placeholder width={160} height={90} type={"box"} />
+            <Placeholder width={160} height={90} type={'box'} />
+            <Placeholder width={160} height={90} type={'box'} />
+            <Placeholder width={160} height={90} type={'box'} />
+            <Placeholder width={160} height={90} type={'box'} />
+            <Placeholder width={160} height={90} type={'box'} />
           </PlaceholderLayout>
         }
         className={css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          alignItems: 'center',
         })}
         options={options}
       >
@@ -102,37 +102,37 @@ function PageElement({
       <div
         onClick={onClick}
         className={css({
-          cursor: "pointer",
-          border: currentIndex === index ? "2px solid" : "",
-          borderColor: "white",
-          outline: currentIndex === index ? "3px solid" : "",
-          outlineColor: "primary.500",
-          position: "relative",
-          borderRadius: "0.3rem",
+          cursor: 'pointer',
+          border: currentIndex === index ? '2px solid' : '',
+          borderColor: 'white',
+          outline: currentIndex === index ? '3px solid' : '',
+          outlineColor: 'primary.500',
+          position: 'relative',
+          borderRadius: '0.3rem',
         })}
       >
         <Page
           loading={
             <PlaceholderLayout
-              padding={"0.3em"}
+              padding={'0.3em'}
               height={height}
-              type={"vertical"}
-              gap={"0.5em"}
-              alignItems={"flex-start"}
+              type={'vertical'}
+              gap={'0.5em'}
+              alignItems={'flex-start'}
             >
               <Placeholder
                 width={width / 2}
-                type={"text"}
+                type={'text'}
                 lineCount={1}
-                lineHeight={"1em"}
+                lineHeight={'1em'}
                 lineGap={0}
               />
               <Placeholder
                 width={width}
-                height={"100%"}
-                type={"text"}
+                height={'100%'}
+                type={'text'}
                 lineCount={4}
-                lineHeight={"0.7em"}
+                lineHeight={'0.7em'}
                 lineGap={0}
               />
             </PlaceholderLayout>
@@ -145,7 +145,7 @@ function PageElement({
         />
         {isBadgeVisible && badgeContent}
       </div>
-      <p className={css({ textAlign: "center" })}>{index + 1}</p>
+      <p className={css({ textAlign: 'center' })}>{index + 1}</p>
     </div>
   );
 }

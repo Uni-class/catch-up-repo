@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { apiClient } from "@/utils/axios";
-import { useParticipantSocket } from "../../_hooks/useParticipantSocket";
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { apiClient } from '@/utils/axios';
+import { useParticipantSocket } from '../../_hooks/useParticipantSocket';
 import {
   PainterInstanceGenerator,
   PDFPainter,
   usePDFPainterController,
   usePDFPainterInstanceController,
-} from "@/PaintPDF/components";
-import { ViewerPropType } from "../../_types/ViewerType";
-import { css } from "@/styled-system/css";
-import { PreviewPages } from "../Common/PreviewPages";
-import { useState } from "react";
-import { ModeControl } from "../Common/Mode";
-import { useEnsureVisibleWhileDraw } from "../../_hooks/useEnsureVisibleWhileDraw";
-import { CodeOverlay, CodeOverlayContainer } from "../Common/CodeOverlay";
-import { usePostDraw } from "../../_hooks/usePostDraw";
-import { ParticipantViewerDownload } from "../Common/Download";
-import { Header } from "../Common/Header";
-import { PDFFooter } from "../Common/PDFFooter";
-import HostIcon from "@/public/icons/host.svg";
-import { useLoadDraw } from "../../_hooks/useLoadDraw";
-import { getHostDraw, getUserDraw } from "../../_utils/drawAPIUtils";
+} from '@/PaintPDF/components';
+import { ViewerPropType } from '../../_types/ViewerType';
+import { css } from '@/styled-system/css';
+import { PreviewPages } from '../Common/PreviewPages';
+import { useState } from 'react';
+import { ModeControl } from '../Common/Mode';
+import { useEnsureVisibleWhileDraw } from '../../_hooks/useEnsureVisibleWhileDraw';
+import { CodeOverlay, CodeOverlayContainer } from '../Common/CodeOverlay';
+import { usePostDraw } from '../../_hooks/usePostDraw';
+import { ParticipantViewerDownload } from '../Common/Download';
+import { Header } from '../Common/Header';
+import { PDFFooter } from '../Common/PDFFooter';
+import HostIcon from '@/public/icons/host.svg';
+import { useLoadDraw } from '../../_hooks/useLoadDraw';
+import { getHostDraw, getUserDraw } from '../../_utils/drawAPIUtils';
 
 export default function ParticipantViewer(props: ViewerPropType) {
   const { fileList, sessionId } = props;
   const pdfDocument = fileList[0];
   const fileId = fileList[0].fileId;
   const joinQuery = useQuery<AxiosResponse<any>>({
-    queryKey: ["user", "session", sessionId, "join"],
+    queryKey: ['user', 'session', sessionId, 'join'],
     queryFn: async () => {
       return await apiClient.post(`/user/session/${sessionId}/join`);
     },
@@ -40,14 +40,14 @@ export default function ParticipantViewer(props: ViewerPropType) {
     painterId: `${sessionId}_${pdfDocument.fileId}`,
   });
   const pdfPainterHostInstanceControllerHook = usePDFPainterInstanceController({
-    editorId: "Host",
+    editorId: 'Host',
     pdfPainterController: pdfPainterControllerHook.pdfPainterController,
   });
   const { pdfPainterInstanceController: pdfPainterHostInstanceController } =
     pdfPainterHostInstanceControllerHook;
   const pdfPainterParticipantInstanceControllerHook =
     usePDFPainterInstanceController({
-      editorId: "Participant",
+      editorId: 'Participant',
       pdfPainterController: pdfPainterControllerHook.pdfPainterController,
     });
   const {
@@ -59,15 +59,15 @@ export default function ParticipantViewer(props: ViewerPropType) {
     fileId,
     pdfPainterHostInstanceControllerHook.pdfPainterInstanceController,
     pdfPainterControllerHook.pdfPainterController,
-    isChaseMode,
+    isChaseMode
   );
-  useEnsureVisibleWhileDraw("Participant", pdfPainterController);
+  useEnsureVisibleWhileDraw('Participant', pdfPainterController);
 
   usePostDraw(
     sessionId,
     fileId,
     pdfPainterParticipantInstanceControllerHook.pdfPainterInstanceController,
-    pdfPainterController,
+    pdfPainterController
   );
   useLoadDraw(
     sessionId,
@@ -81,7 +81,7 @@ export default function ParticipantViewer(props: ViewerPropType) {
     fileId,
     pdfPainterHostInstanceController,
     pdfPainterController,
-    getHostDraw,
+    getHostDraw
   );
 
   if (joinQuery.isLoading) {
@@ -113,22 +113,22 @@ export default function ParticipantViewer(props: ViewerPropType) {
             <ModeControl
               labelText="호스트 필기 가리기"
               id="hide-host-draw"
-              checked={pdfPainterController.getInstanceHidden("Host")}
+              checked={pdfPainterController.getInstanceHidden('Host')}
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
-                  "Host",
-                  e.target.checked,
+                  'Host',
+                  e.target.checked
                 );
               }}
             />
             <ModeControl
               labelText="내 필기 가리기"
               id="hide-my-draw"
-              checked={pdfPainterController.getInstanceHidden("Participant")}
+              checked={pdfPainterController.getInstanceHidden('Participant')}
               onChange={(e) => {
                 pdfPainterController.setInstanceHidden(
-                  "Participant",
-                  e.target.checked,
+                  'Participant',
+                  e.target.checked
                 );
               }}
             />
@@ -146,9 +146,9 @@ export default function ParticipantViewer(props: ViewerPropType) {
       />
       <div
         className={css({
-          display: "flex",
-          width: "100vw",
-          height: "calc(100vh - 4.2rem)",
+          display: 'flex',
+          width: '100vw',
+          height: 'calc(100vh - 4.2rem)',
         })}
       >
         <PreviewPages
@@ -160,19 +160,19 @@ export default function ParticipantViewer(props: ViewerPropType) {
             hostIndex !== null && (
               <div
                 className={css({
-                  position: "absolute",
+                  position: 'absolute',
                   left: 0,
                   bottom: 0,
-                  fontSize: "0.9rem",
-                  borderRadius: "50%",
-                  bg: "primary.300",
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "1px solid",
-                  borderColor: "white",
+                  fontSize: '0.9rem',
+                  borderRadius: '50%',
+                  bg: 'primary.300',
+                  width: '2rem',
+                  height: '2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid',
+                  borderColor: 'white',
                 })}
               >
                 <HostIcon width="1em" height="1em" />
@@ -182,13 +182,13 @@ export default function ParticipantViewer(props: ViewerPropType) {
         />
         <div
           className={css({
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             width: `calc(100% - 13rem)`,
-            height: "100%",
-            display: "flex",
-            position: "relative",
-            flexDirection: "column",
+            height: '100%',
+            display: 'flex',
+            position: 'relative',
+            flexDirection: 'column',
           })}
         >
           <PDFPainter
@@ -197,14 +197,14 @@ export default function ParticipantViewer(props: ViewerPropType) {
             customPdfPainterControllerHook={pdfPainterControllerHook}
           >
             <PainterInstanceGenerator
-              instanceId={"Host"}
+              instanceId={'Host'}
               readOnly={true}
               customPdfPainterInstanceControllerHook={
                 pdfPainterHostInstanceControllerHook
               }
             />
             <PainterInstanceGenerator
-              instanceId={"Participant"}
+              instanceId={'Participant'}
               readOnly={false}
               customPdfPainterInstanceControllerHook={
                 pdfPainterParticipantInstanceControllerHook

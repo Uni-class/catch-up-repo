@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { pdfjs } from "react-pdf";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { pdfjs } from 'react-pdf';
 
 export const useSetSize = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,8 +50,8 @@ export const useSetSize = () => {
       handleResize(size);
     };
     handleResizeEvent();
-    window.addEventListener("resize", handleResizeEvent);
-    return () => window.removeEventListener("resize", handleResizeEvent);
+    window.addEventListener('resize', handleResizeEvent);
+    return () => window.removeEventListener('resize', handleResizeEvent);
   }, [handleResize]);
 
   return { containerRef, pageWidth, pageHeight, onPageLoadSuccess };

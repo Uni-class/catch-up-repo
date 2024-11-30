@@ -1,6 +1,6 @@
-import { apiClient } from "@/utils/axios";
-import { toast } from "react-toastify";
-import { TLEditorSnapshot } from "tldraw";
+import { apiClient } from '@/utils/axios';
+import { toast } from 'react-toastify';
+import { TLEditorSnapshot } from 'tldraw';
 
 export const postDraw = async ({
   sessionId,
@@ -66,9 +66,7 @@ export const getUserDraw: GetDrawType = async ({
         : { note: null, width: 0, height: 0 };
     })
     .catch((error) => {
-      toast(
-        `필기를 불러오는 중 에러가 발생했어요.`
-      );
+      toast(`필기를 불러오는 중 에러가 발생했어요.`);
       return { note: null, width: 0, height: 0 };
     });
   return { note, width, height };
@@ -100,9 +98,7 @@ export const getHostDraw: GetDrawType = async ({
         : { note: null, width: 0, height: 0 };
     })
     .catch((error) => {
-      toast(
-        `필기를 불러오는 중 에러가 발생했어요.`
-      );
+      toast(`필기를 불러오는 중 에러가 발생했어요.`);
       return { note: null, width: 0, height: 0 };
     });
   return { note, width, height };

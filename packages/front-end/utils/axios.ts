@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig } from 'axios';
 // just req with refresh_token
 export const refreshClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
@@ -17,7 +17,6 @@ export const apiClient = axios.create({
   withCredentials: true,
 });
 
-
 retryClient.interceptors.response.use(
   (response) => {
     return response.data;
@@ -26,7 +25,6 @@ retryClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 apiClient.interceptors.response.use(
   (response) => {

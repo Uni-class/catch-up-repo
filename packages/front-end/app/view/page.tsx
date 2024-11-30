@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import "@/utils/pdfWorkerPolyfill";
-import { User, SessionResponseDto } from "@/schema/backend.schema";
-import HostViewer from "./_components/Host/HostViewer";
-import { useQueries } from "@tanstack/react-query";
-import { apiClient, refreshClient } from "@/utils/axios";
-import ParticipantViewer from "./_components/Participant/ParticipantViewer";
-import { useAtom } from "jotai";
-import { socketAtom } from "@/client/socketAtom";
-import { useEffect, useRef } from "react";
-import { io, Socket } from "socket.io-client";
-import { useRouter } from "@/hook/useRouter";
-import Placeholder from "@/components/Placeholder/Placeholder";
-import PlaceholderLayout from "@/components/Placeholder/PlaceholderLayout";
-import { css } from "@/styled-system/css";
-import { Header } from "@/app/view/_components/Common/Header";
+import '@/utils/pdfWorkerPolyfill';
+import { User, SessionResponseDto } from '@/schema/backend.schema';
+import HostViewer from './_components/Host/HostViewer';
+import { useQueries } from '@tanstack/react-query';
+import { apiClient, refreshClient } from '@/utils/axios';
+import ParticipantViewer from './_components/Participant/ParticipantViewer';
+import { useAtom } from 'jotai';
+import { socketAtom } from '@/client/socketAtom';
+import { useEffect, useRef } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { useRouter } from '@/hook/useRouter';
+import Placeholder from '@/components/Placeholder/Placeholder';
+import PlaceholderLayout from '@/components/Placeholder/PlaceholderLayout';
+import { css } from '@/styled-system/css';
+import { Header } from '@/app/view/_components/Common/Header';
 
 /**
  * This is internal interface from `@socket.io/component-emitter` used in `socket.io-client`.
@@ -34,7 +34,7 @@ const getAPIQueryParam = (obj: {
   if (obj.code !== undefined) {
     return { code: obj.code };
   }
-  throw new Error("You must specify id or code.");
+  throw new Error('You must specify id or code.');
 };
 export default function Page() {
   const router = useRouter();
@@ -47,22 +47,22 @@ export default function Page() {
       e.preventDefault();
     };
 
-    window.addEventListener("beforeunload", exitingFunction);
+    window.addEventListener('beforeunload', exitingFunction);
 
     return () => {
-      window.removeEventListener("beforeunload", exitingFunction);
+      window.removeEventListener('beforeunload', exitingFunction);
     };
   }, []);
 
   const [userQuery, sessionQuery] = useQueries({
     queries: [
       {
-        queryKey: ["user", "profile"],
-        queryFn: async () => await apiClient.get<User>("/user/profile"),
+        queryKey: ['user', 'profile'],
+        queryFn: async () => await apiClient.get<User>('/user/profile'),
         throwOnError: false,
       },
       {
-        queryKey: ["session", apiQueryParam],
+        queryKey: ['session', apiQueryParam],
         queryFn: async () =>
           await apiClient.get<SessionResponseDto>(`/session`, {
             params: apiQueryParam,
@@ -75,21 +75,21 @@ export default function Page() {
   useEffect(() => {
     let newSocket: null | Socket<DefaultEventsMap, DefaultEventsMap> = null;
     const disConnectHandler = async (_reason: Socket.DisconnectReason) => {
-      await refreshClient.get("/auth/token-refresh");
+      await refreshClient.get('/auth/token-refresh');
     };
     const init = async () => {
-      await refreshClient.get("/auth/token-refresh");
+      await refreshClient.get('/auth/token-refresh');
       newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER as string, {
         withCredentials: true,
-        transports: ["websocket"],
+        transports: ['websocket'],
       });
       setSocket(newSocket);
-      newSocket.on("disconnect", disConnectHandler);
+      newSocket.on('disconnect', disConnectHandler);
     };
     init();
     return () => {
       if (newSocket !== null) {
-        newSocket.off("disconnect", disConnectHandler);
+        newSocket.off('disconnect', disConnectHandler);
         newSocket.disconnect();
       }
     };
@@ -99,39 +99,39 @@ export default function Page() {
     return (
       <div
         className={css({
-          display: "flex",
-          width: "100%",
-          height: "100%",
+          display: 'flex',
+          width: '100%',
+          height: '100%',
         })}
       >
-        <PlaceholderLayout type={"vertical"} gap={"1em"} alignItems={"center"}>
+        <PlaceholderLayout type={'vertical'} gap={'1em'} alignItems={'center'}>
           <Header />
           <PlaceholderLayout
-            type={"horizontal"}
-            gap={"1em"}
-            alignItems={"flex-start"}
+            type={'horizontal'}
+            gap={'1em'}
+            alignItems={'flex-start'}
           >
             <PlaceholderLayout
-              padding={"0 0.8em"}
+              padding={'0 0.8em'}
               width={200}
-              type={"vertical"}
-              gap={"1em"}
-              alignItems={"center"}
-              justifyContent={"flex-start"}
+              type={'vertical'}
+              gap={'1em'}
+              alignItems={'center'}
+              justifyContent={'flex-start'}
             >
-              <Placeholder width={160} height={90} type={"box"} />
-              <Placeholder width={160} height={90} type={"box"} />
-              <Placeholder width={160} height={90} type={"box"} />
-              <Placeholder width={160} height={90} type={"box"} />
-              <Placeholder width={160} height={90} type={"box"} />
+              <Placeholder width={160} height={90} type={'box'} />
+              <Placeholder width={160} height={90} type={'box'} />
+              <Placeholder width={160} height={90} type={'box'} />
+              <Placeholder width={160} height={90} type={'box'} />
+              <Placeholder width={160} height={90} type={'box'} />
             </PlaceholderLayout>
             <PlaceholderLayout
-              type={"vertical"}
-              gap={"0.5em"}
-              alignItems={"center"}
+              type={'vertical'}
+              gap={'0.5em'}
+              alignItems={'center'}
             >
-              <Placeholder width={"100%"} height={"100%"} />
-              <Placeholder width={"100%"} height={"4.2rem"} />
+              <Placeholder width={'100%'} height={'100%'} />
+              <Placeholder width={'100%'} height={'4.2rem'} />
             </PlaceholderLayout>
           </PlaceholderLayout>
         </PlaceholderLayout>
@@ -142,8 +142,8 @@ export default function Page() {
   if (userQuery.data === undefined || sessionQuery.data === undefined) {
     if (!isSessionInvalid.current) {
       isSessionInvalid.current = true;
-      alert("유효하지 않은 세션입니다.");
-      router.push("/sessions/join");
+      alert('유효하지 않은 세션입니다.');
+      router.push('/sessions/join');
     }
     return null;
   }

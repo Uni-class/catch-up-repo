@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { apiClient } from "@/utils/axios";
-import { useQueries } from "@tanstack/react-query";
-import HostSession from "./_components/HostSession";
-import { SessionResponseDto, User } from "@/schema/backend.schema";
-import ParticipantSession from "./_components/ParticipantSession";
-import { css } from "@/styled-system/css";
-import { Heading } from "@/components/Text";
-import Divider from "@/components/Divider";
+import { apiClient } from '@/utils/axios';
+import { useQueries } from '@tanstack/react-query';
+import HostSession from './_components/HostSession';
+import { SessionResponseDto, User } from '@/schema/backend.schema';
+import ParticipantSession from './_components/ParticipantSession';
+import { css } from '@/styled-system/css';
+import { Heading } from '@/components/Text';
+import Divider from '@/components/Divider';
 
 interface PropType {
   params: { sessionId: string };
@@ -21,12 +21,12 @@ export default function Page({ params }: PropType) {
   ] = useQueries({
     queries: [
       {
-        queryKey: ["user", "profile"],
-        queryFn: async () => await apiClient.get<User>("/user/profile"),
+        queryKey: ['user', 'profile'],
+        queryFn: async () => await apiClient.get<User>('/user/profile'),
         throwOnError: true,
       },
       {
-        queryKey: ["session", sessionId],
+        queryKey: ['session', sessionId],
         queryFn: async () =>
           await apiClient.get<SessionResponseDto>(`/session`, {
             params: { id: sessionId },
@@ -45,24 +45,24 @@ export default function Page({ params }: PropType) {
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       })}
     >
       <h1
         className={css({
-          fontSize: "1.5rem",
-          fontWeight: "semibold",
-          color: "black",
+          fontSize: '1.5rem',
+          fontWeight: 'semibold',
+          color: 'black',
         })}
       >
-        {isHost ? "세션 정보 & 수정" : "세션 정보"}
+        {isHost ? '세션 정보 & 수정' : '세션 정보'}
       </h1>
       <div
         className={css({
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
 
           flexGrow: 1,
         })}

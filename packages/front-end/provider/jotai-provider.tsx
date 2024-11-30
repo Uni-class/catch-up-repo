@@ -1,6 +1,6 @@
-"use client";
-import { ReactNode } from "react";
-import { Provider } from "jotai";
+'use client';
+import { ReactNode } from 'react';
+import { Provider } from 'jotai';
 
 interface PropType {
   children: ReactNode;

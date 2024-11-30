@@ -1,4 +1,4 @@
-import { pdfjs } from "react-pdf";
+import { pdfjs } from 'react-pdf';
 
 export type PDFDocument = pdfjs.PDFDocumentProxy;
 

@@ -1,6 +1,6 @@
-import { theme } from "@/style/theme";
-import { defineConfig } from "@pandacss/dev";
-import { globalCss } from "@/style/global-css";
+import { theme } from '@/style/theme';
+import { defineConfig } from '@pandacss/dev';
+import { globalCss } from '@/style/global-css';
 
 export default defineConfig({
   // Whether to use css reset
@@ -8,10 +8,10 @@ export default defineConfig({
 
   // Where to look for your css declarations
   include: [
-    "./components/**/*.{ts,tsx,js,jsx}",
-    "./app/**/*.{ts,tsx,js,jsx}",
-    "./PaintPDF/**/*.{ts,tsx,js,jsx}",
-    "./stories/**/*.{ts,tsx,js,jsx}",
+    './components/**/*.{ts,tsx,js,jsx}',
+    './app/**/*.{ts,tsx,js,jsx}',
+    './PaintPDF/**/*.{ts,tsx,js,jsx}',
+    './stories/**/*.{ts,tsx,js,jsx}',
   ],
 
   // Files to exclude
@@ -25,11 +25,11 @@ export default defineConfig({
       },
       keyframes: {
         placeholderLoading: {
-          "0%": {
-            backgroundPosition: "200%",
+          '0%': {
+            backgroundPosition: '200%',
           },
-          "100%": {
-            backgroundPosition: "-200%",
+          '100%': {
+            backgroundPosition: '-200%',
           },
         },
       },
@@ -38,13 +38,13 @@ export default defineConfig({
 
   conditions: {
     extend: {
-      hoverNotActive: "&:hover:not(:active)",
-      hoverNotFocus: "&:hover:not(:focus)",
+      hoverNotActive: '&:hover:not(:active)',
+      hoverNotFocus: '&:hover:not(:focus)',
     },
   },
 
   // The output directory for your css system
-  outdir: "styled-system",
-  jsxFramework: "react",
+  outdir: 'styled-system',
+  jsxFramework: 'react',
   globalCss: globalCss,
 });

@@ -1,5 +1,5 @@
-import { memo, ReactNode } from "react";
-import { css } from "@/styled-system/css";
+import { memo, ReactNode } from 'react';
+import { css } from '@/styled-system/css';
 
 const FooterGroup = ({
   name,
@@ -11,27 +11,27 @@ const FooterGroup = ({
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        minWidth: "15em",
-        padding: "1em",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '15em',
+        padding: '1em',
+        alignItems: 'center',
       })}
     >
       <div
         className={css({
-          width: "100%",
-          padding: "0.5em 0",
-          fontSize: "1.1em",
-          fontWeight: "bold",
-          color: "secondary.200",
+          width: '100%',
+          padding: '0.5em 0',
+          fontSize: '1.1em',
+          fontWeight: 'bold',
+          color: 'secondary.200',
         })}
       >
         {name}
       </div>
       <div
         className={css({
-          width: "100%",
+          width: '100%',
         })}
       >
         {children}

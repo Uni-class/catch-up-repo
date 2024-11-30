@@ -1,8 +1,7 @@
-import type { Preview } from "@storybook/react";
-import Provider from "../provider";
-import React from "react";
-import "../app/globals.css";
-
+import type { Preview } from '@storybook/react';
+import Provider from '../provider';
+import React from 'react';
+import '../app/globals.css';
 
 const preview: Preview = {
   parameters: {

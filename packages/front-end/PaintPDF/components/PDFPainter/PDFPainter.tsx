@@ -6,12 +6,12 @@ import {
   isValidElement,
   Children,
   ReactNode,
-} from "react";
-import { PDFRenderSize } from "../PDF/types";
-import { PDFPainterControllerHook } from "./types";
-import { usePDFPainterController } from "./hooks/usePDFPainterController";
-import { PDFViewer } from "../PDF/PDFViewer";
-import { PainterInstance } from "./PainterInstance";
+} from 'react';
+import { PDFRenderSize } from '../PDF/types';
+import { PDFPainterControllerHook } from './types';
+import { usePDFPainterController } from './hooks/usePDFPainterController';
+import { PDFViewer } from '../PDF/PDFViewer';
+import { PainterInstance } from './PainterInstance';
 const PDFPainterComponent = ({
   painterId,
   pdfDocumentURL,
@@ -87,33 +87,33 @@ const PDFPainterComponent = ({
         )
       );
     },
-    [pdfPainterController],
+    [pdfPainterController]
   );
 
   return (
     <div
       style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        flexDirection: "column",
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
       }}
     >
       <div
         ref={painterElement}
         style={{
           flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
         }}
       >
         <div
           style={{
-            position: "relative",
-            width: "fit-content",
-            height: "fit-content",
+            position: 'relative',
+            width: 'fit-content',
+            height: 'fit-content',
           }}
         >
           <PDFViewer
@@ -134,7 +134,7 @@ const PDFPainterComponent = ({
                 <div
                   key={element.props.instanceId}
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     top: 0,
                     left: 0,
                     width: pdfPainterController.getRenderSize().width,
@@ -142,10 +142,10 @@ const PDFPainterComponent = ({
                     pointerEvents:
                       !pdfPainterController.isControlModeForced() &&
                       pdfPainterController.isPaintMode()
-                        ? "unset"
-                        : "none",
+                        ? 'unset'
+                        : 'none',
                     visibility: isInstanceHidden(element.props.instanceId)
-                      ? "hidden"
+                      ? 'hidden'
                       : undefined,
                   }}
                 >
