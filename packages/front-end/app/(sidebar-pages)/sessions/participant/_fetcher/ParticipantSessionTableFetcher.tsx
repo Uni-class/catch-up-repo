@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { Session } from "@/schema/backend.schema";
-import { apiClient } from "@/utils/axios";
-import { ParticipantSessionTable } from "../_components/ParticipantSessionTable";
-import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { Session } from '@/schema/backend.schema';
+import { apiClient } from '@/utils/axios';
+import { ParticipantSessionTable } from '../_components/ParticipantSessionTable';
+import { useState } from 'react';
 
 export default function ParticipantSessionTableFetcher() {
   const size = 5;
@@ -21,11 +21,11 @@ export default function ParticipantSessionTableFetcher() {
       sessions: Session[];
     }>
   >({
-    queryKey: ["user", "sessions", "participant", size, page],
+    queryKey: ['user', 'sessions', 'participant', size, page],
     queryFn: async () => {
-      return await apiClient.get("/user/sessions", {
+      return await apiClient.get('/user/sessions', {
         params: {
-          role: "participant",
+          role: 'participant',
           size: size,
           page: page + 1,
         },
@@ -34,9 +34,9 @@ export default function ParticipantSessionTableFetcher() {
   });
   const data = response?.data;
   const status = isLoading
-    ? "loading"
+    ? 'loading'
     : isError || !Array.isArray(data?.sessions)
-      ? "error"
+      ? 'error'
       : null;
   return (
     <ParticipantSessionTable

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "@/hook/useRouter";
-import { css } from "@/styled-system/css";
+import { useRouter } from '@/hook/useRouter';
+import { css } from '@/styled-system/css';
 import {
   ReactNode,
   useEffect,
@@ -11,7 +11,7 @@ import {
   cloneElement,
   ReactElement,
   useCallback,
-} from "react";
+} from 'react';
 
 interface PropType {
   children: ReactNode;
@@ -33,13 +33,13 @@ export default function ModalContainer({
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         closeWindow();
       }
     };
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener('keydown', handleKeyPress);
     return () => {
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener('keydown', handleKeyPress);
     };
   }, [closeWindow]);
 
@@ -53,16 +53,16 @@ export default function ModalContainer({
         <dialog
           open
           className={css({
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
             zIndex: 100,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(64, 64, 64, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(64, 64, 64, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           })}
           onClick={closeWindow}
         >

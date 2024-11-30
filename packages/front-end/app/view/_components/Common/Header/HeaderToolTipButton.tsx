@@ -1,5 +1,5 @@
-import { css, cx } from "@/styled-system/css";
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
+import { css, cx } from '@/styled-system/css';
+import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
 
 interface PropType
   extends DetailedHTMLProps<
@@ -18,23 +18,23 @@ export function HeaderTooltipButton({
   ...attr
 }: PropType) {
   return (
-    <div className={css({ position: "relative" })}>
+    <div className={css({ position: 'relative' })}>
       <button
         {...attr}
         className={cx(
           css({
-            display: "flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            fontSize: "0.83rem",
-            color: "#fff",
-            cursor: "pointer",
-            position: "relative",
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            fontSize: '0.83rem',
+            color: '#fff',
+            cursor: 'pointer',
+            position: 'relative',
             _hover: {
-              color: "primary.50",
+              color: 'primary.50',
             },
           }),
-          attr.className,
+          attr.className
         )}
       >
         {startIcon}

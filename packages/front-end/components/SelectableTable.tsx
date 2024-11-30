@@ -5,16 +5,16 @@ import {
   TableBody,
   Th,
   Td,
-} from "@/components/Table";
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import Checkbox from "@/components/Checkbox";
-import { css } from "@/styled-system/css";
-import Button from "@/components/Button/Button";
+} from '@/components/Table';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
+import Checkbox from '@/components/Checkbox';
+import { css } from '@/styled-system/css';
+import Button from '@/components/Button/Button';
 
-import ArrowLeftEndIcon from "@/public/icons/arrow-left-end.svg";
-import ArrowLeftIcon from "@/public/icons/arrow-left.svg";
-import ArrowRightIcon from "@/public/icons/arrow-right.svg";
-import ArrowRightEndIcon from "@/public/icons/arrow-right-end.svg";
+import ArrowLeftEndIcon from '@/public/icons/arrow-left-end.svg';
+import ArrowLeftIcon from '@/public/icons/arrow-left.svg';
+import ArrowRightIcon from '@/public/icons/arrow-right.svg';
+import ArrowRightEndIcon from '@/public/icons/arrow-right-end.svg';
 
 interface PropType {
   head: {
@@ -22,7 +22,7 @@ interface PropType {
     value: ReactNode;
     width?: string;
     minWidth?: string;
-    align?: "left" | "right" | "center";
+    align?: 'left' | 'right' | 'center';
   }[];
   body: {
     id: number;
@@ -57,26 +57,23 @@ export default function SelectableTable({
   if (pagination) {
     paginationInfo.leftSize = Math.min(
       pagination.currentPageIndex,
-      Math.max(
-        7 - (pagination.totalPageCount - pagination.currentPageIndex),
-        3,
-      ),
+      Math.max(7 - (pagination.totalPageCount - pagination.currentPageIndex), 3)
     );
     paginationInfo.rightSize = Math.min(
       pagination.totalPageCount - pagination.currentPageIndex,
-      Math.max(7 - pagination.currentPageIndex, 4),
+      Math.max(7 - pagination.currentPageIndex, 4)
     );
   }
 
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5em",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.5em',
       })}
     >
-      <TableContainer className={css({ marginTop: "0.35rem" })}>
+      <TableContainer className={css({ marginTop: '0.35rem' })}>
         <TableHead>
           <TableRow>
             <Th width="3em">
@@ -103,9 +100,9 @@ export default function SelectableTable({
                     width: item.width,
                     minWidth: item.minWidth,
                   }}
-                  align={item.align ? item.align : "center"}
+                  align={item.align ? item.align : 'center'}
                 >
-                  <div className={css({ width: "100%", padding: "0.35rem 0" })}>
+                  <div className={css({ width: '100%', padding: '0.35rem 0' })}>
                     {item.value}
                   </div>
                 </Th>
@@ -128,7 +125,7 @@ export default function SelectableTable({
                       onChange={() => {
                         if (selectedItems.includes(item.id)) {
                           setSelectedItems(
-                            selectedItems.filter((id) => id !== item.id),
+                            selectedItems.filter((id) => id !== item.id)
                           );
                         } else {
                           setSelectedItems([...selectedItems, item.id]);
@@ -139,11 +136,11 @@ export default function SelectableTable({
                   </Td>
                   {item.values.map((value, index) => {
                     return (
-                      <Td key={index} align={index === 0 ? "left" : "center"}>
+                      <Td key={index} align={index === 0 ? 'left' : 'center'}>
                         <div
                           className={css({
-                            width: "100%",
-                            padding: "0.35rem 0",
+                            width: '100%',
+                            padding: '0.35rem 0',
                           })}
                         >
                           {value}
@@ -160,13 +157,13 @@ export default function SelectableTable({
       {pagination && pagination.totalPageCount > 1 ? (
         <div
           className={css({
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5rem",
-            "&>button": {
-              width: "2em",
-              height: "2em",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '0.5rem',
+            '&>button': {
+              width: '2em',
+              height: '2em',
             },
           })}
         >
@@ -174,7 +171,7 @@ export default function SelectableTable({
             disabled={pagination.currentPageIndex === 0}
             onClick={() => pagination.pageRequested(0)}
           >
-            <ArrowLeftEndIcon width={"0.75em"} height={"0.75em"} />
+            <ArrowLeftEndIcon width={'0.75em'} height={'0.75em'} />
           </Button>
           <Button
             disabled={pagination.currentPageIndex === 0}
@@ -182,22 +179,22 @@ export default function SelectableTable({
               pagination.pageRequested(pagination.currentPageIndex - 1)
             }
           >
-            <ArrowLeftIcon width={"2em"} height={"2em"} />
+            <ArrowLeftIcon width={'2em'} height={'2em'} />
           </Button>
           {[
             ...[...Array(paginationInfo.leftSize).keys()].map(
               (item) =>
-                pagination.currentPageIndex - paginationInfo.leftSize + item,
+                pagination.currentPageIndex - paginationInfo.leftSize + item
             ),
             ...[...Array(paginationInfo.rightSize).keys()].map(
-              (item) => pagination.currentPageIndex + item,
+              (item) => pagination.currentPageIndex + item
             ),
           ].map((index) => {
             return (
               <Button
                 key={index}
                 color={
-                  index === pagination.currentPageIndex ? "secondary" : "gray"
+                  index === pagination.currentPageIndex ? 'secondary' : 'gray'
                 }
                 onClick={() => pagination.pageRequested(index)}
               >
@@ -213,7 +210,7 @@ export default function SelectableTable({
               pagination.pageRequested(pagination.currentPageIndex + 1)
             }
           >
-            <ArrowRightIcon width={"2em"} height={"2em"} />
+            <ArrowRightIcon width={'2em'} height={'2em'} />
           </Button>
           <Button
             disabled={
@@ -223,7 +220,7 @@ export default function SelectableTable({
               pagination.pageRequested(pagination.totalPageCount - 1)
             }
           >
-            <ArrowRightEndIcon width={"0.75em"} height={"0.75em"} />
+            <ArrowRightEndIcon width={'0.75em'} height={'0.75em'} />
           </Button>
         </div>
       ) : null}

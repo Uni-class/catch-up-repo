@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type {
   PDFDocument,
   PDFPage,
@@ -6,7 +6,7 @@ import type {
   PDFRenderSize,
   PDFItemClickHandlerArguments,
   PDFViewerControllerHook,
-} from "../types";
+} from '../types';
 
 export const usePDFViewerController = (): PDFViewerControllerHook => {
   const [pdfDocument, setPdfDocument] = useState<PDFDocument | null>(null);
@@ -47,7 +47,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
       const newBaseX = Math.max(Math.min(width * (1 - 1 / newScale), baseX), 0);
       const newBaseY = Math.max(
         Math.min(height * (1 - 1 / newScale), baseY),
-        0,
+        0
       );
       const newRenderOptions = {
         width: width,
@@ -70,7 +70,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         }
       });
     },
-    [],
+    []
   );
 
   const pdfViewerController = useMemo(() => {
@@ -153,18 +153,18 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         const { width, height, baseX, baseY, scale } = renderOptions;
         const newScale = Math.max(
           Math.min(Number((scale * (1 + scaleDelta)).toFixed(2)), 10),
-          1,
+          1
         );
         if (scale === newScale) {
           return;
         }
         const pdfDocumentOffsetX = Math.max(
           Math.min(Math.round(baseX + offsetX / scale), Math.floor(width)),
-          0,
+          0
         );
         const pdfDocumentOffsetY = Math.max(
           Math.min(Math.round(baseY + offsetY / scale), Math.floor(height)),
-          0,
+          0
         );
         const scaledBaseX = pdfDocumentOffsetX - offsetX / newScale;
         const scaledBaseY = pdfDocumentOffsetY - offsetY / newScale;
@@ -219,15 +219,15 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
   const keydownEventHandler = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
-        case "Control":
+        case 'Control':
           setControlModeForced(true);
           break;
-        case "ArrowLeft":
+        case 'ArrowLeft':
           if (!controlLockEnabled || controlModeForced) {
             pdfViewerController.moveToPreviousPage();
           }
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           if (!controlLockEnabled || controlModeForced) {
             pdfViewerController.moveToNextPage();
           }
@@ -236,12 +236,12 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
           break;
       }
     },
-    [pdfViewerController],
+    [pdfViewerController]
   );
 
   const keyupEventHandler = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
-      case "Control":
+      case 'Control':
         setControlModeForced(false);
         break;
       default:
@@ -250,11 +250,11 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
   }, []);
 
   useEffect(() => {
-    document.addEventListener("keydown", keydownEventHandler);
-    document.addEventListener("keyup", keyupEventHandler);
+    document.addEventListener('keydown', keydownEventHandler);
+    document.addEventListener('keyup', keyupEventHandler);
     return () => {
-      document.removeEventListener("keydown", keydownEventHandler);
-      document.removeEventListener("keyup", keyupEventHandler);
+      document.removeEventListener('keydown', keydownEventHandler);
+      document.removeEventListener('keyup', keyupEventHandler);
     };
   }, [keydownEventHandler, keyupEventHandler]);
 
@@ -271,7 +271,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         });
       }
     },
-    [controlLockEnabled, controlModeForced, pdfViewerController],
+    [controlLockEnabled, controlModeForced, pdfViewerController]
   );
 
   const wheelEventHandler = useCallback(
@@ -287,10 +287,10 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         event.currentTarget as HTMLDivElement
       ).getBoundingClientRect();
       const offsetX = Math.round(
-        event.offsetX + targetRect.left - currentTargetRect.left,
+        event.offsetX + targetRect.left - currentTargetRect.left
       );
       const offsetY = Math.round(
-        event.offsetY + targetRect.top - currentTargetRect.top,
+        event.offsetY + targetRect.top - currentTargetRect.top
       );
       const wheelDelta =
         event.deltaX + event.deltaY + event.deltaZ > 0 ? -1 : 1;
@@ -301,7 +301,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         scaleDelta: wheelDelta * scaleRatio,
       });
     },
-    [controlLockEnabled, controlModeForced, pdfViewerController],
+    [controlLockEnabled, controlModeForced, pdfViewerController]
   );
 
   const itemClickHandler = useCallback(
@@ -310,7 +310,7 @@ export const usePDFViewerController = (): PDFViewerControllerHook => {
         setPageIndex(pageIndex);
       }
     },
-    [itemClickEnabled, setPageIndex],
+    [itemClickEnabled, setPageIndex]
   );
 
   return {

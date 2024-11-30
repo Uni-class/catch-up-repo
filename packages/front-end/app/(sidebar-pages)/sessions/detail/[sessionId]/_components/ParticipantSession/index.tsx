@@ -1,12 +1,12 @@
-import Button from "@/components/Button/Button";
-import { Label } from "@/components/Label";
-import { Paragraph } from "@/components/Text";
-import { useRouter } from "@/hook/useRouter";
-import { SessionResponseDto } from "@/schema/backend.schema";
-import { css } from "@/styled-system/css";
-import { ReactNode } from "react";
-import SessionIcon from "@/public/icons/session.svg";
-import Divider from "@/components/Divider";
+import Button from '@/components/Button/Button';
+import { Label } from '@/components/Label';
+import { Paragraph } from '@/components/Text';
+import { useRouter } from '@/hook/useRouter';
+import { SessionResponseDto } from '@/schema/backend.schema';
+import { css } from '@/styled-system/css';
+import { ReactNode } from 'react';
+import SessionIcon from '@/public/icons/session.svg';
+import Divider from '@/components/Divider';
 
 interface PropType {
   sessionData: SessionResponseDto;
@@ -17,19 +17,17 @@ export default function ParticipantSession({ sessionData }: PropType) {
   return (
     <div
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.25rem",
-        width: "100%",
-        maxWidth: "70em",
-        padding: "3rem 4.16rem",
-        alignItems: "flex-start",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem',
+        width: '100%',
+        maxWidth: '70em',
+        padding: '3rem 4.16rem',
+        alignItems: 'flex-start',
       })}
     >
       <Container labelText="세션 제목">
-        <Paragraph>
-          {sessionData.sessionName}
-        </Paragraph>
+        <Paragraph>{sessionData.sessionName}</Paragraph>
       </Container>
       <Container labelText="강의 자료">
         {sessionData.fileList.map((file) => (
@@ -40,10 +38,10 @@ export default function ParticipantSession({ sessionData }: PropType) {
       <Button
         onClick={() => {
           router.push(
-            router.getURLString("/view", { id: `${sessionData.sessionId}` })
+            router.getURLString('/view', { id: `${sessionData.sessionId}` })
           );
         }}
-        startIcon={<SessionIcon width={"1em"} height={"1em"} />}
+        startIcon={<SessionIcon width={'1em'} height={'1em'} />}
       >
         세션 참여
       </Button>
@@ -61,18 +59,18 @@ function Container({
   htmlFor?: string;
   errorText?: string;
   isError?: boolean;
-  height?: React.CSSProperties["height"];
+  height?: React.CSSProperties['height'];
 }) {
   return (
     <div
       className={css({
-        display: "flex",
-        width: "100%",
+        display: 'flex',
+        width: '100%',
         height: height,
-        alignItems: "center",
+        alignItems: 'center',
       })}
     >
-      <Label className={css({ minWidth: "9em" })}>{labelText}</Label>
+      <Label className={css({ minWidth: '9em' })}>{labelText}</Label>
       {children}
     </div>
   );

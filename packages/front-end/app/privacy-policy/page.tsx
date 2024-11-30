@@ -1,6 +1,6 @@
-import { css } from "@/styled-system/css";
-import Link from "next/link";
-import "./page.css";
+import { css } from '@/styled-system/css';
+import Link from 'next/link';
+import './page.css';
 
 export default function Page() {
   return (

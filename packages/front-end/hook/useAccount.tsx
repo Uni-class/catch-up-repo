@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
-import { User } from "@/schema/backend.schema";
-import { apiClient } from "@/utils/axios";
-import { useRouter } from "@/hook/useRouter";
+import { useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { User } from '@/schema/backend.schema';
+import { apiClient } from '@/utils/axios';
+import { useRouter } from '@/hook/useRouter';
 
 export const useAccountController = () => {
   const {
@@ -13,8 +13,8 @@ export const useAccountController = () => {
     isLoading,
     isError,
   } = useQuery<AxiosResponse<User>>({
-    queryKey: ["user", "profile"],
-    queryFn: async () => await apiClient.get("/user/profile"),
+    queryKey: ['user', 'profile'],
+    queryFn: async () => await apiClient.get('/user/profile'),
     throwOnError: false,
   });
   const router = useRouter();
@@ -28,7 +28,7 @@ export const useAccountController = () => {
   }, [router, getLoginURL]);
 
   const goToDashboard = useCallback(() => {
-    router.push("/dashboard");
+    router.push('/dashboard');
   }, [router]);
 
   const data: User | null = response?.data || null;

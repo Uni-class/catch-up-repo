@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { RecordId, TLRecord } from "tldraw";
+import { useEffect, useState } from 'react';
+import { RecordId, TLRecord } from 'tldraw';
 import {
   PDFPainterController,
   PDFPainterInstanceController,
-} from "@/PaintPDF/components";
-import { useReceiveDrawCache } from "./useReceiveDrawCache";
-import { socketAtom } from "@/client/socketAtom";
-import { useAtom } from "jotai";
-import { integralRecord } from "../_utils/integralRecord";
+} from '@/PaintPDF/components';
+import { useReceiveDrawCache } from './useReceiveDrawCache';
+import { socketAtom } from '@/client/socketAtom';
+import { useAtom } from 'jotai';
+import { integralRecord } from '../_utils/integralRecord';
 
 export const useParticipantSocket = (
   roomId: number | string,
   fileId: number,
   pdfPainterInstanceController: PDFPainterInstanceController,
   pdfPainterController: PDFPainterController,
-  isChaseMode: boolean,
+  isChaseMode: boolean
 ) => {
   const editor = pdfPainterInstanceController.getEditor();
   const {
@@ -33,44 +33,44 @@ export const useParticipantSocket = (
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("joinRoom", { roomId });
-    socket.on("initUser", () => {
-      console.log("Connected to WebSocket server:", socket.id);
-      socket.emit("joinRoom", { roomId });
+    socket.emit('joinRoom', { roomId });
+    socket.on('initUser', () => {
+      console.log('Connected to WebSocket server:', socket.id);
+      socket.emit('joinRoom', { roomId });
     });
-    socket.on("hostExist", (flag: "1" | "0") => {
-      if (flag === "1") {
-        socket.emit("joinRoom", { roomId });
+    socket.on('hostExist', (flag: '1' | '0') => {
+      if (flag === '1') {
+        socket.emit('joinRoom', { roomId });
       }
     });
-    socket.on("userList", (userList: any) => {
+    socket.on('userList', (userList: any) => {
       console.log({ userList });
     });
     return () => {
-      socket.off("connect");
-      socket.off("userList");
-      socket.off("initUser");
+      socket.off('connect');
+      socket.off('userList');
+      socket.off('initUser');
     };
   }, [roomId, socket]);
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("sendPartiPageNumber", { roomId, fileId, index: pageIndex });
+    socket.emit('sendPartiPageNumber', { roomId, fileId, index: pageIndex });
   }, [fileId, pageIndex, roomId, socket]);
 
   useEffect(() => {
     if (socket === null) return;
     socket.on(
-      "getHostPageNumber",
+      'getHostPageNumber',
       (data: { fileId: number; index: number; userId: number }) => {
         setHostIndex(data.index);
         if (!pdfPainterController.isPaintMode() && isChaseMode) {
           pdfPainterController.setPageIndex(data.index);
         }
-      },
+      }
     );
     return () => {
-      socket.off("getHostPageNumber");
+      socket.off('getHostPageNumber');
     };
   }, [isChaseMode, pdfPainterController, socket]);
 
@@ -78,23 +78,23 @@ export const useParticipantSocket = (
     if (socket === null) return;
 
     socket.on(
-      "getAddedDraw",
+      'getAddedDraw',
       (message: { data: TLRecord[]; index: number }) => {
         pageIndex === message.index
           ? pdfPainterInstanceController.addPaintElement(message.data)
           : addDrawCache(message.index, message.data);
-      },
+      }
     );
     socket.on(
-      "getRemovedDraw",
+      'getRemovedDraw',
       (message: { data: RecordId<any>[]; index: number }) => {
         pageIndex === message.index
           ? pdfPainterInstanceController.removePaintElement(message.data)
           : removeDrawCache(message.index, message.data);
-      },
+      }
     );
     socket.on(
-      "getUpdatedDraw",
+      'getUpdatedDraw',
       (message: { data: TLRecord[]; index: number }) => {
         const updates = message.data;
         updates.forEach((update) => {
@@ -103,18 +103,18 @@ export const useParticipantSocket = (
               update.id,
               (record) => {
                 return integralRecord(record, update);
-              },
+              }
             );
           } else {
             updateDrawCache(message.index, message.data);
           }
         });
-      },
+      }
     );
     return () => {
-      socket.off("getAddedDraw");
-      socket.off("getRemovedDraw");
-      socket.off("getUpdatedDraw");
+      socket.off('getAddedDraw');
+      socket.off('getRemovedDraw');
+      socket.off('getUpdatedDraw');
     };
   }, [
     addDrawCache,

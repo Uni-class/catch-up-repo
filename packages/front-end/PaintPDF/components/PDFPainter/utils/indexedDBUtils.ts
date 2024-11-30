@@ -1,4 +1,4 @@
-import { openDB } from "idb";
+import { openDB } from 'idb';
 
 export interface NoteType {
   sessionId: number;
@@ -8,12 +8,12 @@ export interface NoteType {
   notes: unknown;
 }
 
-const ids = ["sessionId", "fileId", "instanceId", "pageIndex"];
+const ids = ['sessionId', 'fileId', 'instanceId', 'pageIndex'];
 export const initDB = async () => {
-  return await openDB("Catchup-DB", 1, {
+  return await openDB('Catchup-DB', 1, {
     upgrade(db) {
-      if (!db.objectStoreNames.contains("notes")) {
-        const store = db.createObjectStore("notes", { keyPath: ids });
+      if (!db.objectStoreNames.contains('notes')) {
+        const store = db.createObjectStore('notes', { keyPath: ids });
         ids.forEach((id) => {
           store.createIndex(`${id}-index`, id);
         });
@@ -30,8 +30,8 @@ export const saveNoteDB = async (
   notes: unknown
 ) => {
   const db = await initDB();
-  const tx = db.transaction("notes", "readwrite");
-  const store = tx.objectStore("notes");
+  const tx = db.transaction('notes', 'readwrite');
+  const store = tx.objectStore('notes');
   const data: NoteType = {
     sessionId,
     fileId,
@@ -50,8 +50,8 @@ export const getPageNoteDB = async (
   instanceId: string
 ): Promise<null | unknown> => {
   const db = await initDB();
-  const tx = db.transaction("notes", "readonly");
-  const store = tx.objectStore("notes");
+  const tx = db.transaction('notes', 'readonly');
+  const store = tx.objectStore('notes');
   const data = (await store.get([
     sessionId,
     fileId,

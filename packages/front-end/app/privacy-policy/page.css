@@ -77,7 +77,7 @@
 }
 
 .restore-defaults a:active {
-  color: #bf00ff; 
+  color: #bf00ff;
 }
 
 .restore-defaults button,
@@ -105,20 +105,20 @@
   text-align: center;
 }
 
-.restore-defaults input[type="text"],
-.restore-defaults input[type="password"],
-.restore-defaults input[type="email"],
-.restore-defaults input[type="url"],
-.restore-defaults input[type="number"],
-.restore-defaults input[type="tel"],
-.restore-defaults input[type="search"],
-.restore-defaults input[type="date"],
-.restore-defaults input[type="month"],
-.restore-defaults input[type="week"],
-.restore-defaults input[type="time"],
-.restore-defaults input[type="datetime"],
-.restore-defaults input[type="datetime-local"],
-.restore-defaults input[type="color"],
+.restore-defaults input[type='text'],
+.restore-defaults input[type='password'],
+.restore-defaults input[type='email'],
+.restore-defaults input[type='url'],
+.restore-defaults input[type='number'],
+.restore-defaults input[type='tel'],
+.restore-defaults input[type='search'],
+.restore-defaults input[type='date'],
+.restore-defaults input[type='month'],
+.restore-defaults input[type='week'],
+.restore-defaults input[type='time'],
+.restore-defaults input[type='datetime'],
+.restore-defaults input[type='datetime-local'],
+.restore-defaults input[type='color'],
 .restore-defaults select,
 .restore-defaults textarea {
   padding: 2px;

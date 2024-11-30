@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
-import { RecordId, RecordsDiff, TLRecord } from "tldraw";
-import { differentialRecord } from "../_utils/differentialRecord";
-import { Socket } from "socket.io-client";
+import { useCallback, useEffect, useRef } from 'react';
+import { RecordId, RecordsDiff, TLRecord } from 'tldraw';
+import { differentialRecord } from '../_utils/differentialRecord';
+import { Socket } from 'socket.io-client';
 
 type ElementType = {
-  type: "added" | "updated" | "removed";
+  type: 'added' | 'updated' | 'removed';
   data: TLRecord | [TLRecord, TLRecord];
 };
 
@@ -54,17 +54,17 @@ export const useBatchSocket = ({
   };
   const pushChanges = useCallback((changes: RecordsDiff<TLRecord>) => {
     Object.keys(changes.added).forEach((e) => {
-      pushArray(e, { type: "added", data: changes.added[e as RecordId<any>] });
+      pushArray(e, { type: 'added', data: changes.added[e as RecordId<any>] });
     });
     Object.keys(changes.removed).forEach((e) => {
       pushArray(e, {
-        type: "removed",
+        type: 'removed',
         data: changes.removed[e as RecordId<any>],
       });
     });
     Object.keys(changes.updated).forEach((e) => {
       pushArray(e, {
-        type: "updated",
+        type: 'updated',
         data: changes.updated[e as RecordId<any>],
       });
     });
@@ -73,25 +73,25 @@ export const useBatchSocket = ({
   // get condition
   const toRemove = (id: RecordId<any>) => {
     return (
-      queueRef.current[id][queueRef.current[id].length - 1].type === "removed"
+      queueRef.current[id][queueRef.current[id].length - 1].type === 'removed'
     );
   };
   const toAddOnly = (id: RecordId<any>) => {
     return (
-      queueRef.current[id][0].type === "added" &&
+      queueRef.current[id][0].type === 'added' &&
       queueRef.current[id].length === 1
     );
   };
   const toAddConcat = (id: RecordId<any>) => {
     return (
-      queueRef.current[id][0].type === "added" &&
+      queueRef.current[id][0].type === 'added' &&
       queueRef.current[id].length > 1
     );
   };
   const toUpdate = (id: RecordId<any>) => {
     return (
-      queueRef.current[id][0].type === "updated" &&
-      queueRef.current[id][queueRef.current[id].length - 1].type === "updated"
+      queueRef.current[id][0].type === 'updated' &&
+      queueRef.current[id][queueRef.current[id].length - 1].type === 'updated'
     );
   };
 
@@ -155,19 +155,19 @@ export const useBatchSocket = ({
         fileId,
       };
       if (dataFormat.added.length > 0) {
-        socket.emit("sendAddedDraw", {
+        socket.emit('sendAddedDraw', {
           ...messageBody,
           data: dataFormat.added,
         });
       }
       if (dataFormat.removed.length > 0) {
-        socket.emit("sendRemovedDraw", {
+        socket.emit('sendRemovedDraw', {
           ...messageBody,
           data: dataFormat.removed,
         });
       }
       if (dataFormat.updated.length > 0) {
-        socket.emit("sendUpdatedDraw", {
+        socket.emit('sendUpdatedDraw', {
           ...messageBody,
           data: dataFormat.updated,
         });

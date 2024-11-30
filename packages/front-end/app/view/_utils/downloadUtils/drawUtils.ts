@@ -1,16 +1,16 @@
-import { Editor, TLEditorSnapshot, SerializedStore, TLRecord } from "tldraw";
+import { Editor, TLEditorSnapshot, SerializedStore, TLRecord } from 'tldraw';
 import {
   convertBlobToUint8Array,
   exportTldrawEditorAsBlob,
-} from "./convertUtils";
-import { NoteAPIResType } from "../../_types/apiType";
+} from './convertUtils';
+import { NoteAPIResType } from '../../_types/apiType';
 
 export const setTempEditor = (
   editor: Editor | null,
   snapshot: TLEditorSnapshot | null
 ) => {
   if (editor === null) {
-    console.error("editor is null.");
+    console.error('editor is null.');
     return false;
   }
   if (snapshot === null) {
@@ -41,7 +41,7 @@ export const getShapes = (snapshots: (NoteAPIResType | null)[]) => {
     height = snapshot.height;
     const records = snapshot.note.document.store;
     Object.values(records).forEach((record) => {
-      if (record.id === "document:document" || record.id === "page:page")
+      if (record.id === 'document:document' || record.id === 'page:page')
         return;
       shapes.push(record);
     });

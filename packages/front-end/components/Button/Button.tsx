@@ -1,76 +1,76 @@
-import { styled } from "@/styled-system/jsx";
+import { styled } from '@/styled-system/jsx';
 import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   forwardRef,
   ReactNode,
-} from "react";
+} from 'react';
 
-const ButtonContainer = styled("button", {
+const ButtonContainer = styled('button', {
   base: {
-    padding: "0.48rem 0.38rem",
-    bg: "primary.200",
-    borderRadius: "0.3rem",
-    color: "white",
-    cursor: "pointer",
-    fontWeight: "medium",
-    display: "flex",
-    gap: "0.375rem",
-    alignItems: "center",
+    padding: '0.48rem 0.38rem',
+    bg: 'primary.200',
+    borderRadius: '0.3rem',
+    color: 'white',
+    cursor: 'pointer',
+    fontWeight: 'medium',
+    display: 'flex',
+    gap: '0.375rem',
+    alignItems: 'center',
     _disabled: {
       opacity: 0.5,
-      cursor: "default",
+      cursor: 'default',
     },
   },
   variants: {
     isIcon: {
       true: {
-        justifyContent: "",
+        justifyContent: '',
       },
       false: {
-        justifyContent: "center",
+        justifyContent: 'center',
       },
     },
     size: {
       mid: {
-        fontSize: "1rem",
+        fontSize: '1rem',
       },
       small: {
-        fontSize: "0.8rem",
-        padding: "0.3rem 0.38rem",
+        fontSize: '0.8rem',
+        padding: '0.3rem 0.38rem',
       },
     },
     color: {
       primary: {
-        bg: "primary.200",
+        bg: 'primary.200',
         _hover: {
-          bg: "primary.400",
+          bg: 'primary.400',
         },
       },
       secondary: {
-        bg: "secondary.200",
-        color: "black",
+        bg: 'secondary.200',
+        color: 'black',
         _hover: {
-          bg: "secondary.dark",
+          bg: 'secondary.dark',
         },
       },
       gray: {
-        bg: "grey.500",
+        bg: 'grey.500',
         _hover: {
-          bg: "#6F7291",
+          bg: '#6F7291',
         },
       },
       dangerous: {
-        bg: "red.500",
+        bg: 'red.500',
         _hover: {
-          bg: "red.800",
+          bg: 'red.800',
         },
       },
     },
   },
   defaultVariants: {
-    color: "primary",
-    size: "mid",
+    color: 'primary',
+    size: 'mid',
   },
 });
 
@@ -81,8 +81,8 @@ interface PropType
   > {
   children?: ReactNode;
   startIcon?: ReactNode;
-  size?: "small" | "mid" | undefined;
-  color?: "primary" | "secondary" | "gray" | "dangerous" | undefined;
+  size?: 'small' | 'mid' | undefined;
+  color?: 'primary' | 'secondary' | 'gray' | 'dangerous' | undefined;
 }
 
 const Button = forwardRef<HTMLButtonElement, PropType>(
@@ -93,9 +93,9 @@ const Button = forwardRef<HTMLButtonElement, PropType>(
         {children}
       </ButtonContainer>
     );
-  },
+  }
 );
 
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
 export default Button;

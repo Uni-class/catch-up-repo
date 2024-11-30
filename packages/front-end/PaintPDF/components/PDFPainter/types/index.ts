@@ -4,28 +4,28 @@ import {
   IdOf,
   TLRecord,
   defaultColorNames,
-} from "tldraw";
+} from 'tldraw';
 
 import {
   PDFDocument,
   PDFItemClickHandlerArguments,
   PDFPage,
   PDFViewerController,
-} from "../../PDF/types";
-import { ExternalAssetStore } from "../../Painter/types";
+} from '../../PDF/types';
+import { ExternalAssetStore } from '../../Painter/types';
 import {
   DeleteFunction,
   HandlerFunction,
   PDFPainterEventHandlerReturn,
-} from "../hooks/usePDFPainterEventHandler";
+} from '../hooks/usePDFPainterEventHandler';
 
 export type PaintTool =
-  | "text-select"
-  | "drag"
-  | "area-select"
-  | "pen"
-  | "eraser"
-  | "text";
+  | 'text-select'
+  | 'drag'
+  | 'area-select'
+  | 'pen'
+  | 'eraser'
+  | 'text';
 
 export type PaintColor = (typeof defaultColorNames)[number];
 
@@ -52,16 +52,16 @@ export type PDFPainterController = {
   getEditor: (editorId: string) => Editor | null;
   getEditorSnapshot: (
     editorId: string,
-    pageIndex: number,
+    pageIndex: number
   ) => EditorSnapshot | null;
   getEditorSnapshotFromStorage: (
     editorId: string,
-    pageIndex: number,
+    pageIndex: number
   ) => EditorSnapshot | null;
   setEditorSnapshot: (
     editorId: string,
     pageIndex: number,
-    snapshot: EditorSnapshot,
+    snapshot: EditorSnapshot
   ) => void;
   clearEditorSnapshot: (editorId: string, pageIndex: number) => void;
   isAutoSaveEnabled: () => boolean;
@@ -98,12 +98,12 @@ export type PDFPainterInstanceController = {
   addPaintElement: (elementData: PainterShape[]) => void;
   updatePaintElement: (
     elementId: PainterShapeId,
-    elementData: PainterShape,
+    elementData: PainterShape
   ) => void;
   removePaintElement: (elementIds: PainterShapeId[]) => void;
   updatePaintElementByGenerator: (
     elementId: PainterShapeId,
-    elementGenerator: (previousElementData: PainterShape) => PainterShape,
+    elementGenerator: (previousElementData: PainterShape) => PainterShape
   ) => void;
   getInstanceId: () => string;
 };

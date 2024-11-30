@@ -1,4 +1,4 @@
-import { useMemo, memo } from "react";
+import { useMemo, memo } from 'react';
 import {
   Editor,
   Tldraw,
@@ -19,16 +19,16 @@ import {
   DefaultToolbarContent,
   BreakPointProvider,
   DefaultMenuPanel,
-} from "tldraw";
+} from 'tldraw';
 
-import "tldraw/tldraw.css";
-import "./Painter.css";
-import { TLAsset } from "tldraw";
-import { ExternalAssetStore, ExternalAssetURL } from "../Painter/types";
+import 'tldraw/tldraw.css';
+import './Painter.css';
+import { TLAsset } from 'tldraw';
+import { ExternalAssetStore, ExternalAssetURL } from '../Painter/types';
 
 const PainterComponent = ({
-  width = "100%",
-  height = "100%",
+  width = '100%',
+  height = '100%',
   readOnly = false,
   externalAssetStore = null,
   onEditorLoad = () => {},
@@ -49,7 +49,7 @@ const PainterComponent = ({
       </DefaultContextMenu>
     );
   });
-  CustomContextMenu.displayName = "CustomContextMenu";
+  CustomContextMenu.displayName = 'CustomContextMenu';
 
   const CustomStylePanel = memo((props: TLUiStylePanelProps) => {
     const styles = useRelevantStyles();
@@ -59,7 +59,7 @@ const PainterComponent = ({
       </BreakPointProvider>
     );
   });
-  CustomStylePanel.displayName = "CustomStylePanel";
+  CustomStylePanel.displayName = 'CustomStylePanel';
 
   const CustomToolbar = memo(() => {
     return (
@@ -68,7 +68,7 @@ const PainterComponent = ({
       </DefaultToolbar>
     );
   });
-  CustomToolbar.displayName = "CustomToolbar";
+  CustomToolbar.displayName = 'CustomToolbar';
 
   const components = useMemo<TLComponents>(
     () => ({
@@ -96,34 +96,34 @@ const PainterComponent = ({
       TopPanel: null,
       CursorChatBubble: null,
     }),
-    [CustomContextMenu, CustomStylePanel],
+    [CustomContextMenu, CustomStylePanel]
   );
 
   const keyboardShortcutsEnabledOverrides: TLUiOverrides = {
     actions(_editor, actions): TLUiActionsContextType {
       const shortcuts: { [key: string]: string } = {
-        undo: "$z",
-        redo: "$!z",
-        cut: "$x",
-        copy: "$c",
-        paste: "$v",
-        "select-all": "$a",
-        delete: "⌫,del,backspace",
-        duplicate: "$d",
+        undo: '$z',
+        redo: '$!z',
+        cut: '$x',
+        copy: '$c',
+        paste: '$v',
+        'select-all': '$a',
+        delete: '⌫,del,backspace',
+        duplicate: '$d',
       };
       return Object.fromEntries(
         Object.entries(actions).map(([key, value]) => [
           key,
-          { ...value, kbd: key in shortcuts ? shortcuts[key] : "" },
-        ]),
+          { ...value, kbd: key in shortcuts ? shortcuts[key] : '' },
+        ])
       );
     },
     tools(_editor, tools): TLUiToolsContextType {
       return Object.fromEntries(
         Object.entries(tools).map(([key, value]) => [
           key,
-          { ...value, kbd: "" },
-        ]),
+          { ...value, kbd: '' },
+        ])
       );
     },
   };
@@ -133,16 +133,16 @@ const PainterComponent = ({
       return Object.fromEntries(
         Object.entries(actions).map(([key, value]) => [
           key,
-          { ...value, kbd: "" },
-        ]),
+          { ...value, kbd: '' },
+        ])
       );
     },
     tools(_editor, tools): TLUiToolsContextType {
       return Object.fromEntries(
         Object.entries(tools).map(([key, value]) => [
           key,
-          { ...value, kbd: "" },
-        ]),
+          { ...value, kbd: '' },
+        ])
       );
     },
   };
@@ -157,7 +157,7 @@ const PainterComponent = ({
           return externalAssetStore.resolve(
             asset.id,
             asset.type,
-            (asset.props.src || "") as ExternalAssetURL,
+            (asset.props.src || '') as ExternalAssetURL
           );
         },
       };
@@ -171,7 +171,7 @@ const PainterComponent = ({
       style={{
         width: width,
         height: height,
-        pointerEvents: readOnly ? "none" : "unset",
+        pointerEvents: readOnly ? 'none' : 'unset',
       }}
     >
       <Tldraw

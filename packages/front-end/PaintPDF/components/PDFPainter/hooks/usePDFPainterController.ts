@@ -1,21 +1,21 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 
-import { usePDFViewerController } from "../../PDF";
+import { usePDFViewerController } from '../../PDF';
 
-import { ExternalAssetStore } from "../../Painter/types";
+import { ExternalAssetStore } from '../../Painter/types';
 import {
   PaintTool,
   EditorSnapshot,
   PDFPainterController,
   PDFPainterControllerHook,
   PaintColor,
-} from "../types";
+} from '../types';
 
-import CleanPainterSnapshot from "../../../assets/data/snapshot.json";
-import { usePDFPainterEventHandler } from "./usePDFPainterEventHandler";
-import { isEmptySnapshot } from "../utils/validate";
-import { Editor, DefaultColorStyle, defaultColorNames } from "tldraw";
-import { DefaultColorThemePalette } from "@tldraw/tlschema";
+import CleanPainterSnapshot from '../../../assets/data/snapshot.json';
+import { usePDFPainterEventHandler } from './usePDFPainterEventHandler';
+import { isEmptySnapshot } from '../utils/validate';
+import { Editor, DefaultColorStyle, defaultColorNames } from 'tldraw';
+import { DefaultColorThemePalette } from '@tldraw/tlschema';
 
 export const usePDFPainterController = ({
   painterId,
@@ -36,8 +36,8 @@ export const usePDFPainterController = ({
   const prevPageEventHandle = usePDFPainterEventHandler();
   const currentPageEventHandle = usePDFPainterEventHandler();
 
-  const [currentTool, setCurrentTool] = useState<PaintTool>("text-select");
-  const [currentColor, setCurrentColor] = useState<PaintColor>("black");
+  const [currentTool, setCurrentTool] = useState<PaintTool>('text-select');
+  const [currentColor, setCurrentColor] = useState<PaintColor>('black');
 
   const [isInstanceHidden, setIsInstanceHidden] = useState<{
     [key: string]: boolean;
@@ -50,30 +50,30 @@ export const usePDFPainterController = ({
   const [autoSaveEnabledState, setAutoSaveEnabledState] = useState(true);
 
   const isPaintMode = useCallback(() => {
-    return currentTool !== "text-select" && currentTool !== "drag";
+    return currentTool !== 'text-select' && currentTool !== 'drag';
   }, [currentTool]);
 
   useEffect(() => {
     Object.values(editors.current).forEach((editor: Editor) => {
       editor.selectNone();
       window.getSelection()?.removeAllRanges();
-      pdfViewerController.setControlLockEnabled(currentTool !== "drag");
+      pdfViewerController.setControlLockEnabled(currentTool !== 'drag');
       switch (currentTool) {
-        case "text-select":
+        case 'text-select':
           break;
-        case "drag":
+        case 'drag':
           break;
-        case "area-select":
-          editor.setCurrentTool("select");
+        case 'area-select':
+          editor.setCurrentTool('select');
           break;
-        case "pen":
-          editor.setCurrentTool("draw");
+        case 'pen':
+          editor.setCurrentTool('draw');
           break;
-        case "eraser":
-          editor.setCurrentTool("eraser");
+        case 'eraser':
+          editor.setCurrentTool('eraser');
           break;
-        case "text":
-          editor.setCurrentTool("text");
+        case 'text':
+          editor.setCurrentTool('text');
           break;
         default:
           break;
@@ -99,7 +99,7 @@ export const usePDFPainterController = ({
     (editorId: string, pdfPageIndex: number) => {
       return `${painterId}_${editorId}_${pdfPageIndex}`;
     },
-    [painterId],
+    [painterId]
   );
 
   const getEditorSnapshotFromStorage = useCallback(
@@ -113,7 +113,7 @@ export const usePDFPainterController = ({
       }
       return null;
     },
-    [getSnapshotId],
+    [getSnapshotId]
   );
 
   const setEditorSnapshotToStorage = useCallback(
@@ -121,7 +121,7 @@ export const usePDFPainterController = ({
       const snapshotId = getSnapshotId(editorId, pageIndex);
       localStorage.setItem(snapshotId, JSON.stringify(snapshot));
     },
-    [getSnapshotId],
+    [getSnapshotId]
   );
 
   const clearEditorSnapshotFromStorage = useCallback(
@@ -129,7 +129,7 @@ export const usePDFPainterController = ({
       const snapshotId = getSnapshotId(editorId, pageIndex);
       localStorage.removeItem(snapshotId);
     },
-    [getSnapshotId],
+    [getSnapshotId]
   );
 
   const loadEmptySnapshot = useCallback(
@@ -142,7 +142,7 @@ export const usePDFPainterController = ({
         editor.loadSnapshot(CleanPainterSnapshot as unknown as EditorSnapshot);
       } catch {}
     },
-    [getEditor],
+    [getEditor]
   );
 
   const loadEditorSnapshot = useCallback(
@@ -165,7 +165,7 @@ export const usePDFPainterController = ({
         }
       });
     },
-    [getEditor, getSnapshotId, getEditorSnapshotFromStorage, loadEmptySnapshot],
+    [getEditor, getSnapshotId, getEditorSnapshotFromStorage, loadEmptySnapshot]
   );
 
   const loadPageSnapshots = useCallback(
@@ -174,7 +174,7 @@ export const usePDFPainterController = ({
         loadEditorSnapshot(editorId, pageIndex);
       }
     },
-    [loadEditorSnapshot],
+    [loadEditorSnapshot]
   );
 
   const saveEditorSnapshot = useCallback(
@@ -189,7 +189,7 @@ export const usePDFPainterController = ({
         setEditorSnapshotToStorage(editorId, pageIndex, editor.getSnapshot());
       } catch {}
     },
-    [getEditor, getSnapshotId, setEditorSnapshotToStorage],
+    [getEditor, getSnapshotId, setEditorSnapshotToStorage]
   );
 
   const savePageSnapshots = useCallback(
@@ -198,7 +198,7 @@ export const usePDFPainterController = ({
         saveEditorSnapshot(editorId, pageIndex);
       }
     },
-    [saveEditorSnapshot],
+    [saveEditorSnapshot]
   );
 
   const registerEditor = useCallback(
@@ -218,7 +218,7 @@ export const usePDFPainterController = ({
         }
       }
     },
-    [loadEditorSnapshot],
+    [loadEditorSnapshot]
   );
 
   const unregisterEditor = useCallback((editorId: string) => {
@@ -274,7 +274,7 @@ export const usePDFPainterController = ({
         },
         {
           force: true,
-        },
+        }
       );
     }
   }, [pdfViewerController]);
@@ -284,7 +284,7 @@ export const usePDFPainterController = ({
       saveEditorSnapshot(editorId, pageIndex);
       return getEditorSnapshotFromStorage(editorId, pageIndex);
     },
-    [saveEditorSnapshot, getEditorSnapshotFromStorage],
+    [saveEditorSnapshot, getEditorSnapshotFromStorage]
   );
 
   const setEditorSnapshot = useCallback(
@@ -292,7 +292,7 @@ export const usePDFPainterController = ({
       setEditorSnapshotToStorage(editorId, pageIndex, snapshot);
       loadEditorSnapshot(editorId, pageIndex);
     },
-    [loadEditorSnapshot, setEditorSnapshotToStorage],
+    [loadEditorSnapshot, setEditorSnapshotToStorage]
   );
 
   const clearEditorSnapshot = useCallback(
@@ -300,7 +300,7 @@ export const usePDFPainterController = ({
       clearEditorSnapshotFromStorage(editorId, pageIndex);
       loadEditorSnapshot(editorId, pageIndex);
     },
-    [loadEditorSnapshot, clearEditorSnapshotFromStorage],
+    [loadEditorSnapshot, clearEditorSnapshotFromStorage]
   );
 
   const autoSave = useCallback(() => {
@@ -315,7 +315,7 @@ export const usePDFPainterController = ({
     (enabled: boolean) => {
       setAutoSaveEnabledState(enabled);
     },
-    [setAutoSaveEnabledState],
+    [setAutoSaveEnabledState]
   );
 
   useEffect(() => {
@@ -334,14 +334,14 @@ export const usePDFPainterController = ({
     (editorId: string) => {
       return !!isInstanceHidden[editorId];
     },
-    [isInstanceHidden],
+    [isInstanceHidden]
   );
 
   const setInstanceHidden = useCallback(
     (editorId: string, isHidden: boolean) => {
       setIsInstanceHidden({ ...isInstanceHidden, [editorId]: isHidden });
     },
-    [isInstanceHidden],
+    [isInstanceHidden]
   );
 
   const ensureVisibleWhileDrawRef = useRef<Set<string>>(new Set());

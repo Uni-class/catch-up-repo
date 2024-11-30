@@ -1,15 +1,15 @@
-import { memo, ReactNode, useState } from "react";
-import type { PDFPainterController } from "./types";
-import ToolPointerIcon from "@/PaintPDF/assets/icons/tool-pointer.svg";
-import ToolHandIcon from "@/PaintPDF/assets/icons/tool-hand.svg";
-import ToolEditIcon from "@/PaintPDF/assets/icons/tool-edit.svg";
-import ArrowLeftIcon from "@/PaintPDF/assets/icons/arrow-left.svg";
-import ArrowRightIcon from "@/PaintPDF/assets/icons/arrow-right.svg";
-import CloseIcon from "@/PaintPDF/assets/icons/close.svg";
-import ShareIcon from "@/PaintPDF/assets/icons/share.svg";
-import { PDFPainterControlBarButton } from "@/PaintPDF/components";
-import { css } from "@/styled-system/css";
-import { ModeContainer } from "@/app/view/_components/Common/Mode";
+import { memo, ReactNode, useState } from 'react';
+import type { PDFPainterController } from './types';
+import ToolPointerIcon from '@/PaintPDF/assets/icons/tool-pointer.svg';
+import ToolHandIcon from '@/PaintPDF/assets/icons/tool-hand.svg';
+import ToolEditIcon from '@/PaintPDF/assets/icons/tool-edit.svg';
+import ArrowLeftIcon from '@/PaintPDF/assets/icons/arrow-left.svg';
+import ArrowRightIcon from '@/PaintPDF/assets/icons/arrow-right.svg';
+import CloseIcon from '@/PaintPDF/assets/icons/close.svg';
+import ShareIcon from '@/PaintPDF/assets/icons/share.svg';
+import { PDFPainterControlBarButton } from '@/PaintPDF/components';
+import { css } from '@/styled-system/css';
+import { ModeContainer } from '@/app/view/_components/Common/Mode';
 
 const PDFPainterControlBarComponent = ({
   pdfPainterController,
@@ -30,45 +30,45 @@ const PDFPainterControlBarComponent = ({
   return (
     <div
       className={css({
-        display: "flex",
-        padding: "1em",
-        color: "#ffffff",
-        backgroundColor: "#aaaaaa",
-        height: "4em",
+        display: 'flex',
+        padding: '1em',
+        color: '#ffffff',
+        backgroundColor: '#aaaaaa',
+        height: '4em',
       })}
     >
       <div
         className={css({
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1em",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '1em',
           flexGrow: 1,
         })}
       >
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setCurrentTool("text-select")}
-          disabled={pdfPainterController.getCurrentTool() === "text-select"}
+          onClick={() => pdfPainterController.setCurrentTool('text-select')}
+          disabled={pdfPainterController.getCurrentTool() === 'text-select'}
         >
-          <ToolPointerIcon width={"1.6em"} height={"1.6em"} />
+          <ToolPointerIcon width={'1.6em'} height={'1.6em'} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setCurrentTool("drag")}
-          disabled={pdfPainterController.getCurrentTool() === "drag"}
+          onClick={() => pdfPainterController.setCurrentTool('drag')}
+          disabled={pdfPainterController.getCurrentTool() === 'drag'}
         >
-          <ToolHandIcon width={"1.6em"} height={"1.6em"} />
+          <ToolHandIcon width={'1.6em'} height={'1.6em'} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
-          onClick={() => pdfPainterController.setCurrentTool("pen")}
-          disabled={pdfPainterController.getCurrentTool() === "pen"}
+          onClick={() => pdfPainterController.setCurrentTool('pen')}
+          disabled={pdfPainterController.getCurrentTool() === 'pen'}
         >
-          <ToolEditIcon width={"1.6em"} height={"1.6em"} />
+          <ToolEditIcon width={'1.6em'} height={'1.6em'} />
         </PDFPainterControlBarButton>
         <PDFPainterControlBarButton
           onClick={pdfPainterController.moveToPreviousPage}
           disabled={!pdfPainterController.hasPreviousPage()}
         >
-          <ArrowLeftIcon width={"1.6em"} height={"1.6em"} />
+          <ArrowLeftIcon width={'1.6em'} height={'1.6em'} />
         </PDFPainterControlBarButton>
         <div>
           {pdfPainterController.getPageIndex() + 1}/
@@ -81,16 +81,16 @@ const PDFPainterControlBarComponent = ({
           onClick={pdfPainterController.moveToNextPage}
           disabled={!pdfPainterController.hasNextPage()}
         >
-          <ArrowRightIcon width={"1.6em"} height={"1.6em"} />
+          <ArrowRightIcon width={'1.6em'} height={'1.6em'} />
         </PDFPainterControlBarButton>
       </div>
       <div
         className={css({
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1em",
-          padding: "0 2rem",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '1em',
+          padding: '0 2rem',
         })}
       >
         <PDFPainterControlBarButton
@@ -99,18 +99,18 @@ const PDFPainterControlBarComponent = ({
           }}
         >
           {showCodeOverlay ? (
-            <CloseIcon width={"1.6em"} height={"1.6em"}></CloseIcon>
+            <CloseIcon width={'1.6em'} height={'1.6em'}></CloseIcon>
           ) : (
-            <ShareIcon width={"1.6em"} height={"1.6em"} />
+            <ShareIcon width={'1.6em'} height={'1.6em'} />
           )}
         </PDFPainterControlBarButton>
-        <div className={css({ position: "relative" })}>
+        <div className={css({ position: 'relative' })}>
           <PDFPainterControlBarButton
             onClick={() => {
               setShowModeToolTip(!showModeToolTip);
             }}
           >
-            <p>{showModeToolTip ? "닫기" : "모드"}</p>
+            <p>{showModeToolTip ? '닫기' : '모드'}</p>
           </PDFPainterControlBarButton>
           {showModeToolTip && (
             <ModeContainer setVisible={setShowModeToolTip}>
@@ -118,14 +118,14 @@ const PDFPainterControlBarComponent = ({
             </ModeContainer>
           )}
         </div>
-        <div className={css({ position: "relative" })}>
+        <div className={css({ position: 'relative' })}>
           <PDFPainterControlBarButton
             onClick={() => {
               setShowDownloadToolTip(!showDownloadToolTip);
             }}
-            className={css({ width: "6em" })}
+            className={css({ width: '6em' })}
           >
-            <p>{showDownloadToolTip ? "닫기" : "다운로드"}</p>
+            <p>{showDownloadToolTip ? '닫기' : '다운로드'}</p>
           </PDFPainterControlBarButton>
           {showDownloadToolTip && (
             <ModeContainer

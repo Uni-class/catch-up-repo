@@ -1,10 +1,10 @@
-import { css, cx } from "@/styled-system/css";
+import { css, cx } from '@/styled-system/css';
 import {
   ChangeEventHandler,
   DetailedHTMLProps,
   InputHTMLAttributes,
   MouseEventHandler,
-} from "react";
+} from 'react';
 
 interface PropType
   extends DetailedHTMLProps<
@@ -29,11 +29,11 @@ export default function Checkbox({
       disabled={disabled}
       className={cx(
         css({
-          display: "block",
-          width: "1.3em",
-          height: "1.3em",
-          fontSize:"1em",
-          accentColor:"primary.200",
+          display: 'block',
+          width: '1.3em',
+          height: '1.3em',
+          fontSize: '1em',
+          accentColor: 'primary.200',
         }),
         className
       )}

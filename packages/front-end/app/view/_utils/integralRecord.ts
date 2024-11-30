@@ -1,5 +1,5 @@
 export const integralRecord = (original: any, delta: any) => {
-  if (original === null || typeof original !== "object") {
+  if (original === null || typeof original !== 'object') {
     return delta; // 원시형 데이터라면 새로운 값으로 대체
   }
 
@@ -25,7 +25,7 @@ export const integralRecord = (original: any, delta: any) => {
   }
 
   // 객체일 경우
-  if (typeof original === "object" && typeof delta === "object") {
+  if (typeof original === 'object' && typeof delta === 'object') {
     const newObject = { ...original }; // 기존 값 처리
     for (const key in delta) {
       if (delta.hasOwnProperty(key)) {

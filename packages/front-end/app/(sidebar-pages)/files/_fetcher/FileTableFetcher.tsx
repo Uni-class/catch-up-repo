@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { File } from "@/schema/backend.schema";
-import { apiClient } from "@/utils/axios";
-import { FileTable } from "../_components/FileTable";
-import { useState } from "react";
-import { AxiosResponse } from "axios";
+import { useQuery } from '@tanstack/react-query';
+import { File } from '@/schema/backend.schema';
+import { apiClient } from '@/utils/axios';
+import { FileTable } from '../_components/FileTable';
+import { useState } from 'react';
+import { AxiosResponse } from 'axios';
 
 export default function FileTableFetcher() {
   const size = 5;
@@ -21,9 +21,9 @@ export default function FileTableFetcher() {
       files: File[];
     }>
   >({
-    queryKey: ["user", "files", size, page],
+    queryKey: ['user', 'files', size, page],
     queryFn: async () => {
-      return await apiClient.get("/user/files", {
+      return await apiClient.get('/user/files', {
         params: {
           size: size,
           page: page + 1,
@@ -33,9 +33,9 @@ export default function FileTableFetcher() {
   });
   const data = response?.data;
   const status = isLoading
-    ? "loading"
+    ? 'loading'
     : isError || !Array.isArray(data)
-      ? "error"
+      ? 'error'
       : null;
   return (
     <FileTable

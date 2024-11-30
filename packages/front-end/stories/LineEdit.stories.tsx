@@ -1,13 +1,13 @@
-import type { Meta, StoryFn, StoryObj } from "@storybook/react";
-import LineEdit from "@/components/LineEdit";
-import { css } from "@/styled-system/css";
-import { Label } from "@/components/Label";
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import LineEdit from '@/components/LineEdit';
+import { css } from '@/styled-system/css';
+import { Label } from '@/components/Label';
 
 const meta = {
-  title: "Components/LineEdit",
+  title: 'Components/LineEdit',
   component: LineEdit,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof LineEdit>;
 
@@ -18,14 +18,14 @@ const Template: StoryFn = (args) => {
   return (
     <div
       className={css({
-        display: "flex",
-        width: "400px",
-        alignItems: "center",
-        justifyContent: "space-between",
+        display: 'flex',
+        width: '400px',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       })}
     >
       <Label>라벨</Label>
-      <LineEdit {...args} className={css({width:"300px"})}/>
+      <LineEdit {...args} className={css({ width: '300px' })} />
     </div>
   );
 };

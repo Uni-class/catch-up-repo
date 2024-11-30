@@ -1,15 +1,13 @@
-import Button from "@/components/Button/Button";
-import { ModeControl } from "./Mode";
-import { css } from "@/styled-system/css";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Editor, Tldraw, useEditor } from "tldraw";
-import { PDFPainterController } from "@/PaintPDF/components";
-import { getMergedPDFBytes } from "../../_utils/downloadUtils/getMergedPDFBytes";
-import { downloadPDF } from "../../_utils/downloadUtils/downloadUtils";
-import { getSelfDrawFromServer } from "../../_utils/downloadUtils/apiUtils";
-import {
-  convertSnapshotToPNG,
-} from "../../_utils/downloadUtils/drawUtils";
+import Button from '@/components/Button/Button';
+import { ModeControl } from './Mode';
+import { css } from '@/styled-system/css';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Editor, Tldraw, useEditor } from 'tldraw';
+import { PDFPainterController } from '@/PaintPDF/components';
+import { getMergedPDFBytes } from '../../_utils/downloadUtils/getMergedPDFBytes';
+import { downloadPDF } from '../../_utils/downloadUtils/downloadUtils';
+import { getSelfDrawFromServer } from '../../_utils/downloadUtils/apiUtils';
+import { convertSnapshotToPNG } from '../../_utils/downloadUtils/drawUtils';
 
 interface PropType {
   fileName: string;
@@ -68,10 +66,10 @@ export function HostViewerDownload({
       />
       <Button
         className={css({
-          width: "100%",
-          height: "2rem",
-          padding: "0.25rem",
-          marginTop: "0.25rem",
+          width: '100%',
+          height: '2rem',
+          padding: '0.25rem',
+          marginTop: '0.25rem',
         })}
         onClick={handleButtonClick}
       >
@@ -79,21 +77,21 @@ export function HostViewerDownload({
       </Button>
       <div
         className={css({
-          position: "relative",
-          overflow: "hidden",
-          visibility: "hidden",
+          position: 'relative',
+          overflow: 'hidden',
+          visibility: 'hidden',
         })}
       >
         <div
           className={css({
-            visibility: "hidden",
-            position: "absolute",
+            visibility: 'hidden',
+            position: 'absolute',
             zIndex: -1000,
             top: 0,
             left: 0,
-            width: "5000px",
-            height: "5000px",
-            overflow: "hidden",
+            width: '5000px',
+            height: '5000px',
+            overflow: 'hidden',
           })}
         >
           <Tldraw>
@@ -138,10 +136,14 @@ export function ParticipantViewerDownload({
           true
         )
       : [];
-    const pdfBytes = await getMergedPDFBytes(src, async (index) => await convertSnapshotToPNG([
-      snapshotsFromServer[index],
-      hostSnapshotsFromServer[index],
-    ],editorState));
+    const pdfBytes = await getMergedPDFBytes(
+      src,
+      async (index) =>
+        await convertSnapshotToPNG(
+          [snapshotsFromServer[index], hostSnapshotsFromServer[index]],
+          editorState
+        )
+    );
     downloadPDF(pdfBytes, fileName);
   };
   return (
@@ -158,10 +160,10 @@ export function ParticipantViewerDownload({
       />
       <Button
         className={css({
-          width: "100%",
-          height: "2rem",
-          padding: "0.25rem",
-          marginTop: "0.25rem",
+          width: '100%',
+          height: '2rem',
+          padding: '0.25rem',
+          marginTop: '0.25rem',
         })}
         onClick={handleButtonClick}
       >
@@ -169,19 +171,19 @@ export function ParticipantViewerDownload({
       </Button>
       <div
         className={css({
-          position: "relative",
-          overflow: "hidden",
-          visibility: "hidden",
+          position: 'relative',
+          overflow: 'hidden',
+          visibility: 'hidden',
         })}
       >
         <div
           className={css({
-            position: "absolute",
+            position: 'absolute',
             zIndex: -1000,
             top: 0,
             left: 0,
-            width: "5000px",
-            height: "5000px",
+            width: '5000px',
+            height: '5000px',
           })}
         >
           <Tldraw>

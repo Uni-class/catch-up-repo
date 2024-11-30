@@ -1,7 +1,7 @@
-import { memo, useEffect, useRef } from "react";
-import { PDFRenderer } from "./PDFRenderer";
-import type { PDFViewerControllerHook } from "./types";
-import { usePDFViewerController } from "./hooks/usePDFViewerController";
+import { memo, useEffect, useRef } from 'react';
+import { PDFRenderer } from './PDFRenderer';
+import type { PDFViewerControllerHook } from './types';
+import { usePDFViewerController } from './hooks/usePDFViewerController';
 
 const PDFViewerComponent = ({
   pdfDocumentURL,
@@ -24,17 +24,17 @@ const PDFViewerComponent = ({
   useEffect(() => {
     if (pdfRendererElement.current) {
       const element = pdfRendererElement.current;
-      element.addEventListener("mousemove", onPdfMouseMoveEvent);
+      element.addEventListener('mousemove', onPdfMouseMoveEvent);
       return () =>
-        element.removeEventListener("mousemove", onPdfMouseMoveEvent);
+        element.removeEventListener('mousemove', onPdfMouseMoveEvent);
     }
   }, [onPdfMouseMoveEvent]);
 
   useEffect(() => {
     if (pdfRendererElement.current) {
       const element = pdfRendererElement.current;
-      element.addEventListener("wheel", onPdfWheelEvent);
-      return () => element.removeEventListener("wheel", onPdfWheelEvent);
+      element.addEventListener('wheel', onPdfWheelEvent);
+      return () => element.removeEventListener('wheel', onPdfWheelEvent);
     }
   }, [onPdfWheelEvent]);
 
@@ -42,7 +42,7 @@ const PDFViewerComponent = ({
     <div
       ref={pdfRendererElement}
       style={{
-        cursor: pdfViewerController.isDragAvailable() ? "move" : "default",
+        cursor: pdfViewerController.isDragAvailable() ? 'move' : 'default',
       }}
     >
       <PDFRenderer

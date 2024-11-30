@@ -1,12 +1,12 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from 'pdf-lib';
 import {
   convertPdfDocumentProxyToPdfLib,
   drawPNGOnPDFPage,
   getPDFDocumentProxy,
   PNGType,
-} from "./pdfUtils";
-import { TLEditorSnapshot } from "tldraw";
-import { NoteAPIResType } from "../../_types/apiType";
+} from './pdfUtils';
+import { TLEditorSnapshot } from 'tldraw';
+import { NoteAPIResType } from '../../_types/apiType';
 
 export const getMergedPDFBytes = async (
   src: string | URL,

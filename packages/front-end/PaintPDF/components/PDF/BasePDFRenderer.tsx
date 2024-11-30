@@ -1,13 +1,13 @@
-import { useCallback, useMemo, memo, ReactNode, useState } from "react";
-import { pdfjs, Document, Page } from "react-pdf";
+import { useCallback, useMemo, memo, ReactNode, useState } from 'react';
+import { pdfjs, Document, Page } from 'react-pdf';
 import type {
   PDFDocument,
   PDFPage,
   PDFItemClickHandlerArguments,
-} from "./types";
+} from './types';
 
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -39,21 +39,21 @@ const BasePDFRendererComponent = ({
   }: PDFItemClickHandlerArguments) => void;
 }) => {
   const [renderedPageIndex, setRenderedPageIndex] = useState<null | number>(
-    null,
+    null
   );
   const isLoading = renderedPageIndex !== pdfPageIndex;
   const onPdfDocumentLoadSuccess = useCallback(
     (pdfDocument: PDFDocument) => {
       onPdfDocumentChange(pdfDocument);
     },
-    [onPdfDocumentChange],
+    [onPdfDocumentChange]
   );
 
   const onPdfPageLoadSuccess = useCallback(
     (pdfPage: PDFPage) => {
       onPdfPageChange(pdfPage);
     },
-    [onPdfPageChange],
+    [onPdfPageChange]
   );
 
   const onPdfDocumentLoadError = useCallback(
@@ -61,7 +61,7 @@ const BasePDFRendererComponent = ({
       console.log(`Unable to load PDF document: ${error}`);
       onPdfDocumentChange(null);
     },
-    [onPdfDocumentChange],
+    [onPdfDocumentChange]
   );
 
   const onPdfPageLoadError = useCallback(
@@ -69,7 +69,7 @@ const BasePDFRendererComponent = ({
       console.log(`Unable to load PDF page: ${error}`);
       onPdfPageChange(null);
     },
-    [onPdfPageChange],
+    [onPdfPageChange]
   );
 
   const onPdfItemClickHandler = useCallback(
@@ -85,7 +85,7 @@ const BasePDFRendererComponent = ({
         });
       }
     },
-    [onPdfItemClick],
+    [onPdfItemClick]
   );
 
   const createFallback = useCallback(
@@ -93,29 +93,29 @@ const BasePDFRendererComponent = ({
       return (
         <div
           style={{
-            display: "flex",
+            display: 'flex',
             width: pdfRenderWidth,
             height: pdfRenderHeight,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           {fallback}
         </div>
       );
     },
-    [pdfRenderWidth, pdfRenderHeight],
+    [pdfRenderWidth, pdfRenderHeight]
   );
 
   const loadingComponent = useMemo(() => {
     return createFallback(
       <div
         style={{
-          fontSize: "1.2em",
+          fontSize: '1.2em',
         }}
       >
         불러오는 중...
-      </div>,
+      </div>
     );
   }, [createFallback]);
 
@@ -123,11 +123,11 @@ const BasePDFRendererComponent = ({
     return createFallback(
       <div
         style={{
-          fontSize: "1.2em",
+          fontSize: '1.2em',
         }}
       >
         오류가 발생하였습니다.
-      </div>,
+      </div>
     );
   }, [createFallback]);
 
@@ -137,10 +137,10 @@ const BasePDFRendererComponent = ({
       onLoadSuccess={onPdfDocumentLoadSuccess}
       onLoadError={onPdfDocumentLoadError}
       onItemClick={onPdfItemClickHandler}
-      externalLinkTarget={"_blank"}
+      externalLinkTarget={'_blank'}
       options={options}
     >
-      <div style={{ position: "absolute" }}>
+      <div style={{ position: 'absolute' }}>
         <Page
           key={pdfPageIndex}
           loading={loadingComponent}
@@ -158,7 +158,7 @@ const BasePDFRendererComponent = ({
         />
       </div>
       {renderedPageIndex !== null && (
-        <div style={{ position: "absolute", zIndex: isLoading ? 1000 : -1 }}>
+        <div style={{ position: 'absolute', zIndex: isLoading ? 1000 : -1 }}>
           <Page
             key={renderedPageIndex}
             width={pdfRenderWidth}

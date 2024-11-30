@@ -1,5 +1,5 @@
 export default function formatByteSize(size: number) {
-  const units = ["KB", "MB", "GB", "TB"];
+  const units = ['KB', 'MB', 'GB', 'TB'];
   let unitIndex = -1;
   do {
     size /= 1024;
@@ -9,4 +9,4 @@ export default function formatByteSize(size: number) {
     return `${size.toFixed(0)}${units[unitIndex]}`;
   }
   return `${size.toFixed(2)}${units[unitIndex]}`;
-};
+}

@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback } from 'react';
 
 import {
   EditorSnapshot,
@@ -8,8 +8,8 @@ import {
   PDFPainterInstanceController,
   PDFPainterInstanceControllerHook,
   PDFPainterInstanceStoreUpdateHandler,
-} from "../types";
-import { Editor } from "tldraw";
+} from '../types';
+import { Editor } from 'tldraw';
 
 export const usePDFPainterInstanceController = ({
   editorId,
@@ -24,8 +24,8 @@ export const usePDFPainterInstanceController = ({
     (editor: Editor) => {
       pdfPainterController.registerEditor(editorId, editor);
       editor.store.listen(({ changes }) => onStoreUpdate(changes), {
-        source: "user",
-        scope: "document",
+        source: 'user',
+        scope: 'document',
       });
     },
     [editorId, pdfPainterController, onStoreUpdate]
@@ -38,7 +38,11 @@ export const usePDFPainterInstanceController = ({
         getEditor: () => pdfPainterController.getEditor(editorId),
         getEditorSnapshot: (pageIndex: number) =>
           pdfPainterController.getEditorSnapshot(editorId, pageIndex),
-        getEditorSnapshotFromStorage: (pageIndex: number) => pdfPainterController.getEditorSnapshotFromStorage(editorId,pageIndex),
+        getEditorSnapshotFromStorage: (pageIndex: number) =>
+          pdfPainterController.getEditorSnapshotFromStorage(
+            editorId,
+            pageIndex
+          ),
         setEditorSnapshot: (pageIndex: number, snapshot: EditorSnapshot) =>
           pdfPainterController.setEditorSnapshot(editorId, pageIndex, snapshot),
         clearEditorSnapshot: (pageIndex: number) =>

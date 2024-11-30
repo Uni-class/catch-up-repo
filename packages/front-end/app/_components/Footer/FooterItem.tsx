@@ -1,6 +1,6 @@
-import { HTMLAttributeAnchorTarget, memo, ReactNode } from "react";
-import Link from "next/link";
-import { css } from "@/styled-system/css";
+import { HTMLAttributeAnchorTarget, memo, ReactNode } from 'react';
+import Link from 'next/link';
+import { css } from '@/styled-system/css';
 
 const FooterItem = ({
   children,
@@ -14,21 +14,21 @@ const FooterItem = ({
   return (
     <div
       className={css({
-        display: "flex",
+        display: 'flex',
 
-        alignItems: "center",
-        cursor: "pointer",
-        borderRadius: "0.2em",
+        alignItems: 'center',
+        cursor: 'pointer',
+        borderRadius: '0.2em',
         _hoverNotActive: {
-          color: "secondary.200",
+          color: 'secondary.200',
         },
       })}
     >
       <Link
         className={css({
-          width: "100%",
-          height: "100%",
-          padding: "0.8em 0",
+          width: '100%',
+          height: '100%',
+          padding: '0.8em 0',
         })}
         href={href}
         target={target}

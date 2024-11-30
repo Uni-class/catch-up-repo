@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { css, cx } from "@/styled-system/css";
+import { ReactNode } from 'react';
+import { css, cx } from '@/styled-system/css';
 
 interface PropType {
   className?: string;
@@ -17,37 +17,37 @@ export default function SidebarGroup({
   return (
     <div
       className={cx(
-        css({ borderBottom: "1px solid", borderColor: "primary.400" }),
+        css({ borderBottom: '1px solid', borderColor: 'primary.400' }),
         className
       )}
     >
       <div
         className={css({
-          height: "2.66rem",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          border: "1px solid",
-          borderColor: "primary.300",
+          height: '2.66rem',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          border: '1px solid',
+          borderColor: 'primary.300',
         })}
       >
         <div
           className={css({
-            width: "2.66rem",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            bg: "primary.300",
+            width: '2.66rem',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bg: 'primary.300',
           })}
         >
           {icon}
         </div>
         <p
           className={css({
-            fontSize: "1.125rem",
-            paddingLeft: "0.625rem",
-            color: "tertiary.200",
+            fontSize: '1.125rem',
+            paddingLeft: '0.625rem',
+            color: 'tertiary.200',
           })}
         >
           {name}
@@ -55,9 +55,9 @@ export default function SidebarGroup({
       </div>
       <ul
         className={css({
-          display: "flex",
-          flexDirection: "column",
-          bg: "primary.200",
+          display: 'flex',
+          flexDirection: 'column',
+          bg: 'primary.200',
         })}
       >
         {children}

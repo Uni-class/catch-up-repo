@@ -1,36 +1,36 @@
-import { css, cx } from "@/styled-system/css";
-import { ReactNode, memo, CSSProperties } from "react";
+import { css, cx } from '@/styled-system/css';
+import { ReactNode, memo, CSSProperties } from 'react';
 
 interface PlaceholderLayoutProps {
-  type?: "horizontal" | "vertical";
-  padding?: CSSProperties["padding"];
-  width?: CSSProperties["width"];
-  height?: CSSProperties["height"];
-  gap?: CSSProperties["gap"];
-  justifyContent?: CSSProperties["justifyContent"];
-  alignItems?: CSSProperties["alignItems"];
+  type?: 'horizontal' | 'vertical';
+  padding?: CSSProperties['padding'];
+  width?: CSSProperties['width'];
+  height?: CSSProperties['height'];
+  gap?: CSSProperties['gap'];
+  justifyContent?: CSSProperties['justifyContent'];
+  alignItems?: CSSProperties['alignItems'];
   children: ReactNode;
 }
 
 const PlaceholderLayout = ({
-  type = "horizontal",
+  type = 'horizontal',
   padding,
-  width = "100%",
-  height = "100%",
-  gap = "0.2em",
-  justifyContent = "center",
-  alignItems = "center",
+  width = '100%',
+  height = '100%',
+  gap = '0.2em',
+  justifyContent = 'center',
+  alignItems = 'center',
   children,
 }: PlaceholderLayoutProps) => {
   return (
     <div
       className={cx(
         css({
-          display: "flex",
+          display: 'flex',
         }),
-        type === "horizontal"
-          ? css({ flexDirection: "row" })
-          : css({ flexDirection: "column" }),
+        type === 'horizontal'
+          ? css({ flexDirection: 'row' })
+          : css({ flexDirection: 'column' })
       )}
       style={{
         padding: padding,

@@ -1,16 +1,16 @@
-import { Meta, StoryFn, StoryObj } from "@storybook/react";
-import ColorPalette from "./ColorPalette";
-import { css } from "@/styled-system/css";
-import { theme } from "@/style/theme";
-import { useState } from "react";
-import Switch from "@/components/Switch";
-import React from "react";
+import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import ColorPalette from './ColorPalette';
+import { css } from '@/styled-system/css';
+import { theme } from '@/style/theme';
+import { useState } from 'react';
+import Switch from '@/components/Switch';
+import React from 'react';
 
 const meta = {
-  title: "Color/Palette",
+  title: 'Color/Palette',
   component: React.Fragment,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof React.Fragment>;
 
@@ -21,22 +21,22 @@ const Template: StoryFn = (_args) => {
   const [background, setBackground] = useState(true);
   return (
     <div
-      className={css({ padding: "1rem" })}
+      className={css({ padding: '1rem' })}
       style={
         background
-          ? { color: "black", backgroundColor: "white" }
-          : { color: "white", backgroundColor: "black" }
+          ? { color: 'black', backgroundColor: 'white' }
+          : { color: 'white', backgroundColor: 'black' }
       }
     >
-      <h1 className={css({ fontWeight: "bold", fontSize: "2rem" })}>
+      <h1 className={css({ fontWeight: 'bold', fontSize: '2rem' })}>
         Color Palette
       </h1>
       <label
         className={css({
-          margin: "1rem 0",
-          fontWeight: "semibold",
-          fontSize: "1.5rem",
-          display: "block",
+          margin: '1rem 0',
+          fontWeight: 'semibold',
+          fontSize: '1.5rem',
+          display: 'block',
         })}
         htmlFor="background"
       >
@@ -58,5 +58,4 @@ const Template: StoryFn = (_args) => {
   );
 };
 
-export const Default: Story = Template.bind({
-});
+export const Default: Story = Template.bind({});

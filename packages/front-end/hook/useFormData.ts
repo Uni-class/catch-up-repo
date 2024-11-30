@@ -1,6 +1,6 @@
-"use client";
-import { MutableRefObject, useRef, useState } from "react";
-import { v4 } from "uuid";
+'use client';
+import { MutableRefObject, useRef, useState } from 'react';
+import { v4 } from 'uuid';
 
 export type UseFormDataResultType<T = object> = {
   unControlledDataRef: MutableRefObject<T>;

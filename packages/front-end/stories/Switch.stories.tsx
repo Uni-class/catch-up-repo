@@ -1,12 +1,12 @@
-import type { Meta, StoryFn, StoryObj } from "@storybook/react";
-import Switch from "@/components/Switch";
-import { useState } from "react";
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import Switch from '@/components/Switch';
+import { useState } from 'react';
 
 const meta = {
-  title: "Components/Switch",
+  title: 'Components/Switch',
   component: Switch,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   argTypes: {
     size: {
@@ -44,15 +44,15 @@ const Template: StoryFn = (args) => {
 
 export const Large: Story = Template.bind({});
 Large.args = {
-  size: "lg",
+  size: 'lg',
 };
 
 export const Medium: Story = Template.bind({});
 Medium.args = {
-  size: "md",
+  size: 'md',
 };
 
 export const Small: Story = Template.bind({});
 Small.args = {
-  size: "sm",
+  size: 'sm',
 };

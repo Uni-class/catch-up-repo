@@ -3,19 +3,19 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "catch-up-dev-s3.s3.ap-northeast-2.amazonaws.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'catch-up-dev-s3.s3.ap-northeast-2.amazonaws.com',
+        pathname: '/**',
       },
       {
-        protocol: "http",
-        hostname: "k.kakaocdn.net",
-        pathname: "/**",
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net',
+        pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "storage.catchup.tools",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'storage.catchup.tools',
+        pathname: '/**',
       },
     ],
   },
@@ -28,7 +28,7 @@ const nextConfig = {
       test: /\.svg$/,
       use: [
         {
-          loader: "@svgr/webpack",
+          loader: '@svgr/webpack',
           options: {
             dimensions: false,
           },

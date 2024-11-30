@@ -1,33 +1,33 @@
-import Button from "@/components/Button/Button";
-import { css } from "@/styled-system/css";
-import { useRef, useState, ChangeEvent, ReactNode } from "react";
-import LineEdit from "@/components/LineEdit";
-import { User } from "@/schema/backend.schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/utils/axios";
-import { Label } from "@/components/Label";
-import { ProfileImage } from "@/components/ProfileImage";
-import { useAccount } from "@/hook/useAccount";
-import CameraIcon from "@/public/icons/camera.svg";
-import Divider from "@/components/Divider";
-import ProfileIcon from "@/public/icons/profile.svg";
-import { toast } from "react-toastify";
+import Button from '@/components/Button/Button';
+import { css } from '@/styled-system/css';
+import { useRef, useState, ChangeEvent, ReactNode } from 'react';
+import LineEdit from '@/components/LineEdit';
+import { User } from '@/schema/backend.schema';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiClient } from '@/utils/axios';
+import { Label } from '@/components/Label';
+import { ProfileImage } from '@/components/ProfileImage';
+import { useAccount } from '@/hook/useAccount';
+import CameraIcon from '@/public/icons/camera.svg';
+import Divider from '@/components/Divider';
+import ProfileIcon from '@/public/icons/profile.svg';
+import { toast } from 'react-toastify';
 
 const UserProfileSettings = () => {
   const account: User | null = useAccount();
 
   const fileInputRef = useRef<null | HTMLInputElement>(null);
   const formRef = useRef<null | HTMLFormElement>(null);
-  const [imageSrc, setImageSrc] = useState<string>(account?.profileUrl || "");
+  const [imageSrc, setImageSrc] = useState<string>(account?.profileUrl || '');
   const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const formMutation = useMutation({
     mutationFn: async (body: FormData) =>
-      await apiClient.patch("/user/profile", body),
+      await apiClient.patch('/user/profile', body),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
-      queryClient.refetchQueries({ queryKey: ["user", "profile"] });
-      toast("저장이 완료되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+      queryClient.refetchQueries({ queryKey: ['user', 'profile'] });
+      toast('저장이 완료되었습니다.');
     },
     onError: (e) => {
       setError(`프로필 저장 실패: ${e.message}`);
@@ -53,22 +53,22 @@ const UserProfileSettings = () => {
   return (
     <form
       className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.25rem",
-        width: "100%",
-        maxWidth: "70em",
-        padding: "3rem 4.16rem",
-        alignItems: "flex-start",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem',
+        width: '100%',
+        maxWidth: '70em',
+        padding: '3rem 4.16rem',
+        alignItems: 'flex-start',
       })}
       ref={formRef}
       onSubmit={(e) => {
         e.preventDefault();
         if (formRef.current) {
           const formData = new FormData(formRef.current);
-          const nickname = formData.get("nickname") as string;
-          if (nickname.trim() === "") {
-            setError("닉네임을 입력해주세요.");
+          const nickname = formData.get('nickname') as string;
+          if (nickname.trim() === '') {
+            setError('닉네임을 입력해주세요.');
             return;
           }
           formMutation.mutate(formData);
@@ -77,16 +77,16 @@ const UserProfileSettings = () => {
     >
       <div
         className={css({
-          display: "flex",
-          gap: "2em",
+          display: 'flex',
+          gap: '2em',
         })}
       >
         <div
           className={css({
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            alignItems: 'center',
           })}
         >
           <ProfileImage
@@ -95,11 +95,11 @@ const UserProfileSettings = () => {
             width={256}
             height={256}
             className={css({
-              width: "7rem",
-              height: "7rem",
-              borderRadius: "50%",
-              border: "1px solid",
-              borderColor: "grey.100",
+              width: '7rem',
+              height: '7rem',
+              borderRadius: '50%',
+              border: '1px solid',
+              borderColor: 'grey.100',
             })}
           />
           <Button
@@ -111,12 +111,12 @@ const UserProfileSettings = () => {
             }}
             color="gray"
             size="small"
-            startIcon={<CameraIcon width={"1em"} height={"1em"} />}
+            startIcon={<CameraIcon width={'1em'} height={'1em'} />}
             className={css({
-              width: "100%",
+              width: '100%',
             })}
           >
-            <p className={css({ textAlign: "center", flex: 1 })}>사진 변경</p>
+            <p className={css({ textAlign: 'center', flex: 1 })}>사진 변경</p>
           </Button>
           <input
             type="file"
@@ -132,11 +132,11 @@ const UserProfileSettings = () => {
             htmlFor="nickname"
             labelText="닉네임"
             isError={!!error}
-            errorText={error || ""}
+            errorText={error || ''}
           >
             <LineEdit
               placeholder="닉네임을 입력하세요."
-              defaultValue={account?.nickname || ""}
+              defaultValue={account?.nickname || ''}
               name="nickname"
               className={css({ flex: 1 })}
               id="nickname"
@@ -147,7 +147,7 @@ const UserProfileSettings = () => {
       <Divider />
       <Button
         type="submit"
-        startIcon={<ProfileIcon width={"1em"} height={"1em"} />}
+        startIcon={<ProfileIcon width={'1em'} height={'1em'} />}
       >
         저장하기
       </Button>
@@ -170,18 +170,18 @@ function ControlContainer({
   htmlFor?: string;
   errorText?: string;
   isError?: boolean;
-  height?: React.CSSProperties["height"];
+  height?: React.CSSProperties['height'];
 }) {
   return (
     <div
       className={css({
-        display: "flex",
-        width: "100%",
+        display: 'flex',
+        width: '100%',
         height: height,
-        alignItems: "center",
+        alignItems: 'center',
       })}
     >
-      <Label htmlFor={htmlFor} className={css({ minWidth: "5em" })}>
+      <Label htmlFor={htmlFor} className={css({ minWidth: '5em' })}>
         {labelText}
       </Label>
       {children}

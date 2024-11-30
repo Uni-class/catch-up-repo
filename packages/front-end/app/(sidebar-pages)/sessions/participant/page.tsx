@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import ParticipantSessionTableFetcher from "./_fetcher/ParticipantSessionTableFetcher";
+import ParticipantSessionTableFetcher from './_fetcher/ParticipantSessionTableFetcher';
 
 export default function Page() {
   return (

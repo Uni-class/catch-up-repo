@@ -1,12 +1,11 @@
-import { Box, Editor, exportToBlob } from "tldraw";
-
+import { Box, Editor, exportToBlob } from 'tldraw';
 
 export const exportTldrawEditorAsBlob = async (
   editor: Editor | null,
   boxOpts: [X: number, Y: number, W: number, H: number]
 ) => {
   if (editor === null) {
-    console.error("editor is null.");
+    console.error('editor is null.');
     return null;
   }
   const ids = Array.from(editor.getCurrentPageShapeIds().values());
@@ -14,21 +13,20 @@ export const exportTldrawEditorAsBlob = async (
     return null;
   }
   const bounds = new Box(...boxOpts);
-  try{
+  try {
     return await exportToBlob({
       editor,
       ids,
-      format: "png",
+      format: 'png',
       opts: {
         padding: 0,
         bounds: bounds,
         background: false,
       },
     });
-  }
-  catch (e) {
+  } catch (e) {
     console.error(e);
-    console.log({editor,ids})
+    console.log({ editor, ids });
     return null;
   }
 };
@@ -39,10 +37,10 @@ export const convertBlobToUint8Array = async (blob: Blob) => {
       const reader = new FileReader();
       reader.onloadend = () =>
         resolve(new Uint8Array(reader.result as ArrayBuffer));
-      reader.onerror = () => reject(new Error("Uint8Array 변환 오류"));
+      reader.onerror = () => reject(new Error('Uint8Array 변환 오류'));
       reader.readAsArrayBuffer(blob);
     });
   } catch (error) {
-    throw new Error("Base64 인코딩 오류: " + error);
+    throw new Error('Base64 인코딩 오류: ' + error);
   }
 };
